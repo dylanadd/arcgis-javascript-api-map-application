@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9, IE=10">
+    <!--The viewport meta tag is used to improve the presentation and behavior
+    of the samples on iOS devices-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Parcel Locator</title>
+
+    <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css">
+    <style>
+      html, body, #map {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+<!--<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>-->
+
+
+    <script>var dojoConfig = { parseOnLoad: true };</script>
+    <script src="http://js.arcgis.com/3.7/"></script>
+    <script>
+      var map;
+      var parcels;
+      var infoArray;
+      require([
+        "esri/map", "esri/layers/FeatureLayer", 
+        "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query",
+        "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
+        "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate",
+        "esri/urlUtils", "esri/graphicsUtils",
+        "dojo/_base/Color", 
+        "dojo/on", "dojo/query", "dojo/parser", "dojo/dom-construct", "dojo/keys", "dijit/registry", "dojo/dom",
+
+        "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
+      ], function(
+        Map, FeatureLayer, 
+        ArcGISTiledMapServiceLayer, Query,
+        SimpleFillSymbol, SimpleLineSymbol,
+        Graphic, Popup, PopupTemplate,
+        urlUtils, graphicsUtils,
+        Color, 
+        on, query, parser, domConstruct, keys, registry, dom
+      ) {
+        //apply a selection symbol that determines the symbology for selected features 
+        var sfs = new SimpleFillSymbol(
+          SimpleFillSymbol.STYLE_SOLID, 
+          new SimpleLineSymbol(
+            SimpleLineSymbol.STYLE_SOLID, 
+            new Color([111, 0, 255]), 
+            2
+          ), 
+          new Color([111, 0, 255, 0.15])
+        );
+
+        var popup = new Popup({
+          fillSymbol: sfs
+        }, domConstruct.create("div")); 
+
+        map = new Map("map", {
+          infoWindow: popup,
+          slider: true
+        });
+        var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
+        var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer");
+        map.addLayer(basemap);
+        map.addLayer(parcelInfoLayer);
+
+	
+
+
+
+
+        //apply a popup template to the parcels layer to format popup info 
+        var popupTemplate = new PopupTemplate({
+          title: "Parcel Number: {PAR_NUM}",
+          fieldInfos: [{
+            fieldName: "Owner",
+            label: "Owner:",
+            visible: true
+          }, {
+		fieldName: "OwnerOverflow",
+		label:"Owner Overflow:",
+		visible: true
+	  },{
+		fieldName: "OwnerStreetAddress",
+		label:"Owner Address:",
+		visible: true
+	  },{
+		fieldName: "OwnerCity",
+		label:"Owner City:",
+		visible: true
+	  },{
+		fieldName: "OwnerState",
+		label:"Owner State:",
+		visible: true
+	  },{
+		fieldName: "OwnerZip",
+		label:"Owner Zip Code:",
+		visible: true
+	  }]
+        });
+
+        //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
+        parcels = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/13", {
+          outFields: ["*"],
+          infoTemplate: popupTemplate,
+          mode: FeatureLayer.MODE_SELECTION
+        });
+
+        parcels.setSelectionSymbol(sfs);
+
+        //when users click on the map select the parcel using the map point and update the url parameter
+        map.on("click", function (e) {
+          var query = new Query();
+          query.geometry = e.mapPoint;
+	  //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
+          var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
+            //update the url param if a parcel was located
+            if (selection.length > 0) {
+              var parcelid = selection[0].attributes["PAR_NUM"];
+              infoArray = selection[0];
+              //Refresh the URL with the currently selected parcel
+              if (typeof history.pushState !== "undefined") {
+                window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
+                infoArray = selection[0];
+              }
+            }
+          });
+          map.infoWindow.setFeatures([deferred]);
+          map.infoWindow.show(e.mapPoint);
+       
+        infoArray = selection[0];
+   
+        });
+        
+       
+       
+         
+        //listen for button clicks
+        on(dom.byId("clear"),"click", clearx);
+	//on(dom.byId("info"),"click", info);
+        on(dom.byId("empty"),"click", empty);
+        
+
+        map.on("layers-add-result", function (result) {
+          // Add a link into the InfoWindow Actions panel       
+          var emailLink = domConstruct.create("a", {
+            "class": "action",
+            "innerHTML": "Add Parcel Info",
+            "href": "javascript:void(0);"
+          }, query(".actionList", map.infoWindow.domNode)[0]);
+
+          // Register a function to be called when the user clicks on
+          // the above link
+          on(emailLink, "click", function (evt) {
+           info();       
+        /* var feature = map.infoWindow.getSelectedFeature();
+            var url = window.location;
+            var emailLink = "mailto:?subject=Parcel Map of :" + 
+              feature.attributes.PAR_NUM + "&body=Check out this map: %0D%0A " + 
+              window.location;
+            window.location.href = emailLink; */
+          });
+
+	
+
+          //When users navigate through the history using the browser back/forward buttons select appropriate parcel  
+          //https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
+          window.onpopstate = function (event) {
+            var parcelid = getParcelFromUrl(document.location.href);
+            if (parcelid) {
+              selectParcel(parcelid);
+             
+            
+            } else {
+              parcels.clearSelection();
+              map.infoWindow.hide();
+            }
+          };
+
+          //if a parcelid is specified in url param select that feature 
+          var parcelid = getParcelFromUrl(document.location.href);
+          selectParcel(parcelid);
+        });
+
+        map.addLayers([parcels]);
+
+        //extract the parcel id from the url
+        function getParcelFromUrl(url) {
+          var urlObject = urlUtils.urlToObject(url);
+          if (urlObject.query && urlObject.query.parcelid) {
+            return urlObject.query.parcelid;
+          } else {
+            return null;
+          }
+        }
+
+
+	function clearx() {
+	parcels.clearSelection();
+          map.infoWindow.hide();
+        // map.graphics.clear();
+	}
+      
+        function info() {
+           
+        var s = "<table><tr>" +
+                "<td>" + infoArray.attributes.PAR_NUM + "</td>" +
+                "<td><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray.attributes.PAR_TXT + "</a></td>" +
+                "<td>" + infoArray.attributes.Fips + "</td>" +
+                "<td>" + infoArray.attributes.Owner + "</td>" +
+                "<td>" + infoArray.attributes.OwnerOverflow + "</td>" +
+                "<td>" + infoArray.attributes.OwnerStreetAddress + "</td>" +
+                "<td>" + infoArray.attributes.OwnerCity + "</td>" +
+                "<td>" + infoArray.attributes.OwnerState + "</td>" +
+                "<td>" + infoArray.attributes.OwnerZip + "</td>" +
+                "</tr></table></div>";
+        
+                
+        dom.byId("output").innerHTML += s;
+
+        }
+        
+        function empty() {
+            dom.byId("output").innerHTML = "";
+        }
+        
+        
+       
+        //select parcel from the feature layer by creating a query to look for the input parcel id 
+        function selectParcel(parcelid) {
+          if (parcelid) {
+            var query = new Query();
+            query.where = "PAR_NUM = '" + parcelid + "'";
+            var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
+              var center = graphicsUtils.graphicsExtent(selection).getCenter();
+              var extHandler = map.on("extent-change", function () {
+                extHandler.remove();
+                //zoom to the center then display the popup 
+                map.infoWindow.setFeatures(selection);
+                map.infoWindow.show(center);
+                 infoArray = selection[0];
+              });
+              map.centerAt(center);
+            });
+          }
+        }
+      });
+    </script>
+  </head>
+  
+  <body class="claro">
+    <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline',gutters:false" 
+    style="width: 100%; height: 100%; margin: 0;">
+      <div id="map" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+       <input id="clear" type="button" value="Clear"> 
+      
+       <input id="empty" type="button" value="Empty Table">
+       <div id="output"></div>
+       
+      </div>
+    </div>
+  </body>
+
+</html>
