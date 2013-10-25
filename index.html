@@ -105,7 +105,7 @@ border: none !important;
 position: absolute;
 z-index: 30;
 top: 39px;
-background-color: white;
+background-color: white; 
 -webkit-border-radius: 5px 0px 0px 5px;
 border-radius: 5px 0px 0px 5px;
 border: 2px solid #666;
@@ -122,11 +122,11 @@ background-color: white;
 border-radius: 0px 5px 5px 0px;
 border: 2px solid #666;
 }
-     
+     /*
        div#map_zoom_slider {
        top: -20px;
        }
-     
+    */ 
       .esriSimpleSlider {
       border: none !important;
       }
@@ -134,6 +134,40 @@ border: 2px solid #666;
       
       .esriPopup {
       z-index: 100;
+      }
+      
+    
+    #gallery {
+    position: absolute;
+    z-index: 999;
+    top: 1px;
+    right: 1px;
+	display: inline-block;
+    
+    }
+     #print_button {
+     	position: relative;
+		float: right;
+		margin-top: -11px;
+     }
+      
+      
+      .logo-med {
+    visibility: hidden;
+height: 0;
+width: 0;
+margin: 0;
+padding: 0;  
+      }
+      
+      
+      .esriScalebarLabel {
+       color: white;
+  
+      } 
+      
+      .map .container {
+      position: initial !important;
       }
       
       
@@ -145,17 +179,17 @@ border: 2px solid #666;
     <script src="http://js.arcgis.com/3.7/"></script>
     <script>
       
-      var map;
-      var parcels;
-      var infoArray;
-      var draw = null;
-      require([
-        "esri/map", "esri/layers/FeatureLayer", 
+    var map;
+    var parcels;
+    var infoArray;
+    var draw = null;
+    require([
+        "esri/map", "esri/layers/FeatureLayer",
         "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query",
         "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
         "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate",
         "esri/urlUtils", "esri/graphicsUtils",
-        "dojo/_base/Color", 
+        "dojo/_base/Color",
         "dojo/on", "dojo/query", "dojo/parser", "dojo/dom-construct", "dojo/keys", "dijit/registry", "dojo/dom",
         "esri/dijit/Print", "esri/tasks/PrintTemplate", "esri/request", "esri/config", "dojo/_base/array",
         "esri/dijit/BasemapGallery", "esri/arcgis/utils", "esri/dijit/BasemapLayer", "esri/dijit/Basemap",
@@ -165,225 +199,227 @@ border: 2px solid #666;
         "esri/tasks/GeometryService",
 
 
-        "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
-      ], function(
-        Map, FeatureLayer, 
-        ArcGISTiledMapServiceLayer, Query,
-        SimpleFillSymbol, SimpleLineSymbol,
-        Graphic, Popup, PopupTemplate,
-        urlUtils, graphicsUtils,
-        Color, 
-        on, query, parser, domConstruct, keys, registry, dom,
-        Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
-        BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
-        Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
-        domAttr, has, SnappingManager, SimpleRenderer, GeometryService
+        "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function (
+    Map, FeatureLayer,
+    ArcGISTiledMapServiceLayer, Query,
+    SimpleFillSymbol, SimpleLineSymbol,
+    Graphic, Popup, PopupTemplate,
+    urlUtils, graphicsUtils,
+    Color,
+    on, query, parser, domConstruct, keys, registry, dom,
+    Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
+    BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
+    Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
+    domAttr, has, SnappingManager, SimpleRenderer, GeometryService
 
-      ) {
-    	  
-    	  parser.parse();
-    	  
+    ) {
+
+        parser.parse();
+
         //apply a selection symbol that determines the symbology for selected features 
         var sfs = new SimpleFillSymbol(
-          SimpleFillSymbol.STYLE_SOLID, 
-          new SimpleLineSymbol(
-            SimpleLineSymbol.STYLE_SOLID, 
-            new Color([111, 0, 255]), 
-            2
-          ), 
-          new Color([111, 0, 255, 0.15])
-        );
-		
-    
-        
+        SimpleFillSymbol.STYLE_SOLID,
+        new SimpleLineSymbol(
+        SimpleLineSymbol.STYLE_SOLID,
+        new Color([111, 0, 255]),
+        2),
+        new Color([111, 0, 255, 0.15]));
+
+
+
         var popup = new Popup({
-          fillSymbol: sfs
-        }, domConstruct.create("div")); 
-		
-      //Create basemaps
+            fillSymbol: sfs
+        }, domConstruct.create("div"));
+
+        //Create basemaps
         var countyLayer = new BasemapLayer({
-            url:"http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer"
+            url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer"
         });
-      
+
         var countyBasemap = new Basemap({
             layers: [countyLayer],
             title: "County Basemap (Fast)"
-          //  thumbnailUrl:"images/waterThumb.png"
-          });
-       
-        var zoningLayer = new BasemapLayer({
-            url:"http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer"
+            //  thumbnailUrl:"images/waterThumb.png"
         });
-      
+
+        var zoningLayer = new BasemapLayer({
+            url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer"
+        });
+
         var zoningBasemap = new Basemap({
             layers: [zoningLayer],
             title: "Zoning Basemap (Fast)"
-          //  thumbnailUrl:"images/waterThumb.png"
-          });
-        
-        var imagery2005Layer = new BasemapLayer({
-            url:"http://maps.co.pueblo.co.us/ArcGIS/rest/services/2005_1meter_imagery/MapServer"
+            //  thumbnailUrl:"images/waterThumb.png"
         });
-      
+
+        var imagery2005Layer = new BasemapLayer({
+            url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/2005_1meter_imagery/MapServer"
+        });
+
         var imagery2005Basemap = new Basemap({
             layers: [imagery2005Layer],
             title: "2005 Imagery (Slow)"
-          //  thumbnailUrl:"images/waterThumb.png"
-          });
-        
-        
-        var imagery2004Layer = new BasemapLayer({
-            url:"http://maps.co.pueblo.co.us/ArcGIS/rest/services/2004_1ft_Imagery/MapServer"
+            //  thumbnailUrl:"images/waterThumb.png"
         });
-      
+
+
+        var imagery2004Layer = new BasemapLayer({
+            url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/2004_1ft_Imagery/MapServer"
+        });
+
         var imagery2004Basemap = new Basemap({
             layers: [imagery2004Layer],
             title: "2004 Imagery (Slow)"
-          //  thumbnailUrl:"images/waterThumb.png"
-          });
-        
-        var imagery2001Layer = new BasemapLayer({
-            url:"http://maps.co.pueblo.co.us/ArcGIS/rest/services/2001_6in_imagery/MapServer"
+            //  thumbnailUrl:"images/waterThumb.png"
         });
-      
+
+        var imagery2001Layer = new BasemapLayer({
+            url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/2001_6in_imagery/MapServer"
+        });
+
         var imagery2001Basemap = new Basemap({
             layers: [imagery2001Layer],
             title: "2001 Imagery (Slow)"
-          //  thumbnailUrl:"images/waterThumb.png"
-          });
-        
-        var imagery1991Layer = new BasemapLayer({
-            url:"http://maps.co.pueblo.co.us/ArcGIS/rest/services/1991_Imagery/MapServer"
+            //  thumbnailUrl:"images/waterThumb.png"
         });
-      
+
+        var imagery1991Layer = new BasemapLayer({
+            url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/1991_Imagery/MapServer"
+        });
+
         var imagery1991Basemap = new Basemap({
             layers: [imagery1991Layer],
             title: "1991 Imagery (Slow)"
-          //  thumbnailUrl:"images/waterThumb.png"
-          });
-        
-        var floodplainsLayer = new BasemapLayer({
-            url:"http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer"
+            //  thumbnailUrl:"images/waterThumb.png"
         });
-      
+
+        var floodplainsLayer = new BasemapLayer({
+            url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer"
+        });
+
         var floodplainsBasemap = new Basemap({
             layers: [floodplainsLayer],
             title: "Floodplains (Slow)"
-          //  thumbnailUrl:"images/waterThumb.png"
-          });
-        
-        var taxSaleLayer = new BasemapLayer({
-            url:"http://maps.co.pueblo.co.us/ArcGIS/rest/services/tax_sale/MapServer"
+            //  thumbnailUrl:"images/waterThumb.png"
         });
-      
+
+        var taxSaleLayer = new BasemapLayer({
+            url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/tax_sale/MapServer"
+        });
+
         var taxSaleBasemap = new Basemap({
             layers: [taxSaleLayer],
             title: "Tax Sale (Fast)"
-          //  thumbnailUrl:"images/waterThumb.png"
-          });
-        
-        
-        var harnLayer = new BasemapLayer({
-            url:""
+            //  thumbnailUrl:"images/waterThumb.png"
         });
-      
+
+
+        var harnLayer = new BasemapLayer({
+            url: ""
+        });
+
         var harnBasemap = new Basemap({
             layers: [harnLayer],
             title: "No Basemap"
-          //  thumbnailUrl:"images/waterThumb.png"
-          });
-        
+            //  thumbnailUrl:"images/waterThumb.png"
+        });
+
         //Map constructor
         map = new Map("map", {
-     	//basemap: "County Basemap",
-          infoWindow: popup,
-          slider: true,
-          zoom: 1
+            //basemap: "County Basemap",
+            infoWindow: popup,
+            slider: true,
+            sliderOrientation: "horizontal",
+            //  sliderPosition: "bottom-right",
+            zoom: 1
+
         });
-        
-      
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
         var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
-      //  var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/tax_sale/MapServer");
+        //  var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/tax_sale/MapServer");
         var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer");
         map.addLayer(basemap);
         map.addLayer(parcelInfoLayer);
 
-      
-	//BEGIN functions for print dijit
-       var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
 
-       esriConfig.defaults.io.proxyUrl = "proxy.php";
-       
+        //BEGIN functions for print dijit
+        var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
+
+        esriConfig.defaults.io.proxyUrl = "proxy.php";
+
         // get print templates from the export web map task
         var printInfo = esriRequest({
-          "url": printUrl,
-          "content": { "f": "json" }
+            "url": printUrl,
+                "content": {
+                "f": "json"
+            }
         });
         printInfo.then(handlePrintInfo, handleError);
 
         function handlePrintInfo(resp) {
-          var layoutTemplate, templateNames, mapOnlyIndex, templates;
+            var layoutTemplate, templateNames, mapOnlyIndex, templates;
 
-          layoutTemplate = arrayUtils.filter(resp.parameters, function(param, idx) {
-            return param.name === "Layout_Template";
-          });
-          
-          if ( layoutTemplate.length == 0 ) {
-            console.log("print service parameters name for templates must be \"Layout_Template\"");
-            return;
-          }
-          templateNames = layoutTemplate[0].choiceList;
+            layoutTemplate = arrayUtils.filter(resp.parameters, function (param, idx) {
+                return param.name === "Layout_Template";
+            });
 
-          // remove the MAP_ONLY template then add it to the end of the list of templates 
-          mapOnlyIndex = arrayUtils.indexOf(templateNames, "MAP_ONLY");
-          if ( mapOnlyIndex > -1 ) {
-            var mapOnly = templateNames.splice(mapOnlyIndex, mapOnlyIndex + 1)[0];
-            templateNames.push(mapOnly);
-          }
-          
-          // create a print template for each choice
-          templates = arrayUtils.map(templateNames, function(ch) {
-            var plate = new PrintTemplate();
-            plate.layout = plate.label = ch;
-            plate.format = "PDF";
-            plate.layoutOptions = { 
-              "authorText": "Made by:  Esri's JS API Team",
-              "copyrightText": "<copyright info here>",
-              "legendLayers": [], 
-              "titleText": "Pueblo County GIS", 
-              "scalebarUnit": "Miles" 
-            };
-            return plate;
-          });
+            if (layoutTemplate.length == 0) {
+                console.log("print service parameters name for templates must be \"Layout_Template\"");
+                return;
+            }
+            templateNames = layoutTemplate[0].choiceList;
 
-          // create the print dijit
-          var printer = new Print({
-            "map": map,
-            "templates": templates,
-            url: printUrl
-          }, dom.byId("print_button"));
-          printer.startup();
+            // remove the MAP_ONLY template then add it to the end of the list of templates 
+            mapOnlyIndex = arrayUtils.indexOf(templateNames, "MAP_ONLY");
+            if (mapOnlyIndex > -1) {
+                var mapOnly = templateNames.splice(mapOnlyIndex, mapOnlyIndex + 1)[0];
+                templateNames.push(mapOnly);
+            }
+
+            // create a print template for each choice
+            templates = arrayUtils.map(templateNames, function (ch) {
+                var plate = new PrintTemplate();
+                plate.layout = plate.label = ch;
+                plate.format = "PDF";
+                plate.layoutOptions = {
+                    "authorText": "Made by:  Esri's JS API Team",
+                        "copyrightText": "<copyright info here>",
+                        "legendLayers": [],
+                        "titleText": "Pueblo County GIS",
+                        "scalebarUnit": "Miles"
+                };
+                return plate;
+            });
+
+            // create the print dijit
+            var printer = new Print({
+                "map": map,
+                    "templates": templates,
+                url: printUrl
+            }, dom.byId("print_button"));
+            printer.startup();
         }
 
         function handleError(err) {
-          console.log("Something broke: ", err);
+            console.log("Something broke: ", err);
         }
         //END print dijit functions
 
 
         //BEGIN Basemap Toggle
-           var basemapGallery = new BasemapGallery({
-          showArcGISBasemaps: false,
-          map: map
+        var basemapGallery = new BasemapGallery({
+            showArcGISBasemaps: false,
+            map: map
         }, "basemapGallery");
-        
+
         basemapGallery.startup();
-        
+
         basemapGallery.add(countyBasemap);
         basemapGallery.add(zoningBasemap);
         basemapGallery.add(imagery2005Basemap);
@@ -391,302 +427,301 @@ border: 2px solid #666;
         basemapGallery.add(imagery2001Basemap);
         basemapGallery.add(imagery1991Basemap);
         basemapGallery.add(floodplainsBasemap);
-       // basemapGallery.add(taxSaleBasemap);
+        // basemapGallery.add(taxSaleBasemap);
         basemapGallery.add(harnBasemap);
+
+
+        basemapGallery.on("error", function (msg) {
+            console.log("basemap gallery error:  ", msg);
+        });
        
-        
-        basemapGallery.on("error", function(msg) {
-          console.log("basemap gallery error:  ", msg);
+
+        basemapGallery.on("selection-change", function () {
+            //	alert("test");
+            //basemapGallery.startup();
+            map.removeLayer(parcelInfoLayer);
+            map.addLayer(parcelInfoLayer);
+            
+       //    console.dir(basemapGallery.getSelected());
         });
-        
-        
-        basemapGallery.on("selection-change", function(){
-        //	alert("test");
-        	//basemapGallery.startup();
-        	//map.removeLayer(parcelInfoLayer);
-        	//map.addLayer(parcelInfoLayer);
-        });
-        
-  
-        
-        
+
+
+
+
         //End Basemap Toggle
 
 
         //BEGIN Legend Dijit
         /*
-            map.on("layers-add-result", function (evt) {
-        var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
-          return {layer:layer.layer, title:layer.layer.name};
-        });
-        if (layerInfo.length > 0) {
-          var legendDijit = new Legend({
-            map: map,
-            layerInfos: layerInfo
-          }, "legendDiv");
-          legendDijit.startup();
-        }
-      });
-        */
+             map.on("layers-add-result", function (evt) {
+         var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
+           return {layer:layer.layer, title:layer.layer.name};
+         });
+         if (layerInfo.length > 0) {
+           var legendDijit = new Legend({
+             map: map,
+             layerInfos: layerInfo
+           }, "legendDiv");
+           legendDijit.startup();
+         }
+       });
+         */
         //END Legend Dijit
-        
-        
-        
+
+
+
         //BEGIN scalebar Dijit
-        
-          var scalebar = new Scalebar({
-          map: map,
-          // "dual" displays both miles and kilmometers
-          // "english" is the default, which displays miles
-          // use "metric" for kilometers
-          scalebarUnit: "english"
+
+        var scalebar = new Scalebar({
+            map: map,
+            // "dual" displays both miles and kilmometers
+            // "english" is the default, which displays miles
+            // use "metric" for kilometers
+            scalebarUnit: "english"
         });
-        
+
         //END scalebar Dijit
-        
-        
-        
-        
+
+
+
+
         //BEGIN measurement Dijit
-        
+
         esriConfig.defaults.geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
-        
-        
-        
-        
+
+
+
+
         var measurement = new esri.dijit.Measurement({
- 			 map: map
-			}, dojo.byId('measurementDiv'));
-		measurement.startup();
-		domAttr.set("measurementDiv","style", "visibility: hidden"); //hide the widget initially
-		
-		
-		
-		
-		
-		
+            map: map
+        }, dojo.byId('measurementDiv'));
+        measurement.startup();
+        domAttr.set("measurementDiv", "style", "visibility: hidden"); //hide the widget initially
+
+
+
+
+
+
         //END measurement Dijit
-        
+
 
         //apply a popup template to the parcels layer to format popup info 
         var popupTemplate = new PopupTemplate({
-          title: "Parcel Number: {PAR_NUM}",
-          fieldInfos: [{
-            fieldName: "Owner",
-            label: "Owner:",
-            visible: true
-          }, {
-		fieldName: "OwnerOverflow",
-		label:"Owner Overflow:",
-		visible: true
-	  },{
-		fieldName: "OwnerStreetAddress",
-		label:"Owner Address:",
-		visible: true
-	  },{
-		fieldName: "OwnerCity",
-		label:"Owner City:",
-		visible: true
-	  },{
-		fieldName: "OwnerState",
-		label:"Owner State:",
-		visible: true
-	  },{
-		fieldName: "OwnerZip",
-		label:"Owner Zip Code:",
-		visible: true
-	  }]
+            title: "Parcel Number: {PAR_NUM}",
+            fieldInfos: [{
+                fieldName: "Owner",
+                label: "Owner:",
+                visible: true
+            }, {
+                fieldName: "OwnerOverflow",
+                label: "Owner Overflow:",
+                visible: true
+            }, {
+                fieldName: "OwnerStreetAddress",
+                label: "Owner Address:",
+                visible: true
+            }, {
+                fieldName: "OwnerCity",
+                label: "Owner City:",
+                visible: true
+            }, {
+                fieldName: "OwnerState",
+                label: "Owner State:",
+                visible: true
+            }, {
+                fieldName: "OwnerZip",
+                label: "Owner Zip Code:",
+                visible: true
+            }]
         });
 
         //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
         parcels = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/13", {
-          outFields: ["*"],
-          infoTemplate: popupTemplate,
-          mode: FeatureLayer.MODE_SELECTION
+            outFields: ["*"],
+            infoTemplate: popupTemplate,
+            mode: FeatureLayer.MODE_SELECTION
         });
 
         parcels.setSelectionSymbol(sfs);
 
         //when users click on the map select the parcel using the map point and update the url parameter
         map.on("click", function (e) {
-        	if (draw == false || draw == null){
-          var query = new Query();
-          query.geometry = e.mapPoint;
-	  //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
-          var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
-            //update the url param if a parcel was located
-            if (selection.length > 0) {
-              var parcelid = selection[0].attributes["PAR_NUM"];
-              infoArray = selection[0];
-              //Refresh the URL with the currently selected parcel
-              if (typeof history.pushState !== "undefined") {
-              //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
+            if (draw == false || draw == null) {
+                var query = new Query();
+                query.geometry = e.mapPoint;
+                //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
+                var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
+                    //update the url param if a parcel was located
+                    if (selection.length > 0) {
+                        var parcelid = selection[0].attributes["PAR_NUM"];
+                        infoArray = selection[0];
+                        //Refresh the URL with the currently selected parcel
+                        if (typeof history.pushState !== "undefined") {
+                            //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
+                            infoArray = selection[0];
+                        }
+                    }
+                });
+                map.infoWindow.setFeatures([deferred]);
+                map.infoWindow.show(e.mapPoint);
+
                 infoArray = selection[0];
-              }
+
             }
-          });
-          map.infoWindow.setFeatures([deferred]);
-          map.infoWindow.show(e.mapPoint);
-       
-        infoArray = selection[0];
-   
-        	}
         });
-        
-       
-       
-         
+
+
+
+
         //LISTEN FOR BUTTON CLICKS
-        on(dom.byId("clear"),"click", clearx);
-		on(dom.byId("draw"),"click", drawMode);
-        on(dom.byId("empty"),"click", empty);
-       	on(dom.byId("locate"), "click", locate);
-      // 	on(dom.byId("lock"), "click", lockMap);
-       	
+        on(dom.byId("clear"), "click", clearx);
+        on(dom.byId("draw"), "click", drawMode);
+        on(dom.byId("empty"), "click", empty);
+        on(dom.byId("locate"), "click", locate);
+        // 	on(dom.byId("lock"), "click", lockMap);
+
 
         map.on("layers-add-result", function (result) {
-          // Add a link into the InfoWindow Actions panel       
-          var emailLink = domConstruct.create("a", {
-            "class": "action",
-            "innerHTML": "Add Parcel Info",
-            "href": "javascript:void(0);"
-          }, query(".actionList", map.infoWindow.domNode)[0]);
+            // Add a link into the InfoWindow Actions panel       
+            var emailLink = domConstruct.create("a", {
+                "class": "action",
+                    "innerHTML": "Add Parcel Info",
+                    "href": "javascript:void(0);"
+            }, query(".actionList", map.infoWindow.domNode)[0]);
 
-          // Register a function to be called when the user clicks on
-          // the above link
-          on(emailLink, "click", function (evt) {
-           info();       
-        /* var feature = map.infoWindow.getSelectedFeature();
-            var url = window.location;
-            var emailLink = "mailto:?subject=Parcel Map of :" + 
-              feature.attributes.PAR_NUM + "&body=Check out this map: %0D%0A " + 
-              window.location;
-            window.location.href = emailLink; */
-          });
+            // Register a function to be called when the user clicks on
+            // the above link
+            on(emailLink, "click", function (evt) {
+                info();
+                /* var feature = map.infoWindow.getSelectedFeature();
+             var url = window.location;
+             var emailLink = "mailto:?subject=Parcel Map of :" + 
+               feature.attributes.PAR_NUM + "&body=Check out this map: %0D%0A " + 
+               window.location;
+             window.location.href = emailLink; */
+            });
 
-	
 
-          //When users navigate through the history using the browser back/forward buttons select appropriate parcel  
-          //https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
-          window.onpopstate = function (event) {
+
+            //When users navigate through the history using the browser back/forward buttons select appropriate parcel  
+            //https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
+            window.onpopstate = function (event) {
+                var parcelid = getParcelFromUrl(document.location.href);
+                if (parcelid) {
+                    selectParcel(parcelid);
+
+
+                } else {
+                    parcels.clearSelection();
+                    map.infoWindow.hide();
+                }
+            };
+
+            //if a parcelid is specified in url param select that feature 
             var parcelid = getParcelFromUrl(document.location.href);
-            if (parcelid) {
-              selectParcel(parcelid);
-             
-            
-            } else {
-              parcels.clearSelection();
-              map.infoWindow.hide();
-            }
-          };
-
-          //if a parcelid is specified in url param select that feature 
-          var parcelid = getParcelFromUrl(document.location.href);
-          selectParcel(parcelid);
+            selectParcel(parcelid);
         });
 
         map.addLayers([parcels]);
 
         //extract the parcel id from the url
         function getParcelFromUrl(url) {
-          var urlObject = urlUtils.urlToObject(url);
-          if (urlObject.query && urlObject.query.parcelid) {
-            return urlObject.query.parcelid;
-          } else {
-            return null;
-          }
+            var urlObject = urlUtils.urlToObject(url);
+            if (urlObject.query && urlObject.query.parcelid) {
+                return urlObject.query.parcelid;
+            } else {
+                return null;
+            }
         }
 
-        
-        
+
+
         //BEGIN Location Dijit
-        
-     var  locator = new Locator("http://maps.co.pueblo.co.us/ArcGIS/rest/services/PCGIS_Geocoding_Service/GeocodeServer");
-    // var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+
+        var locator = new Locator("http://maps.co.pueblo.co.us/ArcGIS/rest/services/PCGIS_Geocoding_Service/GeocodeServer");
+        // var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
         locator.on("address-to-locations-complete", showResults);
 
 
 
         function locate() {
-          map.graphics.clear();
-          var address = {
-          //  "SingleLine": dom.byId("address").value
-            "Street": dom.byId("address").value
-          };
-          locator.outSpatialReference = map.spatialReference;
-          var options = {
-            address: address,
-            outFields: ["Loc_name"]
-          }
-          locator.addressToLocations(options);
+            map.graphics.clear();
+            var address = {
+                //  "SingleLine": dom.byId("address").value
+                "Street": dom.byId("address").value
+            };
+            locator.outSpatialReference = map.spatialReference;
+            var options = {
+                address: address,
+                outFields: ["Loc_name"]
+            }
+            locator.addressToLocations(options);
         }
 
         function showResults(evt) {
-          var candidate;
-          var symbol = new SimpleMarkerSymbol();
-          var infoTemplate = new InfoTemplate(
-            "Location", 
-            "Address: ${address}<br />Score: ${score}<br />Source locator: ${locatorName}"
-          );
-          symbol.setStyle(SimpleMarkerSymbol.STYLE_CIRCLE);
-          symbol.setColor(new Color([35,186,199,0.75]));
+            var candidate;
+            var symbol = new SimpleMarkerSymbol();
+            var infoTemplate = new InfoTemplate(
+                "Location",
+                "Address: ${address}<br />Score: ${score}<br />Source locator: ${locatorName}");
+            symbol.setStyle(SimpleMarkerSymbol.STYLE_CIRCLE);
+            symbol.setColor(new Color([35, 186, 199, 0.75]));
 
-          var geom;
-          arrayUtils.every(evt.addresses, function(candidate) {
-            console.log(candidate.score);
-            if (candidate.score > 80) {
-              console.log(candidate.location);
-              var attributes = { 
-                address: candidate.address, 
-                score: candidate.score, 
-                locatorName: candidate.attributes.Loc_name 
-              };   
-              geom = candidate.location;
-              var graphic = new Graphic(geom, symbol, attributes, infoTemplate);
-              //add a graphic to the map at the geocoded location
-              map.graphics.add(graphic);
-              //add a text symbol to the map listing the location of the matched address.
-              var displayText = candidate.address;
-              var font = new Font(
-                "16pt",
-                Font.STYLE_NORMAL, 
-                Font.VARIANT_NORMAL,
-                Font.WEIGHT_BOLD,
-                "Helvetica"
-              );
-             
-              var textSymbol = new TextSymbol(
-                displayText,
-                font,
-                new Color("#FF0033")
-              );
-              textSymbol.setOffset(0,8);
-              map.graphics.add(new Graphic(geom, textSymbol));
-              return false; //break out of loop after one candidate with score greater  than 80 is found.
+            var geom;
+            arrayUtils.every(evt.addresses, function (candidate) {
+                console.log(candidate.score);
+                if (candidate.score > 80) {
+                    console.log(candidate.location);
+                    var attributes = {
+                        address: candidate.address,
+                        score: candidate.score,
+                        locatorName: candidate.attributes.Loc_name
+                    };
+                    geom = candidate.location;
+                    var graphic = new Graphic(geom, symbol, attributes, infoTemplate);
+                    //add a graphic to the map at the geocoded location
+                    map.graphics.add(graphic);
+                    //add a text symbol to the map listing the location of the matched address.
+                    var displayText = candidate.address;
+                    var font = new Font(
+                        "16pt",
+                    Font.STYLE_NORMAL,
+                    Font.VARIANT_NORMAL,
+                    Font.WEIGHT_BOLD,
+                        "Helvetica");
+
+                    var textSymbol = new TextSymbol(
+                    displayText,
+                    font,
+                    new Color("#FF0033"));
+                    textSymbol.setOffset(0, 8);
+                    map.graphics.add(new Graphic(geom, textSymbol));
+                    return false; //break out of loop after one candidate with score greater  than 80 is found.
+                }
+            });
+            if (geom !== undefined) {
+                map.centerAndZoom(geom, 12);
             }
-          });
-          if ( geom !== undefined ) {
-            map.centerAndZoom(geom, 12);
-          }
         }
         //END Location Dijit
-        
-        
-     
-        
-        
-        
 
-	function clearx() {
-		parcels.clearSelection();
-        map.infoWindow.hide();
-        map.graphics.clear();
-        window.history.pushState(null, null, "?parcelid=");
-	}
-      
+
+
+
+
+
+
+        function clearx() {
+            parcels.clearSelection();
+            map.infoWindow.hide();
+            map.graphics.clear();
+            window.history.pushState(null, null, "?parcelid=");
+        }
+
         function info() {
-           
-        var s = "<table><tr>" +
+
+            var s = "<table><tr>" +
                 "<td>" + infoArray.attributes.PAR_NUM + "</td>" +
                 "<td><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray.attributes.PAR_TXT + "</a></td>" +
                 "<td>" + infoArray.attributes.Fips + "</td>" +
@@ -697,59 +732,59 @@ border: 2px solid #666;
                 "<td>" + infoArray.attributes.OwnerState + "</td>" +
                 "<td>" + infoArray.attributes.OwnerZip + "</td>" +
                 "</tr></table></div>";
-        
-                
-        dom.byId("output").innerHTML += s;
+
+
+            dom.byId("output").innerHTML += s;
 
         }
-        
+
         function empty() {
             dom.byId("output").innerHTML = "";
         }
-        
-       function drawMode() {
-    	 if(!draw){
-    		draw = true;
-    		domAttr.set("draw", "value", "Turn Draw Off");
-    		domAttr.set("measurementDiv","style", "visibility: visible");
-    		map.infoWindow.hide();
-    	 } else if (draw) {
-    		 draw = false;
-    		 domAttr.set("draw", "value", "Turn Draw On");
-    		 domAttr.set("measurementDiv","style", "visibility: hidden");
-    	 } else if (draw == null) {
-    		 draw = true;
-     		domAttr.set("draw", "value", "Turn Draw Off");
-     		domAttr.set("measurementDiv","style", "visibility: visible");
-     		map.infoWindow.hide();
-    		 
-    	 }
-    	 
-    	
-       }
-        
-       
-    
-       
+
+        function drawMode() {
+            if (!draw) {
+                draw = true;
+                domAttr.set("draw", "value", "Turn Draw Off");
+                domAttr.set("measurementDiv", "style", "visibility: visible");
+                map.infoWindow.hide();
+            } else if (draw) {
+                draw = false;
+                domAttr.set("draw", "value", "Turn Draw On");
+                domAttr.set("measurementDiv", "style", "visibility: hidden");
+            } else if (draw == null) {
+                draw = true;
+                domAttr.set("draw", "value", "Turn Draw Off");
+                domAttr.set("measurementDiv", "style", "visibility: visible");
+                map.infoWindow.hide();
+
+            }
+
+
+        }
+
+
+
+
         //select parcel from the feature layer by creating a query to look for the input parcel id 
         function selectParcel(parcelid) {
-          if (parcelid) {
-            var query = new Query();
-            query.where = "PAR_NUM = '" + parcelid + "'";
-            var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
-              var center = graphicsUtils.graphicsExtent(selection).getCenter();
-              var extHandler = map.on("extent-change", function () {
-                extHandler.remove();
-                //zoom to the center then display the popup 
-                map.infoWindow.setFeatures(selection);
-                map.infoWindow.show(center);
-                 infoArray = selection[0];
-              });
-              map.centerAt(center);
-            });
-          }
+            if (parcelid) {
+                var query = new Query();
+                query.where = "PAR_NUM = '" + parcelid + "'";
+                var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
+                    var center = graphicsUtils.graphicsExtent(selection).getCenter();
+                    var extHandler = map.on("extent-change", function () {
+                        extHandler.remove();
+                        //zoom to the center then display the popup 
+                        map.infoWindow.setFeatures(selection);
+                        map.infoWindow.show(center);
+                        infoArray = selection[0];
+                    });
+                    map.centerAt(center);
+                });
+            }
         }
-      });
+    });
     </script>
   </head>
   
@@ -775,7 +810,7 @@ border: 2px solid #666;
           <div id="measurementDiv" style="visibility: hidden;"></div> 
        
        
-       <div style="position:absolute; right:20px; top:10px; z-Index:999;">
+       <div id="gallery" >
           <div data-dojo-type="dijit/TitlePane" 
                data-dojo-props="title:'Switch Basemap', closable:false,  open:false">
             <div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;">
