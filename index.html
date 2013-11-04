@@ -17,7 +17,12 @@
         padding: 0;
       }
       
-      path {z-index: 1000;}
+      #buffer-params {
+      z-index: 1000; 
+      top: 100px;
+      position:relative;
+      background: rgba(255,255,255,0.5);
+      width: 255px;}
       
       #button-console {
       	position: relative;
@@ -1001,10 +1006,21 @@ map.on("click", doBuffer2);
   <body class="tundra">
     <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline',gutters:false" 
     style="width: 100%; height: 100%; margin: 0;">
+      
+    
      
-     <div id="buffer-params" style="z-index: 1000;"
-         data-dojo-type="dijit.layout.ContentPane" 
-         data-dojo-props="region:'right'">
+     
+     
+     <div id="button-console">
+      
+       <input id="clear" type="button" value="Clear"> 
+      
+       <input id="empty" type="button" value="Empty Table">
+       <input id="draw" type="button" name="draw" value="Turn Draw On">
+      <!--   <input id="lock" type="button" value="Lock Map"> -->
+       <div id="output"></div>
+       
+        <div id="buffer-params" style="z-index: 1000;">
 <!-- 
       <div class="details">Pick a tool and draw on the map. The drawn graphic will be buffered based on the specified parameters.</div>
       <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.LINE);app.map.hideZoomSlider();">Line</button>
@@ -1016,7 +1032,7 @@ map.on("click", doBuffer2);
 
       <br /><hr />
       
-      -->
+   -->
       <div><b>Buffer Parameters</b></div>
       Spatial Reference WKID: <input type="text" id="bufferSpatialReference" size="5" value="2233" /><br />
       Distance: <input type="text" id="distance" size="5" value="25" />
@@ -1031,19 +1047,6 @@ map.on("click", doBuffer2);
       </select><br />
       <button data-dojo-type="dijit.form.Button" type="button" onclick="app.map.graphics.clear();">Clear Graphics</button>
     </div>
-     
-     
-     
-     <div id="button-console">
-      
-       <input id="clear" type="button" value="Clear"> 
-      
-       <input id="empty" type="button" value="Empty Table">
-       <input id="draw" type="button" name="draw" value="Turn Draw On">
-      <!--   <input id="lock" type="button" value="Lock Map"> -->
-       <div id="output"></div>
-       
-       
       
        
        
