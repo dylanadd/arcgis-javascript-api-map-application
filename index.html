@@ -185,6 +185,7 @@ padding: 0;
     var parcels;
     var infoArray;
     var draw = null;
+    var gsvc, tb;
     require([
         "esri/map", "esri/layers/FeatureLayer",
         "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query",
@@ -337,82 +338,83 @@ padding: 0;
 
         });
 
-        esriConfig.defaults.io.proxyUrl = "proxy.php";
+        
+        
+        
 		//Buffer Function
 	 map.on("load", initToolbar);
 
       gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+  //add proxy functions for all modules
+      esriConfig.defaults.io.proxyUrl = "proxy.php";
+      esriConfig.defaults.io.alwaysUseProxy = false;
 
-    //  esriConfig.defaults.io.proxyUrl = "/proxy";
-     // esriConfig.defaults.io.alwaysUseProxy = false;
+      function initToolbar(evtObj) {
+          app.tb = new Draw(evtObj.map);
+          app.tb.on("draw-end", doBuffer);
+        }
 
-    function initToolbar(evtObj) {
-      app.tb = new Draw(evtObj.map);
-      app.tb.on("draw-end", doBuffer);
-    }
+        function doBuffer(evtObj) {
+          var geometry = evtObj.geometry,
+          map = app.map,
+          gsvc = app.gsvc;
+          switch (geometry.type) {
+             case "point":
+               var symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 10, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 1), new Color([0,255,0,0.25]));
+               break;
+             case "polyline":
+               var symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([255,0,0]), 1);
+               break;
+             case "polygon":
+               var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NONE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255,0,0]), 2), new Color([255,255,0,0.25]));
+               break;
+          }
 
-    function doBuffer(evtObj) {
-      var geometry1 = evtObj.geometry,
-      map1 = map,
-      gsvc1 = gsvc;
-      switch (geometry1.type) {
-         case "point":
-           var symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 10, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 1), new Color([0,255,0,0.25]));
-           break;
-         case "polyline":
-           var symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([255,0,0]), 1);
-           break;
-         case "polygon":
-           var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NONE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255,0,0]), 2), new Color([255,255,0,0.25]));
-           break;
-      }
+          var graphic = new Graphic(geometry, symbol);
+          map.graphics.add(graphic);
 
-      var graphic1 = new Graphic(geometry1, symbol);
-      map.graphics.add(graphic1);
+          //setup the buffer parameters
+          var params = new BufferParameters();
+          params.distances = [ dom.byId("distance").value ];
+          params.bufferSpatialReference = new esri.SpatialReference({wkid: dom.byId("bufferSpatialReference").value});
+          params.outSpatialReference = map.spatialReference;
+          params.unit = GeometryService[dom.byId("unit").value];
 
-      //setup the buffer parameters
-      var params = new BufferParameters();
-      params.distances = [ dom.byId("distance").value ];
-      params.bufferSpatialReference = new esri.SpatialReference({wkid: dom.byId("bufferSpatialReference").value});
-      params.outSpatialReference = map1.spatialReference;
-      params.unit = GeometryService[dom.byId("unit").value];
+          if (geometry.type === "polygon") {
+            //if geometry is a polygon then simplify polygon.  This will make the user drawn polygon topologically correct.
+            gsvc.simplify([geometry], function(geometries) {
+              params.geometries = geometries;
+              gsvc.buffer(params, showBuffer);
+            });
+          } else {
+            params.geometries = [geometry];
+            gsvc.buffer(params, showBuffer);
+          }
+        }
 
-      if (geometry1.type === "polygon") {
-        //if geometry is a polygon then simplify polygon.  This will make the user drawn polygon topologically correct.
-        gsvc1.simplify([geometry1], function(geometries) {
-          params.geometries = geometries;
-          gsvc1.buffer(params, showBuffer);
-        });
-      } else {
-        params.geometries = [geometry1];
-        gsvc1.buffer(params, showBuffer);
-      }
-    }
+        function showBuffer(bufferedGeometries) { 
+          var symbol = new SimpleFillSymbol(
+            SimpleFillSymbol.STYLE_SOLID,
+            new SimpleLineSymbol(
+              SimpleLineSymbol.STYLE_SOLID,
+              new Color([255,0,0,0.65]), 2
+            ),
+            new Color([255,0,0,0.35])
+          );
 
-    function showBuffer(bufferedGeometries) {
-      var symbol = new SimpleFillSymbol(
-        SimpleFillSymbol.STYLE_SOLID,
-        new SimpleLineSymbol(
-          SimpleLineSymbol.STYLE_SOLID,
-          new Color([255,0,0,0.65]), 2
-        ),
-        new Color([255,0,0,0.35])
-      );
+          arrayUtils.forEach(bufferedGeometries, function(geometry) {
+            var graphic = new Graphic(geometry, symbol);
+            app.map.graphics.add(graphic);
+          });
+          app.tb.deactivate();
+          app.map.showZoomSlider();
+        }
 
-      array.forEach(bufferedGeometries, function(geometry) {
-        var graphic1 = new Graphic(geometry, symbol);
-        map.graphics.add(graphic1);
-      });
-      app.tb.deactivate();
-      app.map.showZoomSlider();
-    }
-
-    app = {
-      map: map,
-      tb: tb,
-      gsvc: gsvc
-    };
-            
+        app = {
+          map: map,
+          tb: tb,
+          gsvc: gsvc
+        };
 
 
         var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
