@@ -185,7 +185,8 @@ padding: 0;
     <script>var dojoConfig = { parseOnLoad: true };</script>
     <script src="http://js.arcgis.com/3.7/"></script>
     <script>
-      
+
+	
     var map;
     var parcels;
     var infoArray;
@@ -204,7 +205,7 @@ padding: 0;
         "esri/dijit/Scalebar", "esri/dijit/Measurement", "esri/tasks/locator", "esri/symbols/SimpleMarkerSymbol",
         "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate",
         "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
-        "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw",
+        "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", 
 
 
         "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function (
@@ -218,7 +219,7 @@ padding: 0;
     Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
     Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
-    domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw
+    domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask
 
     ) {
 
@@ -363,8 +364,9 @@ map.on("click", doBuffer2);
       //begin test for parcel buffer
       
       function doBuffer2(evt) {
-
-      map.graphics.clear();
+    	
+    	  
+      map.graphics.clear(); 
       var params = new BufferParameters();
       params.geometries = [ evt.mapPoint ];
 
@@ -375,8 +377,61 @@ map.on("click", doBuffer2);
           params.outSpatialReference = map.spatialReference;
           params.unit = GeometryService[dom.byId("unit").value];
 
-      gsvc.buffer(params, showBuffer);
+    //  gsvc.buffer(params, showBuffer);
+          gsvc.buffer(params);
     }
+      
+      //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
+      parcels = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/13", {
+          outFields: ["*"],
+          infoTemplate: popupTemplate,
+          mode: FeatureLayer.MODE_SELECTION
+      });
+      
+      gsvc.on("buffer-complete", function(result){
+    	  alert();
+          map.graphics.clear();
+          // draw the buffer geometry on the map as a map graphic
+          var symbol = new SimpleFillSymbol(
+            SimpleFillSymbol.STYLE_NULL,
+            new SimpleLineSymbol(
+              SimpleLineSymbol.STYLE_SHORTDASHDOTDOT,
+              new Color([105,105,105]), 
+              2
+            ),new Color([255,255,0,0.25])
+          );
+          var bufferGeometry = result.geometries[0]
+          var graphic2 = new Graphic(bufferGeometry, symbol);
+          map.graphics.add(graphic2);
+alert();
+          //Select features within the buffered polygon. To do so we'll create a query to use the buffer graphic
+          //as the selection geometry.
+          var query2 = new Query();
+          query2.geometry = bufferGeometry;
+          parcels.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function(results){
+           // var totalPopulation = sumPopulation(results);
+            var r = "";
+            r = "<b>The total Census Block population within the buffer is <i>" + totalPopulation + "</i>.</b>";
+           // dom.byId('messages').innerHTML = r;
+          });
+        });
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
       //end test for parcel buffer
       
@@ -402,6 +457,7 @@ map.on("click", doBuffer2);
                var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NONE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255,0,0]), 2), new Color([255,255,0,0.25]));
                break;
           }
+
 
           var graphic = new Graphic(geometry, symbol);
           map.graphics.add(graphic);
@@ -434,7 +490,7 @@ map.on("click", doBuffer2);
             ),
             new Color([255,0,0,0.35])
           );
-
+         
           arrayUtils.forEach(bufferedGeometries, function(geometry) {
             var graphic = new Graphic(geometry, symbol);
             app.map.graphics.add(graphic);
@@ -783,7 +839,8 @@ map.on("click", doBuffer2);
 
                 infoArray = selection[0];
 
-            }
+            } 
+           
         });
 
 
@@ -955,6 +1012,7 @@ map.on("click", doBuffer2);
 
         function empty() {
             dom.byId("output").innerHTML = "";
+           
         }
 
         function drawMode() {
