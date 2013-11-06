@@ -181,7 +181,7 @@ padding: 0;
     </style>
 <!--<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>-->
 
-
+<script>var selectedParcel;</script>
     <script>var dojoConfig = { parseOnLoad: true };</script>
     <script src="http://js.arcgis.com/3.7/"></script>
     <script>
@@ -189,7 +189,8 @@ padding: 0;
 	
     var map;
     var parcels;
-    var infoArray;
+    var infoArray; 
+    var infoArray2 = new Array();
     var draw = null;
    // var gsvc, tb;
     require([
@@ -205,7 +206,7 @@ padding: 0;
         "esri/dijit/Scalebar", "esri/dijit/Measurement", "esri/tasks/locator", "esri/symbols/SimpleMarkerSymbol",
         "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate",
         "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
-        "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", 
+        "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect",
 
 
         "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function (
@@ -234,6 +235,18 @@ padding: 0;
         2),
         new Color([111, 0, 255, 0.15]));
 
+        
+        var sfs1 = new SimpleFillSymbol(
+                SimpleFillSymbol.STYLE_SOLID,
+                new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                new Color([255, 0, 0]),
+                2),
+                new Color([255, 0, 0, 0.15]));
+        
+        
+        
+        
 		var gsvc, tb;
 
         var popup = new Popup({
@@ -343,7 +356,7 @@ padding: 0;
             zoom: 1
 
         });
-map.on("click", doBuffer2);
+
 
         
 		//Buffer Function
@@ -362,7 +375,7 @@ map.on("click", doBuffer2);
       
       
       //begin test for parcel buffer
-     
+     /*
       function doBuffer2(evt) {
 
     	  
@@ -412,23 +425,83 @@ map.on("click", doBuffer2);
           var query2 = new Query();
           query2.geometry = bufferGeometry;
           parcels1.selectFeatures(query2, FeatureLayer.SELECTION_ADD, function(results){ //This returns all parcel data within buffer.
-          console.debug(results);
+         // console.debug(results);
           }, function(error){alert(error);});
           map.addLayers([parcels1]);
         });
       
-      
-      
-      
-      
-      
-      
-      
+
       
       }
       
-   
-      
+   */
+      function doBuffer3(evt) {
+console.debug(evt);
+    	  
+          map.graphics.clear(); 
+          
+         
+				
+			
+          var params = new BufferParameters();
+          params.geometries = [evt];
+
+          //buffer in linear units such as meters, km, miles etc.
+         
+              params.distances = [ dom.byId("distance").value ];
+              params.bufferSpatialReference = new esri.SpatialReference({wkid: dom.byId("bufferSpatialReference").value});
+              params.outSpatialReference = map.spatialReference;
+              params.unit = GeometryService[dom.byId("unit").value];
+
+          gsvc.buffer(params);
+        //      gsvc.buffer(params);
+       
+          
+          //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
+          parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/13", {
+              outFields: ["*"],
+              //infoTemplate: popupTemplate,
+              mode: FeatureLayer.MODE_SELECTION
+          });
+          
+          parcels1.setSelectionSymbol(sfs1);
+         
+          
+          gsvc.on("buffer-complete", function(result){
+          //	alert("xagjio");
+              map.graphics.clear();
+              // draw the buffer geometry on the map as a map graphic
+              var symbol = new SimpleFillSymbol(
+                SimpleFillSymbol.STYLE_NULL,
+                new SimpleLineSymbol(
+                  SimpleLineSymbol.STYLE_SHORTDASHDOTDOT,
+                  new Color([255,255,255]), 
+                  2
+                ),new Color([255,255,0,0.25])
+              );
+              var bufferGeometry = result.geometries[0]
+              var graphic2 = new Graphic(bufferGeometry, symbol);
+              map.graphics.add(graphic2);
+    //alert();
+              //Select features within the buffered polygon. To do so we'll create a query to use the buffer graphic
+              //as the selection geometry.
+              var query2 = new Query();
+              query2.geometry = bufferGeometry;
+              parcels1.selectFeatures(query2, FeatureLayer.SELECTION_ADD, function(results){ //This returns all parcel data within buffer.
+             // console.debug(results);
+              }, function(error){alert(error);});
+              map.addLayers([parcels1]);
+            });
+          
+          
+          
+          
+
+          
+          
+          
+          
+          }
       
       
       
@@ -759,7 +832,7 @@ alert("test")
         });
 
         parcels.setSelectionSymbol(sfs);
-
+        
         //when users click on the map select the parcel using the map point and update the url parameter
         map.on("click", function (e) {
             if (draw == false || draw == null) {
@@ -767,27 +840,34 @@ alert("test")
                 query.geometry = e.mapPoint;
                 //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
                 var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
+                	//console.debug(selection);
+                	
+                	
                     //update the url param if a parcel was located
                     if (selection.length > 0) {
                         var parcelid = selection[0].attributes["PAR_NUM"];
                         infoArray = selection[0];
+                       // infoArray2 += selection[0];
                         //Refresh the URL with the currently selected parcel
                         if (typeof history.pushState !== "undefined") {
                             //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
                             infoArray = selection[0];
+                            infoArray2.push(selection[0]);
                         }
                     }
-                });
+                  
+                },function(error){alert(error);});
                 map.infoWindow.setFeatures([deferred]);
                 map.infoWindow.show(e.mapPoint);
-
+              //  selectedParcel = selection[0];
                 infoArray = selection[0];
-
+                
             } 
            
+              //doBuffer3(selectedParcel);
         });
 
-
+     //   map.on("click", doBuffer3);
 
 
         //LISTEN FOR BUTTON CLICKS
@@ -795,7 +875,7 @@ alert("test")
         on(dom.byId("draw"), "click", drawMode);
         on(dom.byId("empty"), "click", empty);
         on(dom.byId("locate"), "click", locate);
-        // 	on(dom.byId("lock"), "click", lockMap);
+        on(dom.byId("buffer"), "click", bufferIt);
 
 
         map.on("layers-add-result", function (result) {
@@ -923,16 +1003,32 @@ alert("test")
         //END Location Dijit
 
 
+var infoArray3 = new Array();
 
-
+		function bufferIt() {
+      var x = new Array();
+			for(i=0; i<infoArray2.length; i++) {
+				infoArray3.push(infoArray2[i].geometry);
+			}
+        	 temp = gsvc.union(infoArray3);
+        	 temp.then(function(results){
+			//console.debug(results);
+        		 doBuffer3(results);
+        	 });
+        	//console.debug(x);
+			
+      
+        }
 
 
 
         function clearx() {
             parcels.clearSelection();
+            parcels1.clearSelection();
             map.infoWindow.hide();
             map.graphics.clear();
             window.history.pushState(null, null, "?parcelid=");
+		
         }
 
         function info() {
@@ -1047,7 +1143,8 @@ alert("test")
         <option value="UNIT_US_NAUTICAL_MILE">US Nautical Miles</option>
         <option value="UNIT_DEGREE">Degrees</option>
       </select><br />
-      <button data-dojo-type="dijit.form.Button" type="button" onclick="app.map.graphics.clear();">Clear Graphics</button>
+     <!--  <button data-dojo-type="dijit.form.Button" type="button" onclick="app.map.graphics.clear();">Clear Graphics</button> -->
+     <input type="button" id="buffer" value="Buffer Selection" />
     </div>
       
        
