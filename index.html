@@ -17,6 +17,13 @@
         padding: 0;
       }
       
+      #buffer-params {
+      z-index: 1000; 
+      top: 100px;
+      position:relative;
+      background: rgba(255,255,255,0.5);
+      width: 255px;}
+      
       #button-console {
       	position: relative;
 		z-index: 999;
@@ -174,15 +181,18 @@ padding: 0;
     </style>
 <!--<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>-->
 
-
+<script>var selectedParcel;</script>
     <script>var dojoConfig = { parseOnLoad: true };</script>
     <script src="http://js.arcgis.com/3.7/"></script>
     <script>
-      
+
+	
     var map;
     var parcels;
-    var infoArray;
+    var infoArray; 
+    var infoArray2 = new Array();
     var draw = null;
+   // var gsvc, tb;
     require([
         "esri/map", "esri/layers/FeatureLayer",
         "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query",
@@ -196,7 +206,7 @@ padding: 0;
         "esri/dijit/Scalebar", "esri/dijit/Measurement", "esri/tasks/locator", "esri/symbols/SimpleMarkerSymbol",
         "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate",
         "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
-        "esri/tasks/GeometryService",
+        "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect",
 
 
         "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function (
@@ -210,7 +220,7 @@ padding: 0;
     Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
     Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
-    domAttr, has, SnappingManager, SimpleRenderer, GeometryService
+    domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask
 
     ) {
 
@@ -223,9 +233,21 @@ padding: 0;
         SimpleLineSymbol.STYLE_SOLID,
         new Color([111, 0, 255]),
         2),
-        new Color([111, 0, 255, 0.15]));
+        new Color([111, 0, 255, 0.40]));
 
-
+        
+        var sfs1 = new SimpleFillSymbol(
+                SimpleFillSymbol.STYLE_SOLID,
+                new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                new Color([255, 0, 0]),
+                2),
+                new Color([255, 0, 0, 0.25]));
+        
+        
+        
+        
+		var gsvc, tb;
 
         var popup = new Popup({
             fillSymbol: sfs
@@ -336,9 +358,275 @@ padding: 0;
         });
 
 
+        
+		//Buffer Function
+//	 map.on("load", initToolbar);
+
+      gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+  //add proxy functions for all modules
+      esriConfig.defaults.io.proxyUrl = "proxy.php";
+      esriConfig.defaults.io.alwaysUseProxy = false;
+
+      function initToolbar(evtObj) {
+          app.tb = new Draw(evtObj.map);
+          app.tb.on("draw-end", doBuffer);
+        }
+
+      
+      
+      //begin test for parcel buffer
+     /*
+      function doBuffer2(evt) {
+
+    	  
+      map.graphics.clear(); 
+      var params = new BufferParameters();
+      params.geometries = [ evt.mapPoint ];
+
+      //buffer in linear units such as meters, km, miles etc.
+     
+          params.distances = [ dom.byId("distance").value ];
+          params.bufferSpatialReference = new esri.SpatialReference({wkid: dom.byId("bufferSpatialReference").value});
+          params.outSpatialReference = map.spatialReference;
+          params.unit = GeometryService[dom.byId("unit").value];
+
+      gsvc.buffer(params);
+    //      gsvc.buffer(params);
+   
+      
+      //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
+      parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/13", {
+          outFields: ["*"],
+          //infoTemplate: popupTemplate,
+          mode: FeatureLayer.MODE_SELECTION
+      });
+      
+      parcels1.setSelectionSymbol(sfs);
+     
+      
+      gsvc.on("buffer-complete", function(result){
+      //	alert("xagjio");
+          map.graphics.clear();
+          // draw the buffer geometry on the map as a map graphic
+          var symbol = new SimpleFillSymbol(
+            SimpleFillSymbol.STYLE_NULL,
+            new SimpleLineSymbol(
+              SimpleLineSymbol.STYLE_SHORTDASHDOTDOT,
+              new Color([255,255,255]), 
+              2
+            ),new Color([255,255,0,0.25])
+          );
+          var bufferGeometry = result.geometries[0]
+          var graphic2 = new Graphic(bufferGeometry, symbol);
+          map.graphics.add(graphic2);
+//alert();
+          //Select features within the buffered polygon. To do so we'll create a query to use the buffer graphic
+          //as the selection geometry.
+          var query2 = new Query();
+          query2.geometry = bufferGeometry;
+          parcels1.selectFeatures(query2, FeatureLayer.SELECTION_ADD, function(results){ //This returns all parcel data within buffer.
+         // console.debug(results);
+          }, function(error){alert(error);});
+          map.addLayers([parcels1]);
+        });
+      
+
+      
+      }
+      
+   */
+      function doBuffer3(evt) {
+//console.debug(evt);
+    	  
+          map.graphics.clear(); 
+       //   map.removeLayer(parcels1);
+         
+				
+			
+          var params = new BufferParameters();
+          params.geometries = [evt];
+
+          //buffer in linear units such as meters, km, miles etc.
+         
+              params.distances = [ dom.byId("distance").value ];
+              params.bufferSpatialReference = new esri.SpatialReference({wkid: dom.byId("bufferSpatialReference").value});
+              params.outSpatialReference = map.spatialReference;
+              params.unit = GeometryService[dom.byId("unit").value];
+
+          gsvc.buffer(params);
+        //      gsvc.buffer(params);
+       
+          
+          //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
+          parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/13", {
+              outFields: ["*"],
+              //infoTemplate: popupTemplate,
+              mode: FeatureLayer.MODE_SELECTION
+          });
+          
+          parcels1.setSelectionSymbol(sfs1);
+         
+          
+          gsvc.on("buffer-complete", function(result){
+          //	alert("xagjio");
+              map.graphics.clear();
+              // draw the buffer geometry on the map as a map graphic
+              var symbol = new SimpleFillSymbol(
+                SimpleFillSymbol.STYLE_NULL,
+                new SimpleLineSymbol(
+                  SimpleLineSymbol.STYLE_SHORTDASHDOTDOT,
+                  new Color([13,255,0]), 
+                  2
+                ),new Color([255,255,0,0.25])
+              );
+              var bufferGeometry = result.geometries[0]
+              var graphic2 = new Graphic(bufferGeometry, symbol);
+              map.graphics.add(graphic2);
+    //alert();
+              //Select features within the buffered polygon. To do so we'll create a query to use the buffer graphic
+              //as the selection geometry.
+              var query2 = new Query();
+              query2.geometry = bufferGeometry;
+              parcels1.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function(results){ //This returns all parcel data within buffer.
+             // console.debug(results);
+              }, function(error){alert(error);});
+              map.addLayers([parcels1]);
+            });
+          
+          
+          
+          
+
+          
+          
+          
+          
+          }
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      //end test for parcel buffer
+      
+      
+      
+      
 
 
+        
+		//Buffer Function
+	 map.on("load", initToolbar);
 
+      gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+  //add proxy functions for all modules
+      esriConfig.defaults.io.proxyUrl = "proxy.php";
+      esriConfig.defaults.io.alwaysUseProxy = false;
+
+      function initToolbar(evtObj) {
+          app.tb = new Draw(evtObj.map);
+          app.tb.on("draw-end", doBuffer);
+        }
+
+      
+      
+      //begin test for parcel buffer
+      /*
+      function doBuffer2(evt) {
+alert("test")
+      map.graphics.clear();
+      var params = new BufferParameters();
+      params.geometries = [ evt.mapPoint ];
+
+      //buffer in linear units such as meters, km, miles etc.
+     
+          params.distances = [ dom.byId("distance").value ];
+          params.bufferSpatialReference = new esri.SpatialReference({wkid: dom.byId("bufferSpatialReference").value});
+          params.outSpatialReference = map.spatialReference;
+          params.unit = GeometryService[dom.byId("unit").value];
+
+      gsvc.buffer(params, showBuffer);
+    }
+      */
+      //end test for parcel buffer
+      
+      
+      
+      
+      
+      
+      
+      
+        function doBuffer(evtObj) {
+          var geometry = evtObj.geometry,
+          map = app.map,
+          gsvc = app.gsvc;
+          switch (geometry.type) {
+             case "point":
+               var symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 10, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 1), new Color([0,255,0,0.25]));
+               break;
+             case "polyline":
+               var symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([255,0,0]), 1);
+               break;
+             case "polygon":
+               var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NONE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255,0,0]), 2), new Color([255,255,0,0.25]));
+               break;
+          }
+
+          var graphic = new Graphic(geometry, symbol);
+          map.graphics.add(graphic);
+
+          //setup the buffer parameters
+          var params = new BufferParameters();
+          params.distances = [ dom.byId("distance").value ];
+          params.bufferSpatialReference = new esri.SpatialReference({wkid: dom.byId("bufferSpatialReference").value});
+          params.outSpatialReference = map.spatialReference;
+          params.unit = GeometryService[dom.byId("unit").value];
+
+          if (geometry.type === "polygon") {
+            //if geometry is a polygon then simplify polygon.  This will make the user drawn polygon topologically correct.
+            gsvc.simplify([geometry], function(geometries) {
+              params.geometries = geometries;
+              gsvc.buffer(params, showBuffer);
+            });
+          } else {
+            params.geometries = [geometry];
+            gsvc.buffer(params, showBuffer);
+          }
+        }
+
+        function showBuffer(bufferedGeometries) { 
+          var symbol = new SimpleFillSymbol(
+            SimpleFillSymbol.STYLE_SOLID,
+            new SimpleLineSymbol(
+              SimpleLineSymbol.STYLE_SOLID,
+              new Color([255,0,0,0.65]), 2
+            ),
+            new Color([255,0,0,0.35])
+          );
+
+          arrayUtils.forEach(bufferedGeometries, function(geometry) {
+            var graphic = new Graphic(geometry, symbol);
+            app.map.graphics.add(graphic);
+          });
+          app.tb.deactivate();
+          app.map.showZoomSlider();
+        }
+
+        app = {
+          map: map,
+          tb: tb,
+          gsvc: gsvc
+        };
 
 
         var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
@@ -351,7 +639,7 @@ padding: 0;
         //BEGIN functions for print dijit
         var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
 
-        esriConfig.defaults.io.proxyUrl = "proxy.php";
+       
 
         // get print templates from the export web map task
         var printInfo = esriRequest({
@@ -544,7 +832,7 @@ padding: 0;
         });
 
         parcels.setSelectionSymbol(sfs);
-
+        
         //when users click on the map select the parcel using the map point and update the url parameter
         map.on("click", function (e) {
             if (draw == false || draw == null) {
@@ -552,26 +840,34 @@ padding: 0;
                 query.geometry = e.mapPoint;
                 //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
                 var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
+                	//console.debug(selection);
+                	
+                	
                     //update the url param if a parcel was located
                     if (selection.length > 0) {
                         var parcelid = selection[0].attributes["PAR_NUM"];
                         infoArray = selection[0];
+                       // infoArray2 += selection[0];
                         //Refresh the URL with the currently selected parcel
                         if (typeof history.pushState !== "undefined") {
                             //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
                             infoArray = selection[0];
+                            infoArray2.push(selection[0]);
                         }
                     }
-                });
+                  
+                },function(error){alert(error);});
                 map.infoWindow.setFeatures([deferred]);
                 map.infoWindow.show(e.mapPoint);
-
+              //  selectedParcel = selection[0];
                 infoArray = selection[0];
-
-            }
+                
+            } 
+           
+              //doBuffer3(selectedParcel);
         });
 
-
+     //   map.on("click", doBuffer3);
 
 
         //LISTEN FOR BUTTON CLICKS
@@ -579,7 +875,7 @@ padding: 0;
         on(dom.byId("draw"), "click", drawMode);
         on(dom.byId("empty"), "click", empty);
         on(dom.byId("locate"), "click", locate);
-        // 	on(dom.byId("lock"), "click", lockMap);
+        on(dom.byId("buffer"), "click", bufferIt);
 
 
         map.on("layers-add-result", function (result) {
@@ -707,16 +1003,51 @@ padding: 0;
         //END Location Dijit
 
 
+var infoArray3 = new Array();
 
+		function bufferIt() {
+    	if(infoArray2.length > 1){
+			for(i=0; i<infoArray2.length; i++) {
+				infoArray3.push(infoArray2[i].geometry);
+			}
+        	 temp = gsvc.union(infoArray3);
+        	
+        	 temp.then(function(results){
+			//console.debug(results);
 
+        		 doBuffer3(results);
+        	 });
+  		  } else if(infoArray2.length == 1) {
+  			  
+  			  doBuffer3(infoArray2[0].geometry);
+  		  }
+  		  else{
+  			  alert("No parcel selected!");
+  		  }
+			
+    	//parcels.clearSelection();
+        parcels1.clearSelection();
+        }
 
 
 
         function clearx() {
-            parcels.clearSelection();
+          
+        //	console.debug(map.layerIds);
+        	map.graphics.clear();
+        	parcels.clearSelection();
+            parcels1.clearSelection();
+		//	map.removeLayer(parcel1);
+		//	map.removeLayer(parcel);
             map.infoWindow.hide();
-            map.graphics.clear();
+            
+     		
             window.history.pushState(null, null, "?parcelid=");
+			
+            infoArray.length = 0;
+			infoArray2.length = 0;
+			infoArray3.length = 0;
+			
         }
 
         function info() {
@@ -740,6 +1071,7 @@ padding: 0;
 
         function empty() {
             dom.byId("output").innerHTML = "";
+           
         }
 
         function drawMode() {
@@ -791,6 +1123,10 @@ padding: 0;
   <body class="tundra">
     <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline',gutters:false" 
     style="width: 100%; height: 100%; margin: 0;">
+      
+    
+     
+     
      
      <div id="button-console">
       
@@ -801,7 +1137,34 @@ padding: 0;
       <!--   <input id="lock" type="button" value="Lock Map"> -->
        <div id="output"></div>
        
-       
+        <div id="buffer-params" style="z-index: 1000;">
+<!-- 
+      <div class="details">Pick a tool and draw on the map. The drawn graphic will be buffered based on the specified parameters.</div>
+      <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.LINE);app.map.hideZoomSlider();">Line</button>
+      <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.POLYLINE);app.map.hideZoomSlider();">Polyline</button>
+      <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.FREEHAND_POLYLINE);app.map.hideZoomSlider();">Freehand Polyline</button>
+      <br />
+      <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.POLYGON);app.map.hideZoomSlider();">Polygon</button>
+      <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.FREEHAND_POLYGON);app.map.hideZoomSlider();">Freehand Polygon</button>
+
+      <br /><hr />
+      
+   -->
+      <div><b>Buffer Parameters</b></div>
+      Spatial Reference WKID: <input type="text" id="bufferSpatialReference" size="5" value="2233" /><br />
+      Distance: <input type="text" id="distance" size="5" value="50" />
+      <select id="unit" style="width:100px;">
+        <option value="UNIT_FOOT">Feet</option>
+        <option value="UNIT_STATUTE_MILE">Miles</option>
+        <option value="UNIT_KILOMETER">Kilometers</option>
+        <option value="UNIT_METER">Meters</option>
+        <option value="UNIT_NAUTICAL_MILE">Nautical Miles</option>
+        <option value="UNIT_US_NAUTICAL_MILE">US Nautical Miles</option>
+        <option value="UNIT_DEGREE">Degrees</option>
+      </select><br />
+     <!--  <button data-dojo-type="dijit.form.Button" type="button" onclick="app.map.graphics.clear();">Clear Graphics</button> -->
+     <input type="button" id="buffer" value="Buffer Selection" />
+    </div>
       
        
        
