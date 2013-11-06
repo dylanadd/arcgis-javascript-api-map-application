@@ -436,10 +436,10 @@ padding: 0;
       
    */
       function doBuffer3(evt) {
-console.debug(evt);
+//console.debug(evt);
     	  
           map.graphics.clear(); 
-          
+       //   map.removeLayer(parcels1);
          
 				
 			
@@ -487,7 +487,7 @@ console.debug(evt);
               //as the selection geometry.
               var query2 = new Query();
               query2.geometry = bufferGeometry;
-              parcels1.selectFeatures(query2, FeatureLayer.SELECTION_ADD, function(results){ //This returns all parcel data within buffer.
+              parcels1.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function(results){ //This returns all parcel data within buffer.
              // console.debug(results);
               }, function(error){alert(error);});
               map.addLayers([parcels1]);
@@ -1006,29 +1006,48 @@ alert("test")
 var infoArray3 = new Array();
 
 		function bufferIt() {
-      var x = new Array();
+    	if(infoArray2.length > 1){
 			for(i=0; i<infoArray2.length; i++) {
 				infoArray3.push(infoArray2[i].geometry);
 			}
         	 temp = gsvc.union(infoArray3);
+        	
         	 temp.then(function(results){
 			//console.debug(results);
+
         		 doBuffer3(results);
         	 });
-        	//console.debug(x);
+  		  } else if(infoArray2.length == 1) {
+  			  
+  			  doBuffer3(infoArray2[0].geometry);
+  		  }
+  		  else{
+  			  alert("No parcel selected!");
+  		  }
 			
-      
+    	//parcels.clearSelection();
+        parcels1.clearSelection();
         }
 
 
 
         function clearx() {
-            parcels.clearSelection();
+          
+        //	console.debug(map.layerIds);
+        	map.graphics.clear();
+        	parcels.clearSelection();
             parcels1.clearSelection();
+		//	map.removeLayer(parcel1);
+		//	map.removeLayer(parcel);
             map.infoWindow.hide();
-            map.graphics.clear();
+            
+     		
             window.history.pushState(null, null, "?parcelid=");
-		
+			
+            infoArray.length = 0;
+			infoArray2.length = 0;
+			infoArray3.length = 0;
+			
         }
 
         function info() {
