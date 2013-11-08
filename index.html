@@ -207,7 +207,7 @@ padding: 0;
         "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate",
         "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
         "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect",
-
+        "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters",
 
         "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function (
     Map, FeatureLayer,
@@ -220,7 +220,8 @@ padding: 0;
     Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
     Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
-    domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask
+    domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask,
+    Point, SpatialReference, ProjectParameters
 
     ) {
 
@@ -352,6 +353,7 @@ padding: 0;
             infoWindow: popup,
             slider: true,
             sliderOrientation: "horizontal",
+           // spatialReference: 2233,
             //  sliderPosition: "bottom-right",
             zoom: 1
 
@@ -856,7 +858,14 @@ alert("test")
                         }
                     }
                   
-                },function(error){alert(error);});
+                },function(error){alert(error);}); //end of defferred variable declaration
+                
+                
+                
+              //  var deferred2 = parcels.selectFeatures(query, FeatureLayer.SELECTION_SUBTRACT, function (selection) {
+                	
+             //   });
+                
                 map.infoWindow.setFeatures([deferred]);
                 map.infoWindow.show(e.mapPoint);
               //  selectedParcel = selection[0];
@@ -996,13 +1005,50 @@ alert("test")
                     return false; //break out of loop after one candidate with score greater  than 80 is found.
                 }
             });
-            if (geom !== undefined) {
-                map.centerAndZoom(geom, 12);
-            }
+          //  geom.spatialReference.wkid = "2233";
+            console.log(geom);
+           
+            var geom2;
+            var z = new esri.geometry.Point(geom.x, geom.y);
+            var temp = map.spatialReference;
+            gsvc.project([z], temp, function(callback){
+        	   console.log(callback);
+        	   console.log(geom2);
+           		geom2 = callback;
+           		//geom2.x = 3213921.86547197;
+           		//geom2.y = 1597364.05291738;
+           		//map.setExtent();
+           		map.centerAndZoom(geom2, 12);
+           });
+           
+          // console.log(deferredProjection);
+         
+            
+           
+            
+       //     if (geom !== undefined) {
+              //  map.centerAndZoom(geom, 12);
+    //          zoomToLocation(geom);
+         //   }
         }
         //END Location Dijit
 
+/*
+        
+        function zoomToLocation(location) {
+        	console.log(location);
+        	pt = new Point(location.x, location.y);
+        	console.log(pt);
 
+			var outSR = new SpatialReference({ wkid: 2233});
+			gsvc.project([ pt ], outSR, function(projectedPoints) {
+			pt = projectedPoints[0];
+
+    		map.centerAndZoom(pt, 8);
+  		});
+      }
+        
+  */      
 var infoArray3 = new Array();
 
 		function bufferIt() {
@@ -1025,28 +1071,33 @@ var infoArray3 = new Array();
   			  alert("No parcel selected!");
   		  }
 			
-    	//parcels.clearSelection();
+    //	parcels.clearSelection();
         parcels1.clearSelection();
         }
 
 
 
         function clearx() {
-          
-        //	console.debug(map.layerIds);
+        	 infoArray.length = 0;
+ 			infoArray2.length = 0;
+ 			infoArray3.length = 0;
+    
+        	//	console.debug(map.layerIds);
         	map.graphics.clear();
-        	parcels.clearSelection();
+        	if(parcels !== 'undefined'){
+        		parcels.clearSelection();
+        	}
+        	if(parcels1 !== 'undefined'){
             parcels1.clearSelection();
+        	}
 		//	map.removeLayer(parcel1);
 		//	map.removeLayer(parcel);
             map.infoWindow.hide();
-            
+        	
      		
-            window.history.pushState(null, null, "?parcelid=");
+       //     window.history.pushState(null, null, "?parcelid=");
 			
-            infoArray.length = 0;
-			infoArray2.length = 0;
-			infoArray3.length = 0;
+           
 			
         }
 
