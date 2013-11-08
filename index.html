@@ -886,7 +886,7 @@ alert("test")
         on(dom.byId("draw"), "click", drawMode);
         on(dom.byId("empty"), "click", empty);
         //on(dom.byId("locate"), "click", locate);
-        on(dom.byId("locate"), "click", findParcel);
+        on(dom.byId("locate"), "click", findOwner);
         on(dom.byId("buffer"), "click", bufferIt);
 
 
@@ -1090,23 +1090,27 @@ var infoArray3 = new Array();
         }
 
         function ownerResults(infoArray4) {
+        	console.log(infoArray4);
+        	/*
+        	 alert("ownerResults started");
         	var s;
         	for(i=0; i<infoArray4.length; i++) {
                 s += "<tr>" +
-                "<td>" + infoArray4.attributes.PAR_NUM + "</td>" +
+                "<td>" + infoArray4[i].attributes.PAR_NUM + "</td>" +
                 "<td><a id=\"highlight\" onclick= >" + infoArray.attributes.PAR_TXT + "</a></td>" +
-                "<td>" + infoArray4.attributes.Fips + "</td>" +
-                "<td>" + infoArray4.attributes.Owner + "</td>" +
-                "<td>" + infoArray4.attributes.OwnerOverflow + "</td>" +
-                "<td>" + infoArray4.attributes.OwnerStreetAddress + "</td>" +
-                "<td>" + infoArray4.attributes.OwnerCity + "</td>" +
-                "<td>" + infoArray4.attributes.OwnerState + "</td>" +
-                "<td>" + infoArray4.attributes.OwnerZip + "</td>" +
-                "</tr></table></div>";
+                "<td>" + infoArray4[i].attributes.Fips + "</td>" +
+                "<td>" + infoArray4[i].attributes.Owner + "</td>" +
+                "<td>" + infoArray4[i].attributes.OwnerOverflow + "</td>" +
+                "<td>" + infoArray4[i].attributes.OwnerStreetAddress + "</td>" +
+                "<td>" + infoArray4[i].attributes.OwnerCity + "</td>" +
+                "<td>" + infoArray4[i].attributes.OwnerState + "</td>" +
+                "<td>" + infoArray4[i].attributes.OwnerZip + "</td>" +
+                "</tr>";
+                console.log(s);
         	}
 
             dom.byId("output").innerHTML = "<table>" + s + "</table>";
-
+			*/
         }
         
         function empty() {
@@ -1159,10 +1163,11 @@ var infoArray3 = new Array();
                         //zoom to the center then display the popup 
                         map.infoWindow.setFeatures(selection);
                         map.infoWindow.show(center);
-                        infoArray = selection[0];
+                      //  ownerResults(selection);
+                     //   alert("ownerResults complete");
                         console.log(selection);
                     });
-                    map.centerAndZoom(center, 7);
+                  //  map.centerAndZoom(center, 7);
                     
                 });
             }
