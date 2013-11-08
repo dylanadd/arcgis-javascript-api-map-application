@@ -353,7 +353,7 @@ padding: 0;
             infoWindow: popup,
             slider: true,
             sliderOrientation: "horizontal",
-           // spatialReference: 2233,
+            spatialReference: 2233,
             //  sliderPosition: "bottom-right",
             zoom: 1
 
@@ -840,6 +840,8 @@ alert("test")
             if (draw == false || draw == null) {
                 var query = new Query();
                 query.geometry = e.mapPoint;
+               // console.log(e);
+               // map.centerAndZoom(e.mapPoint, 10);
                 //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
                 var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
                 	//console.debug(selection);
@@ -976,7 +978,7 @@ alert("test")
             var geom;
             arrayUtils.every(evt.addresses, function (candidate) {
                 console.log(candidate.score);
-                if (candidate.score > 80) {
+                if (candidate.score > 10) {
                     console.log(candidate.location);
                     var attributes = {
                         address: candidate.address,
@@ -1007,48 +1009,14 @@ alert("test")
             });
           //  geom.spatialReference.wkid = "2233";
             console.log(geom);
-           
-            var geom2;
-            var z = new esri.geometry.Point(geom.x, geom.y);
-            var temp = map.spatialReference;
-            gsvc.project([z], temp, function(callback){
-        	   console.log(callback);
-        	   console.log(geom2);
-           		geom2 = callback;
-           		//geom2.x = 3213921.86547197;
-           		//geom2.y = 1597364.05291738;
-           		//map.setExtent();
-           		map.centerAndZoom(geom2, 12);
-           });
-           
-          // console.log(deferredProjection);
-         
-            
-           
-            
-       //     if (geom !== undefined) {
-              //  map.centerAndZoom(geom, 12);
-    //          zoomToLocation(geom);
-         //   }
+            geom.spatialReference.wkid = 2233;
+           console.log(geom.spatialReference);
+           map.centerAndZoom(geom, 8);
+       
         }
         //END Location Dijit
 
-/*
-        
-        function zoomToLocation(location) {
-        	console.log(location);
-        	pt = new Point(location.x, location.y);
-        	console.log(pt);
-
-			var outSR = new SpatialReference({ wkid: 2233});
-			gsvc.project([ pt ], outSR, function(projectedPoints) {
-			pt = projectedPoints[0];
-
-    		map.centerAndZoom(pt, 8);
-  		});
-      }
-        
-  */      
+  
 var infoArray3 = new Array();
 
 		function bufferIt() {
