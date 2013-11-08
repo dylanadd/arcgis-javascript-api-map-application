@@ -207,7 +207,7 @@ padding: 0;
         "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate",
         "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
         "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect",
-
+        "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters",
 
         "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function (
     Map, FeatureLayer,
@@ -220,7 +220,8 @@ padding: 0;
     Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
     Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
-    domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask
+    domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask,
+    Point, SpatialReference, ProjectParameters
 
     ) {
 
@@ -352,6 +353,7 @@ padding: 0;
             infoWindow: popup,
             slider: true,
             sliderOrientation: "horizontal",
+            spatialReference: 2233,
             //  sliderPosition: "bottom-right",
             zoom: 1
 
@@ -838,6 +840,8 @@ alert("test")
             if (draw == false || draw == null) {
                 var query = new Query();
                 query.geometry = e.mapPoint;
+               // console.log(e);
+               // map.centerAndZoom(e.mapPoint, 10);
                 //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
                 var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
                 	//console.debug(selection);
@@ -856,7 +860,14 @@ alert("test")
                         }
                     }
                   
-                },function(error){alert(error);});
+                },function(error){alert(error);}); //end of defferred variable declaration
+                
+                
+                
+              //  var deferred2 = parcels.selectFeatures(query, FeatureLayer.SELECTION_SUBTRACT, function (selection) {
+                	
+             //   });
+                
                 map.infoWindow.setFeatures([deferred]);
                 map.infoWindow.show(e.mapPoint);
               //  selectedParcel = selection[0];
@@ -967,7 +978,7 @@ alert("test")
             var geom;
             arrayUtils.every(evt.addresses, function (candidate) {
                 console.log(candidate.score);
-                if (candidate.score > 80) {
+                if (candidate.score > 10) {
                     console.log(candidate.location);
                     var attributes = {
                         address: candidate.address,
@@ -996,13 +1007,16 @@ alert("test")
                     return false; //break out of loop after one candidate with score greater  than 80 is found.
                 }
             });
-            if (geom !== undefined) {
-                map.centerAndZoom(geom, 12);
-            }
+          //  geom.spatialReference.wkid = "2233";
+            console.log(geom);
+            geom.spatialReference.wkid = 2233;
+           console.log(geom.spatialReference);
+           map.centerAndZoom(geom, 8);
+       
         }
         //END Location Dijit
 
-
+  
 var infoArray3 = new Array();
 
 		function bufferIt() {
@@ -1025,28 +1039,33 @@ var infoArray3 = new Array();
   			  alert("No parcel selected!");
   		  }
 			
-    	//parcels.clearSelection();
+    //	parcels.clearSelection();
         parcels1.clearSelection();
         }
 
 
 
         function clearx() {
-          
-        //	console.debug(map.layerIds);
+        	 infoArray.length = 0;
+ 			infoArray2.length = 0;
+ 			infoArray3.length = 0;
+    
+        	//	console.debug(map.layerIds);
         	map.graphics.clear();
-        	parcels.clearSelection();
+        	if(parcels !== 'undefined'){
+        		parcels.clearSelection();
+        	}
+        	if(parcels1 !== 'undefined'){
             parcels1.clearSelection();
+        	}
 		//	map.removeLayer(parcel1);
 		//	map.removeLayer(parcel);
             map.infoWindow.hide();
-            
+        	
      		
-            window.history.pushState(null, null, "?parcelid=");
+       //     window.history.pushState(null, null, "?parcelid=");
 			
-            infoArray.length = 0;
-			infoArray2.length = 0;
-			infoArray3.length = 0;
+           
 			
         }
 
