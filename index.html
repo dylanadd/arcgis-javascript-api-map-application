@@ -459,7 +459,7 @@ padding: 0;
         //      gsvc.buffer(params);
        
           
-          //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
+          //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels in buffer area
           parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/13", {
               outFields: ["*"],
               //infoTemplate: popupTemplate,
@@ -885,7 +885,8 @@ alert("test")
         on(dom.byId("clear"), "click", clearx);
         on(dom.byId("draw"), "click", drawMode);
         on(dom.byId("empty"), "click", empty);
-        on(dom.byId("locate"), "click", locate);
+        //on(dom.byId("locate"), "click", locate);
+        on(dom.byId("locate"), "click", findParcel);
         on(dom.byId("buffer"), "click", bufferIt);
 
 
@@ -942,7 +943,11 @@ alert("test")
             }
         }
 
-
+		function findParcel() {
+			
+			selectParcel(dom.byId("address").value);
+			
+		}
 
         //BEGIN Location Dijit
 
@@ -951,11 +956,11 @@ alert("test")
         locator.on("address-to-locations-complete", showResults);
 
 
-
+		//prepare address query string for Geocoder
         function locate() {
             map.graphics.clear();
             var address = {
-                //  "SingleLine": dom.byId("address").value
+               
                 "Street": dom.byId("address").value
             };
             locator.outSpatialReference = map.spatialReference;
@@ -1008,9 +1013,9 @@ alert("test")
                 }
             });
           //  geom.spatialReference.wkid = "2233";
-            console.log(geom);
+        
             geom.spatialReference.wkid = 2233;
-           console.log(geom.spatialReference);
+
            map.centerAndZoom(geom, 8);
        
         }
@@ -1131,7 +1136,7 @@ var infoArray3 = new Array();
                         map.infoWindow.show(center);
                         infoArray = selection[0];
                     });
-                    map.centerAt(center);
+                    map.centerAndZoom(center, 7);
                 });
             }
         }
