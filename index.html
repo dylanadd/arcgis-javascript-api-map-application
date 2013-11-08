@@ -1149,15 +1149,16 @@ var infoArray3 = new Array();
 		function findOwner(){
 			selectOwner(dom.byId("address").value);
 		}
-		
-		
+		var center;
+		var selectionX;
 		//find all owners matching query 
         function selectOwner(owner) {
             if (owner) {
                 var query = new Query();
                 query.text = owner;
                 var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
-                    var center = graphicsUtils.graphicsExtent(selection).getCenter();
+                     center = graphicsUtils.graphicsExtent(selection).getCenter();
+                     selectionX = selection;
                     var extHandler = map.on("extent-change", function () {
                         extHandler.remove();
                         //zoom to the center then display the popup 
@@ -1167,14 +1168,27 @@ var infoArray3 = new Array();
                      //   alert("ownerResults complete");
                         console.log(selection);
                     });
-                  //  map.centerAndZoom(center, 7);
+                   // console.log(center);
+                    map.centerAndZoom(center, 2);
+                    
+                    
+                    
                     
                 });
             }
         }
 		
-		
-		
+      popup.on("selection-change", function(){
+    	  
+   	  console.log(selectionX[popup.selectedIndex]);
+   	  infoArray = selectionX[popup.selectedIndex];
+      map.centerAndZoom(popup.features[popup.selectedIndex].geometry.getPoint(0,0), 8);
+      map.infoWindow.setFeatures(popup.features[popup.selectedIndex]);
+    	map.infoWindow.show(popup.features[popup.selectedIndex].geometry.getPoint(0,0));
+    	 // console.log(popup.selectedIndex);
+    	 
+    	 
+      });
 
         //select parcel from the feature layer by creating a query to look for the input parcel id 
         function selectParcel(parcelid) {
