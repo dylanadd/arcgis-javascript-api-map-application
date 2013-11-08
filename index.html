@@ -866,7 +866,7 @@ alert("test")
                 
               //  var deferred2 = parcels.selectFeatures(query, FeatureLayer.SELECTION_SUBTRACT, function (selection) {
                 	
-             //   });
+             //   });Pueblo, Co
                 
                 map.infoWindow.setFeatures([deferred]);
                 map.infoWindow.show(e.mapPoint);
@@ -943,11 +943,7 @@ alert("test")
             }
         }
 
-		function findParcel() {
-			
-			selectParcel(dom.byId("address").value);
-			
-		}
+		
 
         //BEGIN Location Dijit
 
@@ -1093,6 +1089,26 @@ var infoArray3 = new Array();
 
         }
 
+        function ownerResults(infoArray4) {
+        	var s;
+        	for(i=0; i<infoArray4.length; i++) {
+                s += "<tr>" +
+                "<td>" + infoArray4.attributes.PAR_NUM + "</td>" +
+                "<td><a id=\"highlight\" onclick= >" + infoArray.attributes.PAR_TXT + "</a></td>" +
+                "<td>" + infoArray4.attributes.Fips + "</td>" +
+                "<td>" + infoArray4.attributes.Owner + "</td>" +
+                "<td>" + infoArray4.attributes.OwnerOverflow + "</td>" +
+                "<td>" + infoArray4.attributes.OwnerStreetAddress + "</td>" +
+                "<td>" + infoArray4.attributes.OwnerCity + "</td>" +
+                "<td>" + infoArray4.attributes.OwnerState + "</td>" +
+                "<td>" + infoArray4.attributes.OwnerZip + "</td>" +
+                "</tr></table></div>";
+        	}
+
+            dom.byId("output").innerHTML = "<table>" + s + "</table>";
+
+        }
+        
         function empty() {
             dom.byId("output").innerHTML = "";
            
@@ -1119,8 +1135,41 @@ var infoArray3 = new Array();
 
         }
 
-
-
+		//Find parcel by entering parcel number into searchbox
+		function findParcel() {
+			
+			selectParcel(dom.byId("address").value);
+			
+		}
+		
+		function findOwner(){
+			selectOwner(dom.byId("address").value);
+		}
+		
+		
+		//find all owners matching query 
+        function selectOwner(owner) {
+            if (owner) {
+                var query = new Query();
+                query.text = owner;
+                var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
+                    var center = graphicsUtils.graphicsExtent(selection).getCenter();
+                    var extHandler = map.on("extent-change", function () {
+                        extHandler.remove();
+                        //zoom to the center then display the popup 
+                        map.infoWindow.setFeatures(selection);
+                        map.infoWindow.show(center);
+                        infoArray = selection[0];
+                        console.log(selection);
+                    });
+                    map.centerAndZoom(center, 7);
+                    
+                });
+            }
+        }
+		
+		
+		
 
         //select parcel from the feature layer by creating a query to look for the input parcel id 
         function selectParcel(parcelid) {
