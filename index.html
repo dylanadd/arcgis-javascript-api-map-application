@@ -1163,7 +1163,7 @@ var infoArray3 = new Array();
                         extHandler.remove();
                         //zoom to the center then display the popup 
                         map.infoWindow.setFeatures(selection);
-                        map.infoWindow.show(center);
+                     //   map.infoWindow.show(center);
                       //  ownerResults(selection);
                      //   alert("ownerResults complete");
                         console.log(selection);
@@ -1179,12 +1179,15 @@ var infoArray3 = new Array();
         }
 		
       popup.on("selection-change", function(){
-    	  
-   	  console.log(selectionX[popup.selectedIndex]);
+    	//  map.infoWindow.setFeatures(selectionX);
+   	  console.log(popup.getSelectedFeature());
+   	
    	  infoArray = selectionX[popup.selectedIndex];
       map.centerAndZoom(popup.features[popup.selectedIndex].geometry.getPoint(0,0), 8);
-      map.infoWindow.setFeatures(popup.features[popup.selectedIndex]);
-    	map.infoWindow.show(popup.features[popup.selectedIndex].geometry.getPoint(0,0));
+     // console.log(map.infoWindow);
+   //   map.infoWindow.setFeatures(popup.features[popup.selectedIndex]);
+    //  console.log(map.infoWindow);
+    	map.infoWindow.show(popup.features[popup.selectedIndex].geometry.getPoint(0,0) );
     	 // console.log(popup.selectedIndex);
     	 
     	 
