@@ -1,0 +1,167 @@
+ html, body, #map {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      
+      #buffer-params {
+      z-index: 1000; 
+      top: 100px;
+      position:relative;
+      background: rgba(255,255,255,0.5);
+      width: 255px;}
+      
+      #button-console {
+      	position: relative;
+		z-index: 999;
+		height: 0;
+      
+      }
+      
+       #feedback {
+       /* background: #fff;*/
+        color: #000;
+        position: absolute;
+        font-family: arial;
+        height: auto;
+        right: 20px;
+        margin: 5px;
+        padding: 10px;
+        top: 20px;
+        width: 300px;
+        z-index: 40;
+      }
+      #feedback a {
+        border-bottom: 1px solid #888;
+        color: #444;
+        text-decoration: none;
+      }
+      #feedback a:hover, #feedback a:active, #feedback a:visited {
+        border: none;
+        color: #444;
+        text-decoration: none;
+      }
+      #note { font-size: 80%; font-weight: 700; padding: 0 0 10px 0; }
+      
+      
+      
+      
+      
+      /*Begin imported css from older doc */
+      
+        .search_wrapper{
+      border: 2px solid #666;
+background: #fff;
+-webkit-border-radius: 5px;
+border-radius: 5px;
+left: 100px;
+position: absolute;
+z-index: 30;
+top: 46px;
+      }
+      
+      .searchbox {
+      outline: 0;
+display: block;
+border: 0;
+border-collapse: collapse;
+vertical-align: middle;
+font-size: 12px;
+line-height: 16px;
+margin: 0;
+padding: 6px 0;
+float: left;
+color: #444;
+background: none;
+margin: 0 6px;
+width: 168px;
+}
+      div.search_button  span.dijitButtonNode {
+     background: url("simpleGeocoder.png") no-repeat 0 0;
+     
+     float: left;
+outline: 0;
+width: 16px;
+height: 16px;
+display: block;
+overflow: hidden;
+margin-top: 3px;
+margin-left:3px;
+border: none !important;
+
+      }
+      
+      div.search_button {
+      float: left;
+      }
+      
+      div#map_zoom_slider div.esriSimpleSliderIncrementButton {
+position: absolute;
+z-index: 30;
+top: 39px;
+background-color: white; 
+-webkit-border-radius: 5px 0px 0px 5px;
+border-radius: 5px 0px 0px 5px;
+border: 2px solid #666;
+
+      }
+      
+      div#map_zoom_slider div.esriSimpleSliderDecrementButton {
+position: absolute;
+z-index: 30;
+top: 39px;
+left: 33px;
+background-color: white;
+-webkit-border-radius: 0px 5px 5px 0px;
+border-radius: 0px 5px 5px 0px;
+border: 2px solid #666;
+}
+     /*
+       div#map_zoom_slider {
+       top: -20px;
+       }
+    */ 
+      .esriSimpleSlider {
+      border: none !important;
+      }
+      
+      
+      .esriPopup {
+      z-index: 100;
+      }
+      
+    
+    #gallery {
+    position: absolute;
+    z-index: 999;
+    top: 1px;
+    right: 1px;
+	display: inline-block;
+    
+    }
+     #print_button {
+     	position: relative;
+		float: right;
+		margin-top: -11px;
+     }
+      
+      
+      .logo-med {
+    visibility: hidden;
+height: 0;
+width: 0;
+margin: 0;
+padding: 0;  
+      }
+      
+      
+      .esriScalebarLabel {
+       color: white;
+  
+      } 
+      
+      .map .container {
+      position: initial !important;
+      }
+      
