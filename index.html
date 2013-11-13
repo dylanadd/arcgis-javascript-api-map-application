@@ -208,7 +208,7 @@ padding: 0;
         "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate",
         "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
         "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect",
-        "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters",
+        "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend",
 
         "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function (
     Map, FeatureLayer,
@@ -222,7 +222,7 @@ padding: 0;
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
     Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
     domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask,
-    Point, SpatialReference, ProjectParameters
+    Point, SpatialReference, ProjectParameters, Legend
 
     ) {
 
@@ -360,10 +360,13 @@ padding: 0;
 
 
         });
+   
+         
 
         map.on("load", function(){
         //	map.setZoom(2);
         	map.setZoom(1);
+     
         });
 		//Buffer Function
 //	 map.on("load", initToolbar);
@@ -745,22 +748,7 @@ alert("test")
         //End Basemap Toggle
 
 
-        //BEGIN Legend Dijit
-        /*
-             map.on("layers-add-result", function (evt) {
-         var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
-           return {layer:layer.layer, title:layer.layer.name};
-         });
-         if (layerInfo.length > 0) {
-           var legendDijit = new Legend({
-             map: map,
-             layerInfos: layerInfo
-           }, "legendDiv");
-           legendDijit.startup();
-         }
-       });
-         */
-        //END Legend Dijit
+       
 
 
 
@@ -856,7 +844,23 @@ alert("test")
             }]
         });
         
-        
+         //BEGIN Legend Dijit
+         
+         /*
+         
+         //if (layerInfo.length > 0) {
+           var legendDijit = new Legend({
+             map: map,
+             layerInfos: [{ 
+                 layer: parcelInfoLayer, 
+                 title: ""
+               }]
+           }, "legendDiv");
+          // legendDijit.startup();
+         //}
+ 	console.log(legendDijit);
+         */
+        //END Legend Dijit 
         
         //add the road layer in selection mode
         roads = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/3", {
@@ -973,6 +977,10 @@ alert("test")
             //if a parcelid is specified in url param select that feature 
             var parcelid = getParcelFromUrl(document.location.href);
             selectParcel(parcelid);
+            
+         
+        
+            
         });
 
         map.addLayers([parcels]);
@@ -1278,8 +1286,9 @@ var infoArray3 = new Array();
                     var bufferGeometry = results;
                     //console.log(bufferGeometry);
                     var graphic2 = new Graphic(bufferGeometry, symbol);
+                   // console.log(graphic2.geometry.getExtent());
                     map.graphics.add(graphic2);
-  					
+  					map.setExtent(graphic2.geometry.getExtent());
           	 });
     	  
 
@@ -1452,7 +1461,7 @@ var infoArray3 = new Array();
       
        
        
-       
+       <div id="legendDiv"></div>
        </div>
       </div>
    
