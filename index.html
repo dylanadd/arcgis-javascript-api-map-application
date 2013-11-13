@@ -189,6 +189,7 @@ padding: 0;
 	var change = false;
     var map;
     var parcels;
+    var roads;
     var infoArray; 
     var infoArray2 = new Array();
     var draw = null;
@@ -479,7 +480,7 @@ padding: 0;
               var symbol = new SimpleFillSymbol(
                 SimpleFillSymbol.STYLE_NULL,
                 new SimpleLineSymbol(
-                  SimpleLineSymbol.STYLE_SHORTDASHDOTDOT,
+                  SimpleLineSymbol.STYLE_SOLID,
                   new Color([13,255,0]), 
                   2
                 ),new Color([255,255,0,0.25])
@@ -838,6 +839,37 @@ alert("test")
 
         parcels.setSelectionSymbol(sfs);
         
+        
+        
+        
+        //add popup template for roads
+         var popupRoadTemplate = new PopupTemplate({
+            title: "Road Label: {RD_LABEL}",
+            fieldInfos: [{
+                fieldName: "CITY",
+                label: "City:",
+                visible: true
+            }, {
+                fieldName: "ALTNAME1",
+                label: "Alternate Name:",
+                visible: true
+            }]
+        });
+        
+        
+        
+        //add the road layer in selection mode
+        roads = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/3", {
+        	objectIdField: "Shape_Length",
+        	outFields: ["*"],
+            infoTemplate: popupRoadTemplate,
+            mode: FeatureLayer.MODE_SELECTION
+            
+        });
+        roads.setSelectionSymbol(sfs);
+        
+        
+        
         //when users click on the map select the parcel using the map point and update the url parameter
         map.on("click", function (e) {
             if (draw == false || draw == null) {
@@ -847,7 +879,7 @@ alert("test")
                // map.centerAndZoom(e.mapPoint, 10);
                 //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
                 var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
-                	//console.debug(selection);
+                	console.debug(selection);
                 	
                 	
                     //update the url param if a parcel was located
@@ -861,15 +893,23 @@ alert("test")
                             infoArray = selection[0];
                             infoArray2.push(selection[0]);
                         }
-                    }
+                    } 
+                    	
+						
+                    	
+                    
                   
                 },function(error){alert(error);}); //end of defferred variable declaration
+
+               
+         
                 
                 
                 
-              //  var deferred2 = parcels.selectFeatures(query, FeatureLayer.SELECTION_SUBTRACT, function (selection) {
+                
+      
                 	
-             //   });Pueblo, Co
+   
                 
                 map.infoWindow.setFeatures([deferred]);
                 map.infoWindow.show(e.mapPoint);
@@ -888,8 +928,9 @@ alert("test")
         on(dom.byId("clear"), "click", clearx);
         on(dom.byId("draw"), "click", drawMode);
         on(dom.byId("empty"), "click", empty);
-        //on(dom.byId("locate"), "click", locate);
-        on(dom.byId("locate"), "click", findOwnerOrParcel);
+        //on(dom.byId("locate"), "click", locate); // geocodes an address and return parcel
+      //  on(dom.byId("locate"), "click", findOwnerOrParcel); //returns parcel by parcel id or owner name
+        on(dom.byId("locate"), "click", findRoad);
         on(dom.byId("buffer"), "click", bufferIt);
 
 
@@ -1158,8 +1199,7 @@ var infoArray3 = new Array();
 		function findOwnerOrParcel(){
 			change = false;
 			map.graphics.clear();
-		//	map.setZoom(3);
-		//	map.setZoom(1);
+
 			
 			if(isNumber(dom.byId("address").value)){
 				selectParcel(dom.byId("address").value);
@@ -1199,22 +1239,88 @@ var infoArray3 = new Array();
             }
         }
 		
+		//detect when popup selection is changed
       popup.on("selection-change", function(){
     if(change){
+    	
     	  map.infoWindow.restore(); 
    	  console.log(popup.getSelectedFeature());
    	
    	  infoArray = selectionX[popup.selectedIndex];
+   	
       map.centerAndZoom(popup.features[popup.selectedIndex].geometry.getPoint(0,0), 8);
-     // console.log(map.infoWindow);
-   //   map.infoWindow.setFeatures(popup.features[popup.selectedIndex]);
-    //  console.log(map.infoWindow);
-    	map.infoWindow.show(popup.features[popup.selectedIndex].geometry.getPoint(0,0) );
-    	 // console.log(popup.selectedIndex);
+   
+   	  map.infoWindow.show(popup.features[popup.selectedIndex].geometry.getPoint(0,0) );
+
     }
     	 
       });
+      
+	  // combine all results' geometries into an array and create a single geometry to display on the map
+      function makeGeomArray(selection){
+    	
+    	var  tempArray = new Array();
+    	  
+    	  for(i=0; i<selection.length; i++) {
+				tempArray.push(selection[i].geometry);
+			}
+    	
+    	  
+    	  var tempVar = gsvc.union(tempArray);
+    	  
+    	  tempVar.then(function(results){
 
+    		  var symbol =  new SimpleLineSymbol(
+                        SimpleLineSymbol.STYLE_SOLID,
+                        new Color([13,255,0]), 
+                        5);
+    		  
+                    var bufferGeometry = results;
+                    //console.log(bufferGeometry);
+                    var graphic2 = new Graphic(bufferGeometry, symbol);
+                    map.graphics.add(graphic2);
+  					
+          	 });
+    	  
+
+
+     
+      	 
+      }
+      
+      
+      
+      function findRoad() {
+      	popup.clearFeatures();
+		change = false;
+		map.graphics.clear();
+		map.infoWindow.hide();
+              var query = new Query();
+              query.text = dom.byId("address").value;
+              var deferred = roads.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
+           
+      
+                   selectionX = selection;
+               //  console.log(selection);
+                  var extHandler = map.on("extent-change", function () {
+                      extHandler.remove();
+                      //zoom to the center then display the popup 
+                      map.infoWindow.setFeatures(selection);
+                    
+                  });
+              
+                // map.setZoom(3);
+               //  map.setZoom(1);
+                  change = false;
+                  makeGeomArray(selection);
+                 
+           	 });
+      }
+      
+      
+      
+      
+      
         //select parcel from the feature layer by creating a query to look for the input parcel id 
         function selectParcel(parcelid) {
         	popup.clearFeatures();
@@ -1234,6 +1340,12 @@ var infoArray3 = new Array();
                 });
             }
         }
+        
+        
+        
+        
+        
+        
     });
     </script>
   </head>
