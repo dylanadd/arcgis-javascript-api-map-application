@@ -164,8 +164,8 @@ position: absolute;
 z-index: 30;
 top: 39px;
 background-color: white;
--webkit-border-radius: 5px 0px 0px 5px;
-border-radius: 5px 0px 0px 5px;
+-webkit-border-radius: 0px 0px 0px 0px;
+border-radius: 0px 0px 0px 0px;
 border: 2px solid #666;
 
 
@@ -197,8 +197,8 @@ position: absolute;
 z-index: 30;
 top: 39px;
 background-color: white;
--webkit-border-radius: 5px 0px 0px 5px;
-border-radius: 5px 0px 0px 5px;
+-webkit-border-radius: 0px 0px 0px 0px;
+border-radius: 0px 0px 0px 0px;
 border: 2px solid #666;
 
 
@@ -213,7 +213,7 @@ line-height: 25px;
 -ms-user-select: none;
 user-select: none;
 cursor: pointer;
-margin-left:68px;
+margin-left:66px;
     }     
      
      a.drawOn{
@@ -232,8 +232,8 @@ position: absolute;
 z-index: 30;
 top: 39px;
 background-color: white;
--webkit-border-radius: 5px 0px 0px 5px;
-border-radius: 5px 0px 0px 5px;
+-webkit-border-radius: 0px 0px 0px 0px;
+border-radius: 0px 0px 0px 0px;
 border: 2px solid #666;
 
 
@@ -248,7 +248,7 @@ line-height: 25px;
 -ms-user-select: none;
 user-select: none;
 cursor: pointer;
-margin-left:34px;
+margin-left:33px;
     }     
      
      a.bufferModeOn{
@@ -259,7 +259,11 @@ margin-left:34px;
      }
      
      
-     
+   #tools {
+   position: absolute;
+top: 20px;
+left: 76px;
+   }  
      
       
       div.search_button {
@@ -283,15 +287,15 @@ z-index: 30;
 top: 39px;
 left: 33px;
 background-color: white;
--webkit-border-radius: 0px 5px 5px 0px;
-border-radius: 0px 5px 5px 0px;
+-webkit-border-radius: 0px 0px 0px 0px;
+border-radius: 0px 0px 0px 0px;
 border: 2px solid #666;
 }
-     /*
+     
        div#map_zoom_slider {
-       top: -20px;
+      left:10px !important;
        }
-    */ 
+     
       .esriSimpleSlider {
       border: none !important;
       }
@@ -305,15 +309,13 @@ border: 2px solid #666;
     #gallery {
     position: absolute;
     z-index: 999;
-    top: 1px;
-    right: 1px;
+    top: 0px;
+    left: 67px;
 	display: inline-block;
     
     }
      #print_button {
-     	position: relative;
-		float: right;
-		margin-top: -11px;
+    
      }
       
       
@@ -326,6 +328,46 @@ padding: 0;
       }
       
       
+      
+      div#gallery .dijitTitlePaneTitle {
+      background: url("images/map.png") no-repeat 0 0;
+      color: #666;
+position: absolute;
+z-index: 30;
+top: 39px;
+background-color: white;
+-webkit-border-radius: 0px 0px 0px 0px;
+border-radius: 0px 0px 0px 0px;
+border: 2px solid #666;
+padding: 0 !important;
+
+width: 30px;
+height: 30px;
+font-size: 24px;
+font-family: verdana,helvetica;
+font-weight: 700;
+line-height: 25px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+cursor: pointer;
+margin-left:32px;
+      }
+     
+     .dijitArrowNode {
+     background: none;
+background-image: none !important;
+width: 0 !important;
+height: 0 !important;
+     }
+     
+      .dijitArrowNodeInner {
+      visibility: hidden;
+      }
+      :focus {
+      outline: none !important;
+      }
       .esriScalebarLabel {
        color: white;
   
@@ -334,4 +376,137 @@ padding: 0;
       .map .container {
       position: initial !important;
       }
+      
+      #basemapGallery {
+      	background: rgba(255,255,255,0.8);
+      }
+      
+      
+      .dijitArrowButtonInner {
+background: url("images/spriteArrows.png") no-repeat scroll 0 center;
+width: 7px;
+height: 7px;
+margin: 0 4px 0 4px;
+}
+
+.dijitButtonNode {
+border: 1px solid #c0c0c0;
+border-bottom: 1px solid #9b9b9b;
+padding: 0.1em 0.2em 0.2em 0.2em;
+background: #fff url("images/buttonEnabled.png") repeat-x bottom left;
+}
+      
+      
+.dijitPopup {
+position: absolute;
+background-color: transparent;
+margin: 0;
+border: 0;
+padding: 0;
+-webkit-overflow-scrolling: touch;
+}
+
+table[id^='dijit_Menu_'] {
+	background: rgba(255,255,255,0.8);
+	
+}
+     
+.print_button {}
+.esriPrint{
+	padding: 0 !impaortant;
+	
+}
+
+td.dijitStretch div[id^='_label'] {
+	visibility:hidden;
+}
+
+.esriPrint    td.dijitStretch {
+ display:none;
+      }
+      
+   td[id^='dijit_form_ComboButton_'] {
+    	   background: url("images/print.png") no-repeat 0 0;
+      color: #666;
+position: absolute;
+z-index: 30;
+top: 39px;
+background-color: white;
+-webkit-border-radius: 0px 5px 5px 0px;
+border-radius: 0px 5px 5px 0px;
+border: 2px solid #666;
+padding: 0 !important;
+
+width: 30px;
+height: 30px;
+font-size: 24px;
+font-family: verdana,helvetica;
+font-weight: 700;
+line-height: 25px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+cursor: pointer;
+margin-left:124px;
+   
+   }   
+      
+      table[id^='dijit_Menu_'] {
+      font-size: 16px;
+font-family: verdana,helvetica;
+
+line-height: 25px;
+width: 200px
+      
+      }
+     tr.dijitMenuItemHover{
+      cursor: pointer;
+      background:rgba(255,0,0,0.5);
+      
+      }
+      div[id^='dijit_form_ComboButton_'] {
+      top: 93px !important;
+	  left: 54px !important;
+	  right: auto !important;
+	  z-index: 1000 !important;
+      
+      }
+      
+        td[id^='dijit_form_ComboButton_'] div.dijitArrowButtonChar{
+        visibility:hidden;
+        }
+        
+        a.esriPrintout{
+          background: url("images/printdone.png") no-repeat 0 0;
+      color: #666;
+position: absolute;
+z-index: 30;
+top: 39px;
+background-color: white;
+-webkit-border-radius: 0px 5px 5px 0px;
+border-radius: 0px 5px 5px 0px;
+border: 2px solid #666;
+padding: 0 !important;
+
+width: 30px;
+height: 30px;
+font-size: 24px;
+font-family: verdana,helvetica;
+font-weight: 700;
+line-height: 25px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+cursor: pointer;
+margin-left: 124px;
+
+   text-indent:100px;
+   white-space:nowrap;
+   overflow: hidden;
+        }
+        
+        
+        
       

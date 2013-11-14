@@ -7,7 +7,7 @@
     of the samples on iOS devices-->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
     <title>Parcel Locator</title>
-	 <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/tundra/tundra.css">
+ <!-- 	<link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/tundra/tundra.css">  --> 
      <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css">
      <link rel="stylesheet" href="./interface.css">
 
@@ -1338,13 +1338,7 @@ var infoArray3 = new Array();
           <div id="measurementDiv"  style="visibility: hidden;"></div> 
        
        
-       <div id="gallery" >
-          <div data-dojo-type="dijit/TitlePane" 
-               data-dojo-props="title:'Switch Basemap', closable:false,  open:false">
-            <div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;">
-            <div id="basemapGallery" ></div></div>
-          </div>
-        </div>
+      
        
         <div id="feedback" class="shadow">
          <!--   <h3>
@@ -1357,7 +1351,7 @@ var infoArray3 = new Array();
             </div>
             -->
             <!-- that will be used for the print dijit -->
-            <div id="print_button"></div>
+           
 <!-- 
             <div id="info">
               <a href="https://developers.arcgis.com/en/javascript/jsapi/printtemplate.html">Print templates</a> are generated 
@@ -1372,20 +1366,31 @@ var infoArray3 = new Array();
            <div class="search_wrapper">
 	   <div class="search_button">
 	  <!--  <input type="button" id="locate" /> -->
-	  <a id="locate"></a>
+	  <a id="locate" title="Begin search"></a>
 	   </div>
 	   <input type="text" id="address" class="searchbox" value="Search name or parcel #"/>
        
-		<a id="ownerParcelSwitch" class="selected"></a>
-		<a id="addressSwitch"  class="deselected"></a>
-		<a id="roadSwitch" class="deselected"></a>
+		<a id="ownerParcelSwitch" class="selected" title="Parcel & Owner Search Mode"></a>
+		<a id="addressSwitch"  class="deselected" title="Address Search Mode"></a>
+		<a id="roadSwitch" class="deselected" title="Road Search Mode"></a>
 	   </div>
           
           <div id="tools">
           
-           <a id="clear" alt="Clear all selections on the page."></a> 
-        <a id="bufferMode" class="bufferModeOff" alt="Turn buffer selection tool on/off."></a>
-        <a id="draw" class="drawOff" name="draw" alt="Turn draw/measurment tool on/off"></a>
+           <a id="clear" title="Clear all selections on the page."></a> 
+        <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off."></a>
+        <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off"></a>
+        
+         <div id="gallery" >
+          <div data-dojo-type="dijit/TitlePane" 
+               data-dojo-props=" closable:false,  open:false">
+            <div data-dojo-type="dijit/layout/ContentPane" style="width:264px; height:238px; overflow:auto;margin-top: 73px;margin-left: -130px;">
+            <div id="basemapGallery" ></div></div>
+          </div>
+        </div>
+        
+         <div id="print_button"></div>
+        
           </div>
           
           
