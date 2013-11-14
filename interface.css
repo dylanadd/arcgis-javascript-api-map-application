@@ -77,8 +77,23 @@ background: none;
 margin: 0 6px;
 width: 168px;
 }
-      div.search_button  span.dijitButtonNode {
-     background: url("simpleGeocoder.png") no-repeat 0 0;
+      div.search_button a {
+     background: url("images/simpleGeocoder.png") no-repeat 0 0;
+     
+     float: left;
+outline: 0;
+width: 16px;
+height: 16px;
+display: block;
+overflow: hidden;
+margin-top: 3px;
+margin-left:3px;
+border: none !important;
+
+      }
+      
+      div.search_wrapper a#clear {
+     background: url("images/simpleGeocoder.png") no-repeat 0 0;
      
      float: left;
 outline: 0;
