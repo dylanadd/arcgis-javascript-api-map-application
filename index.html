@@ -24,6 +24,7 @@
     var infoArray; 
     var infoArray2 = new Array();
     var draw = null;
+    var buff = null;
    // var gsvc, tb;
     require([
         "esri/map", "esri/layers/FeatureLayer",
@@ -762,13 +763,73 @@ alert("test")
         //LISTEN FOR BUTTON CLICKS
         on(dom.byId("clear"), "click", clearx);
         on(dom.byId("draw"), "click", drawMode);
-        on(dom.byId("empty"), "click", empty);
+        on(dom.byId("bufferMode"), "click", bufferMode);
         //on(dom.byId("locate"), "click", locate); // geocodes an address and return parcel
       //  on(dom.byId("locate"), "click", findOwnerOrParcel); //returns parcel by parcel id or owner name
-        on(dom.byId("locate"), "click", findRoad);
+        //on(dom.byId("locate"), "click", findRoad);
+      on(dom.byId("locate"), "click", startSearch);
         on(dom.byId("buffer"), "click", bufferIt);
+        on(dom.byId("ownerParcelSwitch"), "click", ownerParcelMode);
+        on(dom.byId("addressSwitch"), "click", addressMode);
+        on(dom.byId("roadSwitch"), "click", roadMode);
+        on(dom.byId("address"), "click", function(){
+        	domAttr.set("address", "value", "");
+        });
 
-
+        var ownParSearch = true;
+        var addrSearch = false;
+        var rdSearch = false;
+        
+        function ownerParcelMode(){
+        	 ownParSearch = true;
+             addrSearch = false;
+             rdSearch = false;
+             
+             domAttr.set("address", "value", "Search name or parcel #");
+             domAttr.set("ownerParcelSwitch", "class", "selected");
+             domAttr.set("addressSwitch", "class", "deselected");
+             domAttr.set("roadSwitch", "class", "deselected");
+        }
+        
+        function addressMode(){
+        	ownParSearch = false;
+            addrSearch = true;
+            rdSearch = false;
+            
+            domAttr.set("address", "value", "Search address");
+            domAttr.set("ownerParcelSwitch", "class", "deselected");
+            domAttr.set("addressSwitch", "class", "selected");
+            domAttr.set("roadSwitch", "class", "deselected");
+        }
+        
+        function roadMode(){
+        	ownParSearch = false;
+            addrSearch = false;
+            rdSearch = true;
+            popup.clearFeatures();
+            
+            domAttr.set("address", "value", "Search road");
+            domAttr.set("ownerParcelSwitch", "class", "deselected");
+            domAttr.set("addressSwitch", "class", "deselected");
+            domAttr.set("roadSwitch", "class", "selected");
+        }
+        
+        
+        function startSearch(){
+        	if(ownParSearch){
+        		findOwnerOrParcel();
+        	} else if(addrSearch){
+        		locate();
+        	} else if(rdSearch){
+        		findRoad();
+        	}
+        	
+        }
+        
+        
+        
+        
+        
         map.on("layers-add-result", function (result) {
             // Add a link into the InfoWindow Actions panel       
             var emailLink = domConstruct.create("a", {
@@ -930,24 +991,26 @@ var infoArray3 = new Array();
 
 
         function clearx() {
+        	empty();
+        	map.graphics.clear();
+        	map.infoWindow.hide();
         	 infoArray.length = 0;
  			infoArray2.length = 0;
  			infoArray3.length = 0;
     
-        	//	console.debug(map.layerIds);
-        	map.graphics.clear();
+  
+   
         	if(parcels !== 'undefined'){
         		parcels.clearSelection();
         	}
         	if(parcels1 !== 'undefined'){
             parcels1.clearSelection();
         	}
-		//	map.removeLayer(parcel1);
-		//	map.removeLayer(parcel);
-            map.infoWindow.hide();
+	
+            
         	
      		
-       //     window.history.pushState(null, null, "?parcelid=");
+
 			
            
 			
@@ -1001,23 +1064,64 @@ var infoArray3 = new Array();
            
         }
 
-        function drawMode() {
-            if (!draw) {
-                draw = true;
-                domAttr.set("draw", "value", "Turn Draw Off");
-                domAttr.set("measurementDiv", "style", "visibility: visible");
+        
+        function bufferMode(){
+        	if (draw){
+        		draw = true;
+        		drawMode();
+        		
+        	}
+        	
+        	if (!buff) {
+                buff = true;
+                domAttr.set("bufferMode", "class", "bufferModeOn");
+                domAttr.set("buffer-params", "style", "visibility: visible");
                 map.infoWindow.hide();
-            } else if (draw) {
-                draw = false;
-                domAttr.set("draw", "value", "Turn Draw On");
-                domAttr.set("measurementDiv", "style", "visibility: hidden");
-            } else if (draw == null) {
-                draw = true;
-                domAttr.set("draw", "value", "Turn Draw Off");
-                domAttr.set("measurementDiv", "style", "visibility: visible");
+            } else if (buff) {
+                buff = false;
+                domAttr.set("bufferMode", "class", "bufferModeOff");
+                domAttr.set("buffer-params", "style", "visibility: hidden");
+            } else if (buff == null) {
+                buff = true;
+                domAttr.set("bufferMode", "class", "bufferModeOn");
+                domAttr.set("buffer-params", "style", "visibility: visible");
                 map.infoWindow.hide();
 
             }
+        	
+        	
+        }
+        
+        function drawMode() {
+        	if (buff){
+        		buff = true;
+        		bufferMode();
+        		
+        	}
+            if (!draw) {
+                draw = true;
+                domAttr.set("draw", "class", "drawOn");
+                domAttr.set("measurementDiv", "style", "visibility: visible !important;width: 240px;");
+                
+                domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
+                map.infoWindow.hide();
+            } else if (draw) {
+                draw = false;
+                domAttr.set("draw", "class", "drawOff");
+                domAttr.set("measurementDiv", "style", "visibility: hidden !important;");
+                
+                domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;visibility: hidden;");
+            } else if (draw == null) {
+                draw = true;
+                domAttr.set("draw", "class", "drawOn");
+                domAttr.set("measurementDiv", "style", "visibility: visible !important;width: 240px;");
+              
+                domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
+                map.infoWindow.hide();
+
+            }
+            
+            
 
 
         }
@@ -1083,7 +1187,7 @@ var infoArray3 = new Array();
     if(change){
     	
     	  map.infoWindow.restore(); 
-   	  console.log(popup.getSelectedFeature());
+   	 // console.log(popup.getSelectedFeature());
    	
    	  infoArray = selectionX[popup.selectedIndex];
    	
@@ -1200,28 +1304,19 @@ var infoArray3 = new Array();
      
      <div id="button-console">
       
-        <input id="clear" type="button" value="Clear"> 
-      
-       <input id="empty" type="button" value="Empty Table">
-       <input id="draw" type="button" name="draw" value="Turn Draw On">
+       
+        
+        
+        
       <!--   <input id="lock" type="button" value="Lock Map"> -->
+      
+      
        <div id="output"></div>
        
-        <div id="buffer-params" style="z-index: 1000;">
-<!-- 
-      <div class="details">Pick a tool and draw on the map. The drawn graphic will be buffered based on the specified parameters.</div>
-      <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.LINE);app.map.hideZoomSlider();">Line</button>
-      <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.POLYLINE);app.map.hideZoomSlider();">Polyline</button>
-      <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.FREEHAND_POLYLINE);app.map.hideZoomSlider();">Freehand Polyline</button>
-      <br />
-      <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.POLYGON);app.map.hideZoomSlider();">Polygon</button>
-      <button data-dojo-type="dijit.form.Button" onclick="app.tb.activate(esri.toolbars.Draw.FREEHAND_POLYGON);app.map.hideZoomSlider();">Freehand Polygon</button>
+        <div id="buffer-params" style="visibility: hidden;">
 
-      <br /><hr />
-      
-   -->
       <div><b>Buffer Parameters</b></div>
-      Spatial Reference WKID: <input type="text" id="bufferSpatialReference" size="5" value="2233" /><br />
+       <input type="text" id="bufferSpatialReference" size="5" value="2233" style="visibility:hidden; height: 0px; width:0px;" />
       Distance: <input type="text" id="distance" size="5" value="50" />
       <select id="unit" style="width:100px;">
         <option value="UNIT_FOOT">Feet</option>
@@ -1240,7 +1335,7 @@ var infoArray3 = new Array();
        
        
        
-          <div id="measurementDiv" style="visibility: hidden;"></div> 
+          <div id="measurementDiv"  style="visibility: hidden;"></div> 
        
        
        <div id="gallery" >
@@ -1279,10 +1374,20 @@ var infoArray3 = new Array();
 	  <!--  <input type="button" id="locate" /> -->
 	  <a id="locate"></a>
 	   </div>
-	   <input type="text" id="address" class="searchbox" value="Pueblo, Co"/>
+	   <input type="text" id="address" class="searchbox" value="Search name or parcel #"/>
        
-		<a id="clear"></a>
+		<a id="ownerParcelSwitch" class="selected"></a>
+		<a id="addressSwitch"  class="deselected"></a>
+		<a id="roadSwitch" class="deselected"></a>
 	   </div>
+          
+          <div id="tools">
+          
+           <a id="clear" alt="Clear all selections on the page."></a> 
+        <a id="bufferMode" class="bufferModeOff" alt="Turn buffer selection tool on/off."></a>
+        <a id="draw" class="drawOff" name="draw" alt="Turn draw/measurment tool on/off"></a>
+          </div>
+          
           
         </div>
      
