@@ -3,6 +3,7 @@
         width: 100%;
         margin: 0;
         padding: 0;
+        overflow:hidden;
       }
       
       #buffer-params {
@@ -184,12 +185,17 @@ cursor: pointer;
     
     div#measurementDiv{
     background: rgba(255,255,255,0.5);
+    position: absolute;
+	top: 100px;
+	left: 10px;
     }
     
     
      #buffer-params{
      z-index: 1000;
      }
+     
+     
  a#draw{  
     
     color: #666;
@@ -384,9 +390,9 @@ height: 0 !important;
       
       .dijitArrowButtonInner {
 background: url("images/spriteArrows.png") no-repeat scroll 0 center;
-width: 7px;
-height: 7px;
-margin: 0 4px 0 4px;
+width: 0px;
+height: 0px;
+margin: 0 0px 0 0px;
 }
 
 .dijitButtonNode {
@@ -478,7 +484,8 @@ width: 200px
         }
         
         a.esriPrintout{
-          background: url("images/printdone.png") no-repeat 0 0;
+         
+        background: url("images/printdone.png") no-repeat 0 0; 
       color: #666;
 position: absolute;
 z-index: 30;
@@ -508,5 +515,86 @@ margin-left: 124px;
         }
         
         
+        div.processing td[id^='dijit_form_ComboButton_'] {
+        	background: #ffffff url("images/processing.gif") no-repeat 3px 3px !important; 
+        	
+        	
+        }
         
-      
+        a.processing {
+        	background: #ffffff url("images/processing.gif") no-repeat 3px 3px !important; 
+        }
+        
+        div#gallery.processing .dijitTitlePaneTitle {
+        	background: #ffffff url("images/processing.gif") no-repeat 3px 3px !important; 
+        }
+        
+        div.search_wrapper div.search_button a#locate.processing {
+        	background: #ffffff url("images/processingmini.gif") no-repeat 0px 0px !important; 
+        }
+ /*    
+.areaIcon {
+background-image: url("images/Measure_Area16.png");
+width: 16px;
+height: 16px;
+}   
+
+.distanceIcon {
+background-image: url("images/Measure_Distance16.png");
+width: 16px;
+height: 16px;
+}     
+
+.locationIcon {
+background-image: url("images/Measure_Point16.png");
+width: 16px;
+height: 16px;
+}
+
+.dijitInline {
+display: inline-block;
+border: 0;
+padding: 0;
+vertical-align: middle;
+}
+.dijitReset {
+margin: 0;
+border: 0;
+padding: 0;
+font: inherit;
+line-height: normal;
+color: inherit;
+}
+
+.dijitButtonNode {
+border: 1px solid gray;
+margin: 0;
+line-height: normal;
+vertical-align: middle;
+text-align: center;
+white-space: nowrap;
+}
+
+.dijitSelect, .dijitSelect *, .dijitButtonNode, .dijitButtonNode * {
+cursor: pointer;
+-webkit-tap-highlight-color: transparent;
+}
+
+.dijitButtonContents {
+display: block;
+}
+
+.dijitStretch {
+white-space: nowrap;
+background-repeat: repeat-x;
+}
+
+.dijitButtonNode * {
+vertical-align: middle;
+}
+
+.dijitDisplayNone {
+display: none !important;
+}
+
+   */   

@@ -16,7 +16,7 @@
     <script>var dojoConfig = { parseOnLoad: true };</script>
     <script src="http://js.arcgis.com/3.7/"></script>
     <script>
-
+	var inputSearchBox = dojo.byId("address");
 	var change = false;
     var map;
     var parcels;
@@ -200,6 +200,32 @@
         	map.setZoom(1);
      
         });
+        
+        
+        map.on("update-start", function(){
+        	domAttr.set("gallery", "class", "processing");
+        	
+        });
+        
+        map.on("update-end", function(){
+        	domAttr.set("gallery", "class", "dormant");
+        	
+        });	
+       
+     
+        
+        dojo.connect(inputSearchBox, "onkeypress", function(e){
+
+        	if(e.keyCode == 13){
+        		
+        		if(dom.byId("address").value != "Search name or parcel #" && dom.byId("address").value != "Search address" && dom.byId("address").value != "Search road"){
+        		startSearch();
+        		}
+        	}
+        	
+        });
+        
+        
 		//Buffer Function
 //	 map.on("load", initToolbar);
 
@@ -332,6 +358,7 @@
              // console.debug(results);
               }, function(error){alert(error);});
               map.addLayers([parcels1]);
+              domAttr.set("bufferMode", "class", "bufferModeOn");
             });
           
           
@@ -490,7 +517,7 @@ alert("test")
             }
         });
         printInfo.then(handlePrintInfo, handleError);
-
+var printer;
         function handlePrintInfo(resp) {
             var layoutTemplate, templateNames, mapOnlyIndex, templates;
 
@@ -527,14 +554,29 @@ alert("test")
             });
 
             // create the print dijit
-            var printer = new Print({
+             printer = new Print({
                 "map": map,
                     "templates": templates,
                 url: printUrl
             }, dom.byId("print_button"));
             printer.startup();
+            
+            printer.on("print-start", function(){
+			domAttr.set("print_button", "class", "processing");
+		});
+		
+		printer.on("print-complete", function(){
+			
+			domAttr.set("print_button", "class", "dormant");
+	
+		});
+           
+       
+        
         }
-
+        
+       
+		
         function handleError(err) {
             console.log("Something broke: ", err);
         }
@@ -732,7 +774,7 @@ alert("test")
                     } 
                     	
 						
-                    	
+                    	map.addLayer(parcels);
                     
                   
                 },function(error){alert(error);}); //end of defferred variable declaration
@@ -764,10 +806,7 @@ alert("test")
         on(dom.byId("clear"), "click", clearx);
         on(dom.byId("draw"), "click", drawMode);
         on(dom.byId("bufferMode"), "click", bufferMode);
-        //on(dom.byId("locate"), "click", locate); // geocodes an address and return parcel
-      //  on(dom.byId("locate"), "click", findOwnerOrParcel); //returns parcel by parcel id or owner name
-        //on(dom.byId("locate"), "click", findRoad);
-      on(dom.byId("locate"), "click", startSearch);
+        on(dom.byId("locate"), "click", startSearch);
         on(dom.byId("buffer"), "click", bufferIt);
         on(dom.byId("ownerParcelSwitch"), "click", ownerParcelMode);
         on(dom.byId("addressSwitch"), "click", addressMode);
@@ -816,6 +855,9 @@ alert("test")
         
         
         function startSearch(){
+        	domAttr.set("locate", "class", "processing");
+        //	clearx();
+        map.graphics.clear();
         	if(ownParSearch){
         		findOwnerOrParcel();
         	} else if(addrSearch){
@@ -898,7 +940,10 @@ alert("test")
 
 		//prepare address query string for Geocoder
         function locate() {
-            map.graphics.clear();
+        	
+        	//  domAttr.set("locate", "class", "processing");
+           // map.graphics.clear();
+           //clearx();
             var address = {
                
                 "Street": dom.byId("address").value
@@ -912,6 +957,7 @@ alert("test")
         }
 
         function showResults(evt) {
+        	
             var candidate;
             var symbol = new SimpleMarkerSymbol();
             var infoTemplate = new InfoTemplate(
@@ -957,7 +1003,7 @@ alert("test")
             geom.spatialReference.wkid = 2233;
 
            map.centerAndZoom(geom, 8);
-       
+       domAttr.set("locate", "class", "dormant");
         }
         //END Location Dijit
 
@@ -965,6 +1011,7 @@ alert("test")
 var infoArray3 = new Array();
 
 		function bufferIt() {
+			domAttr.set("bufferMode", "class", "bufferModeOn processing");
     	if(infoArray2.length > 1){
 			for(i=0; i<infoArray2.length; i++) {
 				infoArray3.push(infoArray2[i].geometry);
@@ -981,6 +1028,7 @@ var infoArray3 = new Array();
   			  doBuffer3(infoArray2[0].geometry);
   		  }
   		  else{
+  		  	domAttr.set("bufferMode", "class", "bufferModeOn");
   			  alert("No parcel selected!");
   		  }
 			
@@ -991,13 +1039,19 @@ var infoArray3 = new Array();
 
 
         function clearx() {
+        	
+        	map.removeAllLayers();
+            map.addLayer(basemap);
+            map.addLayer(parcelInfoLayer);
+        	
         	empty();
         	map.graphics.clear();
         	map.infoWindow.hide();
+        	try{
         	 infoArray.length = 0;
  			infoArray2.length = 0;
  			infoArray3.length = 0;
-    
+    		
   
    
         	if(parcels !== 'undefined'){
@@ -1006,8 +1060,8 @@ var infoArray3 = new Array();
         	if(parcels1 !== 'undefined'){
             parcels1.clearSelection();
         	}
-	
-            
+	} catch(e){}
+           
         	
      		
 
@@ -1173,6 +1227,7 @@ var infoArray3 = new Array();
                         console.log(selection);
                     });
                    // console.log(center);
+                   domAttr.set("locate", "class", "dormant");
                     map.centerAndZoom(center, 2);
                     change = true;
                     
@@ -1222,11 +1277,13 @@ var infoArray3 = new Array();
                     //console.log(bufferGeometry);
                     var graphic2 = new Graphic(bufferGeometry, symbol);
                    // console.log(graphic2.geometry.getExtent());
+                   
                     map.graphics.add(graphic2);
   					map.setExtent(graphic2.geometry.getExtent());
+  					domAttr.set("locate", "class", "dormant");
           	 });
     	  
-
+			
 
      
       	 
@@ -1366,9 +1423,10 @@ var infoArray3 = new Array();
            <div class="search_wrapper">
 	   <div class="search_button">
 	  <!--  <input type="button" id="locate" /> -->
-	  <a id="locate" title="Begin search"></a>
+	  <a id="locate" title="Begin search" class="dormant"></a>
 	   </div>
-	   <input type="text" id="address" class="searchbox" value="Search name or parcel #"/>
+	  
+	   <input type="text" id="address" class="searchbox" value="Search name or parcel #" />
        
 		<a id="ownerParcelSwitch" class="selected" title="Parcel & Owner Search Mode"></a>
 		<a id="addressSwitch"  class="deselected" title="Address Search Mode"></a>
@@ -1381,7 +1439,7 @@ var infoArray3 = new Array();
         <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off."></a>
         <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off"></a>
         
-         <div id="gallery" >
+         <div id="gallery" class="dormant">
           <div data-dojo-type="dijit/TitlePane" 
                data-dojo-props=" closable:false,  open:false">
             <div data-dojo-type="dijit/layout/ContentPane" style="width:264px; height:238px; overflow:auto;margin-top: 73px;margin-left: -130px;">
@@ -1389,7 +1447,7 @@ var infoArray3 = new Array();
           </div>
         </div>
         
-         <div id="print_button"></div>
+         <div id="print_button" class="dormant"></div>
         
           </div>
           
