@@ -1,600 +1,429 @@
- html, body, #map {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        overflow:hidden;
-      }
-      
-      #buffer-params {
-      z-index: 1000; 
-      top: 100px;
-      position:relative;
-      background: rgba(255,255,255,0.5);
-      width: 255px;}
-      
-      #button-console {
-      	position: relative;
-		z-index: 999;
-		height: 0;
-      
-      }
-      
-       #feedback {
-       /* background: #fff;*/
-        color: #000;
-        position: absolute;
-        font-family: arial;
-        height: auto;
-        right: 20px;
-        margin: 5px;
-        padding: 10px;
-        top: 20px;
-        width: 300px;
-        z-index: 40;
-      }
-      #feedback a {
-        border-bottom: 1px solid #888;
-        color: #444;
-        text-decoration: none;
-      }
-      #feedback a:hover, #feedback a:active, #feedback a:visited {
-        border: none;
-        color: #444;
-        text-decoration: none;
-      }
-      #note { font-size: 80%; font-weight: 700; padding: 0 0 10px 0; }
-      
-      .selected{
-      background-color: lightblue !important;
-      }
-      
-      
-      
-      /*Begin imported css from older doc */
-      
-        .search_wrapper{
-      border: 2px solid #666;
-background: #fff;
--webkit-border-radius: 5px;
-border-radius: 5px;
-left: 10px;
-position: absolute;
-z-index: 30;
-top: 10px;
+html,body,#map {
+height:100%;
+margin:0;
+overflow:hidden;
+padding:0;
+width:100%;
+}
+
+#buffer-params {
+background:rgba(255,255,255,0.5);
+position:relative;
+top:100px;
+width:255px;
+z-index:1000;
+}
+
+#button-console {
+height:0;
+position:relative;
+z-index:999;
+}
+
+#feedback {
+color:#000;
+font-family:arial;
+height:auto;
+margin:5px;
+padding:10px;
+position:absolute;
+right:20px;
+top:20px;
+width:300px;
+z-index:40;
+}
+
+#feedback a {
+border-bottom:1px solid #888;
+color:#444;
+text-decoration:none;
+}
+
+#feedback a:hover,#feedback a:active,#feedback a:visited {
+border:none;
+color:#444;
+text-decoration:none;
+}
+
+#note {
+font-size:80%;
+font-weight:700;
+padding:0 0 10px;
+}
+
+.selected {
+background-color:#ADD8E6!important;
+}
+
+.search_wrapper {
+-webkit-border-radius:5px;
+background:#fff;
+border:2px solid #666;
+border-radius:5px;
+left:10px;
+position:absolute;
+top:10px;
 width:330px;
-      }
-      
-      .searchbox {
-      outline: 0;
-display: block;
-border: 0;
-border-collapse: collapse;
-vertical-align: middle;
-font-size: 12px;
-line-height: 16px;
-margin: 0;
-padding: 6px 0;
-float: left;
-color: #444;
-background: none;
-margin: 0 6px;
-width: 168px;
+z-index:30;
 }
-    div.search_wrapper div.search_button a#locate {
-     background: url("images/simpleGeocoder.png") no-repeat 0 0;
-     
-     float: left;
-outline: 0;
-width: 16px;
-height: 16px;
-display: block;
-overflow: hidden;
-margin-top: 7px;
+
+.searchbox {
+background:none;
+border:0;
+border-collapse:collapse;
+color:#444;
+display:block;
+float:left;
+font-size:12px;
+line-height:16px;
+margin:0 6px;
+outline:0;
+padding:6px 0;
+vertical-align:middle;
+width:168px;
+}
+
+div.search_wrapper div.search_button a#locate {
+background:url(images/simpleGeocoder.png) no-repeat 0 0;
+border:none!important;
+display:block;
+float:left;
+height:16px;
 margin-left:7px;
-border: none !important;
-padding: 0 !important;
-      }
-      
-      div.search_wrapper a#ownerParcelSwitch {
-     background: url("images/ownerbutton.png") no-repeat 0 0;
-     /*
-     float: left;
-outline: 0;
-width: 20px;
-height: 23px;
-display: block;
-overflow: hidden;
-margin: 3px;
-border: none !important;
-padding-right: 11px;
-margin-bottom: 4px;
-*/
-      }
-      
-      div.search_wrapper a {
-        float: left;
-outline: 0;
-width: 20px;
-height: 23px;
-display: block;
-overflow: hidden;
-margin: 3px;
-border: none !important;
-padding-right: 11px;
-margin-bottom: 4px;
-      }
-      
-      
-       div.search_wrapper a#addressSwitch {
-     background: url("images/address.png") no-repeat 0 0;
-     /*
-     float: left;
-outline: 0;
-width: 20px;
-height: 25px;
-display: block;
-overflow: hidden;
-margin:3px;
-border: none !important;
-padding-right: 15px;
-*/
-      }
-      
-      
-   div.search_wrapper a#roadSwitch {
-     background: url("images/road.png") no-repeat 0 0;
-     /*
-     float: left;
-outline: 0;
-width: 20px;
-height: 16px;
-display: block;
-overflow: hidden;
-margin: 3px;
-border: none !important;
-padding-right: 27px;
-*/
-      } 
-      
-         
-    a#clear{  
-     background: url("images/eraser.png") no-repeat 0 0;
-    color: #666;
-position: absolute;
-z-index: 30;
-top: 39px;
-background-color: white;
--webkit-border-radius: 0px 0px 0px 0px;
-border-radius: 0px 0px 0px 0px;
-border: 2px solid #666;
-
-
-width: 30px;
-height: 30px;
-font-size: 24px;
-font-family: verdana,helvetica;
-font-weight: 700;
-line-height: 25px;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-cursor: pointer;
-    }
-    
-    div#measurementDiv{
-    background: rgba(255,255,255,0.5);
-    position: absolute;
-	top: 100px;
-	left: 10px;
-    }
-    
-    
-     #buffer-params{
-     z-index: 1000;
-     }
-     
-     
- a#draw{  
-    
-    color: #666;
-position: absolute;
-z-index: 30;
-top: 39px;
-background-color: white;
--webkit-border-radius: 0px 0px 0px 0px;
-border-radius: 0px 0px 0px 0px;
-border: 2px solid #666;
-
-
-width: 30px;
-height: 30px;
-font-size: 24px;
-font-family: verdana,helvetica;
-font-weight: 700;
-line-height: 25px;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-cursor: pointer;
-margin-left:66px;
-    }     
-     
-     a.drawOn{
-      background: url("images/pencil.png") no-repeat 0 0;
-     }
-     a.drawOff{
-      background: url("images/pencil.png") no-repeat 0 0;
-     }
-     
-     
-     
-     a#bufferMode{  
-    
-    color: #666;
-position: absolute;
-z-index: 30;
-top: 39px;
-background-color: white;
--webkit-border-radius: 0px 0px 0px 0px;
-border-radius: 0px 0px 0px 0px;
-border: 2px solid #666;
-
-
-width: 30px;
-height: 30px;
-font-size: 24px;
-font-family: verdana,helvetica;
-font-weight: 700;
-line-height: 25px;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-cursor: pointer;
-margin-left:33px;
-    }     
-     
-     a.bufferModeOn{
-      background: url("images/buffer.png") no-repeat 0 0;
-     }
-     a.bufferModeOff{
-      background: url("images/buffer.png") no-repeat 0 0;
-     }
-     
-     
-   #tools {
-   position: absolute;
-top: 20px;
-left: 76px;
-   }  
-     
-      
-      div.search_button {
-      float: left;
-      }
-      
-      div#map_zoom_slider div.esriSimpleSliderIncrementButton {
-position: absolute;
-z-index: 30;
-top: 39px;
-background-color: white; 
--webkit-border-radius: 5px 0px 0px 5px;
-border-radius: 5px 0px 0px 5px;
-border: 2px solid #666;
-
-      }
-      
-      div#map_zoom_slider div.esriSimpleSliderDecrementButton {
-position: absolute;
-z-index: 30;
-top: 39px;
-left: 33px;
-background-color: white;
--webkit-border-radius: 0px 0px 0px 0px;
-border-radius: 0px 0px 0px 0px;
-border: 2px solid #666;
+margin-top:7px;
+outline:0;
+overflow:hidden;
+padding:0!important;
+width:16px;
 }
-     
-       div#map_zoom_slider {
-      left:10px !important;
-       }
-     
-      .esriSimpleSlider {
-      border: none !important;
-      }
-      
-      
-      .esriPopup {
-      z-index: 100;
-      }
-      
-    
-    #gallery {
-    position: absolute;
-    z-index: 999;
-    top: 0px;
-    left: 67px;
-	display: inline-block;
-    
-    }
-     #print_button {
-    
-     }
-      
-      
-      .logo-med {
-    visibility: hidden;
-height: 0;
-width: 0;
-margin: 0;
-padding: 0;  
-      }
-      
-      
-      
-      div#gallery .dijitTitlePaneTitle {
-      background: url("images/map.png") no-repeat 0 0;
-      color: #666;
-position: absolute;
-z-index: 30;
-top: 39px;
-background-color: white;
--webkit-border-radius: 0px 0px 0px 0px;
-border-radius: 0px 0px 0px 0px;
-border: 2px solid #666;
-padding: 0 !important;
 
-width: 30px;
-height: 30px;
-font-size: 24px;
-font-family: verdana,helvetica;
-font-weight: 700;
-line-height: 25px;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-cursor: pointer;
+div.search_wrapper a#ownerParcelSwitch {
+background:url(images/ownerbutton.png) no-repeat 0 0;
+}
+
+div.search_wrapper a {
+border:none!important;
+display:block;
+float:left;
+height:23px;
+margin:3px 3px 4px;
+outline:0;
+overflow:hidden;
+padding-right:11px;
+width:20px;
+}
+
+div.search_wrapper a#addressSwitch {
+background:url(images/address.png) no-repeat 0 0;
+}
+
+div.search_wrapper a#roadSwitch {
+background:url(images/road.png) no-repeat 0 0;
+}
+
+a#clear {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 0 0 0;
+-webkit-user-select:none;
+background:url(images/eraser.png) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 0 0 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+position:absolute;
+top:39px;
+user-select:none;
+width:30px;
+z-index:30;
+}
+
+div#measurementDiv {
+background:rgba(255,255,255,0.5);
+left:10px;
+position:absolute;
+top:100px;
+}
+
+a#draw {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 0 0 0;
+-webkit-user-select:none;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 0 0 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:66px;
+position:absolute;
+top:39px;
+user-select:none;
+width:30px;
+z-index:30;
+}
+
+a#bufferMode {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 0 0 0;
+-webkit-user-select:none;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 0 0 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:33px;
+position:absolute;
+top:39px;
+user-select:none;
+width:30px;
+z-index:30;
+}
+
+#tools {
+left:76px;
+position:absolute;
+top:20px;
+}
+
+div.search_button {
+float:left;
+}
+
+div#map_zoom_slider div.esriSimpleSliderIncrementButton {
+-webkit-border-radius:5px 0 0 5px;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:5px 0 0 5px;
+position:absolute;
+top:39px;
+z-index:30;
+}
+
+div#map_zoom_slider div.esriSimpleSliderDecrementButton {
+-webkit-border-radius:0 0 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 0 0 0;
+left:33px;
+position:absolute;
+top:39px;
+z-index:30;
+}
+
+div#map_zoom_slider {
+left:10px!important;
+}
+
+.esriSimpleSlider {
+border:none!important;
+}
+
+.esriPopup {
+z-index:100;
+}
+
+#gallery {
+display:inline-block;
+left:67px;
+position:absolute;
+top:0;
+z-index:999;
+}
+
+.logo-med {
+height:0;
+margin:0;
+padding:0;
+visibility:hidden;
+width:0;
+}
+
+div#gallery .dijitTitlePaneTitle {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 0 0 0;
+-webkit-user-select:none;
+background:url(images/map.png) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 0 0 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
 margin-left:32px;
-      }
-     
-     .dijitArrowNode {
-     background: none;
-background-image: none !important;
-width: 0 !important;
-height: 0 !important;
-     }
-     
-      .dijitArrowNodeInner {
-      visibility: hidden;
-      }
-      :focus {
-      outline: none !important;
-      }
-      .esriScalebarLabel {
-       color: white;
-  
-      } 
-      
-      .map .container {
-      position: initial !important;
-      }
-      
-      #basemapGallery {
-      	background: rgba(255,255,255,0.8);
-      }
-      
-      
-      .dijitArrowButtonInner {
-background: url("images/spriteArrows.png") no-repeat scroll 0 center;
-width: 0px;
-height: 0px;
-margin: 0 0px 0 0px;
+padding:0!important;
+position:absolute;
+top:39px;
+user-select:none;
+width:30px;
+z-index:30;
+}
+
+.dijitArrowNode {
+background:none;
+background-image:none!important;
+height:0!important;
+width:0!important;
+}
+
+:focus {
+outline:none!important;
+}
+
+.esriScalebarLabel {
+color:#FFF;
+}
+
+.map .container {
+position:initial!important;
+}
+
+#basemapGallery {
+background:rgba(255,255,255,0.8);
+}
+
+.dijitArrowButtonInner {
+background:url(images/spriteArrows.png) no-repeat scroll 0 center;
+height:0;
+margin:0;
+width:0;
 }
 
 .dijitButtonNode {
-border: 1px solid #c0c0c0;
-border-bottom: 1px solid #9b9b9b;
-padding: 0.1em 0.2em 0.2em 0.2em;
-background: #fff url("images/buttonEnabled.png") repeat-x bottom left;
+background:#fff url(images/buttonEnabled.png) repeat-x bottom left;
+border:1px solid silver;
+border-bottom:1px solid #9b9b9b;
+padding:.1em .2em .2em;
 }
-      
-      
+
 .dijitPopup {
-position: absolute;
-background-color: transparent;
-margin: 0;
-border: 0;
-padding: 0;
--webkit-overflow-scrolling: touch;
+-webkit-overflow-scrolling:touch;
+background-color:transparent;
+border:0;
+margin:0;
+padding:0;
+position:absolute;
 }
 
 table[id^='dijit_Menu_'] {
-	background: rgba(255,255,255,0.8);
-	
-}
-     
-.print_button {}
-.esriPrint{
-	padding: 0 !impaortant;
-	
+background:rgba(255,255,255,0.8);
+font-family:verdana,helvetica;
+font-size:16px;
+line-height:25px;
+width:200px;
 }
 
-td.dijitStretch div[id^='_label'] {
-	visibility:hidden;
+.esriPrint {
+padding:0 !impaortant;
 }
 
-.esriPrint    td.dijitStretch {
- display:none;
-      }
-      
-   td[id^='dijit_form_ComboButton_'] {
-    	   background: url("images/print.png") no-repeat 0 0;
-      color: #666;
-position: absolute;
-z-index: 30;
-top: 39px;
-background-color: white;
--webkit-border-radius: 0px 5px 5px 0px;
-border-radius: 0px 5px 5px 0px;
-border: 2px solid #666;
-padding: 0 !important;
+.esriPrint td.dijitStretch {
+display:none;
+}
 
-width: 30px;
-height: 30px;
-font-size: 24px;
-font-family: verdana,helvetica;
-font-weight: 700;
-line-height: 25px;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-cursor: pointer;
+td[id^='dijit_form_ComboButton_'] {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 5px 5px 0;
+-webkit-user-select:none;
+background:url(images/print.png) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 5px 5px 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
 margin-left:124px;
-   
-   }   
-      
-      table[id^='dijit_Menu_'] {
-      font-size: 16px;
-font-family: verdana,helvetica;
-
-line-height: 25px;
-width: 200px
-      
-      }
-     tr.dijitMenuItemHover{
-      cursor: pointer;
-      background:rgba(255,0,0,0.5);
-      
-      }
-      div[id^='dijit_form_ComboButton_'] {
-      top: 93px !important;
-	  left: 54px !important;
-	  right: auto !important;
-	  z-index: 1000 !important;
-      
-      }
-      
-        td[id^='dijit_form_ComboButton_'] div.dijitArrowButtonChar{
-        visibility:hidden;
-        }
-        
-        a.esriPrintout{
-         
-        background: url("images/printdone.png") no-repeat 0 0; 
-      color: #666;
-position: absolute;
-z-index: 30;
-top: 39px;
-background-color: white;
--webkit-border-radius: 0px 5px 5px 0px;
-border-radius: 0px 5px 5px 0px;
-border: 2px solid #666;
-padding: 0 !important;
-
-width: 30px;
-height: 30px;
-font-size: 24px;
-font-family: verdana,helvetica;
-font-weight: 700;
-line-height: 25px;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-cursor: pointer;
-margin-left: 124px;
-
-   text-indent:100px;
-   white-space:nowrap;
-   overflow: hidden;
-        }
-        
-        
-        div.processing td[id^='dijit_form_ComboButton_'] {
-        	background: #ffffff url("images/processing.gif") no-repeat 3px 3px !important; 
-        	
-        	
-        }
-        
-        a.processing {
-        	background: #ffffff url("images/processing.gif") no-repeat 3px 3px !important; 
-        }
-        
-        div#gallery.processing .dijitTitlePaneTitle {
-        	background: #ffffff url("images/processing.gif") no-repeat 3px 3px !important; 
-        }
-        
-        div.search_wrapper div.search_button a#locate.processing {
-        	background: #ffffff url("images/processingmini.gif") no-repeat 0px 0px !important; 
-        }
- /*    
-.areaIcon {
-background-image: url("images/Measure_Area16.png");
-width: 16px;
-height: 16px;
-}   
-
-.distanceIcon {
-background-image: url("images/Measure_Distance16.png");
-width: 16px;
-height: 16px;
-}     
-
-.locationIcon {
-background-image: url("images/Measure_Point16.png");
-width: 16px;
-height: 16px;
+padding:0!important;
+position:absolute;
+top:39px;
+user-select:none;
+width:30px;
+z-index:30;
 }
 
-.dijitInline {
-display: inline-block;
-border: 0;
-padding: 0;
-vertical-align: middle;
-}
-.dijitReset {
-margin: 0;
-border: 0;
-padding: 0;
-font: inherit;
-line-height: normal;
-color: inherit;
+tr.dijitMenuItemHover {
+background:rgba(255,0,0,0.5);
+cursor:pointer;
 }
 
-.dijitButtonNode {
-border: 1px solid gray;
-margin: 0;
-line-height: normal;
-vertical-align: middle;
-text-align: center;
-white-space: nowrap;
+div[id^='dijit_form_ComboButton_'] {
+left:54px!important;
+right:auto!important;
+top:93px!important;
+z-index:1000!important;
 }
 
-.dijitSelect, .dijitSelect *, .dijitButtonNode, .dijitButtonNode * {
-cursor: pointer;
--webkit-tap-highlight-color: transparent;
+a.esriPrintout {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 5px 5px 0;
+-webkit-user-select:none;
+background:url(images/printdone.png) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 5px 5px 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:124px;
+overflow:hidden;
+padding:0!important;
+position:absolute;
+text-indent:100px;
+top:39px;
+user-select:none;
+white-space:nowrap;
+width:30px;
+z-index:30;
 }
 
-.dijitButtonContents {
-display: block;
+div.search_wrapper div.search_button a#locate.processing {
+background:#fff url(images/processingmini.gif) no-repeat 0 0!important;
 }
 
-.dijitStretch {
-white-space: nowrap;
-background-repeat: repeat-x;
+a.drawOn,a.drawOff {
+background:url(images/pencil.png) no-repeat 0 0;
 }
 
-.dijitButtonNode * {
-vertical-align: middle;
+a.bufferModeOn,a.bufferModeOff {
+background:url(images/buffer.png) no-repeat 0 0;
 }
 
-.dijitDisplayNone {
-display: none !important;
+.dijitArrowNodeInner,td.dijitStretch div[id^='_label'],td[id^='dijit_form_ComboButton_'] div.dijitArrowButtonChar {
+visibility:hidden;
 }
 
-   */   
+div.processing td[id^='dijit_form_ComboButton_'],a.processing,div#gallery.processing .dijitTitlePaneTitle {
+background:#fff url(images/processing.gif) no-repeat 3px 3px!important;
+}
