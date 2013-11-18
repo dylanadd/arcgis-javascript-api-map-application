@@ -10,12 +10,16 @@
  	<!-- 	<link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/tundra/tundra.css">  --> 
      <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css">
      <link rel="stylesheet" href="./interface.css">
-
+		
 
 	<script>var selectedParcel;</script>
     <script>var dojoConfig = { parseOnLoad: true };</script>
     <script src="http://js.arcgis.com/3.7/"></script>
+    
     <script src="map.js"></script>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>
+    <script src="effects.js"></script>
   </head>
   
   <body class="tundra">
@@ -35,7 +39,7 @@
       <!--   <input id="lock" type="button" value="Lock Map"> -->
       
       
-       <div id="output"></div>
+      
        
         <div id="buffer-params" style="visibility: hidden;">
 
@@ -116,6 +120,9 @@
         
          <div id="print_button" class="dormant"></div>
         
+        <a id="toggleOutput" class="closed" title="View your selected info panel"></a>
+        <a id="legendToggle" title="View Map Legend"></a>
+        <a id="helpButton" title="View instructions on using the map"></a>
           </div>
           
           
@@ -130,6 +137,15 @@
        
        <div id="legendDiv"></div>
        </div>
+        <div id="output" class="xhide">
+        	<div id="wrapper">
+        		<div id="wrapper2">
+        	<table id="outTable" cellpadding="3px" cellspacing="0" ><tr class="labels"><td>Parcel Num.</td><td>Assessor Link</td><td>FIPS</td><td>Own. Name</td><td>Own. Overflow</td><td>Own. Address</td><td>Own. City</td><td>Own. State</td><td>Own. Zip</td></tr><div id="tableFill"></div></table>
+        	</div>
+        	</div>
+        </div>
+        
+        
       </div>
    
   </body>

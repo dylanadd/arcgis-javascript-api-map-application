@@ -63,7 +63,7 @@ border-radius:5px;
 left:10px;
 position:absolute;
 top:10px;
-width:330px;
+width:326px;
 z-index:30;
 }
 
@@ -426,4 +426,169 @@ visibility:hidden;
 
 div.processing td[id^='dijit_form_ComboButton_'],a.processing,div#gallery.processing .dijitTitlePaneTitle {
 background:#fff url(images/processing.gif) no-repeat 3px 3px!important;
+}
+
+.hide{
+	
+	display: none;
+}
+
+#output {
+	position: absolute;
+	
+	
+	max-height: 250px;
+
+	bottom: 20px;
+	width: 100%;
+	
+}
+
+#output table {
+	
+	position: relative;
+	width: 100%;
+	
+}
+
+.xhide #wrapper{
+	
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+#wrapper {
+background-color: rgba(0,0,0,0.55);
+margin-left: 25%;
+margin-right: 25%;
+width: 56%;
+padding-bottom: 10px;
+max-height: 250px;	
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 10px;
+}
+
+#wrapper2 {
+overflow: auto;
+max-height: 250px;
+}
+
+.even{
+	background-color: rgba(255,255,255,0.9);
+}
+
+.odd{
+	background-color: rgba(255,222,255,0.9);
+	
+}
+
+#toggleOutput {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 5px 5px 0;
+-webkit-user-select:none;
+
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 5px 5px 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:165px;
+overflow:hidden;
+padding:0!important;
+position:absolute;
+text-indent:100px;
+top:39px;
+user-select:none;
+white-space:nowrap;
+width:30px;
+z-index:30;
+}
+
+.open{
+	background:url(images/eye.png) no-repeat 0 0;
+background-color:#FFF;
+}
+
+.closed{
+background:url(images/eyeclosed.png) no-repeat 0 0;
+background-color:#FFF;
+}
+
+
+
+#legendToggle{
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 5px 5px 0;
+-webkit-user-select:none;
+background:url(images/key.png) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 5px 5px 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:198px;
+overflow:hidden;
+padding:0!important;
+position:absolute;
+text-indent:100px;
+top:39px;
+user-select:none;
+white-space:nowrap;
+width:30px;
+z-index:30;
+}
+
+#helpButton{
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 5px 5px 0;
+-webkit-user-select:none;
+background:url(images/help.jpg) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 5px 5px 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:230px;
+overflow:hidden;
+padding:0!important;
+position:absolute;
+text-indent:100px;
+top:39px;
+user-select:none;
+white-space:nowrap;
+width:30px;
+z-index:30;
+}
+
+a.action.zoomTo{
+	float:left;
+	
+}
+.labels{
+	color: white;
+	font-family: verdana, helvetica;
+	font-size: 16px;
+	font-weight: 500;
+}
+.labels td, .centerCell{
+	text-align:center;
 }

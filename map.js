@@ -23,7 +23,7 @@ require([
     "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate", 
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer", 
     "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect", 
-    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend", 
+    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend",
     
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function(
 Map, FeatureLayer, 
@@ -779,8 +779,9 @@ alert("test")
             map.infoWindow.setFeatures([deferred]);
             map.infoWindow.show(e.mapPoint);
             //  selectedParcel = selection[0];
-            infoArray = selection[0];
-        
+            try{
+            	infoArray = selection[0];
+        	} catch(e){}
         }
 
     //doBuffer3(selectedParcel);
@@ -801,6 +802,12 @@ alert("test")
     on(dom.byId("address"), "click", function() {
         domAttr.set("address", "value", "");
     });
+   // on(dom.byId("toggleOutput"), "click", function(){
+   // var panel = dom.byId("output");
+   // fx.fadeOut({node: panel}).play();
+   // console.log(fx);
+  //  });
+    
     
     var ownParSearch = true;
     var addrSearch = false;
@@ -1030,7 +1037,7 @@ alert("test")
         map.removeAllLayers();
         map.addLayer(basemap);
         map.addLayer(parcelInfoLayer);
-        
+        stripe = null;
         empty();
         map.graphics.clear();
         map.infoWindow.hide();
@@ -1057,10 +1064,19 @@ alert("test")
     
     
     }
-    
+    var stripe = null;
     function info() {
         
-        var s = "<table><tr>" + 
+        if(stripe == null || stripe == "odd"){
+        	stripe = "even";
+        	} else {
+        		stripe = "odd";
+        	} 
+        
+        domAttr.set("output", "class", "xxhide");
+        domAttr.set("output", "style", "opacity: 1;");
+        domAttr.set("toggleOutput", "class", "open");
+        var s = "<tr class=\"" + stripe + " centerCell\">" + 
         "<td>" + infoArray.attributes.PAR_NUM + "</td>" + 
         "<td><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray.attributes.PAR_TXT + "</a></td>" + 
         "<td>" + infoArray.attributes.Fips + "</td>" + 
@@ -1070,10 +1086,10 @@ alert("test")
         "<td>" + infoArray.attributes.OwnerCity + "</td>" + 
         "<td>" + infoArray.attributes.OwnerState + "</td>" + 
         "<td>" + infoArray.attributes.OwnerZip + "</td>" + 
-        "</tr></table></div>";
+        "</tr>";
         
         
-        dom.byId("output").innerHTML += s;
+        dom.byId("outTable").innerHTML += s;
     
     }
     
@@ -1102,8 +1118,9 @@ alert("test")
     }
     
     function empty() {
-        dom.byId("output").innerHTML = "";
-    
+        dom.byId("outTable").innerHTML = "";
+    	domAttr.set("output", "class", "hide");
+    	domAttr.set("toggleOutput", "class", "closed");
     }
     
     
