@@ -1,0 +1,594 @@
+html,body,#map {
+height:100%;
+margin:0;
+overflow:hidden;
+padding:0;
+width:100%;
+}
+
+#buffer-params {
+background:rgba(255,255,255,0.5);
+position:relative;
+top:100px;
+width:255px;
+z-index:1000;
+}
+
+#button-console {
+height:0;
+position:relative;
+z-index:999;
+}
+
+#feedback {
+color:#000;
+font-family:arial;
+height:auto;
+margin:5px;
+padding:10px;
+position:absolute;
+right:20px;
+top:20px;
+width:300px;
+z-index:40;
+}
+
+#feedback a {
+border-bottom:1px solid #888;
+color:#444;
+text-decoration:none;
+}
+
+#feedback a:hover,#feedback a:active,#feedback a:visited {
+border:none;
+color:#444;
+text-decoration:none;
+}
+
+#note {
+font-size:80%;
+font-weight:700;
+padding:0 0 10px;
+}
+
+.selected {
+background-color:#ADD8E6!important;
+}
+
+.search_wrapper {
+-webkit-border-radius:5px;
+background:#fff;
+border:2px solid #666;
+border-radius:5px;
+left:10px;
+position:absolute;
+top:10px;
+width:326px;
+z-index:30;
+}
+
+.searchbox {
+background:none;
+border:0;
+border-collapse:collapse;
+color:#444;
+display:block;
+float:left;
+font-size:12px;
+line-height:16px;
+margin:0 6px;
+outline:0;
+padding:6px 0;
+vertical-align:middle;
+width:168px;
+}
+
+div.search_wrapper div.search_button a#locate {
+background:url(images/simpleGeocoder.png) no-repeat 0 0;
+border:none!important;
+display:block;
+float:left;
+height:16px;
+margin-left:7px;
+margin-top:7px;
+outline:0;
+overflow:hidden;
+padding:0!important;
+width:16px;
+}
+
+div.search_wrapper a#ownerParcelSwitch {
+background:url(images/ownerbutton.png) no-repeat 0 0;
+}
+
+div.search_wrapper a {
+border:none!important;
+display:block;
+float:left;
+height:23px;
+margin:3px 3px 4px;
+outline:0;
+overflow:hidden;
+padding-right:11px;
+width:20px;
+}
+
+div.search_wrapper a#addressSwitch {
+background:url(images/address.png) no-repeat 0 0;
+}
+
+div.search_wrapper a#roadSwitch {
+background:url(images/road.png) no-repeat 0 0;
+}
+
+a#clear {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 0 0 0;
+-webkit-user-select:none;
+background:url(images/eraser.png) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 0 0 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+position:absolute;
+top:39px;
+user-select:none;
+width:30px;
+z-index:30;
+}
+
+div#measurementDiv {
+background:rgba(255,255,255,0.5);
+left:10px;
+position:absolute;
+top:100px;
+}
+
+a#draw {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 0 0 0;
+-webkit-user-select:none;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 0 0 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:66px;
+position:absolute;
+top:39px;
+user-select:none;
+width:30px;
+z-index:30;
+}
+
+a#bufferMode {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 0 0 0;
+-webkit-user-select:none;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 0 0 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:33px;
+position:absolute;
+top:39px;
+user-select:none;
+width:30px;
+z-index:30;
+}
+
+#tools {
+left:76px;
+position:absolute;
+top:20px;
+}
+
+div.search_button {
+float:left;
+}
+
+div#map_zoom_slider div.esriSimpleSliderIncrementButton {
+-webkit-border-radius:5px 0 0 5px;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:5px 0 0 5px;
+position:absolute;
+top:39px;
+z-index:30;
+}
+
+div#map_zoom_slider div.esriSimpleSliderDecrementButton {
+-webkit-border-radius:0 0 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 0 0 0;
+left:33px;
+position:absolute;
+top:39px;
+z-index:30;
+}
+
+div#map_zoom_slider {
+left:10px!important;
+}
+
+.esriSimpleSlider {
+border:none!important;
+}
+
+.esriPopup {
+z-index:100;
+}
+
+#gallery {
+display:inline-block;
+left:67px;
+position:absolute;
+top:0;
+z-index:999;
+}
+
+.logo-med {
+height:0;
+margin:0;
+padding:0;
+visibility:hidden;
+width:0;
+}
+
+div#gallery .dijitTitlePaneTitle {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 0 0 0;
+-webkit-user-select:none;
+background:url(images/map.png) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 0 0 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:32px;
+padding:0!important;
+position:absolute;
+top:39px;
+user-select:none;
+width:30px;
+z-index:30;
+}
+
+.dijitArrowNode {
+background:none;
+background-image:none!important;
+height:0!important;
+width:0!important;
+}
+
+:focus {
+outline:none!important;
+}
+
+.esriScalebarLabel {
+color:#FFF;
+}
+
+.map .container {
+position:initial!important;
+}
+
+#basemapGallery {
+background:rgba(255,255,255,0.8);
+}
+
+.dijitArrowButtonInner {
+background:url(images/spriteArrows.png) no-repeat scroll 0 center;
+height:0;
+margin:0;
+width:0;
+}
+
+.dijitButtonNode {
+background:#fff url(images/buttonEnabled.png) repeat-x bottom left;
+border:1px solid silver;
+border-bottom:1px solid #9b9b9b;
+padding:.1em .2em .2em;
+}
+
+.dijitPopup {
+-webkit-overflow-scrolling:touch;
+background-color:transparent;
+border:0;
+margin:0;
+padding:0;
+position:absolute;
+}
+
+table[id^='dijit_Menu_'] {
+background:rgba(255,255,255,0.8);
+font-family:verdana,helvetica;
+font-size:16px;
+line-height:25px;
+width:200px;
+}
+
+.esriPrint {
+padding:0 !impaortant;
+}
+
+.esriPrint td.dijitStretch {
+display:none;
+}
+
+td[id^='dijit_form_ComboButton_'] {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 5px 5px 0;
+-webkit-user-select:none;
+background:url(images/print.png) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 5px 5px 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:124px;
+padding:0!important;
+position:absolute;
+top:39px;
+user-select:none;
+width:30px;
+z-index:30;
+}
+
+tr.dijitMenuItemHover {
+background:rgba(255,0,0,0.5);
+cursor:pointer;
+}
+
+div[id^='dijit_form_ComboButton_'] {
+left:54px!important;
+right:auto!important;
+top:93px!important;
+z-index:1000!important;
+}
+
+a.esriPrintout {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 5px 5px 0;
+-webkit-user-select:none;
+background:url(images/printdone.png) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 5px 5px 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:124px;
+overflow:hidden;
+padding:0!important;
+position:absolute;
+text-indent:100px;
+top:39px;
+user-select:none;
+white-space:nowrap;
+width:30px;
+z-index:30;
+}
+
+div.search_wrapper div.search_button a#locate.processing {
+background:#fff url(images/processingmini.gif) no-repeat 0 0!important;
+}
+
+a.drawOn,a.drawOff {
+background:url(images/pencil.png) no-repeat 0 0;
+}
+
+a.bufferModeOn,a.bufferModeOff {
+background:url(images/buffer.png) no-repeat 0 0;
+}
+
+.dijitArrowNodeInner,td.dijitStretch div[id^='_label'],td[id^='dijit_form_ComboButton_'] div.dijitArrowButtonChar {
+visibility:hidden;
+}
+
+div.processing td[id^='dijit_form_ComboButton_'],a.processing,div#gallery.processing .dijitTitlePaneTitle {
+background:#fff url(images/processing.gif) no-repeat 3px 3px!important;
+}
+
+.hide{
+	
+	display: none;
+}
+
+#output {
+	position: absolute;
+	
+	
+	max-height: 250px;
+
+	bottom: 20px;
+	width: 100%;
+	
+}
+
+#output table {
+	
+	position: relative;
+	width: 100%;
+	
+}
+
+.xhide #wrapper{
+	
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+#wrapper {
+background-color: rgba(0,0,0,0.55);
+margin-left: 25%;
+margin-right: 25%;
+width: 56%;
+padding-bottom: 10px;
+max-height: 250px;	
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 10px;
+}
+
+#wrapper2 {
+overflow: auto;
+max-height: 250px;
+}
+
+.even{
+	background-color: rgba(255,255,255,0.9);
+}
+
+.odd{
+	background-color: rgba(255,222,255,0.9);
+	
+}
+
+#toggleOutput {
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 5px 5px 0;
+-webkit-user-select:none;
+
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 5px 5px 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:165px;
+overflow:hidden;
+padding:0!important;
+position:absolute;
+text-indent:100px;
+top:39px;
+user-select:none;
+white-space:nowrap;
+width:30px;
+z-index:30;
+}
+
+.open{
+	background:url(images/eye.png) no-repeat 0 0;
+background-color:#FFF;
+}
+
+.closed{
+background:url(images/eyeclosed.png) no-repeat 0 0;
+background-color:#FFF;
+}
+
+
+
+#legendToggle{
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 5px 5px 0;
+-webkit-user-select:none;
+background:url(images/key.png) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 5px 5px 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:198px;
+overflow:hidden;
+padding:0!important;
+position:absolute;
+text-indent:100px;
+top:39px;
+user-select:none;
+white-space:nowrap;
+width:30px;
+z-index:30;
+}
+
+#helpButton{
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:0 5px 5px 0;
+-webkit-user-select:none;
+background:url(images/help.jpg) no-repeat 0 0;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:0 5px 5px 0;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:30px;
+line-height:25px;
+margin-left:230px;
+overflow:hidden;
+padding:0!important;
+position:absolute;
+text-indent:100px;
+top:39px;
+user-select:none;
+white-space:nowrap;
+width:30px;
+z-index:30;
+}
+
+a.action.zoomTo{
+	float:left;
+	
+}
+.labels{
+	color: white;
+	font-family: verdana, helvetica;
+	font-size: 16px;
+	font-weight: 500;
+}
+.labels td, .centerCell{
+	text-align:center;
+}
