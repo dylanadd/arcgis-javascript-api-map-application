@@ -648,8 +648,8 @@ background:url(images/results.png) no-repeat 0 0;
 	text-align: left;
 }
 
-#resultsContent table:hover{
-	background-color:rgba(0,0,0,0.7);
+#resultsContent div:hover{
+	background-color:rgba(252,185,241,0.47);
 	cursor:pointer;
 }
 #resultsContent table{

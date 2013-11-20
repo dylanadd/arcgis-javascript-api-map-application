@@ -1277,22 +1277,22 @@ alert("test")
 			
 		for(i=0;i<infoArray5.length;i++){
 			resultsArray.push(infoArray5[i]);
-			 var s = "<table cellspacing=\"0\"><tr class=\"" + stripe2 + " leftCell\">" + 
-        "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+			 var s = "<table cellspacing=\"0\"><tr class=\"" + " leftCell\">" + 
+        "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\""  + " leftCell\">" +
         "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5[i].attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></span></td>" + "</tr>" + 
-        "<tr class=\"" + stripe2 + " leftCell\">" +"<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5[i].attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerOverflow + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<tr class=\"" +  " leftCell\">" +"<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5[i].attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+        "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" +  " leftCell\">" +
+        "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerOverflow + "</span></td>" + "</tr>" + "<tr class=\"" +  " leftCell\">" +
+        "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" +  " leftCell\">" +
+        "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+        "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" +  " leftCell\">" +
         "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerZip + "</span></td>" + 
         "</tr></table>";
         
      var temp =  domConstruct.create("div",{
         	"innerHTML": s,
         	"id": "test" + i,
-        	
+        	"class": stripe2
         }, "resultsContent");
         var zz = dom.byId("test" + i);
 
@@ -1348,7 +1348,7 @@ alert("test")
 		for(i=0;i<infoArray5.addresses.length;i++){
 			infoArray5.addresses[i].location.spatialReference.wkid = 2233;
 			resultsArray.push(infoArray5.addresses[i]);
-			 var s = "<table cellspacing=\"0\"><tr class=\"" + stripe2 + " leftCell\">" + 
+			 var s = "<table cellspacing=\"0\"><tr class=\"" +  " leftCell\">" + 
         "<td class=\"parNum\">Address: " + infoArray5.addresses[i].address + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
         "<td class=\"assessorLink\">Address Matching Score: " + infoArray5.addresses[i].score + "</td>" + "</tr>" + 
         "</table>";
@@ -1356,7 +1356,7 @@ alert("test")
      var temp =  domConstruct.create("div",{
         	"innerHTML": s,
         	"id": "test" + i,
-        	
+        	"class": stripe2
         }, "resultsContent");
         var zz = dom.byId("test" + i);
 
