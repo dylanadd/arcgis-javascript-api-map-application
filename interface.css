@@ -652,3 +652,24 @@ background:url(images/results.png) no-repeat 0 0;
 	background-color:rgba(0,0,0,0.7);
 	cursor:pointer;
 }
+#resultsContent table{
+	width:256px;
+	}
+#feedback{
+	display:none;
+}
+#resultsContent div{
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+box-sizing: border-box; 
+}
+.resultsLabel {
+	font-weight: bold;
+	color: darkcyan;
+	float: left;
+	font-size:13px;
+}
+.resultsText{
+	float:left;
+	margin-left:12px;
+}

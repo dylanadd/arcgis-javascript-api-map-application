@@ -205,7 +205,8 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
         if (e.keyCode == 13) {
             
             if (dom.byId("address").value != "Search name or parcel #" && dom.byId("address").value != "Search address" && dom.byId("address").value != "Search road") {
-                startSearch();
+               // startSearch();
+               on.emit(dom.byId("locate"), "click", {bubbles: true, cancelable: true});
             }
         }
     
@@ -677,6 +678,7 @@ alert("test")
 
     //when users click on the map select the parcel using the map point and update the url parameter
     map.on("click", function(e) {
+    console.log(e.mapPoint);
         if (draw == false || draw == null) {
             var query = new Query();
             query.geometry = e.mapPoint;
@@ -792,6 +794,14 @@ alert("test")
     
     function startSearch() {
         domAttr.set("locate", "class", "processing");
+        try{
+        	resultsArray.length = 0;
+       
+        } catch(e){}
+        try{
+        	
+        	dom.byId("resultsContent").innerHTML = "";
+        } catch(e){}
         //	clearx();
         map.graphics.clear();
         if (ownParSearch) {
@@ -872,7 +882,7 @@ alert("test")
     var locator = new Locator("http://maps.co.pueblo.co.us/ArcGIS/rest/services/PCGIS_Geocoding_Service/GeocodeServer");
     // var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
     locator.on("address-to-locations-complete", showResults);
-
+	
 
     //prepare address query string for Geocoder
     function locate() {
@@ -889,11 +899,12 @@ alert("test")
             address: address,
             outFields: ["Loc_name"]
         };
+       // console.log(locator.addressToLocations(options));
         locator.addressToLocations(options);
     }
     
     function showResults(evt) {
-        
+        displayGeoCoderResults(evt);
         var candidate;
         var symbol = new SimpleMarkerSymbol();
         var infoTemplate = new InfoTemplate(
@@ -942,6 +953,44 @@ alert("test")
         domAttr.set("locate", "class", "dormant");
     }
     //END Location Dijit
+    
+    
+    function selectByPoint(geoPoint){
+    	 var query = new Query();
+            query.geometry = geoPoint.location;
+            // console.log(e);
+            // map.centerAndZoom(e.mapPoint, 10);
+            //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
+            var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function(selection) {
+                console.debug(selection);
+
+
+                //update the url param if a parcel was located
+                if (selection.length > 0) {
+                    var parcelid = selection[0].attributes["PAR_NUM"];
+                    selectParcel(parcelid);
+                    infoArray = selection[0];
+                    // infoArray2 += selection[0];
+                    //Refresh the URL with the currently selected parcel
+                    if (typeof history.pushState !== "undefined") {
+                        //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
+                        infoArray = selection[0];
+                        infoArray2.push(selection[0]);
+                    }
+                }
+                
+                
+                map.addLayer(parcels);
+           // map.infoWindow.show(selection[0]);
+            
+            }, function(error) {
+                alert(error);
+            }); //end of defferred variable declaration
+    	
+    }
+    
+    
+    
     
     
     var infoArray3 = new Array();
@@ -1010,7 +1059,7 @@ alert("test")
             infoArray.length = 0;
             infoArray2.length = 0;
             infoArray3.length = 0;
-            
+            resultsArray.length = 0;
             
             
             if (parcels !== 'undefined') {
@@ -1229,15 +1278,15 @@ alert("test")
 		for(i=0;i<infoArray5.length;i++){
 			resultsArray.push(infoArray5[i]);
 			 var s = "<table cellspacing=\"0\"><tr class=\"" + stripe2 + " leftCell\">" + 
-        "<td class=\"parNum\">Parcel Number: " + infoArray5[i].attributes.PAR_NUM + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"assessorLink\">Assessor Link: <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5[i].attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></td>" + "</tr>" + 
-        "<tr class=\"" + stripe2 + " leftCell\">" +"<td class=\"fips\">FIPS: " + infoArray5[i].attributes.Fips + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownName\">Own. Name: " + infoArray5[i].attributes.Owner + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownOverflow\">Own. Overflow: " + infoArray5[i].attributes.OwnerOverflow + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownAddress\">Own. Address: " + infoArray5[i].attributes.OwnerStreetAddress + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownCity\">Own. City: " + infoArray5[i].attributes.OwnerCity + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownState\">Own. State: " + infoArray5[i].attributes.OwnerState + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"ownZip\">Own Zip: " + infoArray5[i].attributes.OwnerZip + "</td>" + 
+        "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5[i].attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></span></td>" + "</tr>" + 
+        "<tr class=\"" + stripe2 + " leftCell\">" +"<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5[i].attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerOverflow + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerZip + "</span></td>" + 
         "</tr></table>";
         
      var temp =  domConstruct.create("div",{
@@ -1263,6 +1312,70 @@ alert("test")
         	  
         	  selectParcel(resultsArray[n].attributes.PAR_NUM);
 				 map.infoWindow.show(resultsArray[n].geometry.getPoint(0, 0));
+        	 } catch(error){
+        	 	console.log(error);
+        	 }
+        
+        	
+        });
+        
+
+		
+		if(stripe2 == "odd"){
+			stripe2 = "even";
+		} else if(stripe2 == "even")
+			stripe2 = "odd";
+		}
+			setTimeout(function(){
+				on.emit(dom.byId("openClose"), "click", {bubbles: true, cancelable: true});
+				//on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
+			}, 1000);
+			
+		//connect.subscribe("")
+	
+	}
+	
+	
+	
+	
+	function displayGeoCoderResults(infoArray5){
+		console.log(infoArray5);
+	
+		if(stripe2 == null){
+			stripe2 = "even";
+		}
+			
+		for(i=0;i<infoArray5.addresses.length;i++){
+			infoArray5.addresses[i].location.spatialReference.wkid = 2233;
+			resultsArray.push(infoArray5.addresses[i]);
+			 var s = "<table cellspacing=\"0\"><tr class=\"" + stripe2 + " leftCell\">" + 
+        "<td class=\"parNum\">Address: " + infoArray5.addresses[i].address + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"assessorLink\">Address Matching Score: " + infoArray5.addresses[i].score + "</td>" + "</tr>" + 
+        "</table>";
+        
+     var temp =  domConstruct.create("div",{
+        	"innerHTML": s,
+        	"id": "test" + i,
+        	
+        }, "resultsContent");
+        var zz = dom.byId("test" + i);
+
+        
+        //event handlers for search results
+        dojo.connect(zz,"onclick", function(node){
+        	map.graphics.clear();
+        	var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+        	n = n.toString();
+        	n = n.replace("test", "");
+        	 console.log(n);
+        	 console.log(resultsArray[n]);
+        	 var t = resultsArray[n];
+        	 console.log(t);
+        	 try{
+      		//  safeClear();
+        	  
+        	  selectByPoint(resultsArray[n]);
+				 //map.infoWindow.show(resultsArray[n].location);
         	 } catch(error){
         	 	console.log(error);
         	 }

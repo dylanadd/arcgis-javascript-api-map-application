@@ -3,6 +3,7 @@
             fadeTarget = dom.byId("output");
  		var clearButton = dom.byId("clear");
  		var viewButton = dom.byId("openClose");
+ 		var locateButton = dom.byId("locate");
  		var map = dom.byId("map");
 		var fade = null;       
 		var  secondary;
@@ -80,22 +81,14 @@
       	
    function slideIt(amt){
    	console.log(domGeom.position(slideTarget));
-   	/*
-    coreFx.slideTo({
-      node: slideTarget,
-      top: domGeom.getMarginBox(slideTarget).t.toString(),
-      left: (domGeom.getMarginBox(slideTarget).l + amt).toString(),
-      unit: "px",
-      duration: 2000
-    }).play();
-    */
+  
    
    coreFx.slideTo({
       node: slideTarget,
       top: domGeom.position(slideTarget).y.toString(),
       left: (domGeom.position(slideTarget).x + amt).toString(),
       unit: "px",
-      duration: 250
+      duration: 150
     }).play();
    // setTimeout(function(){console.log(domGeom.position(slideTarget));}, 2000);
    
@@ -106,8 +99,11 @@
 		console.log(domGeom.position(slideTarget));
 		domAttr.set(slideTarget, "style", "top: " + domGeom.position(slideTarget).y.toString() + "px; left: " + domGeom.position(slideTarget).x.toString() + "px;");
 	});  
+	
+	
 	var openClose = false; //closed initially
-   on(viewButton, "click", function(){
+  
+    on(viewButton, "click", function(){
         	if(openClose == false){
         	slideIt(-300);
         	openClose = true;
@@ -117,6 +113,11 @@
  			}
         });
       	
-     
+     on(locateButton, "click", function(){
+     	if(openClose){
+     		slideIt(300);
+     		openClose = false;
+     	}
+     });
         
     });
