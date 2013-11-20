@@ -48,7 +48,8 @@
         	fade = false;
         		domAttr.set(fadeTarget, "class", "hide");
         	   	domAttr.set(fadeButton, "class", "closed");
-        	   	dom.byId("resultsContent").innerHTML
+        	   	dom.byId("resultsContent").innerHTML = "";
+        	   	
         });
         
         var temp = true;

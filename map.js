@@ -8,6 +8,7 @@ var infoArray;
 var infoArray2 = new Array();
 var draw = null;
 var buff = null;
+
 // var gsvc, tb;
 require([
     "esri/map", "esri/layers/FeatureLayer", 
@@ -23,7 +24,7 @@ require([
     "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate", 
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer", 
     "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect", 
-    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend", 
+    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend", "dojo/behavior",
     
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function(
 Map, FeatureLayer, 
@@ -37,7 +38,7 @@ Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
 BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement, 
 Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate, 
 domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask, 
-Point, SpatialReference, ProjectParameters, Legend
+Point, SpatialReference, ProjectParameters, Legend, behavior
 
 ) {
     
@@ -270,7 +271,7 @@ Point, SpatialReference, ProjectParameters, Legend
             2
             ), new Color([255, 255, 0, 0.25])
             );
-            var bufferGeometry = result.geometries[0]
+            var bufferGeometry = result.geometries[0];
             var graphic2 = new Graphic(bufferGeometry, symbol);
             map.graphics.add(graphic2);
             //alert();
@@ -887,7 +888,7 @@ alert("test")
         var options = {
             address: address,
             outFields: ["Loc_name"]
-        }
+        };
         locator.addressToLocations(options);
     }
     
@@ -971,7 +972,30 @@ alert("test")
         parcels1.clearSelection();
     }
     
-    
+    function safeClear(){
+    	map.removeAllLayers();
+        map.addLayer(basemap);
+        map.addLayer(parcelInfoLayer);
+        stripe = null;
+       // empty();
+        map.graphics.clear();
+        map.infoWindow.hide();
+        try {
+            infoArray.length = 0;
+            infoArray2.length = 0;
+            infoArray3.length = 0;
+            
+            
+            
+            if (parcels !== 'undefined') {
+                parcels.clearSelection();
+            }
+            if (parcels1 !== 'undefined') {
+                parcels1.clearSelection();
+            }
+        } catch (e) {
+        }
+    }
     
     function clearx() {
         
@@ -1060,7 +1084,7 @@ alert("test")
     
     function empty() {
     	
-    	var x = "<tr class=\"labels\"><td id=\"parNum\">Parcel Num.</td><td id=\"assesorLink\">Assessor Link</td><td id=\"fips\">FIPS</td><td id=\"ownName\">Own. Name</td><td id=\"ownOverflow\">Own. Overflow</td><td id=\"ownAddress\">Own. Address</td><td id=\"ownCity\">Own. City</td><td id=\"ownState\">Own. State</td><td id=\"ownZip\">Own. Zip</td></tr>"
+    	var x = "<tr class=\"labels\"><td id=\"parNum\">Parcel Num.</td><td id=\"assesorLink\">Assessor Link</td><td id=\"fips\">FIPS</td><td id=\"ownName\">Own. Name</td><td id=\"ownOverflow\">Own. Overflow</td><td id=\"ownAddress\">Own. Address</td><td id=\"ownCity\">Own. City</td><td id=\"ownState\">Own. State</td><td id=\"ownZip\">Own. Zip</td></tr>";
     	
         dom.byId("outTable").innerHTML = x;
         
@@ -1190,7 +1214,11 @@ alert("test")
             });
         }
     }
+    function x(){alert("test");}
+    
+    
 	var stripe2 = null;
+	var resultsArray = new Array();
 	function displayResults(infoArray5){
 		//console.log(infoArray5);
 	
@@ -1199,6 +1227,7 @@ alert("test")
 		}
 			
 		for(i=0;i<infoArray5.length;i++){
+			resultsArray.push(infoArray5[i]);
 			 var s = "<table cellspacing=\"0\"><tr class=\"" + stripe2 + " leftCell\">" + 
         "<td class=\"parNum\">Parcel Number: " + infoArray5[i].attributes.PAR_NUM + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
         "<td class=\"assessorLink\">Assessor Link: <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5[i].attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></td>" + "</tr>" + 
@@ -1211,9 +1240,37 @@ alert("test")
         "<td class=\"ownZip\">Own Zip: " + infoArray5[i].attributes.OwnerZip + "</td>" + 
         "</tr></table>";
         
+     var temp =  domConstruct.create("div",{
+        	"innerHTML": s,
+        	"id": "test" + i,
+        	
+        }, "resultsContent");
+        var zz = dom.byId("test" + i);
+
         
-        dom.byId("resultsContent").innerHTML += s;
-		
+        //event handlers for search results
+        dojo.connect(zz,"onclick", function(node){
+        	
+        	var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+        	n = n.toString();
+        	n = n.replace("test", "");
+        	 console.log(n);
+        	 console.log(resultsArray[n]);
+        	 var t = resultsArray[n];
+        	 console.log(t);
+        	 try{
+      		//  safeClear();
+        	  
+        	  selectParcel(resultsArray[n].attributes.PAR_NUM);
+				 map.infoWindow.show(resultsArray[n].geometry.getPoint(0, 0));
+        	 } catch(error){
+        	 	console.log(error);
+        	 }
+        
+        	
+        });
+        
+
 		
 		if(stripe2 == "odd"){
 			stripe2 = "even";
@@ -1225,6 +1282,8 @@ alert("test")
 				//on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
 			}, 1000);
 			
+		//connect.subscribe("")
+	
 	}
 
 
@@ -1234,7 +1293,7 @@ alert("test")
     //detect when popup selection is changed
     popup.on("selection-change", function() {
         if (change) {
-            
+            try{
             map.infoWindow.restore();
             // console.log(popup.getSelectedFeature());
             
@@ -1243,7 +1302,7 @@ alert("test")
             map.centerAndZoom(popup.features[popup.selectedIndex].geometry.getPoint(0, 0), 8);
             
             map.infoWindow.show(popup.features[popup.selectedIndex].geometry.getPoint(0, 0));
-        
+        } catch(e){}
         }
     
     });
