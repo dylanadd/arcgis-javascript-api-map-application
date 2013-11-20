@@ -63,7 +63,7 @@ border-radius:5px;
 left:10px;
 position:absolute;
 top:10px;
-width:326px;
+width:327px;
 z-index:30;
 }
 
@@ -346,12 +346,12 @@ display:none;
 td[id^='dijit_form_ComboButton_'] {
 -moz-user-select:none;
 -ms-user-select:none;
--webkit-border-radius:0 5px 5px 0;
+-webkit-border-radius:0 0px 0px 0;
 -webkit-user-select:none;
 background:url(images/print.png) no-repeat 0 0;
 background-color:#FFF;
 border:2px solid #666;
-border-radius:0 5px 5px 0;
+border-radius:0 0px 0px 0;
 color:#666;
 cursor:pointer;
 font-family:verdana,helvetica;
@@ -383,12 +383,12 @@ z-index:1000!important;
 a.esriPrintout {
 -moz-user-select:none;
 -ms-user-select:none;
--webkit-border-radius:0 5px 5px 0;
+-webkit-border-radius:0 0px 0px 0;
 -webkit-user-select:none;
 background:url(images/printdone.png) no-repeat 0 0;
 background-color:#FFF;
 border:2px solid #666;
-border-radius:0 5px 5px 0;
+border-radius:0 0px 0px 0;
 color:#666;
 cursor:pointer;
 font-family:verdana,helvetica;
@@ -448,7 +448,7 @@ background:#fff url(images/processing.gif) no-repeat 3px 3px!important;
 	
 	position: relative;
 	width: 100%;
-	
+	table-layout: fixed;
 }
 
 .xhide #wrapper{
@@ -479,19 +479,19 @@ max-height: 250px;
 }
 
 .odd{
-	background-color: rgba(255,222,255,0.9);
+	background-color: rgba(255,243,197,0.9);
 	
 }
 
 #toggleOutput {
 -moz-user-select:none;
 -ms-user-select:none;
--webkit-border-radius:0 5px 5px 0;
+-webkit-border-radius:0 0px 0px 0;
 -webkit-user-select:none;
 
 background-color:#FFF;
 border:2px solid #666;
-border-radius:0 5px 5px 0;
+border-radius:0 0px 0px 0;
 color:#666;
 cursor:pointer;
 font-family:verdana,helvetica;
@@ -526,12 +526,12 @@ background-color:#FFF;
 #legendToggle{
 -moz-user-select:none;
 -ms-user-select:none;
--webkit-border-radius:0 5px 5px 0;
+-webkit-border-radius:0 0px 0px 0;
 -webkit-user-select:none;
 background:url(images/key.png) no-repeat 0 0;
 background-color:#FFF;
 border:2px solid #666;
-border-radius:0 5px 5px 0;
+border-radius:0 0px 0px 0;
 color:#666;
 cursor:pointer;
 font-family:verdana,helvetica;
@@ -567,7 +567,7 @@ font-size:24px;
 font-weight:700;
 height:30px;
 line-height:25px;
-margin-left:230px;
+margin-left:231px;
 overflow:hidden;
 padding:0!important;
 position:absolute;
@@ -591,4 +591,62 @@ a.action.zoomTo{
 }
 .labels td, .centerCell{
 	text-align:center;
+}
+.visible{}
+
+.invisible{
+	display: none;
+}
+.xhide{
+	display:none;
+}
+
+#searchResults{
+	position:absolute;
+	right: -179px;
+	top:0px;
+	height:100%;
+}
+div#openClose{
+	cursor:pointer;
+	width: 22px;
+	height:150px;
+	float: left;
+}
+div#openClose.noResults{
+background:url(images/results.png) no-repeat 0 0;
+}
+.resultsWindow{
+	position:relative;
+	margin-left:22px;
+	width:300px;
+	height:100%;
+	background-color:rgba(0,0,0,0.7);
+	padding-top: 1px;
+    margin-top: -1px;
+}
+.buttonWrap{
+	height:100%;
+	float:left;
+}
+#resultsContent{
+
+	background-color: rgba(255,255,255,0.85);
+	height: 98%;
+	width: 91%;
+	margin-top: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+	word-wrap: break-word;
+	overflow:auto;
+	font-family: verdana,helvetica;
+	font-size: 12px;
+}
+.leftCell {
+	text-align: left;
+}
+
+#resultsContent table:hover{
+	background-color:rgba(0,0,0,0.7);
+	cursor:pointer;
 }

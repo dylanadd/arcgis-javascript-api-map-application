@@ -1,11 +1,12 @@
-  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dom-attr","dojo/query", "dojo/NodeList-manipulate", "dojo/domReady!" ], function(fx, on, dom, domAttr, query) {
+  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, domAttr, query, domGeom, coreFx, ready) {
         var fadeButton = dom.byId("toggleOutput"),
             fadeTarget = dom.byId("output");
  		var clearButton = dom.byId("clear");
+ 		var viewButton = dom.byId("openClose");
  		var map = dom.byId("map");
 		var fade = null;       
 		var  secondary;
-       
+       var slideTarget = dom.byId("searchResults");
        
         on(fadeButton, "click", function(evt){
     
@@ -28,7 +29,7 @@
             		fx.fadeIn({ node: fadeTarget, duration: 225 }).play();
             		domAttr.set(fadeButton, "class", "open");
             		fade = true;
-            	 
+            	 	
             
             }
             }
@@ -42,7 +43,12 @@
         
         
         on(clearButton, "click", function(){
+        	
+        	fx.fadeOut({ node: fadeTarget, duration: 225 }).play();
         	fade = false;
+        		domAttr.set(fadeTarget, "class", "hide");
+        	   	domAttr.set(fadeButton, "class", "closed");
+        	   	dom.byId("resultsContent").innerHTML
         });
         
         var temp = true;
@@ -71,13 +77,45 @@
       	
       	});
       	
-      //	try{
+   function slideIt(amt){
+   	console.log(domGeom.position(slideTarget));
+   	/*
+    coreFx.slideTo({
+      node: slideTarget,
+      top: domGeom.getMarginBox(slideTarget).t.toString(),
+      left: (domGeom.getMarginBox(slideTarget).l + amt).toString(),
+      unit: "px",
+      duration: 2000
+    }).play();
+    */
+   
+   coreFx.slideTo({
+      node: slideTarget,
+      top: domGeom.position(slideTarget).y.toString(),
+      left: (domGeom.position(slideTarget).x + amt).toString(),
+      unit: "px",
+      duration: 250
+    }).play();
+   // setTimeout(function(){console.log(domGeom.position(slideTarget));}, 2000);
+   
+      }
+  
+  
+	ready(function(){
+		console.log(domGeom.position(slideTarget));
+		domAttr.set(slideTarget, "style", "top: " + domGeom.position(slideTarget).y.toString() + "px; left: " + domGeom.position(slideTarget).x.toString() + "px;");
+	});  
+	var openClose = false; //closed initially
+   on(viewButton, "click", function(){
+        	if(openClose == false){
+        	slideIt(-300);
+        	openClose = true;
+ 			} else {
+ 				slideIt(300);
+ 				openClose = false;
+ 			}
+        });
       	
-     // 	on(secondary,"click",function(){
-      		//fade = true;
-      	//	console.log(fade);
-      //	});
-      	//alert("still tried");
-      //	} catch(e){ console.log(e);}
+     
         
     });

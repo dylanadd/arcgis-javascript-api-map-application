@@ -23,7 +23,7 @@ require([
     "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate", 
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer", 
     "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect", 
-    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend",
+    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend", 
     
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function(
 Map, FeatureLayer, 
@@ -181,7 +181,9 @@ Point, SpatialReference, ProjectParameters, Legend
     map.on("load", function() {
         //	map.setZoom(2);
         map.setZoom(1);
-    
+    	on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
+
+    	
     });
     
     
@@ -224,67 +226,6 @@ Point, SpatialReference, ProjectParameters, Legend
 
 
 
-    //begin test for parcel buffer
-    /*
-      function doBuffer2(evt) {
-
-    	  
-      map.graphics.clear(); 
-      var params = new BufferParameters();
-      params.geometries = [ evt.mapPoint ];
-
-      //buffer in linear units such as meters, km, miles etc.
-     
-          params.distances = [ dom.byId("distance").value ];
-          params.bufferSpatialReference = new esri.SpatialReference({wkid: dom.byId("bufferSpatialReference").value});
-          params.outSpatialReference = map.spatialReference;
-          params.unit = GeometryService[dom.byId("unit").value];
-
-      gsvc.buffer(params);
-    //      gsvc.buffer(params);
-   
-      
-      //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
-      parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/13", {
-          outFields: ["*"],
-          //infoTemplate: popupTemplate,
-          mode: FeatureLayer.MODE_SELECTION
-      });
-      
-      parcels1.setSelectionSymbol(sfs);
-     
-      
-      gsvc.on("buffer-complete", function(result){
-      //	alert("xagjio");
-          map.graphics.clear();
-          // draw the buffer geometry on the map as a map graphic
-          var symbol = new SimpleFillSymbol(
-            SimpleFillSymbol.STYLE_NULL,
-            new SimpleLineSymbol(
-              SimpleLineSymbol.STYLE_SHORTDASHDOTDOT,
-              new Color([255,255,255]), 
-              2
-            ),new Color([255,255,0,0.25])
-          );
-          var bufferGeometry = result.geometries[0]
-          var graphic2 = new Graphic(bufferGeometry, symbol);
-          map.graphics.add(graphic2);
-//alert();
-          //Select features within the buffered polygon. To do so we'll create a query to use the buffer graphic
-          //as the selection geometry.
-          var query2 = new Query();
-          query2.geometry = bufferGeometry;
-          parcels1.selectFeatures(query2, FeatureLayer.SELECTION_ADD, function(results){ //This returns all parcel data within buffer.
-         // console.debug(results);
-          }, function(error){alert(error);});
-          map.addLayers([parcels1]);
-        });
-      
-
-      
-      }
-      
-   */
     function doBuffer3(evt) {
         //console.debug(evt);
         
@@ -1077,15 +1018,15 @@ alert("test")
         domAttr.set("output", "style", "opacity: 1;");
         domAttr.set("toggleOutput", "class", "open");
         var s = "<tr class=\"" + stripe + " centerCell\">" + 
-        "<td>" + infoArray.attributes.PAR_NUM + "</td>" + 
-        "<td><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray.attributes.PAR_TXT + "</a></td>" + 
-        "<td>" + infoArray.attributes.Fips + "</td>" + 
-        "<td>" + infoArray.attributes.Owner + "</td>" + 
-        "<td>" + infoArray.attributes.OwnerOverflow + "</td>" + 
-        "<td>" + infoArray.attributes.OwnerStreetAddress + "</td>" + 
-        "<td>" + infoArray.attributes.OwnerCity + "</td>" + 
-        "<td>" + infoArray.attributes.OwnerState + "</td>" + 
-        "<td>" + infoArray.attributes.OwnerZip + "</td>" + 
+        "<td class=\"parNum\">" + infoArray.attributes.PAR_NUM + "</td>" + 
+        "<td class=\"assessorLink\"><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray.attributes.PAR_TXT + "</a></td>" + 
+        "<td class=\"fips\">" + infoArray.attributes.Fips + "</td>" + 
+        "<td class=\"ownName\">" + infoArray.attributes.Owner + "</td>" + 
+        "<td class=\"ownOverflow\">" + infoArray.attributes.OwnerOverflow + "</td>" + 
+        "<td class=\"ownAddress\">" + infoArray.attributes.OwnerStreetAddress + "</td>" + 
+        "<td class=\"ownCity\">" + infoArray.attributes.OwnerCity + "</td>" + 
+        "<td class=\"ownState\">" + infoArray.attributes.OwnerState + "</td>" + 
+        "<td class=\"ownZip\">" + infoArray.attributes.OwnerZip + "</td>" + 
         "</tr>";
         
         
@@ -1118,7 +1059,13 @@ alert("test")
     }
     
     function empty() {
-        dom.byId("outTable").innerHTML = "";
+    	
+    	var x = "<tr class=\"labels\"><td id=\"parNum\">Parcel Num.</td><td id=\"assesorLink\">Assessor Link</td><td id=\"fips\">FIPS</td><td id=\"ownName\">Own. Name</td><td id=\"ownOverflow\">Own. Overflow</td><td id=\"ownAddress\">Own. Address</td><td id=\"ownCity\">Own. City</td><td id=\"ownState\">Own. State</td><td id=\"ownZip\">Own. Zip</td></tr>"
+    	
+        dom.byId("outTable").innerHTML = x;
+        
+        
+        
     	domAttr.set("output", "class", "hide");
     	domAttr.set("toggleOutput", "class", "closed");
     }
@@ -1216,6 +1163,7 @@ alert("test")
     //find all owners matching query 
     function selectOwner(owner) {
         popup.clearFeatures();
+        
         if (owner) {
             var query = new Query();
             query.text = owner;
@@ -1229,7 +1177,8 @@ alert("test")
                     //   map.infoWindow.show(center);
                     //  ownerResults(selection);
                     //   alert("ownerResults complete");
-                    console.log(selection);
+                   // console.log(selection);
+                    displayResults(selection);
                 });
                 // console.log(center);
                 domAttr.set("locate", "class", "dormant");
@@ -1241,6 +1190,46 @@ alert("test")
             });
         }
     }
+	var stripe2 = null;
+	function displayResults(infoArray5){
+		//console.log(infoArray5);
+	
+		if(stripe2 == null){
+			stripe2 = "even";
+		}
+			
+		for(i=0;i<infoArray5.length;i++){
+			 var s = "<table cellspacing=\"0\"><tr class=\"" + stripe2 + " leftCell\">" + 
+        "<td class=\"parNum\">Parcel Number: " + infoArray5[i].attributes.PAR_NUM + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"assessorLink\">Assessor Link: <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5[i].attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></td>" + "</tr>" + 
+        "<tr class=\"" + stripe2 + " leftCell\">" +"<td class=\"fips\">FIPS: " + infoArray5[i].attributes.Fips + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownName\">Own. Name: " + infoArray5[i].attributes.Owner + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownOverflow\">Own. Overflow: " + infoArray5[i].attributes.OwnerOverflow + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownAddress\">Own. Address: " + infoArray5[i].attributes.OwnerStreetAddress + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownCity\">Own. City: " + infoArray5[i].attributes.OwnerCity + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownState\">Own. State: " + infoArray5[i].attributes.OwnerState + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
+        "<td class=\"ownZip\">Own Zip: " + infoArray5[i].attributes.OwnerZip + "</td>" + 
+        "</tr></table>";
+        
+        
+        dom.byId("resultsContent").innerHTML += s;
+		
+		
+		if(stripe2 == "odd"){
+			stripe2 = "even";
+		} else if(stripe2 == "even")
+			stripe2 = "odd";
+		}
+			setTimeout(function(){
+				on.emit(dom.byId("openClose"), "click", {bubbles: true, cancelable: true});
+				//on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
+			}, 1000);
+			
+	}
+
+
+
+
 
     //detect when popup selection is changed
     popup.on("selection-change", function() {
