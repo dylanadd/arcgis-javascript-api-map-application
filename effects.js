@@ -4,15 +4,22 @@
  		var clearButton = dom.byId("clear");
  		var viewButton = dom.byId("openClose");
  		var locateButton = dom.byId("locate");
+ 		var bufferButton = dom.byId("buffer");
  		var map = dom.byId("map");
 		var fade = null;       
 		var  secondary;
-       var slideTarget = dom.byId("searchResults");
-       
+        var slideTarget = dom.byId("searchResults");
+		var bufferParams = dom.byId("buffer-params");
+		var bufferMode = dom.byId("bufferMode");
+        var drawMode = dom.byId("draw");
+        var drawPanel = dom.byId("measurementDiv");
+        
+        
+        
         on(fadeButton, "click", function(evt){
     
-        console.log(fade);
-        console.log(dom.byId("outTable").innerHTML);
+      
+       // console.log(dom.byId("outTable").innerHTML);
         
         if(dom.byId("outTable").innerHTML == "") {
         
@@ -34,7 +41,7 @@
             
             }
             }
-            console.log(fade);
+            
             
         });
         
@@ -50,6 +57,12 @@
         		domAttr.set(fadeTarget, "class", "hide");
         	   	domAttr.set(fadeButton, "class", "closed");
         	   	dom.byId("resultsContent").innerHTML = "";
+        	   	
+        	   	
+        	if(openClose){
+     		slideIt(300, slideTarget);
+     		openClose = false;
+     	}   	
         	   	
         });
         
@@ -71,7 +84,7 @@
         	  var t = query(".action");
   	    	  t.splice(0,1);
     	  	  t.wrap('<div id="asdf"></div>');
-    	      console.log(t);
+    	    //  console.log(t);
       	  } catch(e) {}
       	
       	
@@ -79,14 +92,14 @@
       	
       	});
       	
-   function slideIt(amt){
-   	console.log(domGeom.position(slideTarget));
+   function slideIt(amt, target){
+   	console.log(domGeom.position(target));
   
    
    coreFx.slideTo({
-      node: slideTarget,
-      top: domGeom.position(slideTarget).y.toString(),
-      left: (domGeom.position(slideTarget).x + amt).toString(),
+      node: target,
+      top: domGeom.position(target).y.toString(),
+      left: (domGeom.position(target).x + amt).toString(),
       unit: "px",
       duration: 150
     }).play();
@@ -96,7 +109,8 @@
   
   
 	ready(function(){
-		console.log(domGeom.position(slideTarget));
+		//console.log(domGeom.position(slideTarget));
+		
 		domAttr.set(slideTarget, "style", "top: " + domGeom.position(slideTarget).y.toString() + "px; left: " + domGeom.position(slideTarget).x.toString() + "px;");
 	});  
 	
@@ -105,19 +119,54 @@
   
     on(viewButton, "click", function(){
         	if(openClose == false){
-        	slideIt(-300);
+        	slideIt(-300, slideTarget);
         	openClose = true;
  			} else {
- 				slideIt(300);
+ 				slideIt(300, slideTarget);
  				openClose = false;
  			}
         });
       	
      on(locateButton, "click", function(){
      	if(openClose){
-     		slideIt(300);
+     		slideIt(300, slideTarget);
      		openClose = false;
      	}
      });
+      
+      
+      
+      
+       on(bufferButton, "click", function(){
+     	if(openClose){
+     		slideIt(300, slideTarget);
+     		openClose = false;
+     	}
+     	dom.byId("resultsContent").innerHTML = "";
+     	
+     	
+     	
+     }); 
+     var bufferOC = false;
+      on(bufferMode, "click", function(){
+      	if(bufferOC == false){
+        	slideIt(255, bufferParams);
+        	bufferOC = true;
+ 			} else {
+ 				slideIt(-255, bufferParams);
+ 				bufferOC = false;
+ 			}
+      });
+     
+     var drawOC = false;
+     on(drawMode, "click", function(){
+      	if(drawOC == false){
+        	slideIt(255, drawPanel);
+        	drawOC = true;
+ 			} else {
+ 				slideIt(-255, drawPanel);
+ 				drawOC = false;
+ 			}
+      });
         
     });

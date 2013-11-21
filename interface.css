@@ -8,10 +8,11 @@ width:100%;
 
 #buffer-params {
 background:rgba(255,255,255,0.5);
-position:relative;
+position:absolute;
 top:100px;
-width:255px;
+left:-255px;
 z-index:1000;
+
 }
 
 #button-console {
@@ -149,6 +150,8 @@ background:rgba(255,255,255,0.5);
 left:10px;
 position:absolute;
 top:100px;
+width:240px;
+visibility: visible !important;
 }
 
 a#draw {
@@ -650,7 +653,7 @@ background:url(images/results.png) no-repeat 0 0;
 
 #resultsContent div:hover{
 	background-color:rgba(252,185,241,0.47);
-	cursor:pointer;
+	
 }
 #resultsContent table{
 	width:256px;
@@ -672,4 +675,14 @@ box-sizing: border-box;
 .resultsText{
 	float:left;
 	margin-left:12px;
+}
+.goToParcel {
+	cursor:pointer;
+	font-family: verdana, helvetica;
+font-size: 13px;
+font-weight: bold;
+color: darkcyan;
+}
+.goToParcel:hover{
+	color:red;
 }

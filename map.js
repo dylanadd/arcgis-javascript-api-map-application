@@ -183,7 +183,7 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
         //	map.setZoom(2);
         map.setZoom(1);
     	on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
-
+		domAttr.set(dom.byId("measurementDiv"), "style", "placeholder");
     	
     });
     
@@ -198,7 +198,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     
     });
     
-    
+    map.on("zoom-end",function(){
+    	popup.reposition();
+    });
     
     dojo.connect(inputSearchBox, "onkeypress", function(e) {
         
@@ -259,9 +261,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
         
         parcels1.setSelectionSymbol(sfs1);
         
-        
+      var zzz = false;
         gsvc.on("buffer-complete", function(result) {
-            //	alert("xagjio");
+      
             map.graphics.clear();
             // draw the buffer geometry on the map as a map graphic
             var symbol = new SimpleFillSymbol(
@@ -274,18 +276,38 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
             );
             var bufferGeometry = result.geometries[0];
             var graphic2 = new Graphic(bufferGeometry, symbol);
+           
             map.graphics.add(graphic2);
-            //alert();
+         
             //Select features within the buffered polygon. To do so we'll create a query to use the buffer graphic
             //as the selection geometry.
             var query2 = new Query();
             query2.geometry = bufferGeometry;
+            
             parcels1.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function(results) { //This returns all parcel data within buffer.
-            // console.debug(results);
+           
+            setTimeout(function(){
+            	if(!zzz){
+            		displayResults(results);
+            		zzz = true;
+           	    }
+            	}, 1000);
+
+           var c = parcels1.getSelectedFeatures();
+
+           for(i=0;i<c.length;i++){
+           	map.graphics.add(c[i]);
+           }
+   
+             
             }, function(error) {
-                alert(error);
+               
             });
-            map.addLayers([parcels1]);
+           	
+    
+          
+       
+          
             domAttr.set("bufferMode", "class", "bufferModeOn");
         });
     
@@ -334,72 +356,7 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     }
 
 
-
-    //begin test for parcel buffer
-    /*
-      function doBuffer2(evt) {
-alert("test")
-      map.graphics.clear();
-      var params = new BufferParameters();
-      params.geometries = [ evt.mapPoint ];
-
-      //buffer in linear units such as meters, km, miles etc.
-     
-          params.distances = [ dom.byId("distance").value ];
-          params.bufferSpatialReference = new esri.SpatialReference({wkid: dom.byId("bufferSpatialReference").value});
-          params.outSpatialReference = map.spatialReference;
-          params.unit = GeometryService[dom.byId("unit").value];
-
-      gsvc.buffer(params, showBuffer);
-    }
-      */
-    //end test for parcel buffer
-    
-    
-    
-    
-    
-    
-    
-    
-    function doBuffer(evtObj) {
-        var geometry = evtObj.geometry, 
-        map = app.map, 
-        gsvc = app.gsvc;
-        switch (geometry.type) {
-            case "point":
-                var symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 10, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0]), 1), new Color([0, 255, 0, 0.25]));
-                break;
-            case "polyline":
-                var symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([255, 0, 0]), 1);
-                break;
-            case "polygon":
-                var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NONE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.25]));
-                break;
-        }
-        
-        var graphic = new Graphic(geometry, symbol);
-        map.graphics.add(graphic);
-
-        //setup the buffer parameters
-        var params = new BufferParameters();
-        params.distances = [dom.byId("distance").value];
-        params.bufferSpatialReference = new esri.SpatialReference({wkid: dom.byId("bufferSpatialReference").value});
-        params.outSpatialReference = map.spatialReference;
-        params.unit = GeometryService[dom.byId("unit").value];
-        
-        if (geometry.type === "polygon") {
-            //if geometry is a polygon then simplify polygon.  This will make the user drawn polygon topologically correct.
-            gsvc.simplify([geometry], function(geometries) {
-                params.geometries = geometries;
-                gsvc.buffer(params, showBuffer);
-            });
-        } else {
-            params.geometries = [geometry];
-            gsvc.buffer(params, showBuffer);
-        }
-    }
-    
+   
     function showBuffer(bufferedGeometries) {
         var symbol = new SimpleFillSymbol(
         SimpleFillSymbol.STYLE_SOLID, 
@@ -426,7 +383,7 @@ alert("test")
     
     
     var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
-    //  var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/tax_sale/MapServer");
+
     var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer");
     map.addLayer(basemap);
     map.addLayer(parcelInfoLayer);
@@ -674,11 +631,13 @@ alert("test")
     });
     roads.setSelectionSymbol(sfs);
 
-
+	
 
     //when users click on the map select the parcel using the map point and update the url parameter
     map.on("click", function(e) {
+    	
     console.log(e.mapPoint);
+    
         if (draw == false || draw == null) {
             var query = new Query();
             query.geometry = e.mapPoint;
@@ -704,7 +663,7 @@ alert("test")
                 
                 
                 map.addLayer(parcels);
-            
+            	
             
             }, function(error) {
                 alert(error);
@@ -722,6 +681,7 @@ alert("test")
             
             map.infoWindow.setFeatures([deferred]);
             map.infoWindow.show(e.mapPoint);
+            console.log(popup);
             //  selectedParcel = selection[0];
             try{
             	infoArray = selection[0];
@@ -997,6 +957,16 @@ alert("test")
     
     function bufferIt() {
         domAttr.set("bufferMode", "class", "bufferModeOn processing");
+         try{
+         
+        	resultsArray.length = 0;
+       
+        } catch(e){}
+        try{
+        	
+        	dom.byId("resultsContent").innerHTML = "";
+        } catch(e){}
+        
         if (infoArray2.length > 1) {
             for (i = 0; i < infoArray2.length; i++) {
                 infoArray3.push(infoArray2[i].geometry);
@@ -1019,6 +989,7 @@ alert("test")
 
         //	parcels.clearSelection();
         parcels1.clearSelection();
+        
     }
     
     function safeClear(){
@@ -1061,20 +1032,26 @@ alert("test")
             infoArray3.length = 0;
             resultsArray.length = 0;
             
-            
+            /*
             if (parcels !== 'undefined') {
                 parcels.clearSelection();
             }
             if (parcels1 !== 'undefined') {
                 parcels1.clearSelection();
-            }
+            }*/
         } catch (e) {
         }
+    try{
+    	parcels.clearSelection();
+    } catch(e){}
     
+    try{
+    	parcels1.clearSelection();
+    } catch(e){}
     
-    
-    
-    
+   try{
+    	popup.clearFeatures();
+    } catch(e){} 
     
     
     }
@@ -1159,11 +1136,11 @@ alert("test")
         } else if (buff) {
             buff = false;
             domAttr.set("bufferMode", "class", "bufferModeOff");
-            domAttr.set("buffer-params", "style", "visibility: hidden");
+           // domAttr.set("buffer-params", "style", "visibility: hidden");
         } else if (buff == null) {
             buff = true;
             domAttr.set("bufferMode", "class", "bufferModeOn");
-            domAttr.set("buffer-params", "style", "visibility: visible");
+           // domAttr.set("buffer-params", "style", "visibility: visible");
             map.infoWindow.hide();
         
         }
@@ -1172,6 +1149,7 @@ alert("test")
     }
     
     function drawMode() {
+    	//measurement.show();
         if (buff) {
             buff = true;
             bufferMode();
@@ -1180,20 +1158,20 @@ alert("test")
         if (!draw) {
             draw = true;
             domAttr.set("draw", "class", "drawOn");
-            domAttr.set("measurementDiv", "style", "visibility: visible !important;width: 240px;");
+           // domAttr.set("measurementDiv", "style", "visibility: visible !important;;");
             
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
             map.infoWindow.hide();
         } else if (draw) {
             draw = false;
             domAttr.set("draw", "class", "drawOff");
-            domAttr.set("measurementDiv", "style", "visibility: hidden !important;");
+          //  domAttr.set("measurementDiv", "style", "visibility: hidden !important;");
             
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;visibility: hidden;");
         } else if (draw == null) {
             draw = true;
             domAttr.set("draw", "class", "drawOn");
-            domAttr.set("measurementDiv", "style", "visibility: visible !important;width: 240px;");
+          //  domAttr.set("measurementDiv", "style", "visibility: visible !important;");
             
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
             map.infoWindow.hide();
@@ -1270,7 +1248,7 @@ alert("test")
 	var resultsArray = new Array();
 	function displayResults(infoArray5){
 		//console.log(infoArray5);
-	
+		alert("asdf");
 		if(stripe2 == null){
 			stripe2 = "even";
 		}
@@ -1290,8 +1268,8 @@ alert("test")
         "</tr></table>";
         
      var temp =  domConstruct.create("div",{
-        	"innerHTML": s,
-        	"id": "test" + i,
+        	"innerHTML": s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Parcel" + "</a>",
+        //	"id": "test" + i,
         	"class": stripe2
         }, "resultsContent");
         var zz = dom.byId("test" + i);
@@ -1300,7 +1278,8 @@ alert("test")
         //event handlers for search results
         dojo.connect(zz,"onclick", function(node){
         	
-        	var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+        	//var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+        	var n = node.target.id;
         	n = n.toString();
         	n = n.replace("test", "");
         	 console.log(n);
@@ -1327,6 +1306,7 @@ alert("test")
 			stripe2 = "odd";
 		}
 			setTimeout(function(){
+				
 				on.emit(dom.byId("openClose"), "click", {bubbles: true, cancelable: true});
 				//on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
 			}, 1000);
@@ -1349,22 +1329,23 @@ alert("test")
 			infoArray5.addresses[i].location.spatialReference.wkid = 2233;
 			resultsArray.push(infoArray5.addresses[i]);
 			 var s = "<table cellspacing=\"0\"><tr class=\"" +  " leftCell\">" + 
-        "<td class=\"parNum\">Address: " + infoArray5.addresses[i].address + "</td>" + "</tr>" + "<tr class=\"" + stripe2 + " leftCell\">" +
-        "<td class=\"assessorLink\">Address Matching Score: " + infoArray5.addresses[i].score + "</td>" + "</tr>" + 
+        "<td class=\"parNum\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5.addresses[i].address + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+        "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Address Matching Score: </span><span class=\"resultsText\" ><em>" + infoArray5.addresses[i].score + "</em></span></td>" + "</tr>" + 
         "</table>";
         
      var temp =  domConstruct.create("div",{
-        	"innerHTML": s,
-        	"id": "test" + i,
-        	"class": stripe2
+        	"innerHTML":  s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Parcel" + "</a>",
+        	
+        	"class": stripe2 + " selection" + i
         }, "resultsContent");
         var zz = dom.byId("test" + i);
 
         
         //event handlers for search results
         dojo.connect(zz,"onclick", function(node){
+        	console.log(node);
         	map.graphics.clear();
-        	var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+        	var n = node.target.id;
         	n = n.toString();
         	n = n.replace("test", "");
         	 console.log(n);
