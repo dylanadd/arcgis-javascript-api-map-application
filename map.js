@@ -1248,14 +1248,14 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
             });
         }
     }
-    function x(){alert("test");}
+
     
     
 	var stripe2 = null;
 	var resultsArray = new Array();
 	function displayResults(infoArray5){
 		//console.log(infoArray5);
-		alert("asdf");
+		
 		if(stripe2 == null){
 			stripe2 = "even";
 		}

@@ -7,7 +7,7 @@ width:100%;
 }
 
 #buffer-params {
-background:rgba(255,255,255,0.5);
+background:rgba(255,255,255,0.75);
 position:absolute;
 top:100px;
 left:-360px;
@@ -147,11 +147,11 @@ z-index:30;
 }
 
 div#measurementDiv {
-background:rgba(255,255,255,0.5);
-left: -339px;
+background:rgba(255,255,255,0.75);
+left: -387px;
 position:absolute;
 top:100px;
-width: 339px
+width: 370px;
 visibility: visible !important;
 }
 
@@ -689,3 +689,59 @@ color: darkcyan;
 .goToParcel:hover{
 	color:red;
 }
+
+
+.dijitToggleButtonIconChar {
+display: none !important;
+}
+
+.dijitDisplayNone {
+	display:none !important;
+}
+
+
+.esriToggleButton span + input{
+	display:none !important;
+}
+
+#measurementDiv .esriToggleButton .dijitButtonNode{
+	
+}
+
+#measurementDiv > span input {
+	-moz-user-select:none;
+-ms-user-select:none;
+-webkit-border-radius:5px 5px 5px 5px;
+-webkit-user-select:none;
+background: #fff url(images/area.png) no-repeat 8px 0px;
+background-color:#FFF;
+border:2px solid #666;
+border-radius:5px 5px 5px 5px;
+color:#666;
+cursor:pointer;
+font-family:verdana,helvetica;
+font-size:24px;
+font-weight:700;
+height:35px;
+line-height:25px;
+overflow:hidden;
+padding:0!important;
+user-select:none;
+white-space:nowrap;
+width:50px;
+z-index:30;
+}
+#measurementDiv > span + span input {
+	background: #fff  url(images/length.png) no-repeat 8px 0px;
+	
+}
+
+#measurementDiv > span + span + span input {
+	background: #fff  url(images/point.png) no-repeat 8px 0px;
+}
+
+
+
+
+
+
