@@ -78,8 +78,8 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     
     var countyBasemap = new Basemap({
         layers: [countyLayer],
-        title: "County Basemap (Fast)"
-    //  thumbnailUrl:"images/waterThumb.png"
+        title: "2008 Imagery (Fast)",
+        thumbnailUrl:"images/map_thumbs/2008imagery.png"
     });
     
     var zoningLayer = new BasemapLayer({
@@ -88,8 +88,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     
     var zoningBasemap = new Basemap({
         layers: [zoningLayer],
-        title: "Zoning Basemap (Fast)"
-    //  thumbnailUrl:"images/waterThumb.png"
+        title: "Zoning Basemap (Fast)",
+        thumbnailUrl:"images/map_thumbs/zoningBasemap.png"
+    
     });
     
     var imagery2005Layer = new BasemapLayer({
@@ -98,8 +99,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     
     var imagery2005Basemap = new Basemap({
         layers: [imagery2005Layer],
-        title: "2005 Imagery (Slow)"
-    //  thumbnailUrl:"images/waterThumb.png"
+        title: "2005 Imagery (Slow)",
+        thumbnailUrl:"images/map_thumbs/2005imagery.png"
+    
     });
     
     
@@ -109,8 +111,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     
     var imagery2004Basemap = new Basemap({
         layers: [imagery2004Layer],
-        title: "2004 Imagery (Slow)"
-    //  thumbnailUrl:"images/waterThumb.png"
+        title: "2004 Imagery (Slow)",
+        thumbnailUrl:"images/map_thumbs/2004imagery.png"
+    
     });
     
     var imagery2001Layer = new BasemapLayer({
@@ -119,8 +122,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     
     var imagery2001Basemap = new Basemap({
         layers: [imagery2001Layer],
-        title: "2001 Imagery (Slow)"
-    //  thumbnailUrl:"images/waterThumb.png"
+        title: "2001 Imagery (Slow)",
+        thumbnailUrl:"images/map_thumbs/2001imagery.png"
+    
     });
     
     var imagery1991Layer = new BasemapLayer({
@@ -129,8 +133,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     
     var imagery1991Basemap = new Basemap({
         layers: [imagery1991Layer],
-        title: "1991 Imagery (Slow)"
-    //  thumbnailUrl:"images/waterThumb.png"
+        title: "1991 Imagery (Slow)",
+        thumbnailUrl:"images/map_thumbs/1991imagery.png"
+    
     });
     
     var floodplainsLayer = new BasemapLayer({
@@ -139,8 +144,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     
     var floodplainsBasemap = new Basemap({
         layers: [floodplainsLayer],
-        title: "Floodplains (Slow)"
-    //  thumbnailUrl:"images/waterThumb.png"
+        title: "Floodplains (Slow)",
+        thumbnailUrl:"images/map_thumbs/floodplains.png"
+   
     });
     
     var taxSaleLayer = new BasemapLayer({
@@ -160,8 +166,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     
     var harnBasemap = new Basemap({
         layers: [harnLayer],
-        title: "No Basemap"
-    //  thumbnailUrl:"images/waterThumb.png"
+        title: "No Basemap",
+        thumbnailUrl:"images/map_thumbs/noBasemap.png"
+    
     });
 
     //Map constructor
@@ -183,7 +190,7 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
         //	map.setZoom(2);
         map.setZoom(1);
     	on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
-		domAttr.set(dom.byId("measurementDiv"), "style", "placeholder");
+		domAttr.remove(dom.byId("measurementDiv"), "style");
     	
     });
     

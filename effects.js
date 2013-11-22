@@ -94,8 +94,8 @@
       	
    function slideIt(amt, target){
    	console.log(domGeom.position(target));
-  
-   
+  	console.log(target);
+   try{
    coreFx.slideTo({
       node: target,
       top: domGeom.position(target).y.toString(),
@@ -104,7 +104,9 @@
       duration: 150
     }).play();
    // setTimeout(function(){console.log(domGeom.position(slideTarget));}, 2000);
-   
+   } catch(e){
+   	console.log(e);
+   }
       }
   
   
@@ -112,6 +114,13 @@
 		//console.log(domGeom.position(slideTarget));
 		
 		domAttr.set(slideTarget, "style", "top: " + domGeom.position(slideTarget).y.toString() + "px; left: " + domGeom.position(slideTarget).x.toString() + "px;");
+		domAttr.set(dom.byId("dijit_TitlePane_0_titleBarNode"), "title", "Change the application's basemap");
+		setTimeout(function(){
+			try{
+			domAttr.set(dom.byId("dijit_form_ComboButton_0_arrow"), "title", "Print the map");
+			} catch(e){}
+		},2000);
+		domAttr.set(dom.byId("map_zoom_slider"), "title", "Zoom the map in or out");
 	});  
 	
 	
@@ -150,21 +159,61 @@
      var bufferOC = false;
       on(bufferMode, "click", function(){
       	if(bufferOC == false){
-        	slideIt(255, bufferParams);
+      		
+      		if(drawOC){
+      			
+      			slideIt(-339, "measurementDiv");
+        		drawOC = false;
+      			setTimeout(function(){
+      				slideIt(360, bufferParams);
+        			bufferOC = true;
+      				
+      			}, 250);
+      			
+        		
+        		
+      		} else {
+      		
+      		
+      		
+        	slideIt(360, bufferParams);
         	bufferOC = true;
- 			} else {
- 				slideIt(-255, bufferParams);
+        	}
+ 			 } else {
+ 				slideIt(-360, bufferParams);
  				bufferOC = false;
  			}
       });
      
      var drawOC = false;
      on(drawMode, "click", function(){
+
+		
+
+
       	if(drawOC == false){
-        	slideIt(255, drawPanel);
+			
+			if(bufferOC){
+			slideIt(-360, bufferParams);
+ 				bufferOC = false;
+			setTimeout(function(){
+				slideIt(339, "measurementDiv");
+        		drawOC = true;
+			}, 250);
+			
+		} else {
+			slideIt(339, "measurementDiv");
         	drawOC = true;
+		}
+			
+        	
+        	
+        	
+        	
  			} else {
- 				slideIt(-255, drawPanel);
+
+ 				slideIt(-339, "measurementDiv");
+ 				
  				drawOC = false;
  			}
       });

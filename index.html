@@ -14,11 +14,11 @@
 
 	<script>var selectedParcel;</script>
     <script>var dojoConfig = { parseOnLoad: true };</script>
-    <script src="http://js.arcgis.com/3.7/"></script>
+    <script src="init.js"></script>
     
     <script src="map.js"></script>
     
-    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>
+    <script src="dojo-v-1_9_1.js"></script>
     <script src="effects.js"></script>
   </head>
   
@@ -54,7 +54,7 @@
         <option value="UNIT_NAUTICAL_MILE">Nautical Miles</option>
         <option value="UNIT_US_NAUTICAL_MILE">US Nautical Miles</option>
         <option value="UNIT_DEGREE">Degrees</option>
-      </select><br />
+      </select>
      <!--  <button data-dojo-type="dijit.form.Button" type="button" onclick="app.map.graphics.clear();">Clear Graphics</button> -->
      <input type="button" id="buffer" value="Buffer Selection" />
     </div>
