@@ -2513,8 +2513,8 @@
     padding-left: 0;
     padding-right: 0;
     font-size: medium !important;
-    border-color: none !important;
-    border: none !important;
+  /*  border-color: none !important;
+    border: none !important; */
     background: none;
 }
 

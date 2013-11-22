@@ -1156,6 +1156,10 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     }
     
     function drawMode() {
+    	
+    	
+    	
+    	
     	//measurement.show();
         if (buff) {
             buff = true;

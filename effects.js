@@ -122,7 +122,7 @@
 		},2000);
 		domAttr.set(dom.byId("map_zoom_slider"), "title", "Zoom the map in or out");
 
-		
+		query("measurementDiv").append("<div id=\"measurmentDivLabel\" >Measurement Tools</div>");
 		
 	});  
 	
@@ -168,7 +168,7 @@
       			slideIt(-387, 0, "measurementDiv");
         		drawOC = false;
       			setTimeout(function(){
-      				slideIt(360, 0, bufferParams);
+      				slideIt(380, 0, bufferParams);
         			bufferOC = true;
       				
       			}, 250);
@@ -179,11 +179,11 @@
       		
       		
       		
-        	slideIt(360, 0, bufferParams);
+        	slideIt(380, 0, bufferParams);
         	bufferOC = true;
         	}
  			 } else {
- 				slideIt(-360, 0, bufferParams);
+ 				slideIt(-380, 0, bufferParams);
  				bufferOC = false;
  			}
       });
@@ -197,7 +197,7 @@
       	if(drawOC == false){
 			
 			if(bufferOC){
-			slideIt(-360, 0, bufferParams);
+			slideIt(-380, 0, bufferParams);
  				bufferOC = false;
 			setTimeout(function(){
 				slideIt(387, 0, "measurementDiv");
