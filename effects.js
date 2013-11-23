@@ -13,7 +13,7 @@
 		var bufferMode = dom.byId("bufferMode");
         var drawMode = dom.byId("draw");
         var drawPanel = dom.byId("measurementDiv");
-       
+       	var textModeButton = dom.byId("iconToggle");
         
         var selectionToggle = false;
        on(fadeButton, "click", function(evt){
@@ -59,7 +59,7 @@
         	   	
         	   	
         	if(openClose){
-     		slideIt(300, 0, slideTarget);
+     		slideIt(300, 0, slideTarget,0);
      		openClose = false;
      	}   	
         	   	
@@ -91,10 +91,12 @@
       	
       	});
       	
-   function slideIt(amtH, amtV, target){
+   function slideIt(amtH, amtV, target, delay){
    	console.log(domGeom.position(target));
   	console.log(target);
-   try{
+  	setTimeout(function(){
+  		
+  		try{
    coreFx.slideTo({
       node: target,
       top: (domGeom.position(target).y + amtV).toString(),
@@ -106,6 +108,9 @@
    } catch(e){
    	console.log(e);
    }
+  		
+  	}, delay);
+   
       }
   
   
@@ -122,7 +127,8 @@
 		},2000);
 		domAttr.set(dom.byId("map_zoom_slider"), "title", "Zoom the map in or out");
 
-		query("measurementDiv").append("<div id=\"measurmentDivLabel\" >Measurement Tools</div>");
+		query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
+		query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
 		
 	});  
 	
@@ -131,17 +137,17 @@
   
     on(viewButton, "click", function(){
         	if(openClose == false){
-        	slideIt(-300, 0, slideTarget);
+        	slideIt(-300, 0, slideTarget,0);
         	openClose = true;
  			} else {
- 				slideIt(300, 0, slideTarget);
+ 				slideIt(300, 0, slideTarget,0);
  				openClose = false;
  			}
         });
       	
      on(locateButton, "click", function(){
      	if(openClose){
-     		slideIt(300, 0, slideTarget);
+     		slideIt(300, 0, slideTarget,0);
      		openClose = false;
      	}
      });
@@ -151,7 +157,7 @@
       
        on(bufferButton, "click", function(){
      	if(openClose){
-     		slideIt(300, 0, slideTarget);
+     		slideIt(300, 0, slideTarget,0);
      		openClose = false;
      	}
      	dom.byId("resultsContent").innerHTML = "";
@@ -165,10 +171,10 @@
       		
       		if(drawOC){
       			
-      			slideIt(-387, 0, "measurementDiv");
+      			slideIt(-387, 0, "measurementDiv",0);
         		drawOC = false;
       			setTimeout(function(){
-      				slideIt(380, 0, bufferParams);
+      				slideIt(380, 0, bufferParams,0);
         			bufferOC = true;
       				
       			}, 250);
@@ -179,11 +185,11 @@
       		
       		
       		
-        	slideIt(380, 0, bufferParams);
+        	slideIt(380, 0, bufferParams,0);
         	bufferOC = true;
         	}
  			 } else {
- 				slideIt(-380, 0, bufferParams);
+ 				slideIt(-380, 0, bufferParams,0);
  				bufferOC = false;
  			}
       });
@@ -197,15 +203,15 @@
       	if(drawOC == false){
 			
 			if(bufferOC){
-			slideIt(-380, 0, bufferParams);
+			slideIt(-380, 0, bufferParams,0);
  				bufferOC = false;
 			setTimeout(function(){
-				slideIt(387, 0, "measurementDiv");
+				slideIt(387, 0, "measurementDiv",0);
         		drawOC = true;
 			}, 250);
 			
 		} else {
-			slideIt(387, 0, "measurementDiv");
+			slideIt(387, 0, "measurementDiv",0);
         	drawOC = true;
 		}
 			
@@ -215,14 +221,39 @@
         	
  			} else {
 
- 				slideIt(-387, 0, "measurementDiv");
+ 				slideIt(-387, 0, "measurementDiv",0);
  				
  				drawOC = false;
  			}
       });
       
-  
- 	
+    
+    var textMode = false;
+ 	on(textModeButton, "click", function(){
+ 		if(!textMode){
+ 			//slideIt(-400, 0, "button-console",0);
+ 			slideIt(-400, 0, "search_wrapper",0);
+ 			slideIt(-400, 0, "increment",250);
+ 			slideIt(-400, 0, "decrement",350);
+ 			slideIt(-400, 0, "clear",450);
+ 			slideIt(-400, 0, "bufferMode",550);
+ 			slideIt(-400, 0, "draw",650);
+ 			slideIt(-400, 0, "gallery",750);
+ 			slideIt(-400, 0, "print_button",850);
+ 			textMode = true;
+ 		} else {
+ 			slideIt(400, 0, "search_wrapper",0);
+ 			
+ 			slideIt(380, -40, "decrement",250);
+ 			slideIt(380, -40, "increment",350);
+ 			slideIt(248, -40, "clear", 450);
+ 			slideIt(182, -40, "bufferMode", 550);
+ 			slideIt(116, -40, "draw", 650);
+ 			slideIt(248, -40, "gallery", 750);
+ 			slideIt(248, -40, "print_button", 850);
+ 			textMode = false;
+ 		}
+ 	});
    
         
     });

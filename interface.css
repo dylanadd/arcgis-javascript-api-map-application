@@ -22,7 +22,7 @@ font-size: 12px;
 
 #button-console {
 height:0;
-position:relative;
+position:absolute;
 z-index:999;
 }
 
@@ -238,7 +238,7 @@ z-index:30;
 }
 
 div#map_zoom_slider {
-left:10px!important;
+ left:10px; 
 }
 
 .esriSimpleSlider {
@@ -787,3 +787,21 @@ cursor:pointer;
 	padding-bottom:5px;
 	
  }
+
+
+div#noIconMode{
+	top:0px;
+	left:45%;
+	position: absolute;
+}
+
+div#increment{
+	top:0px;
+	position:absolute;
+	
+}
+div#decrement{
+	top:0px;
+	position:absolute;
+	
+}
