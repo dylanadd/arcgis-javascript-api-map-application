@@ -138,6 +138,8 @@
 
 		query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
 		query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
+		respond(0);
+		
 		
 	});  
 	
@@ -162,7 +164,14 @@
       var smallBig = false;
       var bigSmall = false;
      on(window, "resize", function(){
-     	
+     	respond(1250);
+     }); 
+      
+      var big1;
+      var med1;
+      var small1;
+      function respond(respTime){
+      	
      	if(textMode){
      		on.emit(dom.byId("iconToggle"), "click", {bubbles: true, cancelable: true});
      	}
@@ -171,12 +180,18 @@
      	//console.log(vs);
      	openClose = false;
 		domAttr.set(dom.byId("searchResults"), "style", "top: 0px; left:" + (vs.w - 21) + "px;");
+		
 		setTimeout(function(){
 		//console.log(domGeom.getContentBox(dom.byId("noIconMode")));
      	if(vs.w < 957 && vs.w > 490){
+     		med1 = true;
+     		small1 = false;
+     		big1 = false;
      		if(!textMode){
      		domAttr.set(dom.byId("noIconMode"), "style", "top: -71px; left: 0px");
+     		
      		}
+     		
      		textModeHeight = 71;
      		buttonConsoleHeight = -82;
      		zoomOffset = 42;
@@ -217,6 +232,9 @@
      		     		
      	}
      	if(vs.w >= 957){
+     		med1 = false;
+     		small1 = false;
+     		big1 = true;
      		if(!textMode){
      			domAttr.set(dom.byId("noIconMode"), "style", "top: -50px; left: 0px");
      		}
@@ -225,7 +243,7 @@
      		zoomOffset = 0;
      		
      		if(!big && med){
-     			buttonConsoleHeight = 0;
+     			buttonConsoleHeight = -40;
      			if(domGeom.position(dom.byId("search_wrapper")).y > 10){
      			slideIt(0,-21, "search_wrapper", 0);
      			
@@ -273,6 +291,9 @@
      		
      	}
      	if(vs.w <= 490) {
+     		med1 = false;
+     		small1 = true;
+     		big1 = false;
      		smallBig = false;
      		if(!textMode){
      		domAttr.set(dom.byId("noIconMode"), "style", "top: -96px; left: 0px");
@@ -319,11 +340,9 @@
      		}
      	}
      	console.log(buttonConsoleHeight);
-     	
-     	}, 1250);
-     }); 
-      
-      
+     //	domAttr.set(dom.byId("searchResults"), "style", "height: " + vs.h + "px;");
+     	}, respTime);
+      }
       	
      on(locateButton, "click", function(){
      	if(openClose){
@@ -409,7 +428,8 @@
       
     
     var textMode = false;
- 	on(textModeButton, "click", function(){ console.log(domGeom.position(dom.byId("clear")));
+ 	on(textModeButton, "click", function(){ 
+ 		console.log(domGeom.position(dom.byId("noIconMode")));
  		if(!textMode){
  				domAttr.set(body, "class", "tundra textMode");	
  			//slideIt(-400, 0, "button-console",0);
@@ -426,6 +446,25 @@
  			slideIt(-500, 0, "helpButton",1150);
  			slideIt(0, textModeHeight, "noIconMode",1500);
  			slideIt(400, searchWrapperHeight, "search_wrapper",1600);
+ 			setTimeout(function(){
+ 				switch (domGeom.position(dom.byId("noIconMode")).h) {
+ 					case 71:
+ 					slideIt(0, 50, "searchResults",150);
+ 					break;
+ 					
+ 					case 90:
+ 					slideIt(0, 50, "searchResults",150);
+ 					break;
+ 					
+ 					case 117:
+ 					slideIt(0, 96, "searchResults",150);
+ 					break;
+ 				}
+ 				
+ 			},500);
+ 			
+ 		
+ 			
  			textMode = true;
  			
  		} else {
@@ -467,11 +506,15 @@
  				slideIt(248, buttonConsoleHeight, "toggleOutput",950);
  				slideIt(248, buttonConsoleHeight, "legendToggle",1050);
  				slideIt(348, buttonConsoleHeight, "helpButton",1150);
+ 				
+ 				
+ 				
+ 				
  			}
  			
  			textMode = false;
  		}
- 		setTimeout(function(){console.log(domGeom.position(dom.byId("clear")));}, 2000);
+ 		setTimeout(function(){console.log(domGeom.position(dom.byId("noIconMode")));}, 2000);
  	});
    
         
