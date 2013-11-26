@@ -23,7 +23,7 @@
     <script src="effects.js"></script>
   </head>
   
-  <body class="tundra">
+  <body class="tundra buttonMode" id="body">
     <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline',gutters:false" 
     style="width: 100%; height: 100%; margin: 0;">
       
@@ -157,13 +157,26 @@
         
         
         
-        <div id="noIconMode">
-        	
-        	<a id="iconToggle">Text Button Mode</a>
-        </div>
+       
         
       </div>
-   
+    <div id="noIconMode">
+        	<div id="textButtonConsole">
+        		<a id="textZoomIn">Zoom In</a>
+        		<a id="textZoomOut">Zoom Out</a>
+        		<a id="textClear">Clear Map</a>
+        		<a id="textBuffer">Buffer Tool</a>
+        		<a id="textDraw">Measure</a>
+        		<a id="textMap">Change Map</a>
+        		<div id="textPrint"></div>
+        		<a id="textShowSelection">View Saved Parcels</a>
+        		<a id="textLegend">View Legend</a>
+        		<a id="textHelp">Help</a>
+        	</div>
+        	<div id="iconToggleWrapper">
+        		<a id="iconToggle">Text Button Mode</a>
+        	</div>
+        </div>
   </body>
 
 </html>

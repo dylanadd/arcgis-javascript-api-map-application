@@ -220,6 +220,48 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
         }
     
     });
+    
+    
+    //Listen for button clicks in text mode
+    dojo.connect(dom.byId("textZoomIn"), "click", function(){
+    	map.setZoom(map.getZoom() + 1);
+    });
+    
+    dojo.connect(dom.byId("textZoomOut"), "click", function(){
+    	map.setZoom(map.getZoom() - 1);
+    });
+    
+    dojo.connect(dom.byId("textClear"), "click", function(){
+    	clearx();
+    });
+    
+    dojo.connect(dom.byId("textBuffer"), "click", function(){
+    	on.emit(dom.byId("bufferMode"), "click", {bubbles: true, cancelable: true});
+    });
+    
+    dojo.connect(dom.byId("textDraw"), "click", function(){
+    	on.emit(dom.byId("draw"), "click", {bubbles: true, cancelable: true});
+    });
+    
+    dojo.connect(dom.byId("textMap"), "click", function(){
+    	on.emit(dom.byId("dijit_TitlePane_0_titleBarNode"), "click", {bubbles: true, cancelable: true});
+    });
+    
+    dojo.connect(dom.byId("textPrint"), "click", function(){
+    	on.emit(dom.byId("dijit_form_ComboButton_0_arrow"), "click", {bubbles: true, cancelable: true});
+    });
+    
+    dojo.connect(dom.byId("textShowSelection"), "click", function(){
+    	on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
+    });
+    
+    dojo.connect(dom.byId("textLegend"), "click", function(){
+    	on.emit(dom.byId("legendToggle"), "click", {bubbles: true, cancelable: true});
+    });
+    
+    dojo.connect(dom.byId("textHelp"), "click", function(){
+    	on.emit(dom.byId("helpButton"), "click", {bubbles: true, cancelable: true});
+    });
 
 
     //Buffer Function
@@ -463,7 +505,22 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
         
         });
     
-    
+     printer2 = new Print({
+            "map": map,
+            "templates": templates,
+            url: printUrl
+        }, dom.byId("textPrint"));
+        printer2.startup();
+        
+        printer2.on("print-start", function() {
+            domAttr.set("print_button", "class", "processing");
+        });
+        
+        printer2.on("print-complete", function() {
+            
+            domAttr.set("print_button", "class", "dormant");
+        
+        });
     
     }
     
@@ -507,10 +564,8 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
 
     //    console.dir(basemapGallery.getSelected());
     });
-
-
-
-
+    
+ 
     //End Basemap Toggle
 
 

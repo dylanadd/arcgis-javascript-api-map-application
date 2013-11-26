@@ -1,4 +1,4 @@
-  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" ,"dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, domAttr, query, domGeom, coreFx, ready, domStyle) {
+  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window" ,"dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, domAttr, query, domGeom, coreFx, ready, domStyle, win) {
         var fadeButton = dom.byId("toggleOutput"),
             fadeTarget = dom.byId("output");
  		var clearButton = dom.byId("clear");
@@ -14,6 +14,14 @@
         var drawMode = dom.byId("draw");
         var drawPanel = dom.byId("measurementDiv");
        	var textModeButton = dom.byId("iconToggle");
+       	var textMapButton = dom.byId("textMap");
+       	var	galleryBox = dom.byId("dijit_layout_ContentPane_2");
+        var body = dom.byId("body");
+       
+       var vs = win.getBox();
+        
+       var textModeHeight = 50;
+        
         
         var selectionToggle = false;
        on(fadeButton, "click", function(evt){
@@ -116,7 +124,7 @@
   
 	ready(function(){
 		//console.log(domGeom.position(slideTarget));
-		
+		//console.log(vs);
 		domAttr.set(slideTarget, "style", "top: " + domGeom.position(slideTarget).y.toString() + "px; left: " + domGeom.position(slideTarget).x.toString() + "px;");
 	//	domAttr.set(fadeTarget, "style", "top: " + domGeom.position(fadeTarget).y.toString() + "px; left: " + domGeom.position(fadeTarget).x.toString() + "px;");
 		domAttr.set(dom.byId("dijit_TitlePane_0_titleBarNode"), "title", "Change the application's basemap");
@@ -136,6 +144,7 @@
 	var openClose = false; //closed initially
   
     on(viewButton, "click", function(){
+    	
         	if(openClose == false){
         	slideIt(-300, 0, slideTarget,0);
         	openClose = true;
@@ -144,6 +153,32 @@
  				openClose = false;
  			}
         });
+      
+      
+      
+      
+     on(window, "resize", function(){
+     	 vs = win.getBox();
+     	//console.log(vs);
+     	openClose = false;
+		domAttr.set(dom.byId("searchResults"), "style", "top: 0px; left:" + (vs.w - 21) + "px;");
+		
+		//console.log(domGeom.getContentBox(dom.byId("noIconMode")));
+     	if(vs.w < 957 && vs.w > 490){
+     		domAttr.set(dom.byId("noIconMode"), "style", "top: -71px; left: 0px");
+     		textModeHeight = 71;
+     	}
+     	if(vs.w >= 957){
+     		domAttr.set(dom.byId("noIconMode"), "style", "top: -50px; left: 0px");
+     		textModeHeight = 50;
+     	}
+     	if(vs.w <= 490) {
+     		domAttr.set(dom.byId("noIconMode"), "style", "top: -96px; left: 0px");
+     		textModeHeight = 96;
+     	}
+     }); 
+      
+      
       	
      on(locateButton, "click", function(){
      	if(openClose){
@@ -231,6 +266,7 @@
     var textMode = false;
  	on(textModeButton, "click", function(){
  		if(!textMode){
+ 				domAttr.set(body, "class", "tundra textMode");	
  			//slideIt(-400, 0, "button-console",0);
  			slideIt(-400, 0, "search_wrapper",0);
  			slideIt(-400, 0, "increment",250);
@@ -240,10 +276,16 @@
  			slideIt(-400, 0, "draw",650);
  			slideIt(-400, 0, "gallery",750);
  			slideIt(-400, 0, "print_button",850);
+ 			slideIt(-400, 0, "toggleOutput",950);
+ 			slideIt(-400, 0, "legendToggle",1050);
+ 			slideIt(-500, 0, "helpButton",1150);
+ 			slideIt(0, textModeHeight, "noIconMode",1500);
+ 			slideIt(400, 50, "search_wrapper",1600);
  			textMode = true;
  		} else {
- 			slideIt(400, 0, "search_wrapper",0);
- 			
+ 			domAttr.set(body, "class", "tundra buttonMode");
+ 			slideIt(0, (textModeHeight * -1), "noIconMode",0);
+ 			slideIt(0, -50, "search_wrapper",150);
  			slideIt(380, -40, "decrement",250);
  			slideIt(380, -40, "increment",350);
  			slideIt(248, -40, "clear", 450);
@@ -251,6 +293,10 @@
  			slideIt(116, -40, "draw", 650);
  			slideIt(248, -40, "gallery", 750);
  			slideIt(248, -40, "print_button", 850);
+ 			slideIt(248, -40, "toggleOutput",950);
+ 			slideIt(248, -40, "legendToggle",1050);
+ 			slideIt(348, -40, "helpButton",1150);
+ 			
  			textMode = false;
  		}
  	});
