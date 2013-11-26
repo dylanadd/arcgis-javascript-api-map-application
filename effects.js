@@ -21,8 +21,9 @@
        var vs = win.getBox();
         
        var textModeHeight = 50;
-        
-        
+       var searchWrapperHeight = 50; 
+       var buttonConsoleHeight = -40; 
+       var zoomOffset = 0;
         var selectionToggle = false;
        on(fadeButton, "click", function(evt){
     	
@@ -100,8 +101,8 @@
       	});
       	
    function slideIt(amtH, amtV, target, delay){
-   	console.log(domGeom.position(target));
-  	console.log(target);
+   //	console.log(domGeom.position(target));
+  	//console.log(target);
   	setTimeout(function(){
   		
   		try{
@@ -124,7 +125,7 @@
   
 	ready(function(){
 		//console.log(domGeom.position(slideTarget));
-		//console.log(vs);
+		console.log(domGeom.position(dom.byId("tools")));
 		domAttr.set(slideTarget, "style", "top: " + domGeom.position(slideTarget).y.toString() + "px; left: " + domGeom.position(slideTarget).x.toString() + "px;");
 	//	domAttr.set(fadeTarget, "style", "top: " + domGeom.position(fadeTarget).y.toString() + "px; left: " + domGeom.position(fadeTarget).x.toString() + "px;");
 		domAttr.set(dom.byId("dijit_TitlePane_0_titleBarNode"), "title", "Change the application's basemap");
@@ -155,27 +156,171 @@
         });
       
       
-      
-      
+      var big = true;
+      var med = false;
+      var small = false;
+      var smallBig = false;
+      var bigSmall = false;
      on(window, "resize", function(){
+     	
+     	if(textMode){
+     		on.emit(dom.byId("iconToggle"), "click", {bubbles: true, cancelable: true});
+     	}
+     	
      	 vs = win.getBox();
      	//console.log(vs);
      	openClose = false;
 		domAttr.set(dom.byId("searchResults"), "style", "top: 0px; left:" + (vs.w - 21) + "px;");
-		
+		setTimeout(function(){
 		//console.log(domGeom.getContentBox(dom.byId("noIconMode")));
      	if(vs.w < 957 && vs.w > 490){
+     		if(!textMode){
      		domAttr.set(dom.byId("noIconMode"), "style", "top: -71px; left: 0px");
+     		}
      		textModeHeight = 71;
+     		buttonConsoleHeight = -82;
+     		zoomOffset = 42;
+     		
+     		if(!med && big){
+     			slideIt(0,21, "search_wrapper", 0);
+     			slideIt(0,21, "tools", 0);
+     			if(textMode){
+     				slideIt(-10,-21, "increment", 0);
+     				slideIt(-10,-21, "decrement", 0);
+     			} else {
+     				slideIt(-10,1, "increment", 0);
+     				slideIt(-10,1, "decrement", 0);
+     			}
+     			searchWrapperHeight += 21;
+     			med = true;
+     			big = false;
+     			small = false;
+     		} else if (!med && small){
+     			
+     			slideIt(0,-25, "search_wrapper", 0);
+     			slideIt(0,-25, "tools", 0);
+     			
+     			
+     			if(textMode){
+     				slideIt(-10,-20, "increment", 0);
+     				slideIt(-10,-20, "decrement", 0);
+     			} else {
+     				slideIt(-10,-45, "increment", 0);
+     				slideIt(-10,-45, "decrement", 0);
+     			}
+     			
+     			searchWrapperHeight -= 25;
+     			med = true;
+     			big = false;
+     			small = false;
+     		}
+     		     		
      	}
      	if(vs.w >= 957){
-     		domAttr.set(dom.byId("noIconMode"), "style", "top: -50px; left: 0px");
+     		if(!textMode){
+     			domAttr.set(dom.byId("noIconMode"), "style", "top: -50px; left: 0px");
+     		}
      		textModeHeight = 50;
+     	//	buttonConsoleHeight = 0;
+     		zoomOffset = 0;
+     		
+     		if(!big && med){
+     			buttonConsoleHeight = 0;
+     			if(domGeom.position(dom.byId("search_wrapper")).y > 10){
+     			slideIt(0,-21, "search_wrapper", 0);
+     			
+     			slideIt(0,-21, "tools", 0);
+     			
+     			if(textMode){
+     				slideIt(-10,-20, "increment", 0);
+     				slideIt(-10,-20, "decrement", 0);
+     			} else {
+     				slideIt(-10,-41, "increment", 0);
+     				slideIt(-10,-41, "decrement", 0);
+     			}
+     			
+     			
+     			
+     			
+     			}
+     			searchWrapperHeight -= 21;
+     			med = false;
+     			big = true;
+     			small = false;
+     		} else if (!big && small){
+     			
+     			if(textMode){
+     				slideIt(0,-92, "search_wrapper", 0);
+     				slideIt(0,-69, "tools", 0);
+     				slideIt(-10,-66, "increment", 0);
+     				slideIt(-10,-66, "decrement", 0);
+     				
+     				buttonConsoleHeight = -40;
+     			} else {
+     				buttonConsoleHeight = -40;
+     			slideIt(0,-46, "search_wrapper", 0);
+     			slideIt(0,-46, "tools", 0);
+     			slideIt(-10,-66, "increment", 0);
+     			slideIt(-10,-66, "decrement", 0);
+     			}
+     			searchWrapperHeight -= 46;
+     			med = false;
+     			big = true;
+     			small = false;
+     			smallBig = true;
+     			
+     		}
+     		
      	}
      	if(vs.w <= 490) {
+     		smallBig = false;
+     		if(!textMode){
      		domAttr.set(dom.byId("noIconMode"), "style", "top: -96px; left: 0px");
+     		}
      		textModeHeight = 96;
+     		buttonConsoleHeight = -134;
+     		zoomOffset = 92;
+     		
+     		if(!small && big){
+     			if(textMode){
+     			slideIt(0,92,"search_wrapper",0);
+     			slideIt(0,92, "tools", 0);	
+     			slideIt(-10,72, "increment", 0);
+     			slideIt(-10,72, "decrement", 0);
+     			bigSmall = true;
+     			} else {
+     			slideIt(0,46, "search_wrapper", 0);
+     			slideIt(0,46, "tools", 0);
+     			slideIt(-10,26, "increment", 0);
+     			slideIt(-10,26, "decrement", 0);
+     			searchWrapperHeight += 46;
+     			}
+     			med = false;
+     			big = false;
+     			small = true;
+     		} else if (!small && med){
+     			slideIt(0,25, "search_wrapper", 0);
+     			slideIt(0,25, "tools", 0);
+     			
+     			
+     			if(textMode){
+     				slideIt(-10,-20, "increment", 0);
+     				slideIt(-10,-20, "decrement", 0);
+     			} else {
+     				slideIt(-10,5, "increment", 0);
+     				slideIt(-10,5, "decrement", 0);
+     			}
+     			
+     			
+     			searchWrapperHeight += 25;
+     			med = false;
+     			big = false;
+     			small = true;
+     		}
      	}
+     	console.log(buttonConsoleHeight);
+     	
+     	}, 1250);
      }); 
       
       
@@ -264,7 +409,7 @@
       
     
     var textMode = false;
- 	on(textModeButton, "click", function(){
+ 	on(textModeButton, "click", function(){ console.log(domGeom.position(dom.byId("clear")));
  		if(!textMode){
  				domAttr.set(body, "class", "tundra textMode");	
  			//slideIt(-400, 0, "button-console",0);
@@ -280,25 +425,53 @@
  			slideIt(-400, 0, "legendToggle",1050);
  			slideIt(-500, 0, "helpButton",1150);
  			slideIt(0, textModeHeight, "noIconMode",1500);
- 			slideIt(400, 50, "search_wrapper",1600);
+ 			slideIt(400, searchWrapperHeight, "search_wrapper",1600);
  			textMode = true;
+ 			
  		} else {
+ 			
  			domAttr.set(body, "class", "tundra buttonMode");
  			slideIt(0, (textModeHeight * -1), "noIconMode",0);
- 			slideIt(0, -50, "search_wrapper",150);
- 			slideIt(380, -40, "decrement",250);
- 			slideIt(380, -40, "increment",350);
- 			slideIt(248, -40, "clear", 450);
- 			slideIt(182, -40, "bufferMode", 550);
- 			slideIt(116, -40, "draw", 650);
- 			slideIt(248, -40, "gallery", 750);
- 			slideIt(248, -40, "print_button", 850);
- 			slideIt(248, -40, "toggleOutput",950);
- 			slideIt(248, -40, "legendToggle",1050);
- 			slideIt(348, -40, "helpButton",1150);
+ 			slideIt(0, (searchWrapperHeight * -1), "search_wrapper",150);
+ 			slideIt(380, (buttonConsoleHeight + zoomOffset), "decrement",250);
+ 			slideIt(380, (buttonConsoleHeight + zoomOffset), "increment",350);
+ 			
+ 			if (smallBig && domGeom.position(dom.byId("clear")).y <= 59){
+ 				slideIt(248, 6, "clear", 450);
+ 				slideIt(182, 6, "bufferMode", 550);
+ 				slideIt(116, 6, "draw", 650);
+ 				slideIt(248, 6, "gallery", 750);
+ 				slideIt(248, 6, "print_button", 850);
+ 				slideIt(248, 6, "toggleOutput",950);
+ 				slideIt(248, 6, "legendToggle",1050);
+ 				slideIt(348, 6, "helpButton",1150);
+ 			} else if(bigSmall){
+ 				slideIt(248, buttonConsoleHeight, "clear", 450);
+ 				slideIt(182, buttonConsoleHeight, "bufferMode", 550);
+ 				slideIt(116, buttonConsoleHeight, "draw", 650);
+ 				slideIt(248, buttonConsoleHeight, "gallery", 750);
+ 				slideIt(248, buttonConsoleHeight, "print_button", 850);
+ 				slideIt(248, buttonConsoleHeight, "toggleOutput",950);
+ 				slideIt(248, buttonConsoleHeight, "legendToggle",1050);
+ 				slideIt(348, buttonConsoleHeight, "helpButton",1150);
+ 				//bigSmall = false;
+ 				buttonConsoleHeight = -92;
+ 			} 
+ 			
+ 			else {
+ 				slideIt(248, buttonConsoleHeight, "clear", 450);
+ 				slideIt(182, buttonConsoleHeight, "bufferMode", 550);
+ 				slideIt(116, buttonConsoleHeight, "draw", 650);
+ 				slideIt(248, buttonConsoleHeight, "gallery", 750);
+ 				slideIt(248, buttonConsoleHeight, "print_button", 850);
+ 				slideIt(248, buttonConsoleHeight, "toggleOutput",950);
+ 				slideIt(248, buttonConsoleHeight, "legendToggle",1050);
+ 				slideIt(348, buttonConsoleHeight, "helpButton",1150);
+ 			}
  			
  			textMode = false;
  		}
+ 		setTimeout(function(){console.log(domGeom.position(dom.byId("clear")));}, 2000);
  	});
    
         
