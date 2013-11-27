@@ -143,18 +143,58 @@
 		
 	});  
 	
+	function fadeConsole(){
+		
+		var searchTemp = dom.byId("search_wrapper");
+    	var toolbarTemp = dom.byId("tools");
+    	var incTemp = dom.byId("increment");
+    	var decTemp = dom.byId("decrement");
+        	
+ 			
+ 			vs = win.getBox();
+ 			if(vs.w < 778 && openClose == false){
+ 				fx.fadeOut({ node: searchTemp, duration: 225 }).play();
+ 				fx.fadeOut({ node: toolbarTemp, duration: 225 }).play();
+ 				fx.fadeOut({ node: incTemp, duration: 225 }).play();
+ 				fx.fadeOut({ node: decTemp, duration: 225 }).play();
+ 				/* domAttr.set(searchTemp, "class", "search_wrapper hide");
+ 				domAttr.set(toolbarTemp, "class", "hide");
+ 				domAttr.set(incTemp, "class", "hide");
+ 				domAttr.set(decTemp, "class", "hide");
+ 				*/
+ 			} 
+ 			
+ 			 if(openClose){
+ 				fx.fadeIn({ node: searchTemp, duration: 225 }).play();
+ 				fx.fadeIn({ node: toolbarTemp, duration: 225 }).play();
+ 				fx.fadeIn({ node: incTemp, duration: 225 }).play();
+ 				fx.fadeIn({ node: decTemp, duration: 225 }).play();
+ 				/* domAttr.set(searchTemp, "class", "search_wrapper");
+ 				domAttr.set(toolbarTemp, "class", "show");
+ 				domAttr.set(incTemp, "class", "show");
+ 				domAttr.set(decTemp, "class", "show");
+ 				*/
+ 			}
+ 			
+		
+	}
 	
 	var openClose = false; //closed initially
   
     on(viewButton, "click", function(){
     	
-        	if(openClose == false){
+    	fadeConsole();
+ 			
+ 			
+ 			if(openClose == false){
         	slideIt(-300, 0, slideTarget,0);
         	openClose = true;
  			} else {
  				slideIt(300, 0, slideTarget,0);
  				openClose = false;
  			}
+ 			
+ 			
         });
       
       
@@ -178,8 +218,14 @@
      	
      	 vs = win.getBox();
      	//console.log(vs);
+     	
+     	if(openClose){
+     		fadeConsole();
+     	}
      	openClose = false;
 		domAttr.set(dom.byId("searchResults"), "style", "top: 0px; left:" + (vs.w - 21) + "px;");
+		
+		//BEGIN RESPONSE FUNCTIONS
 		
 		setTimeout(function(){
 		//console.log(domGeom.getContentBox(dom.byId("noIconMode")));
@@ -342,6 +388,10 @@
      	console.log(buttonConsoleHeight);
      //	domAttr.set(dom.byId("searchResults"), "style", "height: " + vs.h + "px;");
      	}, respTime);
+     	//END RESPONSE FUNCTIONS
+     	
+     	//SPECIAL FUNCTIONS FOR SCREENS < 778PX WIDE
+     	
       }
       	
      on(locateButton, "click", function(){
@@ -429,7 +479,12 @@
     
     var textMode = false;
  	on(textModeButton, "click", function(){ 
- 		console.log(domGeom.position(dom.byId("noIconMode")));
+ 		textModeSwitch();
+ 	});
+   
+        
+        function textModeSwitch(){
+        	console.log(domGeom.position(dom.byId("noIconMode")));
  		if(!textMode){
  				domAttr.set(body, "class", "tundra textMode");	
  			//slideIt(-400, 0, "button-console",0);
@@ -461,7 +516,7 @@
  					break;
  				}
  				
- 			},500);
+ 			},100);
  			
  		
  			
@@ -506,8 +561,25 @@
  				slideIt(248, buttonConsoleHeight, "toggleOutput",950);
  				slideIt(248, buttonConsoleHeight, "legendToggle",1050);
  				slideIt(348, buttonConsoleHeight, "helpButton",1150);
+ 			
+ 			/*
+ 				setTimeout(function(){
+ 				switch (domGeom.position(dom.byId("noIconMode")).h) {
+ 					case 71:
+ 					slideIt(0, -50, "searchResults",150);
+ 					break;
+ 					
+ 					case 90:
+ 					slideIt(0, -50, "searchResults",150);
+ 					break;
+ 					
+ 					case 117:
+ 					slideIt(0, -96, "searchResults",150);
+ 					break;
+ 				}
  				
- 				
+ 			},500);
+ 				*/
  				
  				
  			}
@@ -515,7 +587,7 @@
  			textMode = false;
  		}
  		setTimeout(function(){console.log(domGeom.position(dom.byId("noIconMode")));}, 2000);
- 	});
-   
+        }
+        
         
     });
