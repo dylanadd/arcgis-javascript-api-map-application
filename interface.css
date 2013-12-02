@@ -940,3 +940,15 @@ user-select:none;
 width:42px;
 z-index:30;
 }
+
+#button-console.invisible #tools {
+	display: none;
+}
+
+#button-console.invisible + #map #increment {
+	display: none;
+}
+
+#button-console.invisible + #map #decrement {
+	display: none;
+}

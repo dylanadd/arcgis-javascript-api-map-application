@@ -17,7 +17,7 @@
        	var textMapButton = dom.byId("textMap");
        	var	galleryBox = dom.byId("dijit_layout_ContentPane_2");
         var body = dom.byId("body");
-       
+        var fix1 = dom.byId("button-console");
        var vs = win.getBox();
         
        var textModeHeight = 50;
@@ -157,14 +157,15 @@
  				fx.fadeOut({ node: toolbarTemp, duration: 225 }).play();
  				fx.fadeOut({ node: incTemp, duration: 225 }).play();
  				fx.fadeOut({ node: decTemp, duration: 225 }).play();
- 				/* domAttr.set(searchTemp, "class", "search_wrapper hide");
- 				domAttr.set(toolbarTemp, "class", "hide");
- 				domAttr.set(incTemp, "class", "hide");
- 				domAttr.set(decTemp, "class", "hide");
- 				*/
+ 			    setTimeout(function(){
+ 			    	domAttr.set(fix1, "class", "invisible");
+ 			    }, 240);
+ 			
+ 				
  			} 
  			
  			 if(openClose){
+ 			 	domAttr.set(fix1, "class", "visible");
  				fx.fadeIn({ node: searchTemp, duration: 225 }).play();
  				fx.fadeIn({ node: toolbarTemp, duration: 225 }).play();
  				fx.fadeIn({ node: incTemp, duration: 225 }).play();
