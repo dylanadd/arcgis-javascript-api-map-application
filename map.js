@@ -24,7 +24,7 @@ require([
     "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate", 
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer", 
     "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect", 
-    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend", "dojo/behavior",
+    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend", "dojo/behavior", "dojo/request",
     
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function(
 Map, FeatureLayer, 
@@ -38,7 +38,7 @@ Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
 BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement, 
 Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate, 
 domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask, 
-Point, SpatialReference, ProjectParameters, Legend, behavior
+Point, SpatialReference, ProjectParameters, Legend, behavior, request 
 
 ) {
     
@@ -642,6 +642,7 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
     parcels = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/13", {
         outFields: ["*"],
+         
         infoTemplate: popupTemplate,
         mode: FeatureLayer.MODE_SELECTION
     });
@@ -708,7 +709,7 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
             //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function(selection) {
                 console.debug(selection);
-
+				
 
                 //update the url param if a parcel was located
                 if (selection.length > 0) {
@@ -768,6 +769,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     on(dom.byId("address"), "click", function() {
         domAttr.set("address", "value", "");
     });
+   
+    
+    
    // on(dom.byId("toggleOutput"), "click", function(){
    // var panel = dom.byId("output");
    // fx.fadeOut({node: panel}).play();
@@ -1118,8 +1122,15 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
     
     }
     var stripe = null;
+    var exportArray = new Array();
     function info() {
-        
+    	
+    
+    	console.log(infoArray);
+    	
+    	console.log(infoArray.attributes.LevyURL);
+    	//infoArray.attributes.LevyURL = "x";
+        exportArray.push(infoArray.attributes);
         if(stripe == null || stripe == "odd"){
         	stripe = "even";
         	} else {
@@ -1143,7 +1154,31 @@ Point, SpatialReference, ProjectParameters, Legend, behavior
         
         
         dom.byId("outTable").innerHTML += s;
+         
+    console.log(exportArray);
+ 	//console.log(dojo.toJson(exportArray));
+ 	//domAttr.set(dom.byId("exportButton"), "href", "test.php?content=" + encodeURIComponent(dojo.toJson(exportArray))); 
+ 	
+ 	
+   var xhrArgs = ({
+        url:"test.php",
+        postData: dojo.toJson(exportArray[0]),
+        handleAs: "text",    
+      
+        load: function(data){
+
+            console.log(data);
+
+        },
+        error: function(error) {
+			console.log(error);
+                        }           
+
+    });
     
+ 	
+ 	var deferred = dojo.rawXhrPost(xhrArgs);
+ 	
     }
     
     function ownerResults(infoArray4) {
