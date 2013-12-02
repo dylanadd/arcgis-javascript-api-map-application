@@ -267,6 +267,19 @@ visibility:hidden;
 width:0;
 }
 
+#pclogo {
+height:48px !important;
+width: 48px !important;
+margin:0;
+padding:0;
+position: absolute;
+right: 15px;
+bottom: 15px;
+z-index: 30;
+
+background: url("images/logo.png") no-repeat 0 0 !important;
+}
+
 div#gallery .dijitTitlePaneTitle {
 -moz-user-select:none;
 -ms-user-select:none;
@@ -619,6 +632,7 @@ a.action.zoomTo{
 	right: -179px;
 	top:0px;
 	height:100%;
+	z-index: 1000;
 }
 div#openClose{
 	cursor:pointer;

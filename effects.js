@@ -18,6 +18,9 @@
        	var	galleryBox = dom.byId("dijit_layout_ContentPane_2");
         var body = dom.byId("body");
         var fix1 = dom.byId("button-console");
+        var logo = dom.byId("pclogo");
+        
+        
        var vs = win.getBox();
         
        var textModeHeight = 50;
