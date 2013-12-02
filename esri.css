@@ -2764,7 +2764,7 @@
     position: absolute;
     top: 2px;
     cursor: pointer;
-    background: url("../dijit/images/popup.png") no-repeat;
+    background: url("images/popup.png") no-repeat;
 }
 
 .esriPopup .titleButton.prev {
@@ -2867,7 +2867,7 @@
 
 .esriPopup .pointer, .esriPopup .outerPointer {
     position: absolute;
-    background: url("../dijit/images/popup.png") no-repeat;
+    background: url("images/popup.png") no-repeat;
 }
 
 .esriPopup .pointer.top {
@@ -3085,7 +3085,7 @@
     position: absolute;
     top: 67px;
     cursor: pointer;
-    background: url("../dijit/images/popup.png") no-repeat;
+    background: url("images/popup.png") no-repeat;
 }
 
 .esriViewPopup .gallery .mediaHandle.prev {
@@ -3107,7 +3107,7 @@
 }
 
 .esriViewPopup .gallery .mediaIcon {
-    background: url("../dijit/images/popup.png") no-repeat;
+    background: url("images/popup.png") no-repeat;
 }
 
 .esriViewPopup .gallery .mediaIcon.image {
