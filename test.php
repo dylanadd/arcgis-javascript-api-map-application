@@ -1,28 +1,23 @@
  <?php
-//echo $_POST['work'];
- //echo "<pre>";
-//print_r($_POST);
-//print_r(var_dump(json_encode($_POST)));
-//$temp = json_encode($_POST['work']);
-//$temp = '{"array": [{' . $_POST['work']. '}] }';
+
 $temp = json_decode($_POST['work']);
 
-//$temp2 = json_decode($temp, true);
-//echo "x";
-//var_dump($_POST);
-//print_r($_POST['work']);
-//echo var_dump($_POST);
-//print_r($temp);
-//print_r($temp2);
-//print_r($temp2);
-print_r($temp);
+//print_r($temp->export[0]);
 
 
+function udate($format = 'u', $utimestamp = null) {
+        if (is_null($utimestamp))
+            $utimestamp = microtime(true);
 
-//echo "</pre>";
+        $timestamp = floor($utimestamp);
+        $milliseconds = round(($utimestamp - $timestamp) * 1000000);
 
+        return date(preg_replace('`(?<!\\\\)u`', $milliseconds, $format), $timestamp);
+    }
 
- //echo "<pre>" . $content . "</pre>";
+//echo udate('Y-m-d-s_u');
+$filename = udate('Y-m-d-s_u') . '.csv';
+echo $filename;
  
 /*
  
@@ -38,9 +33,7 @@ $fp = fopen('file.csv', 'w');
 
 foreach ($list as $fields) {
     fputcsv($fp, $fields);
-	echo "<pre>";
-	print_r($fields);
-	echo "</pre>";
+	
 }
 
 fclose($fp);
@@ -49,11 +42,23 @@ if($x){
 header("Location: file.csv");
 }
 */
+$i=0;
+$fp = fopen($filename, 'w');
+$z = array('Parcel Number','FIPS','Owner Name', 'Owner Overflow', 'Owner Street','Owner City','Owner State', 'Owner Zip');
+fputcsv($fp,$z);
+foreach($temp->export as $result){
+	$y = array($result->$i->parcelNum, $result->$i->Fips, $result->$i->Owner, $result->$i->OwnerOverflow, $result->$i->OwnerStreetAddress, $result->$i->OwnerCity, $result->$i->OwnerState, $result->$i->OwnerZip );
+		
+		
+	fputcsv($fp,$y);
+	//print_r($result->$i->parcelNum);
+	$i++;
+}
 
-$fp = fopen('file.csv', 'w');
 
 
-     fwrite($fp, $_POST['work']);
+
+     
 	
 
 

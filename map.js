@@ -1178,9 +1178,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior, request
         }
         
         if(tf){
-        	dom.byId("filler").innerHTML += ',{"count' + count + '": ' + dojo.toJson(exportArray) + '}';
+        	dom.byId("filler").innerHTML += ',{"' + count + '": ' + dojo.toJson(exportArray) + '}';
         } else {
-         dom.byId("filler").innerHTML += '{"count' + count + '": ' + dojo.toJson(exportArray) + '}';
+         dom.byId("filler").innerHTML += '{"' + count + '": ' + dojo.toJson(exportArray) + '}';
         }
          console.log(dom.byId("filler").innerHTML);
          console.log(tf);
