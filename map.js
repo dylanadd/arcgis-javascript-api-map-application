@@ -1125,12 +1125,26 @@ Point, SpatialReference, ProjectParameters, Legend, behavior, request
     var exportArray = new Array();
     function info() {
     	
-    
+    	
     	console.log(infoArray);
     	
     	console.log(infoArray.attributes.LevyURL);
     	//infoArray.attributes.LevyURL = "x";
-        exportArray.push(infoArray.attributes);
+       // exportArray.push(infoArray.attributes);
+       exportArray = {  "parcelNum": infoArray.attributes.PAR_NUM.toString(),
+        				"Fips": infoArray.attributes.Fips.toString(),
+        				"Owner": infoArray.attributes.Owner,
+        				"OwnerOverflow": infoArray.attributes.OwnerOverflow,
+        				"OwnerStreetAddress": infoArray.attributes.OwnerStreetAddress,
+        				"OwnerCity": infoArray.attributes.OwnerCity,
+        				"OwnerState": infoArray.attributes.OwnerState,
+        				"OwnerZip": infoArray.attributes.OwnerZip.toString()        				
+       				 }; 
+       				
+       
+        
+        console.log(dojo.toJson(exportArray));
+        
         if(stripe == null || stripe == "odd"){
         	stripe = "even";
         	} else {
@@ -1154,17 +1168,18 @@ Point, SpatialReference, ProjectParameters, Legend, behavior, request
         
         
         dom.byId("outTable").innerHTML += s;
-         
+         dom.byId("filler").innerHTML += '{"count1": ' + dojo.toJson(exportArray) + '}';
+         console.log(dom.byId("filler").innerHTML);
     console.log(exportArray);
  	//console.log(dojo.toJson(exportArray));
  	//domAttr.set(dom.byId("exportButton"), "href", "test.php?content=" + encodeURIComponent(dojo.toJson(exportArray))); 
  	
- 	
+ 	/*
    var xhrArgs = ({
         url:"test.php",
-        postData: dojo.toJson(exportArray[0]),
+        postData: "this is a test",
         handleAs: "text",    
-      
+        
         load: function(data){
 
             console.log(data);
@@ -1178,8 +1193,33 @@ Point, SpatialReference, ProjectParameters, Legend, behavior, request
     
  	
  	var deferred = dojo.rawXhrPost(xhrArgs);
- 	
+ 	 */
     }
+    
+   
+    function makeJson(tempArray) {
+    
+    	
+    	
+    	
+    	//"{\"PAR_NUM\":\"" + infoArray.attributes.PAR_NUM + "\" }";
+    	
+    	/* infoArray.attributes.PAR_NUM 
+        infoArray.attributes.PAR_TXT 
+        infoArray.attributes.PAR_TXT
+        infoArray.attributes.Fips 
+        infoArray.attributes.Owner
+        infoArray.attributes.OwnerOverflow 
+        infoArray.attributes.OwnerStreetAddress 
+        infoArray.attributes.OwnerCity 
+        infoArray.attributes.OwnerState 
+        infoArray.attributes.OwnerZip
+    	*/
+    	
+    	
+    }
+    
+    
     
     function ownerResults(infoArray4) {
         console.log(infoArray4);

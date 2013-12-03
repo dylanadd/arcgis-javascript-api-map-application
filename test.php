@@ -1,8 +1,25 @@
  <?php
+//echo $_POST['work'];
+ //echo "<pre>";
+//print_r($_POST);
+//print_r(var_dump(json_encode($_POST)));
+//$temp = json_encode($_POST['work']);
+//$temp = '{"array": [{' . $_POST['work']. '}] }';
+$temp = json_decode($_POST['work']);
 
-// echo "<pre>XXX";
-print_r($_POST);
-//var_dump(json_decode($_POST[0]));
+//$temp2 = json_decode($temp, true);
+//echo "x";
+//var_dump($_POST);
+//print_r($_POST['work']);
+//echo var_dump($_POST);
+//print_r($temp);
+//print_r($temp2);
+//print_r($temp2);
+
+print_r($temp);
+
+
+
 //echo "</pre>";
 
 
@@ -37,10 +54,10 @@ header("Location: file.csv");
 $fp = fopen('file.csv', 'w');
 
 
-    fwrite($fp, implode($_POST));
+     fwrite($fp, $_POST['work']);
 	
 
 
 fclose($fp);
-
+//return "x";
 ?>

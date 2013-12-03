@@ -1,4 +1,4 @@
-  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window", "dojo/request/xhr" ,"dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, domAttr, query, domGeom, coreFx, ready, domStyle, win, xhr) {
+  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window", "dojo/_base/xhr", "dojo/request/iframe","dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, domAttr, query, domGeom, coreFx, ready, domStyle, win, xhr, iframe) {
         var fadeButton = dom.byId("toggleOutput"),
             fadeTarget = dom.byId("output");
  		var clearButton = dom.byId("clear");
@@ -19,8 +19,8 @@
         var body = dom.byId("body");
         var fix1 = dom.byId("button-console");
         var logo = dom.byId("pclogo");
-        
-        
+        var outputJson = dom.byId("filler");
+        var helpButton = dom.byId("helpButton");
        var vs = win.getBox();
         
        var textModeHeight = 50;
@@ -28,6 +28,31 @@
        var buttonConsoleHeight = -40; 
        var zoomOffset = 0;
         var selectionToggle = false;
+        
+        on(helpButton, "click", function(){
+        	var zz = outputJson.innerHTML;
+        	//zz = json.stringify(zz);
+        	console.log(zz);
+        	//on.emit(dom.byId("click"), "click", {bubbles: true, cancelable: true});
+        	dom.byId("filler").innerHTML = '{"export": ' + dom.byId("filler").innerHTML + '}';
+        	 xhr.post({
+        	 		url:"test.php",
+      				 form:"form",
+     				  load: function(data, ioArgs){
+     				     console.log(data);
+     				     console.log(ioArgs); // ioArgs is loaded with XHR information, but not useful in simple cases
+        				   // data is the response from the form's action="" url
+    				   },
+     				  error: function(err, ioArgs){
+       				     console.log(err);
+     				     console.log(ioArgs);// again, ioArgs is useful, but not in simple cases
+       				    console.error(err); // display the error
+      				 }
+   				 }); 
+        });
+        
+        
+        
        on(fadeButton, "click", function(evt){
     	
     	// console.log(domStyle.getComputedStyle(dom.byId("measurementDiv")));
