@@ -31,10 +31,12 @@
         
         on(helpButton, "click", function(){
         	var zz = outputJson.innerHTML;
+        	var x = dom.byId("filler").innerHTML;
         	//zz = json.stringify(zz);
         	console.log(zz);
         	//on.emit(dom.byId("click"), "click", {bubbles: true, cancelable: true});
-        	dom.byId("filler").innerHTML = '{"export": ' + dom.byId("filler").innerHTML + '}';
+        	dom.byId("filler").innerHTML = '{"export": [' + dom.byId("filler").innerHTML + ']}';
+        	console.log(dom.byId("filler").innerHTML);
         	 xhr.post({
         	 		url:"test.php",
       				 form:"form",
@@ -49,6 +51,7 @@
        				    console.error(err); // display the error
       				 }
    				 }); 
+   				 dom.byId("filler").innerHTML = x;
         });
         
         

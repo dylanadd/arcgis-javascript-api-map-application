@@ -15,7 +15,6 @@ $temp = json_decode($_POST['work']);
 //print_r($temp);
 //print_r($temp2);
 //print_r($temp2);
-
 print_r($temp);
 
 

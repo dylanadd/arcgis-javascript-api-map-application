@@ -1123,6 +1123,8 @@ Point, SpatialReference, ProjectParameters, Legend, behavior, request
     }
     var stripe = null;
     var exportArray = new Array();
+    var tf = false;
+    var count = 0;
     function info() {
     	
     	
@@ -1168,9 +1170,22 @@ Point, SpatialReference, ProjectParameters, Legend, behavior, request
         
         
         dom.byId("outTable").innerHTML += s;
-         dom.byId("filler").innerHTML += '{"count1": ' + dojo.toJson(exportArray) + '}';
+        
+        var str =  dom.byId("filler").innerHTML;
+       
+        if(str.search("}") > -1){
+        	tf = true;
+        }
+        
+        if(tf){
+        	dom.byId("filler").innerHTML += ',{"count' + count + '": ' + dojo.toJson(exportArray) + '}';
+        } else {
+         dom.byId("filler").innerHTML += '{"count' + count + '": ' + dojo.toJson(exportArray) + '}';
+        }
          console.log(dom.byId("filler").innerHTML);
-    console.log(exportArray);
+         console.log(tf);
+         count++;
+  //  console.log(exportArray);
  	//console.log(dojo.toJson(exportArray));
  	//domAttr.set(dom.byId("exportButton"), "href", "test.php?content=" + encodeURIComponent(dojo.toJson(exportArray))); 
  	
