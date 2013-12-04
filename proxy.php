@@ -26,7 +26,7 @@
    * <true> to only proxy to the sites listed in '$serverUrls'
    * <false> to proxy to any site (are you sure you want to do this?)
    */
-  $mustMatch = false;
+  $mustMatch = TRUE;
   
   /***************************************************************************
    * ArcGIS Server services this proxy will forward requests to
@@ -42,6 +42,7 @@
     array( 'url' => 'http://sampleserver2.arcgisonline.com/ArcGIS/rest/services/', 'matchAll' => true, 'token' => '' ),
     array( 'url' => 'http://sampleserver1a.arcgisonline.com/arcgisoutput/',        'matchAll' => true, 'token' => '' ),
     array( 'url' => 'http://sampleserver1b.arcgisonline.com/arcgisoutput/',        'matchAll' => true, 'token' => '' ),
+    array( 'url' => 'http://sampleserver6.arcgisonline.com/arcgis/rest/services/',        'matchAll' => true, 'token' => '' ),
     array( 'url' => 'http://sampleserver1c.arcgisonline.com/arcgisoutput/',        'matchAll' => true, 'token' => '' )
   );
   /***************************************************************************/
