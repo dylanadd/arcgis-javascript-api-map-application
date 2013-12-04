@@ -17,7 +17,7 @@ function udate($format = 'u', $utimestamp = null) {
 
 //echo udate('Y-m-d-s_u');
 $filename = udate('Y-m-d-s_u') . '.csv';
-echo $filename;
+//echo $filename;
  
 /*
  
@@ -43,19 +43,24 @@ header("Location: file.csv");
 }
 */
 $i=0;
-$fp = fopen($filename, 'w');
+$fp = fopen('temp/' . $filename, 'w');
 $z = array('Parcel Number','FIPS','Owner Name', 'Owner Overflow', 'Owner Street','Owner City','Owner State', 'Owner Zip');
 fputcsv($fp,$z);
+$tf = false;
 foreach($temp->export as $result){
 	$y = array($result->$i->parcelNum, $result->$i->Fips, $result->$i->Owner, $result->$i->OwnerOverflow, $result->$i->OwnerStreetAddress, $result->$i->OwnerCity, $result->$i->OwnerState, $result->$i->OwnerZip );
 		
 		
-	fputcsv($fp,$y);
+	$tf = (fputcsv($fp,$y));
 	//print_r($result->$i->parcelNum);
 	$i++;
 }
 
-
+if ($tf != FALSE){
+	echo $filename;
+} else {
+	echo "false";
+}
 
 
      
@@ -64,4 +69,5 @@ foreach($temp->export as $result){
 
 fclose($fp);
 //return "x";
+//header("Location: " . $filename);
 ?>

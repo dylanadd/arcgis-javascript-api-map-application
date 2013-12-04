@@ -21,6 +21,7 @@
         var logo = dom.byId("pclogo");
         var outputJson = dom.byId("filler");
         var helpButton = dom.byId("helpButton");
+        var exportButton = dom.byId("expButton");
        var vs = win.getBox();
         
        var textModeHeight = 50;
@@ -29,11 +30,19 @@
        var zoomOffset = 0;
         var selectionToggle = false;
         
-        on(helpButton, "click", function(){
+       
+       
+       
+       
+       
+        
+         on(exportButton, "click", function(){
+       
         	var zz = outputJson.innerHTML;
         	var x = dom.byId("filler").innerHTML;
         	//zz = json.stringify(zz);
         	console.log(zz);
+        	
         	//on.emit(dom.byId("click"), "click", {bubbles: true, cancelable: true});
         	dom.byId("filler").innerHTML = '{"export": [' + dom.byId("filler").innerHTML + ']}';
         	console.log(dom.byId("filler").innerHTML);
@@ -42,16 +51,27 @@
       				 form:"form",
      				  load: function(data, ioArgs){
      				     console.log(data);
-     				     console.log(ioArgs); // ioArgs is loaded with XHR information, but not useful in simple cases
+     				     console.log(ioArgs);
+     				     data = data.replace(" ","");
+     				     if(data != "false"){
+     				    // domAttr.set(dom.byId("expLink"), "href", "temp/" + data);
+     				    // domAttr.set(dom.byId("expLink"), "style", "visibility:visible;");
+     				    window.open("./temp/" + data, '_parent');
+     				     }
+     				     
+     				     
+     				      // ioArgs is loaded with XHR information, but not useful in simple cases
         				   // data is the response from the form's action="" url
     				   },
      				  error: function(err, ioArgs){
        				     console.log(err);
      				     console.log(ioArgs);// again, ioArgs is useful, but not in simple cases
-       				    console.error(err); // display the error
+       				  //  console.error(err); // display the error
       				 }
    				 }); 
    				 dom.byId("filler").innerHTML = x;
+   				 
+   				
         });
         
         
@@ -170,7 +190,7 @@
 		query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
 		query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
 		respond(0);
-		
+
 		
 	});  
 	
