@@ -1092,6 +1092,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior, request
         empty();
         map.graphics.clear();
         map.infoWindow.hide();
+        dom.byId("filler").innerHTML = "";
+        count = 0;
+        tf = false;
         try {
             infoArray.length = 0;
             infoArray2.length = 0;

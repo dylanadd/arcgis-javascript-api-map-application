@@ -493,6 +493,7 @@ padding-right: 10px;
 padding-top: 10px;
 -webkit-border-radius: 20px 20px 10px 10px;
 border-radius: 20px 20px 10px 10px;
+text-align: center;
 }
 
 #wrapper2 {
@@ -965,4 +966,11 @@ z-index:30;
 
 #button-console.invisible + #map #decrement {
 	display: none;
+}
+
+#expButton {
+	color: white;
+text-decoration: none;
+font-family: verdana,helvetica;
+font-size: 16px;
 }
