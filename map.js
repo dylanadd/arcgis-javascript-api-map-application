@@ -1389,8 +1389,8 @@ var mobile;
     //find all owners matching query 
     function selectOwner(owner) {
         popup.clearFeatures();
-        
-        if (owner) {
+      
+       if (owner) {
             var query = new Query();
             query.text = owner;
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function(selection) {
@@ -1403,17 +1403,18 @@ var mobile;
                     //   map.infoWindow.show(center);
                     //  ownerResults(selection);
                     //   alert("ownerResults complete");
-                   // console.log(selection);
+                    console.log(selection);
                     displayResults(selection);
                 });
                 // console.log(center);
                 domAttr.set("locate", "class", "dormant");
                 map.centerAndZoom(center, 2);
                 change = true;
-            
+           
             
             
             });
+          
         }
     }
 

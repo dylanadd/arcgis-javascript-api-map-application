@@ -582,7 +582,7 @@
  			slideIt(0, (searchWrapperHeight * -1), "search_wrapper",150);
  			slideIt(380, (buttonConsoleHeight + zoomOffset), "decrement",250);
  			slideIt(380, (buttonConsoleHeight + zoomOffset), "increment",350);
- 			
+ 	
  			if (smallBig && domGeom.position(dom.byId("clear")).y <= 59){
  				slideIt(248, 6, "clear", 450);
  				slideIt(182, 6, "bufferMode", 550);
@@ -639,6 +639,7 @@
  			
  			textMode = false;
  		}
+ 		//
  		setTimeout(function(){console.log(domGeom.position(dom.byId("noIconMode")));}, 2000);
         }
         
