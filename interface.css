@@ -336,10 +336,11 @@ width:0;
 }
 
 .dijitButtonNode {
-background:#fff url(images/buttonEnabled.png) repeat-x bottom left;
+ background:#fff url(images/buttonEnabled.png) repeat-x bottom left; 
 border:1px solid silver;
 border-bottom:1px solid #9b9b9b;
 padding:.1em .2em .2em;
+
 }
 
 .dijitPopup {
@@ -366,8 +367,8 @@ padding:0 !impaortant;
 .esriPrint td.dijitStretch {
 display:none;
 }
-
-.buttonMode td[id^='dijit_form_ComboButton_'] {
+/* .buttonMode td[id^='dijit_form_ComboButton_'] { */
+#tools td[id^='dijit_form_ComboButton_'] {
 -moz-user-select:none;
 -ms-user-select:none;
 -webkit-border-radius:0 0px 0px 0;
@@ -934,7 +935,7 @@ display: inline-block;
 	display: inline-block;
 }
 
-.textMode #noIconMode td[id^='dijit_form_ComboButton_'] {
+.textMode #noIconMode #textButtonConsole td[id^='dijit_form_ComboButton_'] {
 -moz-user-select:none;
 -ms-user-select:none;
 -webkit-border-radius:0 0px 0px 0;
