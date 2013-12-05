@@ -21,6 +21,7 @@
         var logo = dom.byId("pclogo");
         var outputJson = dom.byId("filler");
         var helpButton = dom.byId("helpButton");
+        var legendButton = dom.byId("legendToggle");
         var exportButton = dom.byId("expButton");
        var vs = win.getBox();
         
@@ -33,8 +34,8 @@
        
        
        
-       
-       
+       on(helpButton,"click",function(){alert("Feature comming soon.")});
+       on(legendButton,"click",function(){alert("Feature comming soon.")});
         
          on(exportButton, "click", function(){
        
@@ -190,7 +191,7 @@
 		query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
 		query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
 		respond(0);
-
+		
 		
 	});  
 	

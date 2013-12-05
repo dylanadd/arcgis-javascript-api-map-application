@@ -24,7 +24,7 @@ require([
     "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate", 
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer", 
     "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect", 
-    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend", "dojo/behavior", "dojo/request",
+    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend", "dojo/behavior", "dojo/request", "esri/dijit/PopupMobile",
     
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function(
 Map, FeatureLayer, 
@@ -38,7 +38,7 @@ Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
 BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement, 
 Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate, 
 domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask, 
-Point, SpatialReference, ProjectParameters, Legend, behavior, request 
+Point, SpatialReference, ProjectParameters, Legend, behavior, request, PopupMobile 
 
 ) {
     
@@ -63,13 +63,28 @@ Point, SpatialReference, ProjectParameters, Legend, behavior, request
     new Color([255, 0, 0, 0.25]));
     
     
-    
+    console.log(window.innerWidth);
     
     var gsvc, tb;
     
-    var popup = new Popup({
+  /*  var popup = new Popup({
         fillSymbol: sfs
     }, domConstruct.create("div"));
+    
+  var  popup2 = new esri.dijit.PopupMobile(null, dojo.create("div"));
+*/
+var popup;
+var mobile;
+	if(window.innerWidth > 778){
+		popup = new Popup({
+        fillSymbol: sfs
+    	}, domConstruct.create("div"));
+    	mobile = false;
+	} else {
+		popup = new esri.dijit.PopupMobile(null, dojo.create("div"));
+		mobile = true;
+		
+	}
 
     //Create basemaps
     var countyLayer = new BasemapLayer({
@@ -185,7 +200,6 @@ Point, SpatialReference, ProjectParameters, Legend, behavior, request
     });
     
     
-    
     map.on("load", function() {
         //	map.setZoom(2);
         map.setZoom(1);
@@ -206,7 +220,9 @@ Point, SpatialReference, ProjectParameters, Legend, behavior, request
     });
     
     map.on("zoom-end",function(){
+    	if(!mobile){
     	popup.reposition();
+    	}
     });
     
     dojo.connect(inputSearchBox, "onkeypress", function(e) {
