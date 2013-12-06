@@ -471,7 +471,7 @@ a.bufferModeOn,a.bufferModeOff {
 }
 
 div.processing td[id^='dijit_form_ComboButton_'],a.processing,div#gallery.processing .dijitTitlePaneTitle {
-background:#fff url(images/processing.gif) no-repeat 3px 3px!important;
+/* background:#fff url(images/processing.gif) no-repeat 3px 3px!important; */
 }
 
 .hide{
@@ -1022,6 +1022,7 @@ font-size: 16px;
 
 #gallery span.dijitTitlePaneTextNode {
 	cursor:pointer;
+	text-shadow: 2px 1px #171212;
 }
 
 #gallery span.dijitArrowNodeInner{
@@ -1031,7 +1032,12 @@ font-size: 16px;
 #print_button {
 	color:white;
 	padding-left: 20px;
+	text-shadow: 2px 1px #171212;
 	
+}
+#print_button a {
+	color: white;
+	text-decoration: none;
 }
 #dijit_layout_ContentPane_2 {
 	margin-top: 9px !important;
@@ -1051,4 +1057,9 @@ cursor:pointer;
 }
 #close:hover{
 	color:red;
+}
+
+
+#tools > a {
+	text-shadow: 2px 1px #171212;
 }
