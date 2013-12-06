@@ -191,7 +191,7 @@ var mobile;
         //basemap: "County Basemap",
         infoWindow: popup,
         slider: true,
-        sliderOrientation: "horizontal",
+       // sliderOrientation: "horizontal",
         spatialReference: 2233,
         //  sliderPosition: "bottom-right",
         zoom: 3
@@ -208,9 +208,9 @@ var mobile;
     	
     });
     
-    
+    //Indicate map loading
     map.on("update-start", function() {
-        domAttr.set("gallery", "class", "processing");
+      //  domAttr.set("gallery", "class", "processing");
     
     });
     
@@ -239,11 +239,11 @@ var mobile;
     
     
     //Listen for button clicks in text mode
-    dojo.connect(dom.byId("textZoomIn"), "click", function(){
+    dojo.connect(dom.byId("zoom_in"), "click", function(){
     	map.setZoom(map.getZoom() + 1);
     });
     
-    dojo.connect(dom.byId("textZoomOut"), "click", function(){
+    dojo.connect(dom.byId("zoom_out"), "click", function(){
     	map.setZoom(map.getZoom() - 1);
     });
     

@@ -30,7 +30,11 @@
        var buttonConsoleHeight = -40; 
        var zoomOffset = 0;
         var selectionToggle = false;
+        var closeButton = dom.byId("close");
         
+        on(closeButton, "click", function(){
+        	on.emit(viewButton, "click", {bubbles: true, cancelable: true});
+        });
        
        
        
@@ -187,6 +191,7 @@
 			} catch(e){}
 		},2000);
 		domAttr.set(dom.byId("map_zoom_slider"), "title", "Zoom the map in or out");
+		query(".dijitTitlePaneTextNode").innerHTML("Swap Map");
 
 		query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
 		query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
@@ -196,7 +201,7 @@
 	});  
 	
 	function fadeConsole(){
-		
+		/*
 		var searchTemp = dom.byId("search_wrapper");
     	var toolbarTemp = dom.byId("tools");
     	var incTemp = dom.byId("increment");
@@ -226,17 +231,17 @@
  				domAttr.set(toolbarTemp, "class", "show");
  				domAttr.set(incTemp, "class", "show");
  				domAttr.set(decTemp, "class", "show");
- 				*/
+ 				
  			}
  			
-		
+		*/
 	}
 	
 	var openClose = false; //closed initially
   
     on(viewButton, "click", function(){
     	
-    	fadeConsole();
+    	//fadeConsole();
  			
  			
  			if(openClose == false){
@@ -245,6 +250,9 @@
  			} else {
  				slideIt(300, 0, slideTarget,0);
  				openClose = false;
+ 			setTimeout(function(){
+ 				domAttr.set(dom.byId("searchResults"), "style", "top: 37px; left:" + (vs.w - 21) + "px;");
+ 			}, 500);
  			}
  			
  			
@@ -276,174 +284,8 @@
      		fadeConsole();
      	}
      	openClose = false;
-		domAttr.set(dom.byId("searchResults"), "style", "top: 0px; left:" + (vs.w - 21) + "px;");
+		domAttr.set(dom.byId("searchResults"), "style", "top: 37px; left:" + (vs.w - 21) + "px;");
 		
-		//BEGIN RESPONSE FUNCTIONS
-		
-		setTimeout(function(){
-		//console.log(domGeom.getContentBox(dom.byId("noIconMode")));
-     	if(vs.w < 957 && vs.w > 490){
-     		med1 = true;
-     		small1 = false;
-     		big1 = false;
-     		if(!textMode){
-     		domAttr.set(dom.byId("noIconMode"), "style", "top: -71px; left: 0px");
-     		
-     		}
-     		
-     		textModeHeight = 71;
-     		buttonConsoleHeight = -82;
-     		zoomOffset = 42;
-     		
-     		if(!med && big){
-     			slideIt(0,21, "search_wrapper", 0);
-     			slideIt(0,21, "tools", 0);
-     			if(textMode){
-     				slideIt(-10,-21, "increment", 0);
-     				slideIt(-10,-21, "decrement", 0);
-     			} else {
-     				slideIt(-10,1, "increment", 0);
-     				slideIt(-10,1, "decrement", 0);
-     			}
-     			searchWrapperHeight += 21;
-     			med = true;
-     			big = false;
-     			small = false;
-     		} else if (!med && small){
-     			
-     			slideIt(0,-25, "search_wrapper", 0);
-     			slideIt(0,-25, "tools", 0);
-     			
-     			
-     			if(textMode){
-     				slideIt(-10,-20, "increment", 0);
-     				slideIt(-10,-20, "decrement", 0);
-     			} else {
-     				slideIt(-10,-45, "increment", 0);
-     				slideIt(-10,-45, "decrement", 0);
-     			}
-     			
-     			searchWrapperHeight -= 25;
-     			med = true;
-     			big = false;
-     			small = false;
-     		}
-     		     		
-     	}
-     	if(vs.w >= 957){
-     		med1 = false;
-     		small1 = false;
-     		big1 = true;
-     		if(!textMode){
-     			domAttr.set(dom.byId("noIconMode"), "style", "top: -50px; left: 0px");
-     		}
-     		textModeHeight = 50;
-     	//	buttonConsoleHeight = 0;
-     		zoomOffset = 0;
-     		
-     		if(!big && med){
-     			buttonConsoleHeight = -40;
-     			if(domGeom.position(dom.byId("search_wrapper")).y > 10){
-     			slideIt(0,-21, "search_wrapper", 0);
-     			
-     			slideIt(0,-21, "tools", 0);
-     			
-     			if(textMode){
-     				slideIt(-10,-20, "increment", 0);
-     				slideIt(-10,-20, "decrement", 0);
-     			} else {
-     				slideIt(-10,-41, "increment", 0);
-     				slideIt(-10,-41, "decrement", 0);
-     			}
-     			
-     			
-     			
-     			
-     			}
-     			searchWrapperHeight -= 21;
-     			med = false;
-     			big = true;
-     			small = false;
-     		} else if (!big && small){
-     			
-     			if(textMode){
-     				slideIt(0,-92, "search_wrapper", 0);
-     				slideIt(0,-69, "tools", 0);
-     				slideIt(-10,-66, "increment", 0);
-     				slideIt(-10,-66, "decrement", 0);
-     				
-     				buttonConsoleHeight = -40;
-     			} else {
-     				buttonConsoleHeight = -40;
-     			slideIt(0,-46, "search_wrapper", 0);
-     			slideIt(0,-46, "tools", 0);
-     			slideIt(-10,-66, "increment", 0);
-     			slideIt(-10,-66, "decrement", 0);
-     			}
-     			searchWrapperHeight -= 46;
-     			med = false;
-     			big = true;
-     			small = false;
-     			smallBig = true;
-     			
-     		}
-     		
-     	}
-     	if(vs.w <= 490) {
-     		med1 = false;
-     		small1 = true;
-     		big1 = false;
-     		smallBig = false;
-     		if(!textMode){
-     		domAttr.set(dom.byId("noIconMode"), "style", "top: -96px; left: 0px");
-     		}
-     		textModeHeight = 96;
-     		buttonConsoleHeight = -134;
-     		zoomOffset = 92;
-     		
-     		if(!small && big){
-     			if(textMode){
-     			slideIt(0,92,"search_wrapper",0);
-     			slideIt(0,92, "tools", 0);	
-     			slideIt(-10,72, "increment", 0);
-     			slideIt(-10,72, "decrement", 0);
-     			bigSmall = true;
-     			} else {
-     			slideIt(0,46, "search_wrapper", 0);
-     			slideIt(0,46, "tools", 0);
-     			slideIt(-10,26, "increment", 0);
-     			slideIt(-10,26, "decrement", 0);
-     			searchWrapperHeight += 46;
-     			}
-     			med = false;
-     			big = false;
-     			small = true;
-     		} else if (!small && med){
-     			slideIt(0,25, "search_wrapper", 0);
-     			slideIt(0,25, "tools", 0);
-     			
-     			
-     			if(textMode){
-     				slideIt(-10,-20, "increment", 0);
-     				slideIt(-10,-20, "decrement", 0);
-     			} else {
-     				slideIt(-10,5, "increment", 0);
-     				slideIt(-10,5, "decrement", 0);
-     			}
-     			
-     			
-     			searchWrapperHeight += 25;
-     			med = false;
-     			big = false;
-     			small = true;
-     		}
-     	}
-     	console.log(buttonConsoleHeight);
-     //	domAttr.set(dom.byId("searchResults"), "style", "height: " + vs.h + "px;");
-     	}, respTime);
-     	//END RESPONSE FUNCTIONS
-     	
-     	//SPECIAL FUNCTIONS FOR SCREENS < 778PX WIDE
      	
       }
       	
@@ -532,7 +374,7 @@
     
     var textMode = false;
  	on(textModeButton, "click", function(){ 
- 		textModeSwitch();
+ 		//textModeSwitch();
  	});
    
         
