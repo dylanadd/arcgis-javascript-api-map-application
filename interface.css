@@ -415,7 +415,8 @@ z-index:30;
 }
 
 tr.dijitMenuItemHover {
-background:rgba(171,68,36,1);
+background:linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
+color: white;
 cursor:pointer;
 }
 
