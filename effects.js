@@ -32,6 +32,37 @@
         var selectionToggle = false;
         var closeButton = dom.byId("close");
         var pan = dom.byId("pan");
+        var selectButton = dom.byId("selection");
+        var selectHelp = dom.byId("selectHelp");
+        
+        
+        var selectTF = false;
+        on(selectButton,"click",function(){
+        	if(!selectTF){
+        		domAttr.set(dom.byId("selectionTools"), "class", "show");
+        		fx.fadeIn({node: dom.byId("selectionTools"), duration: 225}).play();
+        		selectTF = true;
+        	} else {
+        		fx.fadeOut({node: dom.byId("selectionTools"), duration: 225}).play();
+        		setTimeout(function(){
+        			domAttr.set(dom.byId("selectionTools"), "class", "hide");
+        		}, 250);
+        		selectTF = false;
+        	}
+        	
+        });
+        
+        
+        on(selectHelp,"click",function(){
+        	if(selectTF){
+        		fx.fadeOut({node: dom.byId("selectionTools"), duration: 225}).play();
+        		setTimeout(function(){
+        			domAttr.set(dom.byId("selectionTools"), "class", "hide");
+        		}, 250);
+        		selectTF = false;
+        	}
+        });
+        
         on(closeButton, "click", function(){
         	on.emit(viewButton, "click", {bubbles: true, cancelable: true});
         });
@@ -202,7 +233,7 @@
   
 	ready(function(){
 		//console.log(domGeom.position(slideTarget));
-		console.log(domGeom.position(dom.byId("tools")));
+	//	console.log(domGeom.position(dom.byId("tools")));
 		domAttr.set(slideTarget, "style", "top: " + domGeom.position(slideTarget).y.toString() + "px; left: " + domGeom.position(slideTarget).x.toString() + "px;");
 	//	domAttr.set(fadeTarget, "style", "top: " + domGeom.position(fadeTarget).y.toString() + "px; left: " + domGeom.position(fadeTarget).x.toString() + "px;");
 		domAttr.set(dom.byId("dijit_TitlePane_0_titleBarNode"), "title", "Change the application's basemap");
@@ -212,7 +243,7 @@
 			} catch(e){}
 		},2000);
 		domAttr.set(dom.byId("map_zoom_slider"), "title", "Zoom the map in or out");
-		query(".dijitTitlePaneTextNode").innerHTML("Swap Map");
+		query(".dijitTitlePaneTextNode").innerHTML("Basemap");
 
 	//	query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
 	//	query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");

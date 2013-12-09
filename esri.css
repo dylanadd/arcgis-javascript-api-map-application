@@ -80,7 +80,7 @@
     width: 65px;
     height: 36px;
     z-index: 30;
-    background-image: url("../images/map/logo-med.png");
+  /*  background-image: url("../images/map/logo-med.png"); */
     cursor: pointer;
     _background-image: none;
 }
@@ -2449,19 +2449,19 @@
 }
 
 .distanceIcon {
-    background-image: url("../dijit/images/Measure_Distance16.png");
+  /*  background-image: url("../dijit/images/Measure_Distance16.png");*/
     width: 16px;
     height: 16px;
 }
 
 .areaIcon {
-    background-image: url("../dijit/images/Measure_Area16.png");
+ /*   background-image: url("../dijit/images/Measure_Area16.png");*/
     width: 16px;
     height: 16px;
 }
 
 .locationIcon {
-    background-image: url("../dijit/images/Measure_Point16.png");
+   /* background-image: url("../dijit/images/Measure_Point16.png");*/
     width: 16px;
     height: 16px;
 }

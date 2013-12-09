@@ -89,6 +89,7 @@
           <div id="tools">
 			<a id="zoom">Zoom</a>
 			<a id="pan">Pan</a>
+			<a id="selection">Select</a>
            <a id="clear" title="Clear all selections on the page.">Clear</a> 
         <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off.">Buffer</a>
         <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off">Measure</a>
@@ -103,7 +104,7 @@
         
          <div id="print_button" class="dormant"></div>
         
-        <a id="toggleOutput" class="closed" title="View your selected info panel">Saved Parcels</a>
+        <a id="toggleOutput" class="closed" title="View your selected info panel">Bookmarks</a>
         <a id="overviewToggle">Overview</a>
         <a id="legendToggle" title="View Map Legend">Legend</a>
         <a id="helpButton" title="View instructions on using the map">Help</a>
@@ -193,21 +194,39 @@
       
     <div id="noIconMode">
         	<div id="textButtonConsole">
-        		<a id="textZoomIn">Zoom In</a>
-        		<a id="textZoomOut">Zoom Out</a>
-        		<a id="textClear">Clear Map</a>
-        		<a id="textBuffer">Buffer Tool</a>
-        		<a id="textDraw">Measure</a>
-        		<a id="textMap">Change Map</a>
+        		<a id="textZoomIn"></a>
+        		<a id="textZoomOut"></a>
+        		<a id="textClear"></a>
+        		<a id="textBuffer"></a>
+        		<a id="textDraw"></a>
+        		<a id="textMap"></a>
         		<div id="textPrint"></div>
-        		<a id="textShowSelection">View Saved Parcels</a>
-        		<a id="textLegend">View Legend</a>
-        		<a id="textHelp">Help</a>
+        		<a id="textShowSelection"></a>
+        		<a id="textLegend"></a>
+        		<a id="textHelp"></a>
         	</div>
         	<div id="iconToggleWrapper">
-        		<a id="iconToggle">Text Button Mode</a>
+        		<a id="iconToggle"></a>
         	</div>
         </div>
+      
+      
+      <a id="selectHelp" style="display:none"></a>
+      <div id="selectionTools" class="hide">
+      	
+      	<form action="">
+
+
+      	<input type="radio" name="0" id="fpoly">Freehand <br/>
+      	<input type="radio" name="0" id="poly">Polygon<br/>
+      	<input type="radio" name="0" id="rect">Rectangle<br/>
+      	<input type="radio" name="0" id="triangle">Triange<br/>
+      	<input type="radio" name="0" id="circ">Circle<br/>
+      	<input type="radio" name="0" id="pt">Point<br/>
+      	<input type="radio" name="0" id="line">Line<br/>
+      	<input type="radio" name="0" id="polyline">Polyline<br/>
+      	</form>
+      </div>
       
   </body>
 

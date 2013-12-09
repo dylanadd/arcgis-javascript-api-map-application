@@ -12,7 +12,7 @@ var navToolbar;
  var overviewMapDijit;
 // var gsvc, tb;
 require([
-    "esri/map", "esri/layers/FeatureLayer","esri/dijit/OverviewMap", 
+    "esri/map", "esri/layers/FeatureLayer","esri/dijit/OverviewMap", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer",
     "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query", 
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol", 
     "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate", 
@@ -28,7 +28,7 @@ require([
     "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters",  "dojo/behavior", "dojo/request",  "esri/dijit/PopupMobile",
     
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function(
-Map, FeatureLayer, OverviewMap, 
+Map, FeatureLayer, OverviewMap, ArcGISImageServiceLayer, ArcGISDynamicMapServiceLayer,
 ArcGISTiledMapServiceLayer, Query, 
 SimpleFillSymbol, SimpleLineSymbol, 
 Graphic, Popup, PopupTemplate, 
@@ -64,7 +64,7 @@ Point, SpatialReference, ProjectParameters, behavior, request,  PopupMobile
     new Color([255, 0, 0, 0.25]));
     
     
-    console.log(window.innerWidth);
+   
     
     var gsvc, tb;
     
@@ -166,12 +166,12 @@ var mobile;
     });
     
     var taxSaleLayer = new BasemapLayer({
-        url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/tax_sale/MapServer"
+        url: "http://sunshine/outside/rest/services/aerial_photos/ortho2008_4inch/ImageServer"
     });
     
     var taxSaleBasemap = new Basemap({
         layers: [taxSaleLayer],
-        title: "Tax Sale (Fast)"
+        title: "test 2008 (Slow)"
     //  thumbnailUrl:"images/waterThumb.png"
     });
     
@@ -284,20 +284,20 @@ var mobile;
     	
     });
     
-    dojo.connect(dom.byId("textDraw"), "click", function(){
-    	on.emit(dom.byId("draw"), "click", {bubbles: true, cancelable: true});
+    dojo.connect(dom.byId("selection"), "click", function(){
+    	 startDrawSelect();
     });
     
-    dojo.connect(dom.byId("textMap"), "click", function(){
-    	on.emit(dom.byId("dijit_TitlePane_0_titleBarNode"), "click", {bubbles: true, cancelable: true});
+    dojo.connect(dom.byId("selectHelp"), "click", function(){
+    	//Helper Listener - Do not remove
     });
     
     dojo.connect(dom.byId("textPrint"), "click", function(){
-    	on.emit(dom.byId("dijit_form_ComboButton_0_arrow"), "click", {bubbles: true, cancelable: true});
+    	
     });
     
     dojo.connect(dom.byId("textShowSelection"), "click", function(){
-    	on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
+    
     });
     
     dojo.connect(dom.byId("textLegend"), "click", function(){
@@ -306,9 +306,130 @@ var mobile;
     
     dojo.connect(dom.byId("helpButton"), "click", function(){
     //	on.emit(dom.byId("helpButton"), "click", {bubbles: true, cancelable: true});
-   
+  
     	
     });
+
+	
+	dojo.connect(dom.byId("fpoly"), "click", function(){
+    	draw.activate(Draw.FREEHAND_POLYGON);
+    });
+    
+    dojo.connect(dom.byId("poly"), "click", function(){
+    	draw.activate(Draw.POLYGON);
+    });
+    
+    dojo.connect(dom.byId("rect"), "click", function(){
+    	draw.activate(Draw.RECTANGLE);
+    });
+    
+    dojo.connect(dom.byId("triangle"), "click", function(){
+    	draw.activate(Draw.TRIANGLE);
+    });
+	
+	dojo.connect(dom.byId("circ"), "click", function(){
+    	draw.activate(Draw.CIRCLE);
+    });
+    
+    dojo.connect(dom.byId("pt"), "click", function(){
+    	draw.activate(Draw.POINT);
+    });
+    
+    dojo.connect(dom.byId("line"), "click", function(){
+    	draw.activate(Draw.LINE);
+    });
+	
+	dojo.connect(dom.byId("polyline"), "click", function(){
+    	draw.activate(Draw.POLYLINE);
+    });
+	
+	
+var draw;
+	//Select by shape function
+ function startDrawSelect() {
+ 	navToolbar.activate(Navigation.PAN);
+        draw = new Draw(map, { showTooltips: true });
+        draw.on("draw-end", addToMap);
+       draw.activate(Draw.CIRCLE);
+       
+    }
+
+ function addToMap(evt) {
+ 	
+    var graphic = new Graphic(evt.geometry, sfs);
+   // map.graphics.add(graphic);
+    console.log(evt);
+    console.log(graphic);
+    selectByShape(evt.geometry);
+    
+    draw.deactivate();
+    on.emit(dom.byId("selectHelp"), "click", {bubbles: true, cancelable: true});
+  }
+
+
+
+
+
+function selectByShape(evt){
+	
+	 var zzz = false;
+  // map.graphics.clear();
+      /*
+            
+            // draw the buffer geometry on the map as a map graphic
+            var symbol = new SimpleFillSymbol(
+            SimpleFillSymbol.STYLE_NULL, 
+            new SimpleLineSymbol(
+            SimpleLineSymbol.STYLE_SOLID, 
+            new Color([13, 255, 0]), 
+            2
+            ), new Color([255, 255, 0, 0.25])
+            );
+            var bufferGeometry = result.geometries[0];
+            var graphic2 = new Graphic(bufferGeometry, symbol);
+           
+            map.graphics.add(graphic2);
+        */ 
+            //Select features within the buffered polygon. To do so we'll create a query to use the buffer graphic
+            //as the selection geometry.
+            var query2 = new Query();
+            query2.geometry = evt;
+            
+            parcels.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function(results) { //This returns all parcel data within buffer.
+           
+            setTimeout(function(){
+            	if(!zzz){
+            		displayResults(results);
+            		zzz = true;
+           	    }
+            	}, 1000);
+
+           var c = parcels.getSelectedFeatures();
+
+           for(i=0;i<c.length;i++){
+           	map.graphics.add(c[i]);
+           }
+   
+             
+            }, function(error) {
+               
+            });
+           	
+    
+          
+       
+          
+   
+    
+    
+	
+	
+}
+
+
+
+
+
 
 
     //Buffer Function
@@ -479,7 +600,8 @@ var mobile;
     
     
     var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
-
+  //  var basemap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
+ // var basemap = new ArcGISImageServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
     var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer");
     map.addLayer(basemap);
     map.addLayer(parcelInfoLayer);
@@ -594,7 +716,7 @@ var mobile;
     basemapGallery.add(imagery2001Basemap);
     basemapGallery.add(imagery1991Basemap);
     basemapGallery.add(floodplainsBasemap);
-    // basemapGallery.add(taxSaleBasemap);
+     basemapGallery.add(taxSaleBasemap);
     basemapGallery.add(harnBasemap);
     
     

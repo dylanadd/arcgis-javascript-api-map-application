@@ -27,7 +27,7 @@ position: absolute;
 z-index: 999;
 background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
 font-family: verdana,helvetica;
-
+font-size: 14px;
 /* background: rgba(16,64,92,0.9); */
 }
 
@@ -1064,4 +1064,19 @@ cursor:pointer;
 
 #tools > a {
 	text-shadow: 2px 1px #171212;
+}
+
+#selectionTools.hide{
+
+}
+
+#selectionTools {
+	position: absolute;
+	top:43px;
+	left: 128px;
+	background: rgba(255,255,255,0.85);
+	font-family: verdana,helvetica;
+	z-index: 1000;
+	opacity:0;
+	font-size: 14px;
 }
