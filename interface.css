@@ -25,7 +25,7 @@ min-height: 37px;
 width: 100%;
 position: absolute;
 z-index: 999;
-background: linear-gradient(to bottom, #fff, rgb(16,64,92));
+background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
 font-family: verdana,helvetica;
 
 /* background: rgba(16,64,92,0.9); */
@@ -71,7 +71,7 @@ background-color:#ADD8E6!important;
 
 .search_wrapper {
 -webkit-border-radius:5px;
-background:rgba(255,255,255,0.9);
+background:rgba(255,255,255,1);
 border:2px solid #666;
 border-radius:5px;
 height:29px;
@@ -676,7 +676,7 @@ display:none;
 	width:300px;
 	height:100%;
 	/* background-color:rgba(16,64,92,0.9); */
-	background: linear-gradient(to bottom,rgb(16,64,92) ,#fff);
+	background: linear-gradient(to bottom,rgb(16,64,92),rgb(16,64,92) ,#fff);
 	padding-top: 1px;
     margin-top: -1px;
 }
@@ -990,11 +990,11 @@ z-index:30;
 	display: none;
 }
 
-#button-console.invisible + #map #increment {
+ #increment {
 	display: none;
 }
 
-#button-console.invisible + #map #decrement {
+ #decrement {
 	display: none;
 }
 
@@ -1033,6 +1033,7 @@ font-size: 16px;
 	color:white;
 	padding-left: 20px;
 	text-shadow: 2px 1px #171212;
+	cursor: pointer;
 	
 }
 #print_button a {
