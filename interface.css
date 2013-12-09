@@ -246,10 +246,10 @@ z-index:30;
 }
 
 div#map_zoom_slider div.esriSimpleSliderDecrementButton {
--webkit-border-radius:0 0 0 0;
+-webkit-border-radius:0 5px 5px 0;
 background-color:#FFF;
 border:2px solid #666;
-border-radius:0 0 0 0;
+border-radius:0 5px 5px 0;
 left:33px;
 position:absolute;
 top:39px;
@@ -840,16 +840,17 @@ div#noIconMode{
 }
 
 div#increment{
-	display:none;
+	/* display:none;
 	top:0px;
+	*/
 	position:absolute;
-	
 }
 div#decrement{
-	display: none;
-	top:0px;
-	position:absolute;
+/*	disptop:0px;lay: none;
 	
+	*/
+	
+	position:absolute;
 }
 
 #iconToggle {
@@ -991,11 +992,11 @@ z-index:30;
 }
 
  #increment {
-	display: none;
+	/*display: none;*/
 }
 
  #decrement {
-	display: none;
+	/*display: none;*/
 }
 
 #expButton {

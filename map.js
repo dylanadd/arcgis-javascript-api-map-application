@@ -8,10 +8,11 @@ var infoArray;
 var infoArray2 = new Array();
 var draw = null;
 var buff = null;
-
+var navToolbar;
+ var overviewMapDijit;
 // var gsvc, tb;
 require([
-    "esri/map", "esri/layers/FeatureLayer", 
+    "esri/map", "esri/layers/FeatureLayer","esri/dijit/OverviewMap", 
     "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query", 
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol", 
     "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate", 
@@ -23,11 +24,11 @@ require([
     "esri/dijit/Scalebar", "esri/dijit/Measurement", "esri/tasks/locator", "esri/symbols/SimpleMarkerSymbol", 
     "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate", 
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer", 
-    "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/tasks/QueryTask", "dojo/_base/connect", 
-    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "esri/dijit/Legend", "dojo/behavior", "dojo/request", "esri/dijit/PopupMobile",
+    "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw",  "esri/toolbars/navigation", "esri/tasks/QueryTask", "dojo/_base/connect", 
+    "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters",  "dojo/behavior", "dojo/request",  "esri/dijit/PopupMobile",
     
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"], function(
-Map, FeatureLayer, 
+Map, FeatureLayer, OverviewMap, 
 ArcGISTiledMapServiceLayer, Query, 
 SimpleFillSymbol, SimpleLineSymbol, 
 Graphic, Popup, PopupTemplate, 
@@ -37,8 +38,8 @@ on, query, parser, domConstruct, keys, registry, dom,
 Print, PrintTemplate, esriRequest, esriConfig, arrayUtils, 
 BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement, 
 Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate, 
-domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, QueryTask, 
-Point, SpatialReference, ProjectParameters, Legend, behavior, request, PopupMobile 
+domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, Navigation, QueryTask, 
+Point, SpatialReference, ProjectParameters, behavior, request,  PopupMobile
 
 ) {
     
@@ -185,27 +186,36 @@ var mobile;
         thumbnailUrl:"images/map_thumbs/noBasemap.png"
     
     });
-
+	
     //Map constructor
     map = new Map("map", {
         //basemap: "County Basemap",
         infoWindow: popup,
-        slider: true,
-       // sliderOrientation: "horizontal",
+        isZoomSlider: true,
+      //  sliderOrientation: "vertical",
         spatialReference: 2233,
         //  sliderPosition: "bottom-right",
+        //   sliderStyle: "large",
         zoom: 3
+     
     
     
     });
     
+    	 navToolbar = new Navigation(map);
     
+     
+  var overviewLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer");
+   // console.dir(navToolbar)
     map.on("load", function() {
         //	map.setZoom(2);
         map.setZoom(1);
     	on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
 		domAttr.remove(dom.byId("measurementDiv"), "style");
-    	
+        
+   		navToolbar.activate(Navigation.ZOOM_IN);
+   		
+   		
     });
     
     //Indicate map loading
@@ -239,20 +249,39 @@ var mobile;
     
     
     //Listen for button clicks in text mode
-    dojo.connect(dom.byId("zoom_in"), "click", function(){
-    	map.setZoom(map.getZoom() + 1);
+    dojo.connect(dom.byId("zoom"), "click", function(){
+    	navToolbar.activate(Navigation.ZOOM_IN);
     });
     
-    dojo.connect(dom.byId("zoom_out"), "click", function(){
+  /*  dojo.connect(dom.byId("zoom_out"), "click", function(){
     	map.setZoom(map.getZoom() - 1);
+    });*/
+    
+    dojo.connect(dom.byId("pan"), "click", function(){
+    	navToolbar.activate(Navigation.PAN);
     });
     
-    dojo.connect(dom.byId("textClear"), "click", function(){
-    	clearx();
-    });
-    
-    dojo.connect(dom.byId("textBuffer"), "click", function(){
-    	on.emit(dom.byId("bufferMode"), "click", {bubbles: true, cancelable: true});
+    var overView = false;
+    var overViewStartUp = false;
+    dojo.connect(dom.byId("overviewToggle"), "click", function(){
+    	if (!overViewStartUp){
+    		overviewMapDijit = new OverviewMap({
+         		 map: map,
+         		 visible: true,
+        		  baseLayer: overviewLayer,
+        		  expandFactor: 4
+     		});
+        overviewMapDijit.startup();
+        overViewStartUp = true;
+        overView = true;
+    	} else if(!overView) {
+    		overviewMapDijit.show();
+    		overView = true;
+    	} else {
+    		overviewMapDijit.hide();
+    		overView = false;
+    	}
+    	
     });
     
     dojo.connect(dom.byId("textDraw"), "click", function(){
@@ -275,8 +304,10 @@ var mobile;
     	on.emit(dom.byId("legendToggle"), "click", {bubbles: true, cancelable: true});
     });
     
-    dojo.connect(dom.byId("textHelp"), "click", function(){
-    	on.emit(dom.byId("helpButton"), "click", {bubbles: true, cancelable: true});
+    dojo.connect(dom.byId("helpButton"), "click", function(){
+    //	on.emit(dom.byId("helpButton"), "click", {bubbles: true, cancelable: true});
+   
+    	
     });
 
 

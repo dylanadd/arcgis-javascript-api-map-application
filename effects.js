@@ -24,14 +24,14 @@
         var legendButton = dom.byId("legendToggle");
         var exportButton = dom.byId("expButton");
        var vs = win.getBox();
-        
+        var zoomToggle = dom.byId("zoom");
        var textModeHeight = 50;
        var searchWrapperHeight = 50; 
        var buttonConsoleHeight = -40; 
        var zoomOffset = 0;
         var selectionToggle = false;
         var closeButton = dom.byId("close");
-        
+        var pan = dom.byId("pan");
         on(closeButton, "click", function(){
         	on.emit(viewButton, "click", {bubbles: true, cancelable: true});
         });
@@ -79,7 +79,28 @@
    				
         });
         
+        var zoomTF = false;
+        on(zoomToggle,"click",function(){
+        	
+        	if(!zoomTF){
+        	//	fx.fadeOut({node: dom.byId("increment"), duration: 225}).play();
+        	//	fx.fadeOut({node: dom.byId("decrement"), duration: 225}).play();
+        		zoomTF = true;
+        	} else {
+        	//	fx.fadeIn({node: dom.byId("increment"), duration: 225}).play();
+        	//	fx.fadeIn({node: dom.byId("decrement"), duration: 225}).play();
+        		zoomTF = false;
+        	}
+        	
+        });
         
+        on(pan,"click", function(){
+        	if(!zoomTF){
+        	//	fx.fadeOut({node: dom.byId("increment"), duration: 225}).play();
+        	//	fx.fadeOut({node: dom.byId("decrement"), duration: 225}).play();
+        		zoomTF = true;
+        	}
+        });
         
        on(fadeButton, "click", function(evt){
     	
@@ -193,8 +214,8 @@
 		domAttr.set(dom.byId("map_zoom_slider"), "title", "Zoom the map in or out");
 		query(".dijitTitlePaneTextNode").innerHTML("Swap Map");
 
-		query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
-		query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
+	//	query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
+	//	query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
 		respond(0);
 		
 		
