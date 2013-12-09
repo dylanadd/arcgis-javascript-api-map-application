@@ -1074,7 +1074,7 @@ cursor:pointer;
 	position: absolute;
 	top:43px;
 	left: 128px;
-	background: rgba(255,255,255,0.85);
+	background: rgba(255,255,255,0.95);
 	font-family: verdana,helvetica;
 	z-index: 1000;
 	opacity:0;
