@@ -1075,9 +1075,35 @@ cursor:pointer;
 	position: absolute;
 	top:43px;
 	left: 128px;
-	background: rgba(255,255,255,0.95);
+	/* background: rgba(255,255,255,0.95);*/
+	color: white;
+text-shadow: 2px 1px #000;
+background: radial-gradient(circle farthest-corner at bottom right, #fff, rgb(16,64,92));
 	font-family: verdana,helvetica;
 	z-index: 1000;
 	opacity:0;
 	font-size: 14px;
+	
+}
+
+#toolSelect {
+float: left;
+padding: 10px 21px 10px 10px;
+border-left: 0px;
+border-top: 0px;
+border-right: 2px;
+border-bottom: 0px;
+border-style: solid;
+
+}
+
+#infoSelect {
+float: left;
+padding: 10px;
+
+}
+
+#toolSelectTitle, #infoSelectTitle {
+	padding-bottom: 5px;
+	font-weight: bold;
 }

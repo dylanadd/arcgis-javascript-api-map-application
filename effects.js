@@ -61,6 +61,18 @@
         		}, 250);
         		selectTF = false;
         	}
+        	dom.byId("fpoly").checked = false;
+        	dom.byId("poly").checked = false;
+        	dom.byId("rect").checked = false;
+        	dom.byId("triangle").checked = false;
+        	dom.byId("circ").checked = false;
+        	dom.byId("pt").checked = false;
+        	dom.byId("line").checked = false;
+        	dom.byId("polyline").checked = false;
+        	dom.byId("parcs").checked = false;
+        	dom.byId("addr").checked = false;
+        	dom.byId("roads").checked = false;
+        	
         });
         
         on(closeButton, "click", function(){
@@ -232,8 +244,8 @@
   
   
 	ready(function(){
-		//console.log(domGeom.position(slideTarget));
-	//	console.log(domGeom.position(dom.byId("tools")));
+
+		
 		domAttr.set(slideTarget, "style", "top: " + domGeom.position(slideTarget).y.toString() + "px; left: " + domGeom.position(slideTarget).x.toString() + "px;");
 	//	domAttr.set(fadeTarget, "style", "top: " + domGeom.position(fadeTarget).y.toString() + "px; left: " + domGeom.position(fadeTarget).x.toString() + "px;");
 		domAttr.set(dom.byId("dijit_TitlePane_0_titleBarNode"), "title", "Change the application's basemap");

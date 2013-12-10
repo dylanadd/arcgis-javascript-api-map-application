@@ -63,6 +63,11 @@ Point, SpatialReference, ProjectParameters, behavior, request,  PopupMobile
     2), 
     new Color([255, 0, 0, 0.25]));
     
+    var sfs2 = new SimpleLineSymbol(
+    SimpleLineSymbol.STYLE_SOLID, 
+    new Color([111, 0, 255]), 
+    2);
+  
     
    
     
@@ -343,6 +348,18 @@ var mobile;
     	draw.activate(Draw.POLYLINE);
     });
 	
+	var selectionMode = '';
+	dojo.connect(dom.byId("parcs"), "click", function(){
+    	selectionMode = "parcs";
+    });
+    
+    dojo.connect(dom.byId("addr"), "click", function(){
+    	selectionMode = "addr";
+    });
+    
+    dojo.connect(dom.byId("roads"), "click", function(){
+    	selectionMode = "roads";
+    });
 	
 var draw;
 	//Select by shape function
@@ -350,7 +367,7 @@ var draw;
  	navToolbar.activate(Navigation.PAN);
         draw = new Draw(map, { showTooltips: true });
         draw.on("draw-end", addToMap);
-       draw.activate(Draw.CIRCLE);
+      // draw.activate(Draw.CIRCLE);
        
     }
 
@@ -374,46 +391,84 @@ function selectByShape(evt){
 	
 	 var zzz = false;
   // map.graphics.clear();
-      /*
-            
-            // draw the buffer geometry on the map as a map graphic
-            var symbol = new SimpleFillSymbol(
-            SimpleFillSymbol.STYLE_NULL, 
-            new SimpleLineSymbol(
-            SimpleLineSymbol.STYLE_SOLID, 
-            new Color([13, 255, 0]), 
-            2
-            ), new Color([255, 255, 0, 0.25])
-            );
-            var bufferGeometry = result.geometries[0];
-            var graphic2 = new Graphic(bufferGeometry, symbol);
-           
-            map.graphics.add(graphic2);
-        */ 
+     
             //Select features within the buffered polygon. To do so we'll create a query to use the buffer graphic
             //as the selection geometry.
+            
+            
             var query2 = new Query();
             query2.geometry = evt;
             
-            parcels.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function(results) { //This returns all parcel data within buffer.
-           
-            setTimeout(function(){
-            	if(!zzz){
-            		displayResults(results);
-            		zzz = true;
-           	    }
-            	}, 1000);
+            
+            
+            if(selectionMode == "parcs"){
+            	parcels.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function(results) { //This returns all parcel data within buffer.
+           		console.log(results);
+            	setTimeout(function(){
+            		if(!zzz){
+            			displayResults(results);
+	            		zzz = true;
+    	       	    }
+        	    	}, 1000);
 
-           var c = parcels.getSelectedFeatures();
-
-           for(i=0;i<c.length;i++){
-           	map.graphics.add(c[i]);
-           }
+           		var c = parcels.getSelectedFeatures();
+				console.log(c);
+           		for(i=0;i<c.length;i++){
+           			map.graphics.add(c[i]);
+           		}
    
              
-            }, function(error) {
+            	}, function(error) {
                
-            });
+            	});
+            } else if(selectionMode == "addr") {
+            		var graphic2;
+            	
+            	points.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function(results) { //This returns all parcel data within buffer.
+           		
+           		console.log(query2);
+           		console.log(results);
+           		console.log(results[0]);
+            	setTimeout(function(){
+            		if(!zzz){
+            			displayResults(results);
+	            		zzz = true;
+    	       	    }
+        	    	}, 1000);
+				var temp = new Array();
+			makeGeomArray(results);
+
+
+            
+            	}, function(error) {
+               
+            	});
+            } else if(selectionMode == "roads"){
+            	var graphic2;
+            	
+            	road.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function(results) { //This returns all parcel data within buffer.
+           		
+           		console.log(query2);
+           		console.log(results);
+           		console.log(results[0]);
+            	setTimeout(function(){
+            		if(!zzz){
+            			displayResults(results);
+	            		zzz = true;
+    	       	    }
+        	    	}, 1000);
+				var temp = new Array();
+			makeGeomArray(results);
+
+
+            
+            	}, function(error) {
+               
+            	});
+            	
+            	// map.addLayer(road);
+            }
+           
            	
     
           
@@ -511,14 +566,14 @@ function selectByShape(evt){
             	}, 1000);
 
            var c = parcels1.getSelectedFeatures();
-
+			console.log(c);
            for(i=0;i<c.length;i++){
-           	map.graphics.add(c[i]);
+           	map.graphics.add(c);
            }
    
              
             }, function(error) {
-               
+               console.log(error);
             });
            	
     
@@ -818,8 +873,24 @@ function selectByShape(evt){
     
     parcels.setSelectionSymbol(sfs);
 
+var points = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/0", {
+        outFields: ["*"],
+          objectIdField: "FULLADDR",
+        infoTemplate: popupTemplate,
+        mode: FeatureLayer.MODE_SELECTION
+    });
+    
+    points.setSelectionSymbol(sfs);
 
-
+var road = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/3", {
+        outFields: ["*"],
+         objectIdField: "Shape_Length",
+      //  infoTemplate: popupTemplate,
+        mode: FeatureLayer.MODE_SELECTION,
+        spatialRelationship: FeatureLayer.SPATIAL_REL_CROSSES
+    });
+    
+    road.setSelectionSymbol(sfs2);
 
     //add popup template for roads
     var popupRoadTemplate = new PopupTemplate({
@@ -857,7 +928,7 @@ function selectByShape(evt){
     roads = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/3", {
         objectIdField: "Shape_Length",
         outFields: ["*"],
-        infoTemplate: popupRoadTemplate,
+       // infoTemplate: popupRoadTemplate,
         mode: FeatureLayer.MODE_SELECTION
     
     });

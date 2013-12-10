@@ -213,8 +213,9 @@
       
       <a id="selectHelp" style="display:none"></a>
       <div id="selectionTools" class="hide">
-      	
-      	<form action="">
+      	<div id="toolSelect">
+      		<div id="toolSelectTitle">Select Tool:</div>
+      	<form id="toolsForm" action="">
 
 
       	<input type="radio" name="0" id="fpoly">Freehand <br/>
@@ -226,6 +227,15 @@
       	<input type="radio" name="0" id="line">Line<br/>
       	<input type="radio" name="0" id="polyline">Polyline<br/>
       	</form>
+      	</div>
+      	<div id="infoSelect">
+      		<div id="infoSelectTitle">Select Data:</div>
+      	<form id="infoForm" action="">
+      		<input type="radio" name="1" id="parcs">Parcels <br/>
+      		<input type="radio" name="1" id="addr">Address Points<br/>
+      		<input type="radio" name="1" id="roads">Roads<br/>
+      	</form>
+      	</div>
       </div>
       
   </body>
