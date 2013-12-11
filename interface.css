@@ -1086,6 +1086,17 @@ background: radial-gradient(circle farthest-corner at bottom right, #fff, rgb(16
 	
 }
 
+
+#selectionTools label {
+	cursor:pointer;
+}
+
+#selectionTools label:hover {
+	color:red;
+}
+
+
+
 #toolSelect {
 float: left;
 padding: 10px 21px 10px 10px;

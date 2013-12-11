@@ -317,35 +317,36 @@ var mobile;
 
 	
 	dojo.connect(dom.byId("fpoly"), "click", function(){
-    	draw.activate(Draw.FREEHAND_POLYGON);
+    	drawx.activate(Draw.FREEHAND_POLYGON);
+    	
     });
     
     dojo.connect(dom.byId("poly"), "click", function(){
-    	draw.activate(Draw.POLYGON);
+    	drawx.activate(Draw.POLYGON);
     });
     
     dojo.connect(dom.byId("rect"), "click", function(){
-    	draw.activate(Draw.RECTANGLE);
+    	drawx.activate(Draw.RECTANGLE);
     });
     
     dojo.connect(dom.byId("triangle"), "click", function(){
-    	draw.activate(Draw.TRIANGLE);
+    	drawx.activate(Draw.TRIANGLE);
     });
 	
 	dojo.connect(dom.byId("circ"), "click", function(){
-    	draw.activate(Draw.CIRCLE);
+    	drawx.activate(Draw.CIRCLE);
     });
     
     dojo.connect(dom.byId("pt"), "click", function(){
-    	draw.activate(Draw.POINT);
+    	drawx.activate(Draw.POINT);
     });
     
     dojo.connect(dom.byId("line"), "click", function(){
-    	draw.activate(Draw.LINE);
+    	drawx.activate(Draw.LINE);
     });
 	
 	dojo.connect(dom.byId("polyline"), "click", function(){
-    	draw.activate(Draw.POLYLINE);
+    	drawx.activate(Draw.POLYLINE);
     });
 	
 	var selectionMode = '';
@@ -361,14 +362,14 @@ var mobile;
     	selectionMode = "roads";
     });
 	
-var draw;
+var drawx;
 	//Select by shape function
  function startDrawSelect() {
  	navToolbar.activate(Navigation.PAN);
-        draw = new Draw(map, { showTooltips: true });
-        draw.on("draw-end", addToMap);
+        drawx = new Draw(map, { showTooltips: true });
+        drawx.on("draw-end", addToMap);
       // draw.activate(Draw.CIRCLE);
-       
+       draw = true;
     }
 
  function addToMap(evt) {
@@ -379,7 +380,8 @@ var draw;
     console.log(graphic);
     selectByShape(evt.geometry);
     
-    draw.deactivate();
+    drawx.deactivate();
+    draw = false;
     on.emit(dom.byId("selectHelp"), "click", {bubbles: true, cancelable: true});
   }
 
@@ -501,7 +503,7 @@ function selectByShape(evt){
     }
 
 
-
+var parcels1;
     function doBuffer3(evt) {
         //console.debug(evt);
         
@@ -568,7 +570,7 @@ function selectByShape(evt){
            var c = parcels1.getSelectedFeatures();
 			console.log(c);
            for(i=0;i<c.length;i++){
-           	map.graphics.add(c);
+           	map.graphics.add(c[i]);
            }
    
              
@@ -1292,10 +1294,10 @@ var road = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pu
             domAttr.set("bufferMode", "class", "bufferModeOn");
             alert("No parcel selected!");
         }
-
+		try{
         //	parcels.clearSelection();
         parcels1.clearSelection();
-        
+      } catch(e){}
     }
     
     function safeClear(){
