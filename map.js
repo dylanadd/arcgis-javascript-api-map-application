@@ -1101,7 +1101,7 @@ require([
                 var textSymbol = new TextSymbol(
                     displayText,
                     font,
-                    new Color("#6f00ff"));
+                    new Color("#ff0000"));
                 textSymbol.setOffset(0, 8);
                 map.graphics.add(new Graphic(geom, textSymbol));
                 return false; //break out of loop after one candidate with score greater  than 80 is found.
@@ -1522,7 +1522,7 @@ function zoomToPoint(evt){
                 var textSymbol = new TextSymbol(
                     displayText,
                     font,
-                    new Color("#6f00ff"));
+                    new Color("#ff0000"));
                 textSymbol.setOffset(0, 8);
                 map.graphics.add(new Graphic(geom, textSymbol));
                 map.centerAndZoom(geom, 8);
