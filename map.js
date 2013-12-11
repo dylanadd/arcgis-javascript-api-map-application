@@ -1502,6 +1502,30 @@ require([
         }
     }
 
+ var symbolx = new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                new Color([13, 255, 0]),
+                5);
+
+
+function zoomToRoad(evt){
+	var geom = evt.geometry;
+	map.graphics.clear();
+	//var symbol = new SimpleMarkerSymbol();
+	var graphic = new Graphic(geom, symbolx);
+                //add a graphic to the map at the geocoded location
+                
+                try{
+                map.graphics.add(graphic);
+                } catch(e){
+                	console.log(e);
+                }
+               // console.log(graphic);
+                //add a text symbol to the map listing the location of the matched address.
+           //  map.centerAndZoom(geom,2)
+
+}
+
 
 function zoomToPoint(evt){
 	var geom = evt.geometry;
@@ -1537,6 +1561,51 @@ function zoomToPoint(evt){
 
         if (stripe2 == null) {
             stripe2 = "even";
+        }
+        
+        
+        
+        
+        if(infoMode == "road"){
+        	for (i = 0; i < infoArray5.length; i++) {
+                resultsArray.push(infoArray5[i]);
+                var s = "<table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.ALTNAME1 + "</span></td>" + 
+                    "</tr></table>";
+
+                var temp = domConstruct.create("div", {
+                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Road Segment" + "</a>",
+                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "resultsContent");
+                var zz = dom.byId("test" + i);
+
+                //event handlers for search results
+                dojo.connect(zz, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n);
+                    console.log(resultsArray[n]);
+                    var t = resultsArray[n];
+                    console.log(t);
+                    try {
+                      
+						//map.centerAndZoom(resultsArray[n].geometry, 8);
+                       zoomToRoad(resultsArray[n]);
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+
+                if (stripe2 == "odd") {
+                    stripe2 = "even";
+                } else if (stripe2 == "even")
+                    stripe2 = "odd";
+            }
         }
         
         if(infoMode == "address"){
