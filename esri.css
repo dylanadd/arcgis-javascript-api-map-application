@@ -2705,6 +2705,7 @@
 
 .esriPopup .titlePane {
     /* background-color: rgba(171,68,36,1); */
+   background: rgb(16,64,92);
    background: linear-gradient(to bottom, #fff, rgb(16,64,92));
     color: #FFFFFF;
     line-height: 20px;

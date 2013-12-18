@@ -25,6 +25,7 @@ min-height: 37px;
 width: 100%;
 position: absolute;
 z-index: 999;
+background: rgb(16,64,92);
 background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
 font-family: verdana,helvetica;
 font-size: 14px;
@@ -508,6 +509,7 @@ div.processing td[id^='dijit_form_ComboButton_'],a.processing,div#gallery.proces
 
 #wrapper {
 /* background-color: rgba(53,64,30,0.9); */ 
+background: rgb(16,64,92);
 	background: linear-gradient(to bottom, #fff, rgb(16,64,92), rgb(16,64,92), rgb(16,64,92), rgb(16,64,92));
 margin-left: 25%;
 margin-right: 25%;
@@ -676,7 +678,7 @@ display:none;
 	margin-left:22px;
 	width:300px;
 	height:100%;
-	/* background-color:rgba(16,64,92,0.9); */
+	 background:rgb(16,64,92);
 	background: linear-gradient(to bottom,rgb(16,64,92),rgb(16,64,92) ,#fff);
 	padding-top: 1px;
     margin-top: -1px;
