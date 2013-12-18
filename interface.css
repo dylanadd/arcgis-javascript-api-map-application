@@ -7,13 +7,13 @@ width:100%;
 }
 
 #buffer-params {
-background:rgba(255,255,255,0.75);
+background:rgba(255,255,255,0.95);
 position:absolute;
 top:100px;
 left:-380px;
 width: 380px;
 z-index:1000;
-height: 60px;
+height: 75px;
 font-family: verdana,helvetica;
 font-size: 12px;
 }
@@ -1091,7 +1091,7 @@ background: radial-gradient(circle farthest-corner at bottom right, #fff, rgb(16
 	cursor:pointer;
 }
 
-#selectionTools label:hover {
+#selectionTools label:hover, .spacer1 label:hover {
 	color:red;
 }
 
@@ -1117,4 +1117,14 @@ padding: 10px;
 #toolSelectTitle, #infoSelectTitle {
 	padding-bottom: 5px;
 	font-weight: bold;
+}
+
+.selectLabel {
+	float: left;
+padding-top: 5px;
+font-weight: bold;
+padding-left: 10px;
+}
+.spacer1 {
+	padding-top: 2px;
 }

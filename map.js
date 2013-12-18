@@ -358,14 +358,36 @@ require([
     var selectionMode = '';
     dojo.connect(dom.byId("parcs"), "click", function () {
         selectionMode = "parcs";
+        dom.byId("bufferParcs").checked = true;
+        console.log(selectionMode);
+    });
+
+
+	dojo.connect(dom.byId("bufferParcs"), "click", function () {
+        selectionMode = "parcs";
+        console.log(selectionMode);
     });
 
     dojo.connect(dom.byId("addr"), "click", function () {
         selectionMode = "addr";
+        dom.byId("bufferAddr").checked = true;
+        console.log(selectionMode);
+    });
+
+	dojo.connect(dom.byId("bufferAddr"), "click", function () {
+        selectionMode = "addr";
+        console.log(selectionMode);
     });
 
     dojo.connect(dom.byId("roads"), "click", function () {
         selectionMode = "roads";
+        dom.byId("bufferRoad").checked = true;
+        console.log(selectionMode);
+    });
+    
+    dojo.connect(dom.byId("bufferRoad"), "click", function () {
+        selectionMode = "roads";
+        console.log(selectionMode);
     });
 
     var drawx;
