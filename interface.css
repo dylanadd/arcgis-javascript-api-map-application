@@ -287,8 +287,8 @@ width:0;
 }
 
 #pclogo {
-height:48px !important;
-width: 48px !important;
+height:59px !important;
+width: 57px !important;
 margin:0;
 padding:0;
 position: absolute;
@@ -296,7 +296,7 @@ right: 15px;
 bottom: 15px;
 z-index: 30;
 
-background: url("images/logo.png") no-repeat 0 0 !important;
+background: url("images/pueblo-logo.png") no-repeat 0 0 !important;
 }
 
 .rewrite div#gallery .dijitTitlePaneTitle {
