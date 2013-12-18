@@ -421,6 +421,7 @@ require([
                 console.log(c);
                 for (i = 0; i < c.length; i++) {
                     map.graphics.add(c[i]);
+                    infoArray2.push(results[i]);
                 }
 
             }, function (error) {
@@ -446,6 +447,7 @@ require([
                 console.log(c);
                 for (i = 0; i < c.length; i++) {
                     map.graphics.add(c[i]);
+                    infoArray2.push(results[i]);
                 }
 
             }, function (error) {
@@ -467,7 +469,9 @@ require([
                 }, 1000);
                 var temp = new Array();
                 makeGeomArray(results);
-
+				for(i=0;i < results.length;i++){
+					infoArray2.push(results[i]);
+				}
             }, function (error) {
 
             });
@@ -491,11 +495,11 @@ require([
     }
 
     var parcels1;
-
+	var road1, points1;
     function doBuffer3(evt) {
         //console.debug(evt);
 
-        map.graphics.clear();
+       // map.graphics.clear();
         //   map.removeLayer(parcels1);
 
         var params = new BufferParameters();
@@ -521,11 +525,30 @@ require([
         });
 
         parcels1.setSelectionSymbol(sfs1);
+		
+		points1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/0", {
+        outFields: ["*"],
+        objectIdField: "FULLADDR",
+        //infoTemplate: popupTemplate,
+        mode: FeatureLayer.MODE_SELECTION
+    });
 
+    points1.setSelectionSymbol(sfs3);
+
+        road1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/3", {
+        outFields: ["*"],
+        objectIdField: "Shape_Length",
+        //  infoTemplate: popupTemplate,
+        mode: FeatureLayer.MODE_SELECTION,
+        spatialRelationship: FeatureLayer.SPATIAL_REL_CROSSES
+    });
+
+    road1.setSelectionSymbol(sfs2);
+		
         var zzz = false;
         gsvc.on("buffer-complete", function (result) {
 
-            map.graphics.clear();
+          //  map.graphics.clear();
             // draw the buffer geometry on the map as a map graphic
             var symbol = new SimpleFillSymbol(
                 SimpleFillSymbol.STYLE_NULL,
@@ -544,7 +567,10 @@ require([
             //as the selection geometry.
             var query2 = new Query();
             query2.geometry = bufferGeometry;
-
+			
+			
+			if(selectionMode == "parcs"){
+			
             parcels1.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
 
                 setTimeout(function () {
@@ -563,6 +589,60 @@ require([
             }, function (error) {
                 console.log(error);
             });
+            
+            }
+            else if (selectionMode == "addr") {
+            var graphic2;
+
+            points1.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
+
+                console.log(query2);
+                console.log(results);
+                console.log(results[0]);
+                setTimeout(function () {
+                    if (!zzz) {
+                        displayResults(results, "address");
+                        zzz = true;
+                    }
+                }, 1000);
+                var temp = new Array();
+
+                var c = points1.getSelectedFeatures();
+                console.log(c);
+                for (i = 0; i < c.length; i++) {
+                    map.graphics.add(c[i]);
+                    infoArray2.push(results[i]);
+                }
+
+            }, function (error) {
+
+            });
+        } else if (selectionMode == "roads") {
+            var graphic2;
+
+            road1.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
+
+                console.log(query2);
+                console.log(results);
+                console.log(results[0]);
+                setTimeout(function () {
+                    if (!zzz) {
+                        displayResults(results, "road");
+                        zzz = true;
+                    }
+                }, 1000);
+                var temp = new Array();
+                makeGeomArray(results);
+				for(i=0;i < results.length;i++){
+					infoArray2.push(results[i]);
+				}
+            }, function (error) {
+
+            });
+
+            // map.addLayer(road);
+        }
+            
 
             domAttr.set("bufferMode", "class", "bufferModeOn");
         });
@@ -1221,25 +1301,35 @@ require([
         count = 0;
         tf = false;
         try {
-            infoArray.length = 0;
-            infoArray2.length = 0;
-            infoArray3.length = 0;
             resultsArray.length = 0;
-
-            /*
-            if (parcels !== 'undefined') {
-                parcels.clearSelection();
-            }
-            if (parcels1 !== 'undefined') {
-                parcels1.clearSelection();
-            }*/
         } catch (e) {}
+        
+         try {
+           infoArray3.length = 0;
+        } catch (e) {}
+        
+        
+         try {
+            infoArray.length = 0;
+        } catch (e) {}
+        
+         try {
+            infoArray2.length = 0;
+        } catch (e) {}
+        
         try {
             parcels.clearSelection();
         } catch (e) {}
 
         try {
             parcels1.clearSelection();
+        } catch (e) {}
+		 try {
+            points.clearSelection();
+        } catch (e) {}
+
+		 try {
+            road.clearSelection();
         } catch (e) {}
 
         try {
