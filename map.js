@@ -210,7 +210,8 @@ require([
     });
 
     navToolbar = new Navigation(map);
-
+	var rBZoom = new Draw(map, {
+		showTooltips: false});
     var overviewLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer");
     // console.dir(navToolbar)
     map.on("load", function () {
@@ -221,9 +222,9 @@ require([
             cancelable: true
         });
         domAttr.remove(dom.byId("measurementDiv"), "style");
-
-        navToolbar.activate(Navigation.ZOOM_IN);
-
+		rubberBandZoomMode(true);
+       // navToolbar.activate(Navigation.ZOOM_IN);
+		
     });
 
     //Indicate map loading
@@ -260,7 +261,8 @@ require([
 
     //Listen for button clicks in text mode
     dojo.connect(dom.byId("zoom"), "click", function () {
-        navToolbar.activate(Navigation.ZOOM_IN);
+        navToolbar.deactivate();
+        rubberBandZoomMode(true);
     });
 
     /*  dojo.connect(dom.byId("zoom_out"), "click", function(){
@@ -268,6 +270,7 @@ require([
     });*/
 
     dojo.connect(dom.byId("pan"), "click", function () {
+    	rubberBandZoomMode(false);
         navToolbar.activate(Navigation.PAN);
     });
 
@@ -295,6 +298,7 @@ require([
     });
 
     dojo.connect(dom.byId("selection"), "click", function () {
+    	rubberBandZoomMode(false);
         startDrawSelect();
     });
 
@@ -390,6 +394,27 @@ require([
         console.log(selectionMode);
     });
 
+	
+	
+	function rubberBandZoomMode(rbTF){
+		if(rbTF){
+		rBZoom.activate(Draw.RECTANGLE);
+		rBZoom.on("draw-end", function(evt){
+		var graphic = new Graphic(evt.geometry, sfs);
+        
+        console.log(evt);
+        console.log(graphic);
+        var ar = new Array();
+        ar.push(graphic);
+        console.log(graphicsUtils.graphicsExtent(ar));
+        map.setExtent(graphicsUtils.graphicsExtent(ar));
+        
+		});
+		
+		} else {rBZoom.deactivate();}
+	}
+
+
     var drawx;
     //Select by shape function
     function startDrawSelect() {
@@ -408,7 +433,11 @@ require([
         // map.graphics.add(graphic);
         console.log(evt);
         console.log(graphic);
-        selectByShape(evt.geometry);
+       /* var ar = new Array();
+        ar.push(graphic);
+        console.log(graphicsUtils.graphicsExtent(ar));
+        map.setExtent(graphicsUtils.graphicsExtent(ar));
+ */       selectByShape(evt.geometry);
 
         drawx.deactivate();
         draw = false;
@@ -1492,9 +1521,9 @@ require([
     function empty() {
 
         var x = "<tr class=\"labels\"><td id=\"parNum\">Parcel Num.</td><td id=\"assesorLink\">Assessor Link</td><td id=\"fips\">FIPS</td><td id=\"ownName\">Own. Name</td><td id=\"ownOverflow\">Own. Overflow</td><td id=\"ownAddress\">Own. Address</td><td id=\"ownCity\">Own. City</td><td id=\"ownState\">Own. State</td><td id=\"ownZip\">Own. Zip</td></tr>";
-
+		try{
         dom.byId("outTable").innerHTML = x;
-
+		}catch(e){}
         domAttr.set("output", "class", "hide");
         domAttr.set("toggleOutput", "class", "closed");
     }
