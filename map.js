@@ -438,12 +438,14 @@ require([
 	var eff = 3;
 	map.on("mouse-drag", function(evt){
 		if(drawHelper){
-		domAttr.set(dom.byId("junk"), "style", "left: " + evt.x + "px; top: " + evt.y + "px;");
+		domAttr.set(dom.byId("junk"), "style", "left: " + (evt.x + 15) + "px; top: " + (evt.y + 15) + "px;");
 		
 		if(eff % 3 == 0){
 		distParams.geometry2 = evt.mapPoint;
 		gsvc.distance(distParams, function(distance) {
-			dom.byId("junk").innerHTML = distance + " ft.";
+			var xxx = parseFloat(distance);
+			console.log(xxx.toFixed(1));
+			dom.byId("junk").innerHTML = xxx.toFixed(1) + " ft.";
 			
  
   		
