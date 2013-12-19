@@ -21,20 +21,68 @@
         var logo = dom.byId("pclogo");
         var outputJson = dom.byId("filler");
         var helpButton = dom.byId("helpButton");
+        var legendButton = dom.byId("legendToggle");
         var exportButton = dom.byId("expButton");
        var vs = win.getBox();
-        
+        var zoomToggle = dom.byId("zoom");
        var textModeHeight = 50;
        var searchWrapperHeight = 50; 
        var buttonConsoleHeight = -40; 
        var zoomOffset = 0;
         var selectionToggle = false;
+        var closeButton = dom.byId("close");
+        var pan = dom.byId("pan");
+        var selectButton = dom.byId("selection");
+        var selectHelp = dom.byId("selectHelp");
         
+        
+        var selectTF = false;
+        on(selectButton,"click",function(){
+        	if(!selectTF){
+        		domAttr.set(dom.byId("selectionTools"), "class", "show");
+        		fx.fadeIn({node: dom.byId("selectionTools"), duration: 225}).play();
+        		selectTF = true;
+        	} else {
+        		fx.fadeOut({node: dom.byId("selectionTools"), duration: 225}).play();
+        		setTimeout(function(){
+        			domAttr.set(dom.byId("selectionTools"), "class", "hide");
+        		}, 250);
+        		selectTF = false;
+        	}
+        	
+        });
+        
+        
+        on(selectHelp,"click",function(){
+        	if(selectTF){
+        		fx.fadeOut({node: dom.byId("selectionTools"), duration: 225}).play();
+        		setTimeout(function(){
+        			domAttr.set(dom.byId("selectionTools"), "class", "hide");
+        		}, 250);
+        		selectTF = false;
+        	}
+        	dom.byId("fpoly").checked = false;
+        	dom.byId("poly").checked = false;
+        	dom.byId("rect").checked = false;
+        	dom.byId("triangle").checked = false;
+        	dom.byId("circ").checked = false;
+        	dom.byId("pt").checked = false;
+        	dom.byId("line").checked = false;
+        	dom.byId("polyline").checked = false;
+        	dom.byId("parcs").checked = false;
+        	dom.byId("addr").checked = false;
+        	dom.byId("roads").checked = false;
+        	
+        });
+        
+        on(closeButton, "click", function(){
+        	on.emit(viewButton, "click", {bubbles: true, cancelable: true});
+        });
        
        
        
-       
-       
+       on(helpButton,"click",function(){alert("Feature comming soon.")});
+       on(legendButton,"click",function(){alert("Feature comming soon.")});
         
          on(exportButton, "click", function(){
        
@@ -74,7 +122,28 @@
    				
         });
         
+        var zoomTF = false;
+        on(zoomToggle,"click",function(){
+        	
+        	if(!zoomTF){
+        	//	fx.fadeOut({node: dom.byId("increment"), duration: 225}).play();
+        	//	fx.fadeOut({node: dom.byId("decrement"), duration: 225}).play();
+        		zoomTF = true;
+        	} else {
+        	//	fx.fadeIn({node: dom.byId("increment"), duration: 225}).play();
+        	//	fx.fadeIn({node: dom.byId("decrement"), duration: 225}).play();
+        		zoomTF = false;
+        	}
+        	
+        });
         
+        on(pan,"click", function(){
+        	if(!zoomTF){
+        	//	fx.fadeOut({node: dom.byId("increment"), duration: 225}).play();
+        	//	fx.fadeOut({node: dom.byId("decrement"), duration: 225}).play();
+        		zoomTF = true;
+        	}
+        });
         
        on(fadeButton, "click", function(evt){
     	
@@ -175,8 +244,8 @@
   
   
 	ready(function(){
-		//console.log(domGeom.position(slideTarget));
-		console.log(domGeom.position(dom.byId("tools")));
+
+		
 		domAttr.set(slideTarget, "style", "top: " + domGeom.position(slideTarget).y.toString() + "px; left: " + domGeom.position(slideTarget).x.toString() + "px;");
 	//	domAttr.set(fadeTarget, "style", "top: " + domGeom.position(fadeTarget).y.toString() + "px; left: " + domGeom.position(fadeTarget).x.toString() + "px;");
 		domAttr.set(dom.byId("dijit_TitlePane_0_titleBarNode"), "title", "Change the application's basemap");
@@ -186,16 +255,17 @@
 			} catch(e){}
 		},2000);
 		domAttr.set(dom.byId("map_zoom_slider"), "title", "Zoom the map in or out");
+		query(".dijitTitlePaneTextNode").innerHTML("Basemap");
 
-		query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
-		query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
+	//	query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
+	//	query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
 		respond(0);
-
+		
 		
 	});  
 	
 	function fadeConsole(){
-		
+		/*
 		var searchTemp = dom.byId("search_wrapper");
     	var toolbarTemp = dom.byId("tools");
     	var incTemp = dom.byId("increment");
@@ -225,17 +295,17 @@
  				domAttr.set(toolbarTemp, "class", "show");
  				domAttr.set(incTemp, "class", "show");
  				domAttr.set(decTemp, "class", "show");
- 				*/
+ 				
  			}
  			
-		
+		*/
 	}
 	
 	var openClose = false; //closed initially
   
     on(viewButton, "click", function(){
     	
-    	fadeConsole();
+    	//fadeConsole();
  			
  			
  			if(openClose == false){
@@ -244,6 +314,9 @@
  			} else {
  				slideIt(300, 0, slideTarget,0);
  				openClose = false;
+ 			setTimeout(function(){
+ 				domAttr.set(dom.byId("searchResults"), "style", "top: 37px; left:" + (vs.w - 21) + "px;");
+ 			}, 500);
  			}
  			
  			
@@ -275,174 +348,8 @@
      		fadeConsole();
      	}
      	openClose = false;
-		domAttr.set(dom.byId("searchResults"), "style", "top: 0px; left:" + (vs.w - 21) + "px;");
+		domAttr.set(dom.byId("searchResults"), "style", "top: 37px; left:" + (vs.w - 21) + "px;");
 		
-		//BEGIN RESPONSE FUNCTIONS
-		
-		setTimeout(function(){
-		//console.log(domGeom.getContentBox(dom.byId("noIconMode")));
-     	if(vs.w < 957 && vs.w > 490){
-     		med1 = true;
-     		small1 = false;
-     		big1 = false;
-     		if(!textMode){
-     		domAttr.set(dom.byId("noIconMode"), "style", "top: -71px; left: 0px");
-     		
-     		}
-     		
-     		textModeHeight = 71;
-     		buttonConsoleHeight = -82;
-     		zoomOffset = 42;
-     		
-     		if(!med && big){
-     			slideIt(0,21, "search_wrapper", 0);
-     			slideIt(0,21, "tools", 0);
-     			if(textMode){
-     				slideIt(-10,-21, "increment", 0);
-     				slideIt(-10,-21, "decrement", 0);
-     			} else {
-     				slideIt(-10,1, "increment", 0);
-     				slideIt(-10,1, "decrement", 0);
-     			}
-     			searchWrapperHeight += 21;
-     			med = true;
-     			big = false;
-     			small = false;
-     		} else if (!med && small){
-     			
-     			slideIt(0,-25, "search_wrapper", 0);
-     			slideIt(0,-25, "tools", 0);
-     			
-     			
-     			if(textMode){
-     				slideIt(-10,-20, "increment", 0);
-     				slideIt(-10,-20, "decrement", 0);
-     			} else {
-     				slideIt(-10,-45, "increment", 0);
-     				slideIt(-10,-45, "decrement", 0);
-     			}
-     			
-     			searchWrapperHeight -= 25;
-     			med = true;
-     			big = false;
-     			small = false;
-     		}
-     		     		
-     	}
-     	if(vs.w >= 957){
-     		med1 = false;
-     		small1 = false;
-     		big1 = true;
-     		if(!textMode){
-     			domAttr.set(dom.byId("noIconMode"), "style", "top: -50px; left: 0px");
-     		}
-     		textModeHeight = 50;
-     	//	buttonConsoleHeight = 0;
-     		zoomOffset = 0;
-     		
-     		if(!big && med){
-     			buttonConsoleHeight = -40;
-     			if(domGeom.position(dom.byId("search_wrapper")).y > 10){
-     			slideIt(0,-21, "search_wrapper", 0);
-     			
-     			slideIt(0,-21, "tools", 0);
-     			
-     			if(textMode){
-     				slideIt(-10,-20, "increment", 0);
-     				slideIt(-10,-20, "decrement", 0);
-     			} else {
-     				slideIt(-10,-41, "increment", 0);
-     				slideIt(-10,-41, "decrement", 0);
-     			}
-     			
-     			
-     			
-     			
-     			}
-     			searchWrapperHeight -= 21;
-     			med = false;
-     			big = true;
-     			small = false;
-     		} else if (!big && small){
-     			
-     			if(textMode){
-     				slideIt(0,-92, "search_wrapper", 0);
-     				slideIt(0,-69, "tools", 0);
-     				slideIt(-10,-66, "increment", 0);
-     				slideIt(-10,-66, "decrement", 0);
-     				
-     				buttonConsoleHeight = -40;
-     			} else {
-     				buttonConsoleHeight = -40;
-     			slideIt(0,-46, "search_wrapper", 0);
-     			slideIt(0,-46, "tools", 0);
-     			slideIt(-10,-66, "increment", 0);
-     			slideIt(-10,-66, "decrement", 0);
-     			}
-     			searchWrapperHeight -= 46;
-     			med = false;
-     			big = true;
-     			small = false;
-     			smallBig = true;
-     			
-     		}
-     		
-     	}
-     	if(vs.w <= 490) {
-     		med1 = false;
-     		small1 = true;
-     		big1 = false;
-     		smallBig = false;
-     		if(!textMode){
-     		domAttr.set(dom.byId("noIconMode"), "style", "top: -96px; left: 0px");
-     		}
-     		textModeHeight = 96;
-     		buttonConsoleHeight = -134;
-     		zoomOffset = 92;
-     		
-     		if(!small && big){
-     			if(textMode){
-     			slideIt(0,92,"search_wrapper",0);
-     			slideIt(0,92, "tools", 0);	
-     			slideIt(-10,72, "increment", 0);
-     			slideIt(-10,72, "decrement", 0);
-     			bigSmall = true;
-     			} else {
-     			slideIt(0,46, "search_wrapper", 0);
-     			slideIt(0,46, "tools", 0);
-     			slideIt(-10,26, "increment", 0);
-     			slideIt(-10,26, "decrement", 0);
-     			searchWrapperHeight += 46;
-     			}
-     			med = false;
-     			big = false;
-     			small = true;
-     		} else if (!small && med){
-     			slideIt(0,25, "search_wrapper", 0);
-     			slideIt(0,25, "tools", 0);
-     			
-     			
-     			if(textMode){
-     				slideIt(-10,-20, "increment", 0);
-     				slideIt(-10,-20, "decrement", 0);
-     			} else {
-     				slideIt(-10,5, "increment", 0);
-     				slideIt(-10,5, "decrement", 0);
-     			}
-     			
-     			
-     			searchWrapperHeight += 25;
-     			med = false;
-     			big = false;
-     			small = true;
-     		}
-     	}
-     	console.log(buttonConsoleHeight);
-     //	domAttr.set(dom.byId("searchResults"), "style", "height: " + vs.h + "px;");
-     	}, respTime);
-     	//END RESPONSE FUNCTIONS
-     	
-     	//SPECIAL FUNCTIONS FOR SCREENS < 778PX WIDE
      	
       }
       	
@@ -531,7 +438,7 @@
     
     var textMode = false;
  	on(textModeButton, "click", function(){ 
- 		textModeSwitch();
+ 		//textModeSwitch();
  	});
    
         
@@ -581,7 +488,7 @@
  			slideIt(0, (searchWrapperHeight * -1), "search_wrapper",150);
  			slideIt(380, (buttonConsoleHeight + zoomOffset), "decrement",250);
  			slideIt(380, (buttonConsoleHeight + zoomOffset), "increment",350);
- 			
+ 	
  			if (smallBig && domGeom.position(dom.byId("clear")).y <= 59){
  				slideIt(248, 6, "clear", 450);
  				slideIt(182, 6, "bufferMode", 550);
@@ -638,6 +545,7 @@
  			
  			textMode = false;
  		}
+ 		//
  		setTimeout(function(){console.log(domGeom.position(dom.byId("noIconMode")));}, 2000);
         }
         

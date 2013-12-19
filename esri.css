@@ -80,7 +80,7 @@
     width: 65px;
     height: 36px;
     z-index: 30;
-    background-image: url("../images/map/logo-med.png");
+  /*  background-image: url("../images/map/logo-med.png"); */
     cursor: pointer;
     _background-image: none;
 }
@@ -2449,19 +2449,19 @@
 }
 
 .distanceIcon {
-    background-image: url("../dijit/images/Measure_Distance16.png");
+  /*  background-image: url("../dijit/images/Measure_Distance16.png");*/
     width: 16px;
     height: 16px;
 }
 
 .areaIcon {
-    background-image: url("../dijit/images/Measure_Area16.png");
+ /*   background-image: url("../dijit/images/Measure_Area16.png");*/
     width: 16px;
     height: 16px;
 }
 
 .locationIcon {
-    background-image: url("../dijit/images/Measure_Point16.png");
+   /* background-image: url("../dijit/images/Measure_Point16.png");*/
     width: 16px;
     height: 16px;
 }
@@ -2704,7 +2704,9 @@
 }
 
 .esriPopup .titlePane {
-    background-color: #444444;
+    /* background-color: rgba(171,68,36,1); */
+   background: rgb(16,64,92);
+   background: linear-gradient(to bottom, #fff, rgb(16,64,92));
     color: #FFFFFF;
     line-height: 20px;
     padding-left: 6px;
@@ -3222,7 +3224,7 @@
     margin-top: 4px;
     margin-right: 4px;
     cursor: pointer;
-    background: url("../dijit/images/spinner.gif") no-repeat;
+    background: url("images/spinner.gif") no-repeat;
     width: 16px;
     height: 16px;
     background-position: 0px 0px;
@@ -3239,7 +3241,7 @@
     left: 3px;
     width: 32px;
     height: 32px;
-    background: url("../dijit/images/whitex.png") no-repeat;
+    background: url("images/whitex.png") no-repeat;
 }
 
 .esriPopupMobile .titleButton.arrow {
@@ -3247,7 +3249,7 @@
     right: 3px;
     width: 32px;
     height: 32px;
-    background: url("../dijit/images/whiter.png") no-repeat;
+    background: url("images/whiter.png") no-repeat;
 }
 
 .esriPopupMobile .titleButton.prev {
@@ -3255,7 +3257,7 @@
     left: 76px;
     width: 18px;
     height: 11px;
-    background: url("../dijit/images/leftlongarrow.png") no-repeat;
+    background: url("images/leftlongarrow.png") no-repeat;
 }
 
 .esriPopupMobile .titleButton.next {
@@ -3263,7 +3265,7 @@
     right: 76px;
     width: 18px;
     height: 11px;
-    background: url("../dijit/images/rightlongarrow.png") no-repeat;
+    background: url("images/rightlongarrow.png") no-repeat;
 }
 
 .esriPopupMobile .pointer {
@@ -3276,7 +3278,7 @@
     width: 24px;
     height: 12px;
     margin-left: 0px;
-    background: url("../dijit/images/pointertop.png") no-repeat;
+    background: url("images/pointertop.png") no-repeat;
 }
 
 .esriPopupMobile .pointer.bottom {
@@ -3285,19 +3287,20 @@
     width: 24px;
     height: 12px;
     margin-left: 0px;
-    background: url("../dijit/images/pointerbottom.png") no-repeat;
+    background: url("images/pointerbottom.png") no-repeat;
 }
 
 .esriMobileNavigationBar {
     overflow: hidden;
     position: absolute;
-    z-index: 41;
+    z-index: 1000;
     top: 0px;
-    background-color: #639BBC;
+  /*  background-color: #639BBC;
     background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.25, rgb(10,77,106)), color-stop(0.82, rgb(99,155,188)) );
     background-image: -moz-linear-gradient( center bottom, rgb(10,77,106) 25%, rgb(99,155,188) 82% );
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#639BBC', endColorstr='#0A4D6A');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#639BBC', endColorstr='#0A4D6A')";
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#639BBC', endColorstr='#0A4D6A')"; */
+   background: linear-gradient(to bottom, #fff, rgb(16,64,92));
     width: 100%;
     height: 42px;
     margin: 0 auto;
@@ -3375,7 +3378,7 @@
     width: 100%;
     background: #fff;
     display: none;
-    z-index: 42;
+    z-index: 1000;
     opacity: 1.0;
     overflow: hidden;
 }

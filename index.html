@@ -1,30 +1,46 @@
 <!DOCTYPE html>
 <html>
   <head>
+  	<!-- 
+  		   Copyright 2013-2014, Pueblo County Government
+  		   
+  		   Application developed by 
+  		   Dylan Addington 
+  		   [Web Developer, Pueblo County Government]
+  		   
+  	 -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9, IE=10">
+    <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9">
     <!--The viewport meta tag is used to improve the presentation and behavior
      on iOS devices-->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
     <title>Parcel Locator</title>
+    <script>var dojoConfig = { parseOnLoad: true };</script>
  	<!-- 	<link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/tundra/tundra.css">  --> 
     <!-- <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css"> -->
+    <script src="http://js.arcgis.com/3.7/"></script>
+
      <link rel="stylesheet" href="esri.css">
      <link rel="stylesheet" href="./interface.css">
 		
 
 	<script>var selectedParcel;</script>
-    <script>var dojoConfig = { parseOnLoad: true };</script>
-    <script src="init.js"></script>
+   
+  <!--  <script src="init.js"></script> -->
     
     <script src="map.js"></script>
     
     <script src="dojo-v-1_9_1.js"></script>
     <script src="effects.js"></script>
-    
+     
+    <script>
+    setInterval(function(){
+        window.scrollTo(0, 1);
+    }, 0);
+</script>
   </head>
   
-  <body class="tundra buttonMode" id="body"> 
+  <body class="claro buttonMode" id="body"> 
     <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline',gutters:false" 
     style="width: 100%; height: 100%; margin: 0;">
       
@@ -59,8 +75,14 @@
       </select>
      <!--  <button data-dojo-type="dijit.form.Button" type="button" onclick="app.map.graphics.clear();">Clear Graphics</button> -->
      <input type="button" id="buffer" value="Buffer Selection" />
+     <br/>
+     <div class="spacer1">
+     <div class="selectLabel">Data To Return: </div>
+     <label><input type="radio" name="3" id="bufferParcs">Parcels</label>
+     <label><input type="radio" name="3" id="bufferAddr">Address Points</label>
+     <label><input type="radio" name="3" id="bufferRoad">Roads</label>
     </div>
-      
+      </div>
        
        
        
@@ -74,9 +96,36 @@
        
           </div>
           
+          <div id="toolbarWrapper">
+          	          
+         
+          
+          <div id="tools">
+			<a id="zoom">Zoom</a>
+			<a id="pan">Pan</a>
+			<a id="selection">Select</a>
+           <a id="clear" title="Clear all selections on the page.">Clear</a> 
+        <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off.">Buffer</a>
+        <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off">Measure</a>
+        
+         <div id="gallery" class="dormant">
+          <div data-dojo-type="dijit/TitlePane" 
+               data-dojo-props=" closable:false,  open:false">
+            <div data-dojo-type="dijit/layout/ContentPane" style="width:264px; height:238px; overflow:auto;margin-top: 73px;margin-left: -130px;">
+            <div id="basemapGallery" ></div></div>
+          </div>
+        </div>
+        
+         <div id="print_button" class="dormant"></div>
+        
+        <a id="toggleOutput" class="closed" title="View your selected info panel">Bookmarks</a>
+        <a id="overviewToggle">Overview</a>
+        <a id="legendToggle" title="View Map Legend">Legend</a>
+        <a id="helpButton" title="View instructions on using the map">Help</a>
+          </div>
           
           
-           <div id="search_wrapper" class="search_wrapper">
+            <div id="search_wrapper" class="search_wrapper">
 	   <div class="search_button">
 	  <!--  <input type="button" id="locate" /> -->
 	  <a id="locate" title="Begin search" class="dormant"></a>
@@ -89,28 +138,7 @@
 		<a id="roadSwitch" class="deselected" title="Road Search Mode"></a>
 	   </div>
           
-          <div id="tools">
-          
-           <a id="clear" title="Clear all selections on the page."></a> 
-        <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off."></a>
-        <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off"></a>
-        
-         <div id="gallery" class="dormant">
-          <div data-dojo-type="dijit/TitlePane" 
-               data-dojo-props=" closable:false,  open:false">
-            <div data-dojo-type="dijit/layout/ContentPane" style="width:264px; height:238px; overflow:auto;margin-top: 73px;margin-left: -130px;">
-            <div id="basemapGallery" ></div></div>
-          </div>
-        </div>
-        
-         <div id="print_button" class="dormant"></div>
-        
-        <a id="toggleOutput" class="closed" title="View your selected info panel"></a>
-        <a id="legendToggle" title="View Map Legend"></a>
-        <a id="helpButton" title="View instructions on using the map"></a>
-          </div>
-          
-          
+         </div> 
         </div>
      
      
@@ -124,8 +152,9 @@
        </div>
         <div id="output" class="xhide">
         	<div id="wrapper">
+        		<div class="gradient">
         		<a id="expButton" href="javascript:void(0)" onclick="return false;">Export</a>
-        		
+        		</div>
         		<form id="form2" style="display: none;"></form>
         		<div id="wrapper2">
         	<table id="outTable" cellpadding="3px" cellspacing="0" >
@@ -150,10 +179,10 @@
         
         <div id="searchResults" style="width:200px;">
         	<div class="buttonWrap">
-        	<div id="openClose" class="noResults""></div>
+        	<div id="openClose" class="noResults"></div>
         	</div> 
         	<div id="resultsBody" class="resultsWindow" >
-        		
+        		<div id="close">Close X</div>
         		 <div id="resultsContent"></div>
         	</div>
         	
@@ -179,21 +208,49 @@
       
     <div id="noIconMode">
         	<div id="textButtonConsole">
-        		<a id="textZoomIn">Zoom In</a>
-        		<a id="textZoomOut">Zoom Out</a>
-        		<a id="textClear">Clear Map</a>
-        		<a id="textBuffer">Buffer Tool</a>
-        		<a id="textDraw">Measure</a>
-        		<a id="textMap">Change Map</a>
+        		<a id="textZoomIn"></a>
+        		<a id="textZoomOut"></a>
+        		<a id="textClear"></a>
+        		<a id="textBuffer"></a>
+        		<a id="textDraw"></a>
+        		<a id="textMap"></a>
         		<div id="textPrint"></div>
-        		<a id="textShowSelection">View Saved Parcels</a>
-        		<a id="textLegend">View Legend</a>
-        		<a id="textHelp">Help</a>
+        		<a id="textShowSelection"></a>
+        		<a id="textLegend"></a>
+        		<a id="textHelp"></a>
         	</div>
         	<div id="iconToggleWrapper">
-        		<a id="iconToggle">Text Button Mode</a>
+        		<a id="iconToggle"></a>
         	</div>
         </div>
+      
+      
+      <a id="selectHelp" style="display:none"></a>
+      <div id="selectionTools" class="hide">
+      	<div id="toolSelect">
+      		<div id="toolSelectTitle">Select Tool:</div>
+      	<form id="toolsForm" action="">
+
+
+      <label><input type="radio" name="0" id="fpoly">Freehand </label><br/>
+      	<label><input type="radio" name="0" id="poly">Polygon</label><br/>
+      	<label><input type="radio" name="0" id="rect">Rectangle</label><br/>
+      	<label><input type="radio" name="0" id="triangle">Triange</label><br/>
+      	<label><input type="radio" name="0" id="circ">Circle</label><br/>
+      	<label><input type="radio" name="0" id="pt">Point</label><br/>
+      	<label><input type="radio" name="0" id="line">Line</label><br/>
+      	<label><input type="radio" name="0" id="polyline">Polyline</label><br/>
+      	</form>
+      	</div>
+      	<div id="infoSelect">
+      		<div id="infoSelectTitle">Select Data:</div>
+      	<form id="infoForm" action="">
+      		<label><input type="radio" name="1" id="parcs">Parcels</label> <br/>
+      		<label><input type="radio" name="1" id="addr">Address Points</label><br/>
+      		<label><input type="radio" name="1" id="roads">Roads</label><br/>
+      	</form>
+      	</div>
+      </div>
       
   </body>
 
