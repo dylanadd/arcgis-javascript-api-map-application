@@ -1130,3 +1130,7 @@ padding-left: 10px;
 .spacer1 {
 	padding-top: 2px;
 }
+#junk {
+	position: absolute;
+	color: white;
+}

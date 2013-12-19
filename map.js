@@ -9,6 +9,7 @@ var draw = null;
 var buff = null;
 var navToolbar;
 var overviewMapDijit;
+var mDraw;
 // var gsvc, tb;
 require([
     "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer",
@@ -16,7 +17,7 @@ require([
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
     "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate",
     "esri/urlUtils", "esri/graphicsUtils",
-    "dojo/_base/Color",
+    "dojo/_base/Color", "esri/tasks/DistanceParameters",
     "dojo/on", "dojo/query", "dojo/parser", "dojo/dom-construct", "dojo/keys", "dijit/registry", "dojo/dom",
     "esri/dijit/Print", "esri/tasks/PrintTemplate", "esri/request", "esri/config", "dojo/_base/array",
     "esri/dijit/BasemapGallery", "esri/arcgis/utils", "esri/dijit/BasemapLayer", "esri/dijit/Basemap",
@@ -33,7 +34,7 @@ require([
     SimpleFillSymbol, SimpleLineSymbol,
     Graphic, Popup, PopupTemplate,
     urlUtils, graphicsUtils,
-    Color,
+    Color, DistanceParameters,
     on, query, parser, domConstruct, keys, registry, dom,
     Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
@@ -213,7 +214,7 @@ require([
 	var rBZoom = new Draw(map, {
 		showTooltips: false});
     var overviewLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer");
-    // console.dir(navToolbar)
+
     map.on("load", function () {
         //	map.setZoom(2);
         map.setZoom(1);
@@ -224,8 +225,11 @@ require([
         domAttr.remove(dom.byId("measurementDiv"), "style");
 		rubberBandZoomMode(true);
        // navToolbar.activate(Navigation.ZOOM_IN);
+		console.dir(measurement);
 		
     });
+
+
 
     //Indicate map loading
     map.on("update-start", function () {
@@ -328,35 +332,42 @@ require([
 
     dojo.connect(dom.byId("fpoly"), "click", function () {
         drawx.activate(Draw.FREEHAND_POLYGON);
-
+		mDraw.activate(Draw.LINE);
     });
 
     dojo.connect(dom.byId("poly"), "click", function () {
         drawx.activate(Draw.POLYGON);
+        mDraw.activate(Draw.LINE);
     });
 
     dojo.connect(dom.byId("rect"), "click", function () {
         drawx.activate(Draw.RECTANGLE);
+        mDraw.activate(Draw.LINE);
     });
 
     dojo.connect(dom.byId("triangle"), "click", function () {
         drawx.activate(Draw.TRIANGLE);
+        mDraw.activate(Draw.LINE);
     });
 
     dojo.connect(dom.byId("circ"), "click", function () {
         drawx.activate(Draw.CIRCLE);
+        mDraw.activate(Draw.LINE);
     });
 
     dojo.connect(dom.byId("pt"), "click", function () {
         drawx.activate(Draw.POINT);
+        mDraw.activate(Draw.LINE);
     });
 
     dojo.connect(dom.byId("line"), "click", function () {
         drawx.activate(Draw.LINE);
+        mDraw.activate(Draw.LINE);
     });
 
     dojo.connect(dom.byId("polyline"), "click", function () {
         drawx.activate(Draw.POLYLINE);
+        mDraw.activate(Draw.LINE);
     });
 
     var selectionMode = '';
@@ -396,17 +407,68 @@ require([
 
 	
 	
+	var distParams = new DistanceParameters();
+	distParams.distanceUnit = GeometryService.UNIT_FOOT;
+	
+	
+	
+	map.on("mouse-drag-start", function(evt){
+		
+		if(drawHelper){
+		
+		
+		domAttr.set(dom.byId("junk"), "style", "");
+		console.log(evt.mapPoint);
+		distParams.geometry1 = evt.mapPoint;
+		}
+	});
+	
+	
+	map.on("mouse-drag-end", function(evt){
+		if(drawHelper){
+		console.log(evt.mapPoint);
+		domAttr.set(dom.byId("junk"), "style", "display:none;");
+		setTimeout(function(){dom.byId("junk").innerHTML = "";}, 100);
+		setTimeout(function(){dom.byId("junk").innerHTML = "";}, 200);
+		setTimeout(function(){dom.byId("junk").innerHTML = "";}, 300);
+		setTimeout(function(){dom.byId("junk").innerHTML = "";}, 500);
+		}
+		
+	});
+	var eff = 3;
+	map.on("mouse-drag", function(evt){
+		if(drawHelper){
+		domAttr.set(dom.byId("junk"), "style", "left: " + evt.x + "px; top: " + evt.y + "px;");
+		
+		if(eff % 3 == 0){
+		distParams.geometry2 = evt.mapPoint;
+		gsvc.distance(distParams, function(distance) {
+			dom.byId("junk").innerHTML = distance + " ft.";
+			
+ 
+  		
+		});
+		eff++;
+		 } else {
+  	eff++;}
+  			
+		}
+                
+	});
+	
+	
+	
+	
 	function rubberBandZoomMode(rbTF){
 		if(rbTF){
 		rBZoom.activate(Draw.RECTANGLE);
 		rBZoom.on("draw-end", function(evt){
 		var graphic = new Graphic(evt.geometry, sfs);
         
-        console.log(evt);
-        console.log(graphic);
+       
         var ar = new Array();
         ar.push(graphic);
-        console.log(graphicsUtils.graphicsExtent(ar));
+
         map.setExtent(graphicsUtils.graphicsExtent(ar));
         
 		});
@@ -414,14 +476,17 @@ require([
 		} else {rBZoom.deactivate();}
 	}
 
-
+	var drawHelper;
     var drawx;
     //Select by shape function
     function startDrawSelect() {
+    	drawHelper = true;
         navToolbar.activate(Navigation.PAN);
         drawx = new Draw(map, {
             showTooltips: true
         });
+        mDraw = new Draw(map, {showTooltips: false});
+		
         drawx.on("draw-end", addToMap);
         // draw.activate(Draw.CIRCLE);
         draw = true;
@@ -438,9 +503,10 @@ require([
         console.log(graphicsUtils.graphicsExtent(ar));
         map.setExtent(graphicsUtils.graphicsExtent(ar));
  */       selectByShape(evt.geometry);
-
+		mDraw.deactivate();
         drawx.deactivate();
         draw = false;
+        drawHelper = false;
         on.emit(dom.byId("selectHelp"), "click", {
             bubbles: true,
             cancelable: true
