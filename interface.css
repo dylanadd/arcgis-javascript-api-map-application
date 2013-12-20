@@ -220,11 +220,17 @@ z-index:30;
 }
 
 #tools {
-float:left;
+
 position:relative;
 top:10px;
+margin-left:auto;
+margin-right:auto;
+width:604px;
+/*
+float:left;
 margin-bottom:10px;
 margin-right:10px;
+*/
 }
 #tools > a {
 	color:white;
