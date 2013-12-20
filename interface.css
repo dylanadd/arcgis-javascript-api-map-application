@@ -229,7 +229,7 @@ margin-right:10px;
 #tools > a {
 	color:white;
 	float:left;
-	padding-left: 20px;
+	padding-left: 10px;
 	cursor:pointer;
 }
 div.search_button {
@@ -1135,4 +1135,57 @@ padding-left: 10px;
 #junk {
 	position: absolute;
 	color: white;
+}
+
+
+#zoom {
+	background: url("images/icons/rbzoom.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+	
+}
+
+
+#pan {
+background: url("images/icons/pan.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+}
+
+#clear {
+background: url("images/icons/clear.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+}
+
+#selection {
+background: url("images/icons/select.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+}
+
+#helpButton {
+	/*
+background: url("images/icons/help.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+*/
+}
+
+#draw {
+background: url("images/icons/measure.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+}
+
+#bufferMode {
+background: url("images/icons/buffer.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+}
+
+#toggleOutput {
+background: url("images/icons/favorites.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
 }
