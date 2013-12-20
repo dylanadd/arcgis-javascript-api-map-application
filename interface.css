@@ -656,11 +656,13 @@ a.action.zoomTo{
 	display:none;
 }
 
+.showx {opacity: 1 !important;}
+
 #searchResults{
 	position:absolute;
-	right: -179px;
-	top:37px;
-	height:100%;
+	right: 0px;
+	opacity: 0;
+	
 	z-index: 1000;
 }
 div#openClose{

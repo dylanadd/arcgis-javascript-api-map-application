@@ -188,7 +188,9 @@
         	   	
         	   	
         	if(openClose){
-     		slideIt(300, 0, slideTarget,0);
+     		//slideIt(300, 0, slideTarget,0);
+     		fx.fadeOut({node: slideTarget, duration: 225}).play();
+     		setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 235);
      		openClose = false;
      	}   	
         	   	
@@ -246,8 +248,10 @@
 	ready(function(){
 
 		
-		domAttr.set(slideTarget, "style", "top: " + domGeom.position(slideTarget).y.toString() + "px; left: " + domGeom.position(slideTarget).x.toString() + "px;");
-	//	domAttr.set(fadeTarget, "style", "top: " + domGeom.position(fadeTarget).y.toString() + "px; left: " + domGeom.position(fadeTarget).x.toString() + "px;");
+		domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
+	
+	
+	
 		domAttr.set(dom.byId("dijit_TitlePane_0_titleBarNode"), "title", "Change the application's basemap");
 		setTimeout(function(){
 			try{
@@ -309,13 +313,17 @@
  			
  			
  			if(openClose == false){
-        	slideIt(-300, 0, slideTarget,0);
+        	//slideIt(-300, 0, slideTarget,0);
+        	fx.fadeIn({node: slideTarget, duration: 225}).play();
+        	setTimeout(function(){domAttr.set(slideTarget, "class", "showx");}, 0);
         	openClose = true;
  			} else {
- 				slideIt(300, 0, slideTarget,0);
+ 				//slideIt(300, 0, slideTarget,0);
+ 				fx.fadeOut({node: slideTarget, duration: 225}).play();
+ 				setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 250);
  				openClose = false;
  			setTimeout(function(){
- 				domAttr.set(dom.byId("searchResults"), "style", "top: 37px; left:" + (vs.w - 21) + "px;");
+ 				//domAttr.set(dom.byId("searchResults"), "style", "top: 37px; left:" + (vs.w - 21) + "px;");
  			}, 500);
  			}
  			
@@ -337,25 +345,20 @@
       var small1;
       function respond(respTime){
       	
-     	if(textMode){
-     		on.emit(dom.byId("iconToggle"), "click", {bubbles: true, cancelable: true});
-     	}
      	
      	 vs = win.getBox();
-     	//console.log(vs);
+
      	
-     	if(openClose){
-     		fadeConsole();
-     	}
-     	openClose = false;
-		domAttr.set(dom.byId("searchResults"), "style", "top: 37px; left:" + (vs.w - 21) + "px;");
+     	
+		domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
 		
-     	
       }
       	
      on(locateButton, "click", function(){
      	if(openClose){
-     		slideIt(300, 0, slideTarget,0);
+     		//slideIt(300, 0, slideTarget,0);
+     		fx.fadeOut({node: slideTarget, duration: 225}).play();
+     		setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 250);
      		openClose = false;
      	}
      });
@@ -365,7 +368,9 @@
       
        on(bufferButton, "click", function(){
      	if(openClose){
-     		slideIt(300, 0, slideTarget,0);
+     		//slideIt(300, 0, slideTarget,0);
+     		fx.fadeOut({node: slideTarget, duration: 225}).play();
+     		setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 250);
      		openClose = false;
      	}
      	dom.byId("resultsContent").innerHTML = "";
