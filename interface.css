@@ -6,6 +6,8 @@ padding:0;
 width:100%;
 }
 
+
+
 #buffer-params {
 background:rgba(255,255,255,0.95);
 position:absolute;
@@ -81,7 +83,7 @@ top:-6px;
 right:10px;
 margin-left:10px;
 margin-top:10px;
-width:320px;
+width:290px;
 z-index:30;
 float:right;
 }
@@ -99,7 +101,7 @@ margin:0 6px;
 outline:0;
 padding:6px 0;
 vertical-align:middle;
-width:168px;
+width:136px;
 }
 
 div.search_wrapper div.search_button a#locate {
