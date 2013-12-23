@@ -1038,6 +1038,11 @@ font-size: 16px;
 	cursor:pointer;
 	text-shadow: 2px 1px #171212;
 }
+#gallery span.dijitTitlePaneTextNode:hover {
+	color: #fffd4d;
+	text-shadow: 1px 1px #ffffff;
+}
+
 
 #gallery span.dijitArrowNodeInner{
 	display:none;
@@ -1050,6 +1055,12 @@ font-size: 16px;
 	cursor: pointer;
 	
 }
+#print_button:hover, #print_button a:hover {
+	color: #fffd4d;
+	text-shadow: 1px 1px #ffffff;
+}
+
+
 #print_button a {
 	color: white;
 	text-decoration: none;
@@ -1077,6 +1088,11 @@ cursor:pointer;
 
 #tools > a {
 	text-shadow: 2px 1px #171212;
+}
+
+#tools > a:hover {
+	color: #fffd4d;
+	text-shadow: 1px 1px #ffffff;
 }
 
 #selectionTools.hide{
@@ -1149,10 +1165,12 @@ padding-left: 10px;
 #zoom {
 	background: url("images/icons/rbzoom.png") no-repeat 0 0;
 height: 30px;
-width: 30px;
-	
+width: 30px;	
 }
 
+#zoom:hover {
+	background: url("images/icons/rbzoomhover.png") no-repeat 0 0;
+}
 
 #pan {
 background: url("images/icons/pan.png") no-repeat 0 0;
@@ -1160,10 +1178,17 @@ height: 30px;
 width: 30px;
 }
 
+#pan:hover {
+background: url("images/icons/panhover.png") no-repeat 0 0;
+}
 #clear {
 background: url("images/icons/clear.png") no-repeat 0 0;
 height: 30px;
 width: 30px;
+}
+
+#clear:hover {
+background: url("images/icons/clearhover.png") no-repeat 0 0;
 }
 
 #selection {
@@ -1171,6 +1196,11 @@ background: url("images/icons/select.png") no-repeat 0 0;
 height: 30px;
 width: 30px;
 }
+
+#selection:hover {
+background: url("images/icons/selecthover.png") no-repeat 0 0;
+}
+
 
 #helpButton {
 	/*
@@ -1186,14 +1216,26 @@ height: 30px;
 width: 30px;
 }
 
+#draw:hover {
+background: url("images/icons/measurehover.png") no-repeat 0 0;
+}
+
 #bufferMode {
 background: url("images/icons/buffer.png") no-repeat 0 0;
 height: 30px;
 width: 30px;
 }
 
+#bufferMode:hover {
+	background: url("images/icons/bufferhover.png") no-repeat 0 0;
+}
+
 #toggleOutput {
 background: url("images/icons/favorites.png") no-repeat 0 0;
 height: 30px;
 width: 30px;
+}
+
+#toggleOutput:hover {
+	background: url("images/icons/favoriteshover.png") no-repeat 0 0;
 }
