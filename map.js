@@ -262,11 +262,12 @@ require([
         }
 
     });
-
+	var tools = dom.byId("tools");
     //Listen for button clicks in text mode
     dojo.connect(dom.byId("zoom"), "click", function () {
         navToolbar.deactivate();
         rubberBandZoomMode(true);
+        domAttr.set(tools, "class", "zoomActive");
     });
 
     /*  dojo.connect(dom.byId("zoom_out"), "click", function(){
@@ -276,11 +277,13 @@ require([
     dojo.connect(dom.byId("pan"), "click", function () {
     	rubberBandZoomMode(false);
         navToolbar.activate(Navigation.PAN);
+        domAttr.set(tools, "class" ,"panActive");
     });
 
     var overView = false;
     var overViewStartUp = false;
     dojo.connect(dom.byId("overviewToggle"), "click", function () {
+    	
         if (!overViewStartUp) {
             overviewMapDijit = new OverviewMap({
                 map: map,
@@ -302,6 +305,7 @@ require([
     });
 
     dojo.connect(dom.byId("selection"), "click", function () {
+    	domAttr.set(tools, "class" ,"selectActive");
     	rubberBandZoomMode(false);
         startDrawSelect();
     });
@@ -309,6 +313,9 @@ require([
     dojo.connect(dom.byId("selectHelp"), "click", function () {
         //Helper Listener - Do not remove
     });
+
+	 
+
 
     dojo.connect(dom.byId("textPrint"), "click", function () {
 
@@ -513,6 +520,7 @@ require([
             bubbles: true,
             cancelable: true
         });
+        
     }
 
     function selectByShape(evt) {
@@ -597,7 +605,7 @@ require([
 
             // map.addLayer(road);
         }
-
+		domAttr.set(tools, "class", "panActive");
     }
 
     //Buffer Function
@@ -1168,6 +1176,7 @@ require([
 
     function startSearch() {
         domAttr.set("locate", "class", "processing");
+     //  domAttr.set("body", "class", "claro buttonMode calculating");
         try {
             resultsArray.length = 0;
 
@@ -1408,7 +1417,8 @@ require([
     }
 
     function clearx() {
-
+		
+    	domAttr.set(tools, "class" ,"clear");
         map.removeAllLayers();
         map.addLayer(basemap);
         map.addLayer(parcelInfoLayer);
@@ -1597,6 +1607,7 @@ require([
     }
 
     function bufferMode() {
+    	
         if (draw) {
             draw = true;
             drawMode();
@@ -1606,15 +1617,18 @@ require([
         if (!buff) {
             buff = true;
             domAttr.set("bufferMode", "class", "bufferModeOn");
+            domAttr.set(tools, "class" ,"bufferActive");
             domAttr.set("buffer-params", "style", "visibility: visible");
             map.infoWindow.hide();
         } else if (buff) {
             buff = false;
             domAttr.set("bufferMode", "class", "bufferModeOff");
+            domAttr.set(tools, "class" ,"clear");
             // domAttr.set("buffer-params", "style", "visibility: hidden");
         } else if (buff == null) {
             buff = true;
             domAttr.set("bufferMode", "class", "bufferModeOn");
+            domAttr.set(tools, "class" ,"bufferActive");
             // domAttr.set("buffer-params", "style", "visibility: visible");
             map.infoWindow.hide();
 
@@ -1624,6 +1638,7 @@ require([
 
     function drawMode() {
 
+    	
         //measurement.show();
         if (buff) {
             buff = true;
@@ -1633,6 +1648,7 @@ require([
         if (!draw) {
             draw = true;
             domAttr.set("draw", "class", "drawOn");
+            domAttr.set(tools, "class" ,"drawActive");
             // domAttr.set("measurementDiv", "style", "visibility: visible !important;;");
 
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
@@ -1640,12 +1656,14 @@ require([
         } else if (draw) {
             draw = false;
             domAttr.set("draw", "class", "drawOff");
+            domAttr.set(tools, "class" ,"clear");
             //  domAttr.set("measurementDiv", "style", "visibility: hidden !important;");
 
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;visibility: hidden;");
         } else if (draw == null) {
             draw = true;
             domAttr.set("draw", "class", "drawOn");
+            domAttr.set(tools, "class" ,"drawActive");
             //  domAttr.set("measurementDiv", "style", "visibility: visible !important;");
 
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
@@ -1707,6 +1725,7 @@ require([
                 change = true;
 
             });
+            
 
         }
     }

@@ -352,6 +352,11 @@ color:#FFF;
 position:initial!important;
 }
 
+
+.calculating #map_container, body.calculating {
+	cursor: progress !important;
+}
+
 #basemapGallery {
 background:rgba(255,255,255,0.8);
 }
@@ -1040,7 +1045,7 @@ font-size: 16px;
 }
 #gallery span.dijitTitlePaneTextNode:hover {
 	color: #fffd4d;
-	text-shadow: 1px 1px #ffffff;
+	
 }
 
 
@@ -1057,7 +1062,7 @@ font-size: 16px;
 }
 #print_button:hover, #print_button a:hover {
 	color: #fffd4d;
-	text-shadow: 1px 1px #ffffff;
+	
 }
 
 
@@ -1092,7 +1097,7 @@ cursor:pointer;
 
 #tools > a:hover {
 	color: #fffd4d;
-	text-shadow: 1px 1px #ffffff;
+	
 }
 
 #selectionTools.hide{
@@ -1161,6 +1166,9 @@ padding-left: 10px;
 	color: white;
 }
 
+.zoomActive #zoom {
+	background: url("images/icons/rbzoomhover.png") no-repeat 0 0;
+}
 
 #zoom {
 	background: url("images/icons/rbzoom.png") no-repeat 0 0;
@@ -1170,6 +1178,10 @@ width: 30px;
 
 #zoom:hover {
 	background: url("images/icons/rbzoomhover.png") no-repeat 0 0;
+}
+
+.panActive #pan {
+	background: url("images/icons/panhover.png") no-repeat 0 0;
 }
 
 #pan {
@@ -1201,6 +1213,9 @@ width: 30px;
 background: url("images/icons/selecthover.png") no-repeat 0 0;
 }
 
+.selectActive #selection {
+	background: url("images/icons/selecthover.png") no-repeat 0 0;
+}
 
 #helpButton {
 	/*
