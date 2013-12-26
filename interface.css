@@ -72,6 +72,18 @@ padding:0 0 10px;
 background-color:#ADD8E6!important;
 }
 
+#ownerParcelSwitch:hover, #addressSwitch:hover, #roadSwitch:hover {
+	background-color: #feff00 !important;
+}
+
+#ownerParcelSwitch.selected:hover, #addressSwitch.selected:hover, #roadSwitch.selected:hover {
+	background-color: #00FF29 !important;
+}
+
+.search_button:hover{
+	background-color: #feff00 !important;
+}
+
 .search_wrapper {
 -webkit-border-radius:5px;
 background:rgba(255,255,255,1);
@@ -227,7 +239,7 @@ position:relative;
 top:10px;
 margin-left:auto;
 margin-right:auto;
-width:604px;
+width:615px;
 /*
 float:left;
 margin-bottom:10px;
@@ -306,6 +318,11 @@ bottom: 15px;
 z-index: 30;
 
 background: url("images/pueblo-logo.png") no-repeat 0 0 !important;
+}
+
+
+.calculating #pclogo {
+	background: url("images/earth.gif") no-repeat 0 0 !important;
 }
 
 .rewrite div#gallery .dijitTitlePaneTitle {

@@ -234,11 +234,13 @@ require([
     //Indicate map loading
     map.on("update-start", function () {
         //  domAttr.set("gallery", "class", "processing");
+        domAttr.set("body", "class", "claro buttonMode calculating");
 
     });
 
     map.on("update-end", function () {
         domAttr.set("gallery", "class", "dormant");
+        domAttr.set("body", "class", "claro buttonMode");
 
     });
 
@@ -770,7 +772,7 @@ require([
             // map.addLayer(road);
         }
             
-
+			domAttr.set("body", "class", "claro buttonMode");
             domAttr.set("bufferMode", "class", "bufferModeOn");
         });
 
@@ -880,11 +882,13 @@ require([
 
         printer.on("print-start", function () {
             domAttr.set("print_button", "class", "processing");
+            domAttr.set("body", "class", "claro buttonMode calculating");
         });
 
         printer.on("print-complete", function () {
 
             domAttr.set("print_button", "class", "dormant");
+            domAttr.set("body", "class", "claro buttonMode");
 
         });
 
@@ -1173,10 +1177,23 @@ require([
         domAttr.set("addressSwitch", "class", "deselected");
         domAttr.set("roadSwitch", "class", "selected");
     }
-
+	
+	
+	var searchTimeout = false;
+	
     function startSearch() {
+    	searchTimeout = false;
         domAttr.set("locate", "class", "processing");
-     //  domAttr.set("body", "class", "claro buttonMode calculating");
+       domAttr.set("body", "class", "claro buttonMode calculating");
+       setTimeout(function(){
+       		if(!searchTimeout){
+       			domAttr.set("locate", "class", "dormant");
+       			domAttr.set("body", "class", "claro buttonMode");
+       			alert("Search returned 0 results");
+       			
+       		}
+       	
+       },10000);
         try {
             resultsArray.length = 0;
 
@@ -1320,7 +1337,9 @@ require([
         geom.spatialReference.wkid = 2233;
 		//console.log(geom);
         map.centerAndZoom(geom, 8);
+        
         domAttr.set("locate", "class", "dormant");
+        domAttr.set("body", "class", "claro buttonMode");
     }
     //END Location Dijit
 
@@ -1360,6 +1379,7 @@ require([
 
     function bufferIt() {
         domAttr.set("bufferMode", "class", "bufferModeOn processing");
+        domAttr.set("body", "class", "claro buttonMode calculating");
         try {
 
             resultsArray.length = 0;
@@ -1386,6 +1406,7 @@ require([
             doBuffer3(infoArray2[0].geometry);
         } else {
             domAttr.set("bufferMode", "class", "bufferModeOn");
+            domAttr.set("body", "class", "claro buttonMode");
             alert("No parcel selected!");
         }
         try {
@@ -1607,7 +1628,8 @@ require([
     }
 
     function bufferMode() {
-    	
+    	rubberBandZoomMode(false);
+    	navToolbar.activate(Navigation.PAN);
         if (draw) {
             draw = true;
             drawMode();
@@ -1637,8 +1659,8 @@ require([
     }
 
     function drawMode() {
-
-    	
+		rubberBandZoomMode(false);
+    	navToolbar.activate(Navigation.PAN);
         //measurement.show();
         if (buff) {
             buff = true;
@@ -1720,7 +1742,9 @@ require([
                     displayResults(selection);
                 });
                 // console.log(center);
+                
                 domAttr.set("locate", "class", "dormant");
+                domAttr.set("body", "class", "claro buttonMode");
                 map.centerAndZoom(center, 2);
                 change = true;
 
@@ -1941,7 +1965,7 @@ function zoomToPoint(evt){
         }, 1000);
 
         //connect.subscribe("")
-
+		searchTimeout = true;
     }
 
     function displayGeoCoderResults(infoArray5) {
@@ -2002,7 +2026,7 @@ function zoomToPoint(evt){
         }, 1000);
 
         //connect.subscribe("")
-
+		searchTimeout = true;
     }
 
     //detect when popup selection is changed
@@ -2047,7 +2071,9 @@ function zoomToPoint(evt){
 
             map.graphics.add(graphic2);
             map.setExtent(graphic2.geometry.getExtent());
+            
             domAttr.set("locate", "class", "dormant");
+            domAttr.set("body", "class", "claro buttonMode");
         });
 
     }
