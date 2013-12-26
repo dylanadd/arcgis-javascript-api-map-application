@@ -352,6 +352,15 @@
      	
 		domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
 		
+		
+		if(vs.w <= 1225){
+			domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");
+			
+		} else {
+			domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper");
+			
+		}
+		
       }
       	
      on(locateButton, "click", function(){
