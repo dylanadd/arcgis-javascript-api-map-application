@@ -52,6 +52,10 @@ foreach($temp->export as $result){
 	$y = array($result->$i->parcelNum, $result->$i->Fips, $result->$i->Owner, $result->$i->OwnerOverflow, $result->$i->OwnerStreetAddress, $result->$i->OwnerCity, $result->$i->OwnerState, $result->$i->OwnerZip );
 	} else if(isset($result->$i->FullAddress)){
 		$y = array($result->$i->AddressNumber, $result->$i->FacilityName, $result->$i->FullAddress);
+	} else if(isset($result->$i->Score)){
+		$y = array($result->$i->Address, $result->$i->Score);
+	} else if(isset($result->$i->AltName)){
+		$y = array($result->$i->AltName, $result->$i->City);
 	}
 	
 		

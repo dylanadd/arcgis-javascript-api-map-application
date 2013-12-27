@@ -1566,9 +1566,52 @@ require([
     			//If row is a geocoded address
     		} else if (resultsArray[i].geometry == undefined && resultsArray[i].address != undefined){
     			console.log("address point " + i);
+    			
+    			exportArray = {
+          	         "Address": resultsArray[i].address,
+          	         "Score": resultsArray[i].score.toString()        	         
+                 };
+                 
+                 var str = dom.byId("filler").innerHTML;
+
+       				 if (str.search("}") > -1) {
+          				  tf = true;
+       				}
+
+      				  if (tf) {
+          				  dom.byId("filler").innerHTML += ',{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+       				 } else {
+           				 dom.byId("filler").innerHTML += '{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+      				  }
+        			 console.log(dom.byId("filler").innerHTML);
+       				 console.log(tf);
+       				 count++;
+    			
     			//If row is a road segment
     		} else if (resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "polyline"){
     			console.log("polyline " + i);
+    			
+    			exportArray = {
+          	         "AltName": resultsArray[i].attributes.ALTNAME1,
+          	         "City": resultsArray[i].attributes.CITY
+          	        // "RdLabel": resultsArray[i].attributes.RD_LABEL        	         
+                 };
+                 
+                 var str = dom.byId("filler").innerHTML;
+
+       				 if (str.search("}") > -1) {
+          				  tf = true;
+       				}
+
+      				  if (tf) {
+          				  dom.byId("filler").innerHTML += ',{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+       				 } else {
+           				 dom.byId("filler").innerHTML += '{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+      				  }
+        			 console.log(dom.byId("filler").innerHTML);
+       				 console.log(tf);
+       				 count++;
+    			
     		} 
     		
     		
