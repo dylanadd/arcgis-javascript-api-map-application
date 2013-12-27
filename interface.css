@@ -1118,11 +1118,24 @@ text-align: right;
 margin-right: 13px;
 font-family: verdana,helvetica;
 cursor:pointer;
+float:right;
 }
 #close:hover{
-	color:red;
+	color:yellow;
 }
 
+
+#exportResults {
+color: white;
+font-family: verdana, helvetica;
+float: left;
+padding-left: 13px;	
+cursor: pointer;
+}
+
+#exportResults:hover{
+	color:yellow;
+}
 
 #tools > a {
 	text-shadow: 2px 1px #171212;

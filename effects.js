@@ -22,7 +22,7 @@
         var outputJson = dom.byId("filler");
         var helpButton = dom.byId("helpButton");
         var legendButton = dom.byId("legendToggle");
-        var exportButton = dom.byId("expButton");
+        var exportButton = dom.byId("exportResults");
        var vs = win.getBox();
         var zoomToggle = dom.byId("zoom");
        var textModeHeight = 50;
@@ -85,7 +85,7 @@
        on(legendButton,"click",function(){alert("Feature comming soon.")});
         
          on(exportButton, "click", function(){
-       
+       	setTimeout(function(){
         	var zz = outputJson.innerHTML;
         	var x = dom.byId("filler").innerHTML;
         	//zz = json.stringify(zz);
@@ -119,7 +119,7 @@
    				 }); 
    				 dom.byId("filler").innerHTML = x;
    				 
-   				
+   				},1000);
         });
         
         var zoomTF = false;

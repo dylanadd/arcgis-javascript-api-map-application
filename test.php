@@ -45,11 +45,15 @@ header("Location: file.csv");
 $i=0;
 $fp = fopen('temp/' . $filename, 'w');
 $z = array('Parcel Number','FIPS','Owner Name', 'Owner Overflow', 'Owner Street','Owner City','Owner State', 'Owner Zip');
-fputcsv($fp,$z);
+//fputcsv($fp,$z);
 $tf = false;
 foreach($temp->export as $result){
+	if(isset($result->$i->parcelNum)){
 	$y = array($result->$i->parcelNum, $result->$i->Fips, $result->$i->Owner, $result->$i->OwnerOverflow, $result->$i->OwnerStreetAddress, $result->$i->OwnerCity, $result->$i->OwnerState, $result->$i->OwnerZip );
-		
+	} else if(isset($result->$i->FullAddress)){
+		$y = array($result->$i->AddressNumber, $result->$i->FacilityName, $result->$i->FullAddress);
+	}
+	
 		
 	$tf = (fputcsv($fp,$y));
 	//print_r($result->$i->parcelNum);

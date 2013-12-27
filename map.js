@@ -305,11 +305,22 @@ require([
         }
 
     });
-
+	
+	var selectionTF = false;
     dojo.connect(dom.byId("selection"), "click", function () {
+    	if(!selectionTF){
     	domAttr.set(tools, "class" ,"selectActive");
     	rubberBandZoomMode(false);
         startDrawSelect();
+        selectionTF = true;
+      } else {
+      	domAttr.set(tools, "class" ,"panActive");
+      	selectionTF = false;
+      	drawHelper = false;
+      	draw = false;
+      	drawx.deactivate();
+      	mDraw.deactivate();
+      }
     });
 
     dojo.connect(dom.byId("selectHelp"), "click", function () {
@@ -317,7 +328,9 @@ require([
     });
 
 	 
-
+	dojo.connect(dom.byId("exportResults"), "click", function () {
+		exportSearchResults();
+    });
 
     dojo.connect(dom.byId("textPrint"), "click", function () {
 
@@ -1195,12 +1208,12 @@ require([
        	
        },10000);
         try {
-            resultsArray.length = 0;
+           // resultsArray.length = 0; //Testing to see how array behaves not being cleared after search.
 
         } catch (e) {}
         try {
 
-            dom.byId("resultsContent").innerHTML = "";
+           // dom.byId("resultsContent").innerHTML = ""; //Testing to see how array behaves not being cleared after search.
         } catch (e) {}
         //	clearx();
         map.graphics.clear();
@@ -1382,7 +1395,7 @@ require([
         domAttr.set("body", "class", "claro buttonMode calculating");
         try {
 
-            resultsArray.length = 0;
+          //  resultsArray.length = 0;  //testing behavior after if it doesnt clear
 
         } catch (e) {}
         try {
@@ -1481,12 +1494,88 @@ require([
 		 try {
             road.clearSelection();
         } catch (e) {}
-
+		 try {
+            roads.clearSelection();
+        } catch (e) {}
         try {
             popup.clearFeatures();
         } catch (e) {}
 
     }
+    
+    
+    function exportSearchResults(){
+    	console.log(resultsArray);
+    	
+    	for(i=0;i<resultsArray.length;i++){
+    		
+    		console.log(resultsArray[i]);
+    		//If row is a parcel
+    		if(resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "polygon"){
+    			console.log("polygon " + i);
+    			 exportArray = {
+          	         "parcelNum": resultsArray[i].attributes.PAR_NUM.toString(),
+        	         "Fips": resultsArray[i].attributes.Fips.toString(),
+        	         "Owner": resultsArray[i].attributes.Owner,
+ 	                 "OwnerOverflow": resultsArray[i].attributes.OwnerOverflow,
+ 	                 "OwnerStreetAddress": resultsArray[i].attributes.OwnerStreetAddress,
+  	                 "OwnerCity": resultsArray[i].attributes.OwnerCity,
+                     "OwnerState": resultsArray[i].attributes.OwnerState,
+                     "OwnerZip": resultsArray[i].attributes.OwnerZip.toString()
+                 };
+                 
+                 var str = dom.byId("filler").innerHTML;
+
+       				 if (str.search("}") > -1) {
+          				  tf = true;
+       				}
+
+      				  if (tf) {
+          				  dom.byId("filler").innerHTML += ',{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+       				 } else {
+           				 dom.byId("filler").innerHTML += '{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+      				  }
+        			 console.log(dom.byId("filler").innerHTML);
+       				 console.log(tf);
+       				 count++;
+        	//If row is an address point
+    		} else if (resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "point"){
+    			console.log("point " + i);
+    			
+    			exportArray = {
+          	         "AddressNumber": resultsArray[i].attributes.ADDRNUM.toString(),
+        	         "FacilityName": resultsArray[i].attributes.FACILITYNAME,
+        	         "FullAddress": resultsArray[i].attributes.FULLADDR
+                 };
+                 
+                 var str = dom.byId("filler").innerHTML;
+
+       				 if (str.search("}") > -1) {
+          				  tf = true;
+       				}
+
+      				  if (tf) {
+          				  dom.byId("filler").innerHTML += ',{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+       				 } else {
+           				 dom.byId("filler").innerHTML += '{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+      				  }
+        			 console.log(dom.byId("filler").innerHTML);
+       				 console.log(tf);
+       				 count++;
+    			
+    			//If row is a geocoded address
+    		} else if (resultsArray[i].geometry == undefined && resultsArray[i].address != undefined){
+    			console.log("address point " + i);
+    			//If row is a road segment
+    		} else if (resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "polyline"){
+    			console.log("polyline " + i);
+    		} 
+    		
+    		
+    	}
+    }
+    
+    
     var stripe = null;
     var exportArray = new Array();
     var tf = false;
@@ -1815,7 +1904,7 @@ function zoomToPoint(evt){
             stripe2 = "even";
         }
         
-        
+        var l = resultsArray.length;
         
         
         if(infoMode == "road"){
@@ -1826,11 +1915,11 @@ function zoomToPoint(evt){
                     "</tr></table>";
 
                 var temp = domConstruct.create("div", {
-                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Road Segment" + "</a>",
+                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >View Road Segment" + "</a>",
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "resultsContent");
-                var zz = dom.byId("test" + i);
+                var zz = dom.byId("test" + (i + l));
 
                 //event handlers for search results
                 dojo.connect(zz, "onclick", function (node) {
@@ -1868,11 +1957,11 @@ function zoomToPoint(evt){
                     "</tr></table>";
 
                 var temp = domConstruct.create("div", {
-                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Address Point" + "</a>",
+                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >View Address Point" + "</a>",
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "resultsContent");
-                var zz = dom.byId("test" + i);
+                var zz = dom.byId("test" + (i + l));
 
                 //event handlers for search results
                 dojo.connect(zz, "onclick", function (node) {
@@ -1921,11 +2010,11 @@ function zoomToPoint(evt){
                     "</tr></table>";
 
                 var temp = domConstruct.create("div", {
-                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Parcel" + "</a>",
+                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >View Parcel" + "</a>",
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "resultsContent");
-                var zz = dom.byId("test" + i);
+                var zz = dom.byId("test" + (i + l));
 
                 //event handlers for search results
                 dojo.connect(zz, "onclick", function (node) {
@@ -1970,7 +2059,7 @@ function zoomToPoint(evt){
 
     function displayGeoCoderResults(infoArray5) {
         console.log(infoArray5);
-
+		var l = resultsArray.length;
         if (stripe2 == null) {
             stripe2 = "even";
         }
@@ -1984,11 +2073,11 @@ function zoomToPoint(evt){
                 "</table>";
 
             var temp = domConstruct.create("div", {
-                "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Parcel" + "</a>",
+                "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >View Parcel" + "</a>",
 
                 "class": stripe2 + " selection" + i
             }, "resultsContent");
-            var zz = dom.byId("test" + i);
+            var zz = dom.byId("test" + (i + l));
 
             //event handlers for search results
             dojo.connect(zz, "onclick", function (node) {
@@ -2048,7 +2137,7 @@ function zoomToPoint(evt){
 
     // combine all results' geometries into an array and create a single geometry to display on the map
     function makeGeomArray(selection) {
-
+		searchTimeout = true;
         var tempArray = new Array();
 
         for (i = 0; i < selection.length; i++) {
@@ -2088,7 +2177,8 @@ function zoomToPoint(evt){
         var deferred = roads.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
 
             selectionX = selection;
-            //  console.log(selection);
+              console.log(selection);
+              displayResults(selection, "road");
             var extHandler = map.on("extent-change", function () {
                 extHandler.remove();
                 //zoom to the center then display the popup 
