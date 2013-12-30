@@ -1089,7 +1089,7 @@ require([
 
     //when users click on the map select the parcel using the map point and update the url parameter
     map.on("click", function (e) {
-
+		
         console.log(e.mapPoint);
 
         if (draw == false || draw == null) {
@@ -1100,7 +1100,10 @@ require([
             //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
                 console.debug(selection);
-
+				try{
+					map.infoWindow.setFeatures(selection);
+					infoArray = selection[0];
+				} catch(e){}
                 //update the url param if a parcel was located
                 if (selection.length > 0) {
                     var parcelid = selection[0].attributes["PAR_NUM"];
@@ -1110,17 +1113,18 @@ require([
                     if (typeof history.pushState !== "undefined") {
                         //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
                         infoArray = selection[0];
+                        console.log(infoArray);
                         infoArray2.push(selection[0]);
                     }
                 }
 
                 map.addLayer(parcels);
-
+			
             }, function (error) {
                 alert(error);
             }); //end of defferred variable declaration
-
-            map.infoWindow.setFeatures([deferred]);
+			
+           // map.infoWindow.setFeatures([deferred]);
             map.infoWindow.show(e.mapPoint);
             console.log(popup);
             //  selectedParcel = selection[0];
@@ -1238,6 +1242,7 @@ require([
         // Register a function to be called when the user clicks on
         // the above link
         on(emailLink, "click", function (evt) {
+        	console.log(infoArray);
             info();
             /* var feature = map.infoWindow.getSelectedFeature();
              var url = window.location;
@@ -1624,10 +1629,10 @@ require([
     var tf = false;
     var count = 0;
 
-    function info() {
-
+    function info() { 
+		displayResults(infoArray,"single");
         console.log(infoArray);
-
+/*
         console.log(infoArray.attributes.LevyURL);
         //infoArray.attributes.LevyURL = "x";
         // exportArray.push(infoArray.attributes);
@@ -1650,9 +1655,9 @@ require([
             stripe = "odd";
         }
 
-        domAttr.set("output", "class", "xxhide");
-        domAttr.set("output", "style", "opacity: 1;");
-        domAttr.set("toggleOutput", "class", "open");
+     //   domAttr.set("output", "class", "xxhide");
+     //   domAttr.set("output", "style", "opacity: 1;");
+      //  domAttr.set("toggleOutput", "class", "open");
         var s = "<tr class=\"" + stripe + " centerCell\">" +
             "<td class=\"parNum\">" + infoArray.attributes.PAR_NUM + "</td>" +
             "<td class=\"assessorLink\"><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray.attributes.PAR_TXT + "</a></td>" +
@@ -1684,7 +1689,7 @@ require([
         //  console.log(exportArray);
         //console.log(dojo.toJson(exportArray));
         //domAttr.set(dom.byId("exportButton"), "href", "test.php?content=" + encodeURIComponent(dojo.toJson(exportArray))); 
-
+		*/
         /*
    var xhrArgs = ({
         url:"test.php",
@@ -1941,7 +1946,7 @@ function zoomToPoint(evt){
     var resultsArray = new Array();
 
     function displayResults(infoArray5, infoMode) {
-        //console.log(infoMode);
+        console.log(infoArray5);
 
         if (stripe2 == null) {
             stripe2 = "even";
@@ -2040,6 +2045,7 @@ function zoomToPoint(evt){
         if (infoMode == "parcel" || infoMode == undefined) {
             for (i = 0; i < infoArray5.length; i++) {
                 resultsArray.push(infoArray5[i]);
+                console.log(resultsArray);
                 var s = "<table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
                     "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5[i].attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></span></td>" + "</tr>" +
@@ -2083,10 +2089,67 @@ function zoomToPoint(evt){
 
                 if (stripe2 == "odd") {
                     stripe2 = "even";
-                } else if (stripe2 == "even")
+                } else if (stripe2 == "even"){
                     stripe2 = "odd";
+                   }
             }
         }
+        
+        if(infoMode == "single"){
+        	
+        	 resultsArray.push(infoArray5);
+                console.log(resultsArray);
+                var s = "<table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5.attributes.PAR_TXT + "</a></span></td>" + "</tr>" +
+                    "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5.attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerOverflow + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerZip + "</span></td>" +
+                    "</tr></table>";
+
+                var temp = domConstruct.create("div", {
+                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + (l) + "\" >View Parcel" + "</a>",
+                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "resultsContent");
+                var zz = dom.byId("test" + (l));
+
+                //event handlers for search results
+                dojo.connect(zz, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n);
+                    console.log(resultsArray[n]);
+                    var t = resultsArray[n];
+                    console.log(t);
+                    try {
+                        //  safeClear();
+
+                        selectParcel(resultsArray[n].attributes.PAR_NUM);
+                        map.infoWindow.show(resultsArray[n].geometry.getPoint(0, 0));
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+
+                if (stripe2 == "odd") {
+                    stripe2 = "even";
+                } else if (stripe2 == "even"){
+                    stripe2 = "odd";
+                   }
+        	
+        	
+        }
+        
+        
         setTimeout(function () {
 
             on.emit(dom.byId("openClose"), "click", {
