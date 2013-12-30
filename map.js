@@ -639,7 +639,8 @@ require([
     //Buffer Function
     //	 map.on("load", initToolbar);
 
-    gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+  //  gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+   gsvc = new GeometryService("http://maps.co.pueblo.co.us/outside/rest/services/Utilities/Geometry/GeometryServer");
     //add proxy functions for all modules
     esriConfig.defaults.io.proxyUrl = "proxy.php";
     esriConfig.defaults.io.alwaysUseProxy = false;
@@ -808,8 +809,8 @@ require([
 
     //Buffer Function
     // map.on("load", initToolbar);
-
-    gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+	gsvc = new GeometryService("http://maps.co.pueblo.co.us/outside/rest/services/Utilities/Geometry/GeometryServer");
+   // gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
     //add proxy functions for all modules
     esriConfig.defaults.io.proxyUrl = "proxy.php";
     esriConfig.defaults.io.alwaysUseProxy = false;
@@ -851,8 +852,8 @@ require([
     map.addLayer(parcelInfoLayer);
 
     //BEGIN functions for print dijit
-    var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
-
+    //var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
+	var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
     // get print templates from the export web map task
     var printInfo = esriRequest({
         "url": printUrl,
@@ -968,6 +969,7 @@ require([
         //	alert("test");
         //basemapGallery.startup();
        // map.removeAllLayers();
+       
         map.removeLayer(parcelInfoLayer);
         map.addLayer(parcelInfoLayer);
         if(legendStartup){
@@ -991,8 +993,8 @@ require([
     //END scalebar Dijit
 
     //BEGIN measurement Dijit
-
-    esriConfig.defaults.geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo.co.us/outside/rest/services/Utilities/Geometry/GeometryServer");
+   // esriConfig.defaults.geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
 
     var measurement = new esri.dijit.Measurement({
         map: map
@@ -1478,7 +1480,64 @@ require([
 		
     	domAttr.set(tools, "class" ,"clear");
         map.removeAllLayers();
-        map.addLayer(basemap);
+      //  map.addLayer(basemap);
+        
+       var  n = basemapGallery.getSelected().id;
+  		console.log(n);
+  		var bmap;
+  		switch(n){
+  			
+  	//		var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
+    //  var basemap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
+    // var basemap = new ArcGISImageServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
+  			case "basemap_0":
+  			bmap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_1":
+  			bmap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_2":
+  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/2005_1meter_imagery/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_3":
+  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/2004_1ft_Imagery/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_4":
+  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/2001_6in_imagery/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_5":
+  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/1991_Imagery/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_6":
+  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_7":
+  			bmap = new ArcGISImageServiceLayer("http://sunshine/outside/rest/services/aerial_photos/ortho2008_4inch/ImageServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_8":
+  			
+  			break;
+  			
+  			default:
+  			map.addLayer(basemap);
+  		}
+        
         map.addLayer(parcelInfoLayer);
         stripe = null;
         empty();
