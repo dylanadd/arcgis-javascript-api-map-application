@@ -218,10 +218,10 @@ require([
     map.on("load", function () {
         //	map.setZoom(2);
         map.setZoom(1);
-        on.emit(dom.byId("toggleOutput"), "click", {
-            bubbles: true,
-            cancelable: true
-        });
+        //on.emit(dom.byId("toggleOutput"), "click", {
+          //  bubbles: true,
+           // cancelable: true
+       // });
         domAttr.remove(dom.byId("measurementDiv"), "style");
 		rubberBandZoomMode(true);
        // navToolbar.activate(Navigation.ZOOM_IN);

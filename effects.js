@@ -147,29 +147,7 @@
         
        on(fadeButton, "click", function(evt){
     	
-    	// console.log(domStyle.getComputedStyle(dom.byId("measurementDiv")));
-        
-        if(dom.byId("outTable").innerHTML == "") {
-        
-        } else {
-        	if(fade || fade == null) {
-        	    fx.fadeOut({ node: fadeTarget, duration: 225 }).play();
-        	    fade = false;
-        	   setTimeout(function(){
-        	   	domAttr.set(fadeTarget, "class", "hide");
-        	   	domAttr.set(fadeButton, "class", "closed");
-        	   	}, 225);
-            } else {
-            	
-            		domAttr.set(fadeTarget, "class", "xxhide");
-            		fx.fadeIn({ node: fadeTarget, duration: 225 }).play();
-            		domAttr.set(fadeButton, "class", "open");
-            		fade = true;
-            	 	
-            
-            }
-            }
-            
+    	on.emit(viewButton, "click", {bubbles: true, cancelable: true});
             
         });
         
