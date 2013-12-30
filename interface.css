@@ -1300,3 +1300,14 @@ width: 30px;
 #toggleOutput:hover {
 	background: url("images/icons/favoriteshover.png") no-repeat 0 0;
 }
+
+#legendDiv {
+position: absolute !important;
+right: 0px;
+top: 43px;
+z-index: 500;
+height: 300px;
+overflow: auto;
+background-color: white;
+width: 300px;
+}

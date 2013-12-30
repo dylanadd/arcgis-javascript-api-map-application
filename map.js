@@ -10,9 +10,11 @@ var buff = null;
 var navToolbar;
 var overviewMapDijit;
 var mDraw;
+var legendDijit;
+var legendStartup = false;
 // var gsvc, tb;
 require([
-    "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer",
+    "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
     "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query",
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
     "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate",
@@ -29,7 +31,7 @@ require([
 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
 ], function (
-    Map, FeatureLayer, OverviewMap, ArcGISImageServiceLayer, ArcGISDynamicMapServiceLayer,
+    Map, FeatureLayer, OverviewMap, ArcGISImageServiceLayer, ArcGISDynamicMapServiceLayer, Legend,
     ArcGISTiledMapServiceLayer, Query,
     SimpleFillSymbol, SimpleLineSymbol,
     Graphic, Popup, PopupTemplate,
@@ -40,7 +42,7 @@ require([
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
     Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
     domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, Navigation, QueryTask,
-    Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile
+    Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile 
 
 ) {
 
@@ -226,7 +228,11 @@ require([
 		rubberBandZoomMode(true);
        // navToolbar.activate(Navigation.ZOOM_IN);
 		console.dir(measurement);
-		
+		legendDijit = new Legend({
+    map: map
+   
+  },"legendDiv");
+  console.dir(legendDijit);
     });
 
 
@@ -339,7 +345,14 @@ require([
     dojo.connect(dom.byId("textShowSelection"), "click", function () {
 
     });
-
+	dojo.connect(dom.byId("legendToggle"), "click", function(){
+		if(!legendStartup){
+		legendDijit.startup();
+		legendStartup = true;
+		}
+		
+	});
+	
     dojo.connect(dom.byId("textLegend"), "click", function () {
         on.emit(dom.byId("legendToggle"), "click", {
             bubbles: true,
@@ -954,9 +967,12 @@ require([
     basemapGallery.on("selection-change", function () {
         //	alert("test");
         //basemapGallery.startup();
+       // map.removeAllLayers();
         map.removeLayer(parcelInfoLayer);
         map.addLayer(parcelInfoLayer);
-
+        if(legendStartup){
+		legendDijit.refresh();
+		}
         //    console.dir(basemapGallery.getSelected());
     });
 
@@ -1060,6 +1076,9 @@ require([
     });
 
     //BEGIN Legend Dijit
+
+
+	
 
     /*
          

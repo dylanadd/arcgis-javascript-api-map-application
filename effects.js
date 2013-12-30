@@ -82,7 +82,18 @@
        
        
        on(helpButton,"click",function(){alert("Feature comming soon.")});
-       on(legendButton,"click",function(){alert("Feature comming soon.")});
+       
+       var showLegend = false;
+       on(legendButton,"click",function(){
+       	if(!showLegend){
+       	domAttr.set(dom.byId("legendWrapper"), "class", "abc");
+       	showLegend = true;
+       	} else {
+       		domAttr.set(dom.byId("legendWrapper"), "class", "hide");
+       		showLegend = false;
+       	}
+       	
+       	});
         
          on(exportButton, "click", function(){
        	setTimeout(function(){
