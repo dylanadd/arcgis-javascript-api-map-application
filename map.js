@@ -1477,13 +1477,14 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     }
 
     function clearx() {
-		
+		var  n;
     	domAttr.set(tools, "class" ,"clear");
         map.removeAllLayers();
       //  map.addLayer(basemap);
-        
-       var  n = basemapGallery.getSelected().id;
+        try{
+         n = basemapGallery.getSelected().id;
   		console.log(n);
+  		} catch(e){}
   		var bmap;
   		switch(n){
   			

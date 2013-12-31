@@ -1,4 +1,4 @@
-  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window", "dojo/_base/xhr", "dojo/request/iframe","dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, domAttr, query, domGeom, coreFx, ready, domStyle, win, xhr, iframe) {
+  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dnd/Moveable","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window", "dojo/_base/xhr", "dojo/request/iframe","dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, Moveable, domAttr, query, domGeom, coreFx, ready, domStyle, win, xhr, iframe) {
         var fadeButton = dom.byId("toggleOutput"),
             fadeTarget = dom.byId("output");
  		var clearButton = dom.byId("clear");
@@ -34,7 +34,30 @@
         var pan = dom.byId("pan");
         var selectButton = dom.byId("selection");
         var selectHelp = dom.byId("selectHelp");
+        var dnd = new Moveable(dom.byId("searchResults"));        
         
+        
+       dojo.connect(dnd, "onMove", function(e){
+       	//console.log(e);
+       	vs = win.getBox();
+       //	console.log(vs);
+       	var box = domGeom.position(searchResults);
+     //  	console.log(box);
+       	
+       	if((vs.h - box.y) <= 175){
+       		//console.log("snap bottom");
+       		domAttr.set(dom.byId("moveHelper"),"class","searchSnapBottom");
+       		domAttr.set(dom.byId("resultsContent"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
+       		console.log(vs.h - box.y);
+       	} else {
+       		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapLeft");
+       		domAttr.set(dom.byId("resultsContent"),"style",  "");
+       	}
+       	
+       	
+       	
+       });
+       
         
         var selectTF = false;
         on(selectButton,"click",function(){
@@ -236,7 +259,7 @@
   
 	ready(function(){
 
-		
+		console.dir(dnd);
 		domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
 	
 	

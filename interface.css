@@ -734,11 +734,16 @@ display:none;
 	height:100%;
 	float:left;
 }
+
+.searchSnapLeft #resultsContent {
+	width: 91%;
+}
+
 #resultsContent{
 
 	background-color: rgb(255,255,255);
 	height: 97%;
-	width: 91%;
+	
 	margin-top: 0px;
 	margin-left: 15px;
 	margin-right: 15px;
@@ -1310,4 +1315,21 @@ height: 300px;
 overflow: auto;
 background-color: white;
 width: 300px;
+}
+.searchSnapBottom #searchResults{
+	left:0px !important;
+	height: 175px !important;
+}
+.searchSnapLeft #searchResults{
+	width:322px;
+}
+.searchSnapBottom #searchResults .resultsWindow{
+	width:100%;
+	margin-left: 0px;
+}
+
+.searchSnapBottom #searchResults #resultsContent{
+
+	margin-top:19px;
+	height: 150px;
 }
