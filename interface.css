@@ -87,7 +87,7 @@ background-color:#ADD8E6!important;
 
 .search_wrapper {
 -webkit-border-radius:5px;
-background:rgba(255,255,255,1);
+background:rgb(255,255,255);
 border:2px solid #666;
 border-radius:5px;
 height:29px;
@@ -413,7 +413,7 @@ position:absolute;
 }
 
 table[id^='dijit_Menu_'] {
-background:rgba(255,255,255,1);
+background:rgb(255,255,255);
 font-family:verdana,helvetica;
 font-size:16px;
 line-height:25px;
@@ -575,11 +575,11 @@ max-height: 237px;
 }
 
 .even{
-	background-color: rgba(255,255,255,0.9);
+	background-color: rgb(255,255,255);
 }
 
 .odd{
-	background-color: rgba(255,243,197,0.9);
+	background-color: rgb(255,243,197);
 	
 }
 
@@ -736,7 +736,7 @@ display:none;
 }
 #resultsContent{
 
-	background-color: rgba(255,255,255,0.85);
+	background-color: rgb(255,255,255);
 	height: 97%;
 	width: 91%;
 	margin-top: 0px;
@@ -752,7 +752,7 @@ display:none;
 }
 
 #resultsContent div:hover{
-	background-color:rgba(252,185,241,0.47);
+	background-color:rgb(252,185,241);
 	
 }
 #resultsContent table{
@@ -937,7 +937,7 @@ font-size: 14px;
 }
 #textButtonConsole {
 	padding-top:10px;
-	background-color: rgba(0,0,0,0.45);
+	background-color: rgb(0,0,0);
 	min-height: 35px;
 	border: 2px solid #666;
 	border-radius:0px 0px 5px 5px;
