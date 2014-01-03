@@ -1426,7 +1426,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         } catch (e) {}
         try {
 
-            dom.byId("resultsContent").innerHTML = "";
+            dom.byId("tableContent").innerHTML = "";
         } catch (e) {}
 
         if (infoArray2.length > 1) {
@@ -2026,7 +2026,7 @@ function zoomToPoint(evt){
 
     function displayResults(infoArray5, infoMode) {
         console.log(infoArray5);
-
+		domAttr.set(dom.byId("searchResults"),"class","showx");
         if (stripe2 == null) {
             stripe2 = "even";
         }
@@ -2085,7 +2085,7 @@ function zoomToPoint(evt){
                     "<td class=\"parNum\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.FULLADDR + "</span></td>" + 
                     "</tr></table></td>";
 				
-				var sWide =  "<td class=\"parNum sWide\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.FULLADDR + "</span></td>"
+				var sWide =  "<td class=\"addrNum sWide\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.FULLADDR + "</span></td>"
 				
                 var temp = domConstruct.create("tr", {
                     "innerHTML": sWide + s + "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >View Address Point" + "</a>",
@@ -2321,11 +2321,11 @@ function zoomToPoint(evt){
         
         
         setTimeout(function () {
-
-            on.emit(dom.byId("openClose"), "click", {
-                bubbles: true,
-                cancelable: true
-            });
+			
+         //   on.emit(dom.byId("openClose"), "click", {
+         //       bubbles: true,
+           //     cancelable: true
+          //  });
             //on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
         }, 1000);
 
@@ -2387,10 +2387,10 @@ function zoomToPoint(evt){
                 stripe2 = "odd";
         }
         setTimeout(function () {
-            on.emit(dom.byId("openClose"), "click", {
-                bubbles: true,
-                cancelable: true
-            });
+        //    on.emit(dom.byId("openClose"), "click", {
+        //        bubbles: true,
+        //        cancelable: true
+        //    });
             //on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
         }, 1000);
 

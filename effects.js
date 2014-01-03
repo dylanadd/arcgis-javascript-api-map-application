@@ -38,8 +38,10 @@
         var dockButton = dom.byId("dockButton");
         var scalebar;
         
+        var position = "bottom";
         var docked = true;
         var moved = false;
+        var box;
         on(dockButton,"click", function(){
         	
         	
@@ -51,7 +53,7 @@
       			 	console.log(scalebar);
       			 	vs = win.getBox();
        				console.log(vs);
-      				 	var box = domGeom.position(searchResults);
+      				 	 box = domGeom.position(searchResults);
       			 	console.log(box);
        	
       			 	if((vs.h - box.y) <= 175){
@@ -60,22 +62,26 @@
      			  		domAttr.set(dom.byId("resultsContent"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
      			  		domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
      			  		domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
+     			  		position = "bottom";
      			  		//console.log(vs.h - box.y);
      			  	} else if((vs.w - box.x) <= 375 && box.y < 150 ) {
    			    		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapRight");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
     			   		domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+    			   		position = "right";
      			  	} else if((box.x) <= 66 && box.y < 150 ) {
     			   		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapLeft");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
     			   		domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
     			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box.w + (box.x + 22) ) +"px; z-index: 30;");
+    			   		position = "left";
     			   	}else {
     			   		domAttr.set(dom.byId("moveHelper"),"class", "searchFreeFloat");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
     			   		domAttr.set(dom.byId("pclogo"), "style", "");
      			  		domAttr.set(scalebar, "style", "left: 25px;");
      			  		domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
+     			  		position = "free";
      			  	}
        	
        	
@@ -224,17 +230,25 @@
     	
     	on.emit(viewButton, "click", {bubbles: true, cancelable: true});
     	
-         if(!moved && !unmovedView){
+         if((!moved && !unmovedView)  ){
          	domAttr.set(dom.byId("pclogo"), "style", "bottom: 180px;");
          	domAttr.set(scalebar, "style", "bottom: 180px; left: 25px;");
          	unmovedView = true;
-         }   else if(!moved && unmovedView){
+         }   else if((!moved && unmovedView) || (moved && unmovedView && position == "bottom" )){
          	domAttr.set(dom.byId("pclogo"), "style", "");
          	domAttr.set(scalebar, "style", "left: 25px;");
          	unmovedView = false;
+         } else if ((moved && !unmovedView && position == "bottom")){
+         		
+     			domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
+     			domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
+     			unmovedView = true;
          }
+         
+         
+         
         });
-        
+      
         
         
         
@@ -242,11 +256,14 @@
         
         on(clearButton, "click", function(){
         	
+        	dom.byId("tableContent").innerHTML = "";
+        	
+        	/*
         	fx.fadeOut({ node: fadeTarget, duration: 225 }).play();
         	fade = false;
         		domAttr.set(fadeTarget, "class", "hide");
         	   	domAttr.set(fadeButton, "class", "closed");
-        	   	dom.byId("resultsContent").innerHTML = "";
+        	   	
         	   	
         	   	
         	if(openClose){
@@ -254,8 +271,9 @@
      		fx.fadeOut({node: slideTarget, duration: 0}).play();
      		setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 0);
      		openClose = false;
+     		
      	}   	
-        	   	
+        	  */ 	
         });
         
         var temp = true;
@@ -441,6 +459,7 @@
 		}
 		domAttr.set(dom.byId("map_zoom_slider"),"style","z-index:30;");
 		domAttr.set(dom.byId("moveHelper"), "class", "searchSnapBottom ssbInitial" );
+		domAttr.set(dom.byId("resultsContent"),"style",  "height: 150px !important;");
 		docked = true;
 		
 		if(vs.w <= 1225){
@@ -454,25 +473,31 @@
       }
       	
      on(locateButton, "click", function(){
-     	if(openClose){
+     	
+     	
+     	
      		//slideIt(300, 0, slideTarget,0);
-     		fx.fadeOut({node: slideTarget, duration: 225}).play();
-     		setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 250);
-     		openClose = false;
-     	}
+     		domAttr.set(slideTarget, "class", "showx");
+     		fx.fadeIn({node: slideTarget, duration: 225}).play();
+     		
+     		openClose = true;
+     	
+     	
      });
       
       
       
       
        on(bufferButton, "click", function(){
+     	
+     	/*
      	if(openClose){
      		//slideIt(300, 0, slideTarget,0);
      		fx.fadeOut({node: slideTarget, duration: 225}).play();
      		setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 250);
      		openClose = false;
-     	}
-     	dom.byId("resultsContent").innerHTML = "";
+     	} */
+     	dom.byId("tableContent").innerHTML = "";
      	
      	
      	
