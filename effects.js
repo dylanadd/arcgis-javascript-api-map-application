@@ -23,41 +23,81 @@
         var helpButton = dom.byId("helpButton");
         var legendButton = dom.byId("legendToggle");
         var exportButton = dom.byId("exportResults");
-       var vs = win.getBox();
+        var vs = win.getBox();
         var zoomToggle = dom.byId("zoom");
-       var textModeHeight = 50;
-       var searchWrapperHeight = 50; 
-       var buttonConsoleHeight = -40; 
-       var zoomOffset = 0;
+        var textModeHeight = 50;
+        var searchWrapperHeight = 50; 
+        var buttonConsoleHeight = -40; 
+        var zoomOffset = 0;
         var selectionToggle = false;
         var closeButton = dom.byId("close");
         var pan = dom.byId("pan");
         var selectButton = dom.byId("selection");
         var selectHelp = dom.byId("selectHelp");
-        var dnd = new Moveable(dom.byId("searchResults"));        
+        var dnd;   
+        var dockButton = dom.byId("dockButton");
+        var scalebar;
         
-        
-       dojo.connect(dnd, "onMove", function(e){
-       	//console.log(e);
-       	vs = win.getBox();
-       //	console.log(vs);
-       	var box = domGeom.position(searchResults);
-     //  	console.log(box);
+        var docked = true;
+        var moved = false;
+        on(dockButton,"click", function(){
+        	
+        	
+        	if(docked){
+        	 dnd = new Moveable(dom.byId("searchResults")); 
+        		 
+        		dojo.connect(dnd, "onMove", function(e){
+        			moved = true;
+      			 	console.log(scalebar);
+      			 	vs = win.getBox();
+       				console.log(vs);
+      				 	var box = domGeom.position(searchResults);
+      			 	console.log(box);
        	
-       	if((vs.h - box.y) <= 175){
-       		//console.log("snap bottom");
-       		domAttr.set(dom.byId("moveHelper"),"class","searchSnapBottom");
-       		domAttr.set(dom.byId("resultsContent"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
-       		console.log(vs.h - box.y);
-       	} else {
-       		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapLeft");
-       		domAttr.set(dom.byId("resultsContent"),"style",  "");
-       	}
+      			 	if((vs.h - box.y) <= 175){
+      			 		//console.log("snap bottom");
+     			  		domAttr.set(dom.byId("moveHelper"),"class","searchSnapBottom");
+     			  		domAttr.set(dom.byId("resultsContent"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
+     			  		domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
+     			  		domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
+     			  		//console.log(vs.h - box.y);
+     			  	} else if((vs.w - box.x) <= 375 && box.y < 150 ) {
+   			    		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapRight");
+    			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
+    			   		domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+     			  	} else if((box.x) <= 66 && box.y < 150 ) {
+    			   		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapLeft");
+    			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
+    			   		domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
+    			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box.w + (box.x + 22) ) +"px; z-index: 30;");
+    			   	}else {
+    			   		domAttr.set(dom.byId("moveHelper"),"class", "searchFreeFloat");
+    			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
+    			   		domAttr.set(dom.byId("pclogo"), "style", "");
+     			  		domAttr.set(scalebar, "style", "left: 25px;");
+     			  		domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
+     			  	}
        	
        	
        	
-       });
+      			 });
        
+        		 
+        		 
+        		 
+        		docked = false;
+        	} else {
+        		dnd.destroy();
+        		docked = true;
+        	}
+        });
+        
+       
+        
+        dojo.connect(dnd, "onMoveStop", function(e){
+        	//dnd.destroy();
+        });
+        
         
         var selectTF = false;
         on(selectButton,"click",function(){
@@ -99,7 +139,7 @@
         });
         
         on(closeButton, "click", function(){
-        	on.emit(viewButton, "click", {bubbles: true, cancelable: true});
+        	on.emit(fadeButton, "click", {bubbles: true, cancelable: true});
         });
        
        
@@ -179,10 +219,20 @@
         	}
         });
         
+        var unmovedView = false;
        on(fadeButton, "click", function(evt){
     	
     	on.emit(viewButton, "click", {bubbles: true, cancelable: true});
-            
+    	
+         if(!moved && !unmovedView){
+         	domAttr.set(dom.byId("pclogo"), "style", "bottom: 180px;");
+         	domAttr.set(scalebar, "style", "bottom: 180px; left: 25px;");
+         	unmovedView = true;
+         }   else if(!moved && unmovedView){
+         	domAttr.set(dom.byId("pclogo"), "style", "");
+         	domAttr.set(scalebar, "style", "left: 25px;");
+         	unmovedView = false;
+         }
         });
         
         
@@ -201,8 +251,8 @@
         	   	
         	if(openClose){
      		//slideIt(300, 0, slideTarget,0);
-     		fx.fadeOut({node: slideTarget, duration: 225}).play();
-     		setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 235);
+     		fx.fadeOut({node: slideTarget, duration: 0}).play();
+     		setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 0);
      		openClose = false;
      	}   	
         	   	
@@ -259,9 +309,9 @@
   
 	ready(function(){
 
-		console.dir(dnd);
-		domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
-	
+	//	console.dir(dnd);
+		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
+	domAttr.set(slideTarget, "style", "bottom: 0px;" );
 	
 	
 		domAttr.set(dom.byId("dijit_TitlePane_0_titleBarNode"), "title", "Change the application's basemap");
@@ -275,8 +325,10 @@
 
 	//	query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
 	//	query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
-		respond(0);
 		
+		scalebar = query(".esriScalebar");
+        	scalebar = dom.byId(scalebar[0]);
+        	respond(0);
 		
 	});  
 	
@@ -326,13 +378,13 @@
  			
  			if(openClose == false){
         	//slideIt(-300, 0, slideTarget,0);
-        	fx.fadeIn({node: slideTarget, duration: 225}).play();
+        	fx.fadeIn({node: slideTarget, duration: 0}).play();
         	setTimeout(function(){domAttr.set(slideTarget, "class", "showx");}, 0);
         	openClose = true;
  			} else {
  				//slideIt(300, 0, slideTarget,0);
- 				fx.fadeOut({node: slideTarget, duration: 225}).play();
- 				setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 250);
+ 				fx.fadeOut({node: slideTarget, duration: 0}).play();
+ 				setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 0);
  				openClose = false;
  			setTimeout(function(){
  				//domAttr.set(dom.byId("searchResults"), "style", "top: 37px; left:" + (vs.w - 21) + "px;");
@@ -362,8 +414,34 @@
 
      	
      	
-		domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
+		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
+		moved = false;
+		try{
+			dnd.destroy();
+		} catch(e){}
+		if(!unmovedView){
+			domAttr.set(slideTarget, "style", "bottom: 0px; opacity: 0;" );
+			
+         	
+        
+         	domAttr.set(dom.byId("pclogo"), "style", "");
+         	domAttr.set(scalebar, "style", "left: 25px;");
+ 
+         
+         	
+		} 
+		if(unmovedView) {
+			domAttr.set(slideTarget, "style", "bottom: 0px; opacity: 1;" );
 		
+         		 domAttr.set(dom.byId("pclogo"), "style", "bottom: 180px;");
+         	domAttr.set(scalebar, "style", "bottom: 180px; left: 25px;");
+         		
+      
+         	
+		}
+		domAttr.set(dom.byId("map_zoom_slider"),"style","z-index:30;");
+		domAttr.set(dom.byId("moveHelper"), "class", "searchSnapBottom ssbInitial" );
+		docked = true;
 		
 		if(vs.w <= 1225){
 			domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");

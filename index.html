@@ -165,6 +165,7 @@
         	<div id="wrapper">
         		<div class="gradient">
         		<a id="expButton" href="javascript:void(0)" onclick="return false;">Export</a>
+        		
         		</div>
         		<form id="form2" style="display: none;"></form>
         		<div id="wrapper2">
@@ -187,15 +188,19 @@
         	</div>
         </div>
         
-       <div id="moveHelper" class="searchSnapLeft">
+       <div id="moveHelper" class="searchSnapBottom ssbInitial">
         <div id="searchResults" class="hide" style="width:200px;">
         	<div class="buttonWrap">
         	<div id="openClose" class="noResults"></div>
         	</div> 
         	<div id="resultsBody" class="resultsWindow" >
         		<div id="exportResults">Export</div>
+        		<div id="dockButton" >Dock/Undock</div>
         		<div id="close">Hide</div>
-        		 <div id="resultsContent"></div>
+        		 <div id="resultsContent">
+        		 	<table cellspacing="0" id="tableContent"></table>
+        		 	
+        		 </div>
         	</div>
         	
         </div>
