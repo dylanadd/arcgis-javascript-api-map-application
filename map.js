@@ -12,6 +12,7 @@ var overviewMapDijit;
 var mDraw;
 var legendDijit;
 var legendStartup = false;
+
 // var gsvc, tb;
 require([
     "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
@@ -241,7 +242,7 @@ require([
     map.on("update-start", function () {
         //  domAttr.set("gallery", "class", "processing");
         domAttr.set("body", "class", "claro buttonMode calculating");
-
+		
     });
 
     map.on("update-end", function () {
@@ -1229,7 +1230,9 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
        		if(!searchTimeout){
        			domAttr.set("locate", "class", "dormant");
        			domAttr.set("body", "class", "claro buttonMode");
-       			alert("Search returned 0 results");
+       			ieAlert.set("title","No Results");
+       			ieAlert.set("content", "<p>Sorry, your search did not return any results.</p><p>Please try again.</p>");
+				ieAlert.show();
        			
        		}
        	
@@ -1429,7 +1432,9 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         try {
 
             dom.byId("tableContent").innerHTML = "";
-        } catch (e) {}
+        } catch (e) {
+        	document.getElementById('tableContent').innerText="";
+        }
 
         if (infoArray2.length > 1) {
             for (i = 0; i < infoArray2.length; i++) {
@@ -1448,7 +1453,10 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         } else {
             domAttr.set("bufferMode", "class", "bufferModeOn");
             domAttr.set("body", "class", "claro buttonMode");
-            alert("No parcel selected!");
+           // alert("No parcel selected!");
+            ieAlert.set("title","Nothing To Buffer");
+       		ieAlert.set("content", "<p>Sorry, no features have been selected for buffering.</p><p>Please select at least one feature before buffering.</p>");
+			ieAlert.show();
         }
         try {
             //	parcels.clearSelection();

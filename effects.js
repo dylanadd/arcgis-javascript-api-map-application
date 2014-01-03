@@ -1,4 +1,5 @@
-  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dnd/Moveable","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window", "dojo/_base/xhr", "dojo/request/iframe","dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, Moveable, domAttr, query, domGeom, coreFx, ready, domStyle, win, xhr, iframe) {
+  var ieAlert;
+  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dnd/Moveable","dijit/Dialog","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window", "dojo/_base/xhr", "dojo/request/iframe","dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, Moveable, Dialog, domAttr, query, domGeom, coreFx, ready, domStyle, win, xhr, iframe) {
         var fadeButton = dom.byId("toggleOutput"),
             fadeTarget = dom.byId("output");
  		var clearButton = dom.byId("clear");
@@ -38,6 +39,15 @@
         var dockButton = dom.byId("dockButton");
         var scalebar;
         var identify = dom.byId("identify");
+        
+        
+         ieAlert = new Dialog({
+        	title: "Web Browser Outdated",
+        	style: "width:300px"
+        });
+        
+        
+        
         
         
         
@@ -279,8 +289,12 @@
         
         
         on(clearButton, "click", function(){
-        	
+        	try{
         	dom.byId("tableContent").innerHTML = "";
+        	} catch(e){
+    
+				document.getElementById('tableContent').innerText="";
+			}
         	
         	/*
         	fx.fadeOut({ node: fadeTarget, duration: 225 }).play();
@@ -374,6 +388,9 @@
         	popTemp = query(".esriPopup");
         	popTemp = popTemp[0];
 		domAttr.set(popTemp,"class","esriPopup hide");
+		
+		
+		
 	});  
 	
 	function fadeConsole(){
@@ -524,8 +541,11 @@
      		setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 250);
      		openClose = false;
      	} */
+     	try{
      	dom.byId("tableContent").innerHTML = "";
-     	
+     	} catch(e){
+     		document.getElementById('tableContent').innerText="";
+     	}
      	
      	
      }); 

@@ -23,7 +23,22 @@
 
      <link rel="stylesheet" href="esri.css">
      <link rel="stylesheet" href="./interface.css">
-		
+     
+     
+     
+<script type="text/javascript">
+
+
+
+if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
+ var ieversion=new Number(RegExp.$1) // capture x.x portion and store as a number
+ if (ieversion<=8) {
+  alert("Sorry, your web browser is out of date and is not supported by the application. Please update to the newest version. Otherwise, the application may not work as intended.");
+}
+}
+</script>
+
+
 
 	<script>var selectedParcel;</script>
    
@@ -209,8 +224,10 @@
       </div>
         </div>
         
+     
        
-        
+       
+               
       </div>
      <div id="junk"></div>
       <div style="display:none;">

@@ -1473,3 +1473,35 @@ min-width: 2519px;
 .searchSnapLeft td, .searchSnapRight td, .searchFreeFloat td {
 	float:left;
 }
+
+.dijitDialog{
+background-color:white;
+padding: 0px 10px 10px 10px;
+border-style: solid;
+border-color: rgb(16,64,92);
+font-family: Verdana,helvetica;
+
+
+}
+.dijitDialog .dijitDialogTitleBar{
+background: rgb(16,64,92);
+color:white;
+margin-left: -10px;
+margin-right: -10px;
+}
+
+.dijitDialog .dijitDialogPaneContent {
+	
+}
+
+.dijitDialog .closeText {
+	margin-top: -2px;
+	padding-right: 4px;
+	float:right;
+	cursor:pointer;
+	font-weight: bold;	
+}
+.dijitDialogCloseIconHover{
+	color:yellow !important;
+
+}
