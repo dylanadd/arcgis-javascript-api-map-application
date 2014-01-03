@@ -1950,10 +1950,15 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     //find all owners matching query 
     function selectOwner(owner) {
         popup.clearFeatures();
-
+		
         if (owner) {
             var query = new Query();
-            query.text = owner;
+            query.outFields = ["*"];
+           // query.text = owner;
+           		//query.where = "(Owner like '%" + owner + "%' or OwnerOverflow like '%" + owner + "%')";
+           	//	query.where = "(Owner like '%dylan %' or OwnerOverflow like '%dylan %') and (Owner like '%addington%' or OwnerOverflow like '%addington%') ";
+           		query.where = makeWordArray(owner);
+           		console.log(query.where);
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
                 center = graphicsUtils.graphicsExtent(selection).getCenter();
                 selectionX = selection;
@@ -1978,7 +1983,35 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
             
 
         }
-    }
+    }	
+
+function makeWordArray(owner){
+		var q = "";
+		console.log(owner);
+		var temp;
+		
+		owner = owner.match(/\S+\s*/g);
+		console.log(owner);
+		for(i=0;i<=owner.length;i++){
+			if(i + 1 != owner.length){
+				try{
+					owner[i] = owner[i].replace(' ', '');
+				} catch(e){}
+				q += "(Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%') and";
+			} else {
+				try{
+					owner[i] = owner[i].replace(' ', '');
+				} catch(e){}
+				q += " (Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%')";
+				console.log(q);
+				return q;
+			}
+		}
+		
+	return 0;
+}
+
+
 
  var symbolx = new SimpleLineSymbol(
                 SimpleLineSymbol.STYLE_SOLID,
