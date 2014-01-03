@@ -440,7 +440,9 @@ require([
         console.log(selectionMode);
     });
 
-	
+	 dojo.connect(dom.byId("identify"), "click", function () {
+      popup.hide();
+    });
 	
 	var distParams = new DistanceParameters();
 	distParams.distanceUnit = GeometryService.UNIT_FOOT;

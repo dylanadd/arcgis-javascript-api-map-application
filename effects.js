@@ -37,6 +37,9 @@
         var dnd;   
         var dockButton = dom.byId("dockButton");
         var scalebar;
+        var identify = dom.byId("identify");
+        
+        
         
         var position = "bottom";
         var docked = true;
@@ -103,6 +106,24 @@
         dojo.connect(dnd, "onMoveStop", function(e){
         	//dnd.destroy();
         });
+        
+        
+        
+        
+        var idTF = false;
+        on(identify,"click",function(){
+        	
+        	if(!idTF){
+        	domAttr.set(dom.byId("identify"),"class","idActive");
+        	domAttr.set(popTemp,"class","esriPopup");
+        	idTF = true;
+        	} else {
+        		domAttr.set(dom.byId("identify"),"class","idInactive");
+        		domAttr.set(popTemp,"class","esriPopup hide");
+        		idTF = false;
+        	}
+        });
+        
         
         
         var selectTF = false;
@@ -324,7 +345,7 @@
    
       }
   
-  
+  var popTemp;
 	ready(function(){
 
 	//	console.dir(dnd);
@@ -347,7 +368,9 @@
 		scalebar = query(".esriScalebar");
         	scalebar = dom.byId(scalebar[0]);
         	respond(0);
-		
+        	popTemp = query(".esriPopup");
+        	popTemp = popTemp[0];
+		domAttr.set(popTemp,"class","esriPopup hide");
 	});  
 	
 	function fadeConsole(){

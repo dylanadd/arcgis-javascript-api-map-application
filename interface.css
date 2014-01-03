@@ -247,7 +247,7 @@ position:relative;
 top:10px;
 margin-left:auto;
 margin-right:auto;
-width:625px;
+width:690px;
 /*
 float:left;
 margin-bottom:10px;
@@ -1250,6 +1250,22 @@ height: 30px;
 width: 30px;
 }
 
+
+#identify {
+background: url("images/icons/identify.png") no-repeat -4px -2px;
+height: 30px;
+width: 30px;
+}
+
+#identify:hover {
+background: url("images/icons/identifyhover.png") no-repeat -4px -2px;
+}
+
+#identify.idActive  {
+background: url("images/icons/identifyhover.png") no-repeat -4px -2px;
+}
+
+
 #clear:hover {
 background: url("images/icons/clearhover.png") no-repeat 0 0;
 }
@@ -1297,13 +1313,13 @@ width: 30px;
 }
 
 #toggleOutput {
-background: url("images/icons/favorites.png") no-repeat 0 0;
+background: url("images/icons/favorites.png") no-repeat 0 -1px;
 height: 30px;
 width: 30px;
 }
 
 #toggleOutput:hover {
-	background: url("images/icons/favoriteshover.png") no-repeat 0 0;
+	background: url("images/icons/favoriteshover.png") no-repeat 0 -1px;
 }
 
 #legendDiv {
