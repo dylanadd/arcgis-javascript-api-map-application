@@ -50,7 +50,8 @@
         	
         	if(docked){
         	 dnd = new Moveable(dom.byId("searchResults")); 
-        		 
+        		domAttr.set(dockButton,"class","undocked"); 
+        		domAttr.set(dom.byId("modeHelper"),"class","undockMode");
         		dojo.connect(dnd, "onMove", function(e){
         			moved = true;
       			 	console.log(scalebar);
@@ -98,6 +99,8 @@
         	} else {
         		dnd.destroy();
         		docked = true;
+        		domAttr.set(dockButton,"class","docked");
+        		domAttr.set(dom.byId("modeHelper"),"class","dockMode");
         	}
         });
         
@@ -484,7 +487,8 @@
 		domAttr.set(dom.byId("moveHelper"), "class", "searchSnapBottom ssbInitial" );
 		domAttr.set(dom.byId("resultsContent"),"style",  "height: 150px !important;");
 		docked = true;
-		
+		domAttr.set(dockButton, "class","docked");
+		domAttr.set(dom.byId("modeHelper"),"class","dockMode");
 		if(vs.w <= 1225){
 			domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");
 			
