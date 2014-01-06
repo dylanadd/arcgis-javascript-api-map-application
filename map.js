@@ -2090,7 +2090,7 @@ function zoomToPoint(evt){
                     "innerHTML": sWide + s + "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >View Road Segment" + "</a>",
                     //	"id": "test" + i,
                     "class": stripe2
-                }, "resultsContent");
+                }, "tableContent");
                 var zz = dom.byId("test" + (i + l));
 
                 //event handlers for search results
@@ -2328,7 +2328,7 @@ function zoomToPoint(evt){
                     "innerHTML": sWide + s + "<a class=\"goToParcel\" id=\"test" + (l) + "\" >View Parcel" + "</a>",
                     //	"id": "test" + i,
                     "class": stripe2
-                }, "resultsContent");
+                }, "tableContent");
                 var zz = dom.byId("test" + (l));
 
                 //event handlers for search results
@@ -2399,7 +2399,7 @@ function zoomToPoint(evt){
                 "innerHTML": sWide + s + "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >View Parcel" + "</a>",
 
                 "class": stripe2 + " selection" + i
-            }, "resultsContent");
+            }, "tableContent");
             var zz = dom.byId("test" + (i + l));
 
             //event handlers for search results
