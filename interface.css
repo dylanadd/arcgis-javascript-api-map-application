@@ -757,7 +757,7 @@ display:none;
 }
 
 #resultsContent div:hover{
-	background-color:rgb(252,185,241);
+	/* background-color:rgb(252,185,241); */
 	
 }
 #resultsContent table{
@@ -1504,4 +1504,33 @@ margin-right: -10px;
 .dijitDialogCloseIconHover{
 	color:yellow !important;
 
+}
+
+.searchSnapLeft .sTallFix , .searchSnapRight .sTallFix ,.searchFreeFloat .sTallFix {
+	display:initial;
+}
+.searchSnapBottom .goToParcel{
+background: url("images/icons/zoomRecord.png") no-repeat 11px 0px;
+width: 44px;
+height: 32px;
+display: block;
+}
+
+.goToParcel{
+background: url("images/icons/zoomRecord.png") no-repeat 0px 0px;
+width: 44px;
+height: 32px;
+display: block;
+}
+
+div.LocateButton {
+	display: block;
+top: 100px;
+left: 26px;
+position: absolute;
+z-index: 1000;
+}
+
+.LocateButton .zoomLocateButton {
+	background-image: url("images/icons/gpslocate.png");
 }

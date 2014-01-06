@@ -184,7 +184,14 @@
        
        
        
-       on(helpButton,"click",function(){alert("Feature comming soon.")});
+       on(helpButton,"click",function(){
+       			ieAlert.set("title","Comming Soon");
+       			ieAlert.set("content", "<p>This feature is not available yet.</p><p>Please check again later.</p>");
+				ieAlert.show();
+       		//alert("Feature comming soon.")
+       	});
+       
+       
        
        var showLegend = false;
        on(legendButton,"click",function(){
@@ -540,13 +547,13 @@
      		fx.fadeOut({node: slideTarget, duration: 225}).play();
      		setTimeout(function(){domAttr.set(slideTarget, "class", "hide");}, 250);
      		openClose = false;
-     	} */
+     	} 
      	try{
      	dom.byId("tableContent").innerHTML = "";
      	} catch(e){
      		document.getElementById('tableContent').innerText="";
      	}
-     	
+     	*/
      	
      }); 
      var bufferOC = false;

@@ -12,10 +12,10 @@ var overviewMapDijit;
 var mDraw;
 var legendDijit;
 var legendStartup = false;
-
+var gsvc, p, paramx, sp;
 // var gsvc, tb;
 require([
-    "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
+    "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/dijit/LocateButton", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
     "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query",
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
     "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate",
@@ -27,12 +27,12 @@ require([
     "esri/dijit/Scalebar", "esri/dijit/Measurement", "esri/tasks/locator", "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate",
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
-    "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/toolbars/navigation", "esri/tasks/QueryTask", "dojo/_base/connect",
+    "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/toolbars/navigation", "esri/tasks/QueryTask", //"dojo/_base/connect",
     "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "dojo/behavior", "dojo/request", "esri/dijit/PopupMobile",
 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
 ], function (
-    Map, FeatureLayer, OverviewMap, ArcGISImageServiceLayer, ArcGISDynamicMapServiceLayer, Legend,
+    Map, FeatureLayer, OverviewMap, LocateButton,  ArcGISImageServiceLayer, ArcGISDynamicMapServiceLayer, Legend,
     ArcGISTiledMapServiceLayer, Query,
     SimpleFillSymbol, SimpleLineSymbol,
     Graphic, Popup, PopupTemplate,
@@ -81,7 +81,7 @@ require([
         new Color([13, 255, 0, 0.5]),
         2);
 
-    var gsvc, tb;
+    var  tb;
 
     /*  var popup = new Popup({
         fillSymbol: sfs
@@ -233,10 +233,43 @@ require([
     map: map
    
   },"legendDiv");
-  console.dir(legendDijit);
+  //console.dir(legendDijit);
+  
+//console.log(navigator.geolocation.getCurrentPosition());
+	p = new Point(-104.6,38.2);
+	 paramx = new ProjectParameters();
+	sp =  new SpatialReference(2233);
+  navigator.geolocation.getCurrentPosition(testing);
     });
-
-
+    /*
+    var p;
+   var myLat;
+   var myLong; 
+function testing(position){
+	console.log(position);
+	myLat = position.coords.latitude;
+	myLong = position.coords.longitude;
+	console.log(myLat);
+	console.log(myLong);
+	 p = new Point([myLong,myLat], new SpatialReference(102100));
+	// p.wkid = 2233;
+	 var tempArray = new Array();
+	 tempArray.push(p);
+	 console.log(p);
+	 var params = new ProjectParameters();
+	 params.geometries = p;
+	 params.outSR = new SpatialReference(2233);
+	 //params.outSpatialReference = {wkid:2233};
+	 params.transformation = {wkid: 2233};
+	//  gsvc.project(params);
+	 console.log(params);
+	// p = new Point(-122.65,45.53);
+	//console.log(gsvc);
+	gsvc.project(params);
+	
+	
+}
+*/
 
     //Indicate map loading
     map.on("update-start", function () {
@@ -1236,7 +1269,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
        			
        		}
        	
-       },10000);
+       },15000);
         try {
            // resultsArray.length = 0; //Testing to see how array behaves not being cleared after search.
 
@@ -1429,12 +1462,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
           //  resultsArray.length = 0;  //testing behavior after if it doesnt clear
 
         } catch (e) {}
-        try {
-
-            dom.byId("tableContent").innerHTML = "";
-        } catch (e) {
-        	document.getElementById('tableContent').innerText="";
-        }
+       
 
         if (infoArray2.length > 1) {
             for (i = 0; i < infoArray2.length; i++) {
@@ -1444,11 +1472,24 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 
             temp.then(function (results) {
                 //console.debug(results);
+			try {
 
+            	dom.byId("tableContent").innerHTML = "";
+        		} catch (e) {
+        		document.getElementById('tableContent').innerText="";
+        		}
+        		
                 doBuffer3(results);
             });
         } else if (infoArray2.length == 1) {
+			 try {
 
+          		  dom.byId("tableContent").innerHTML = "";
+        			} catch (e) {
+        				document.getElementById('tableContent').innerText="";
+       			 
+       			 }
+       			 
             doBuffer3(infoArray2[0].geometry);
         } else {
             domAttr.set("bufferMode", "class", "bufferModeOn");
@@ -1985,6 +2026,9 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         }
     }	
 
+
+//var searchRefine = new Array("and","&","or",);
+
 function makeWordArray(owner){
 		var q = "";
 		console.log(owner);
@@ -1992,6 +2036,10 @@ function makeWordArray(owner){
 		
 		owner = owner.match(/\S+\s*/g);
 		console.log(owner);
+		
+		
+		
+		
 		for(i=0;i<=owner.length;i++){
 			if(i + 1 != owner.length){
 				try{
@@ -2223,7 +2271,7 @@ function zoomToPoint(evt){
 			
 
                 var temp = domConstruct.create("tr", {
-                    "innerHTML": sWide + s + "<a class=\"goToParcel fit\" id=\"test" + (i + l) + "\" >View Parcel" + "</a>",
+                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to arcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l) + "\" >" + "</a>" + sWide + s + "</div>",
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
