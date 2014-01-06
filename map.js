@@ -1995,12 +1995,12 @@ function makeWordArray(owner){
 		for(i=0;i<=owner.length;i++){
 			if(i + 1 != owner.length){
 				try{
-					owner[i] = owner[i].replace(' ', '');
+					owner[i] = owner[i].replace(/\s/g, '');
 				} catch(e){}
 				q += "(Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%') and";
 			} else {
 				try{
-					owner[i] = owner[i].replace(' ', '');
+					owner[i] = owner[i].replace(/\s/g, '');
 				} catch(e){}
 				q += " (Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%')";
 				console.log(q);
