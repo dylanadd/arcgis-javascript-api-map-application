@@ -322,6 +322,11 @@ require([
     	rubberBandZoomMode(false);
         startDrawSelect();
         selectionTF = true;
+     //   drawx.activate(Draw.RECTANGLE);
+     //   mDraw.activate(Draw.LINE);
+      //  dom.byId("parcs").checked = true;
+      //  dom.byId("rect").checked = true;
+        
       } else {
       	domAttr.set(tools, "class" ,"panActive");
       	selectionTF = false;
@@ -408,7 +413,7 @@ require([
         mDraw.activate(Draw.LINE);
     });
 
-    var selectionMode = '';
+    var selectionMode = 'parcs';
     dojo.connect(dom.byId("parcs"), "click", function () {
         selectionMode = "parcs";
         dom.byId("bufferParcs").checked = true;
