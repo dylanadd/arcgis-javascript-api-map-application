@@ -271,7 +271,18 @@
     	
     	on.emit(viewButton, "click", {bubbles: true, cancelable: true});
     	
-         if((!moved && !unmovedView)  ){
+    showIt();
+         
+        });
+      
+        
+        function showIt(showTF) {
+        	
+        	
+        	
+        		
+        		
+        	     if((!moved && !unmovedView)  ){
          	domAttr.set(dom.byId("pclogo"), "style", "bottom: 180px;");
          	domAttr.set(scalebar, "style", "bottom: 180px; left: 25px;");
          	unmovedView = true;
@@ -287,11 +298,16 @@
          }
          
          
+        if (showTF && position == "bottom"){
+         		domAttr.set(dom.byId("pclogo"), "style", "bottom: 180px;");
+         		domAttr.set(scalebar, "style", "bottom: 180px; left: 25px;");
+         		unmovedView = true;
+     			
+         }
+         	
          
-        });
-      
-        
-        
+         
+        }
         
         
         
@@ -529,7 +545,8 @@
      	
      		//slideIt(300, 0, slideTarget,0);
      		domAttr.set(slideTarget, "class", "showx");
-     		fx.fadeIn({node: slideTarget, duration: 225}).play();
+     		fx.fadeIn({node: slideTarget, duration: 0}).play();
+     		showIt(true);
      		
      		openClose = true;
      	

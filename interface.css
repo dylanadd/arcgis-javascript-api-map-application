@@ -1425,7 +1425,8 @@ margin-left: 1px;
 	width:100%;
 }
 .searchSnapBottom .resultsLabel {
-	width:100%;
+	/* width:100%; */
+	width: 180px;
 	
 }
 .searchSnapBottom #resultsContent td {
@@ -1434,7 +1435,7 @@ margin-left: 1px;
 }
 .searchSnapBottom #resultsContent table {
 	width: auto;
-min-width: 2519px;
+/* min-width: 2519px; */
 	
 }
 

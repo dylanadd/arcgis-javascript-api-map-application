@@ -236,40 +236,9 @@ require([
   //console.dir(legendDijit);
   
 //console.log(navigator.geolocation.getCurrentPosition());
-	p = new Point(-104.6,38.2);
-	 paramx = new ProjectParameters();
-	sp =  new SpatialReference(2233);
-  navigator.geolocation.getCurrentPosition(testing);
+	
     });
-    /*
-    var p;
-   var myLat;
-   var myLong; 
-function testing(position){
-	console.log(position);
-	myLat = position.coords.latitude;
-	myLong = position.coords.longitude;
-	console.log(myLat);
-	console.log(myLong);
-	 p = new Point([myLong,myLat], new SpatialReference(102100));
-	// p.wkid = 2233;
-	 var tempArray = new Array();
-	 tempArray.push(p);
-	 console.log(p);
-	 var params = new ProjectParameters();
-	 params.geometries = p;
-	 params.outSR = new SpatialReference(2233);
-	 //params.outSpatialReference = {wkid:2233};
-	 params.transformation = {wkid: 2233};
-	//  gsvc.project(params);
-	 console.log(params);
-	// p = new Point(-122.65,45.53);
-	//console.log(gsvc);
-	gsvc.project(params);
-	
-	
-}
-*/
+
 
     //Indicate map loading
     map.on("update-start", function () {
@@ -2135,7 +2104,7 @@ function zoomToPoint(evt){
 				var sWide =  "<td class=\"parNum sWide\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.ALTNAME1 + "</span></td>"
                
                 var temp = domConstruct.create("tr", {
-                    "innerHTML": sWide + s + "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >View Road Segment" + "</a>",
+                    "innerHTML": "<a class=\"goToParcel\" title=\"View Road Segment\" id=\"test" + (i + l) + "\" >" + "</a>" + sWide + s,
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
@@ -2179,7 +2148,7 @@ function zoomToPoint(evt){
 				var sWide =  "<td class=\"addrNum sWide\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.FULLADDR + "</span></td>"
 				
                 var temp = domConstruct.create("tr", {
-                    "innerHTML": sWide + s + "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >View Address Point" + "</a>",
+                    "innerHTML": "<a class=\"goToParcel\" title=\"View Address Point\" id=\"test" + (i + l) + "\" ></a>" + sWide + s,
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
@@ -2271,7 +2240,7 @@ function zoomToPoint(evt){
 			
 
                 var temp = domConstruct.create("tr", {
-                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to arcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l) + "\" >" + "</a>" + sWide + s + "</div>",
+                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l) + "\" >" + "</a>" + sWide + s + "</div>",
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
@@ -2373,8 +2342,7 @@ function zoomToPoint(evt){
                     "";
 
                 var temp = domConstruct.create("tr", {
-                    "innerHTML": sWide + s + "<a class=\"goToParcel\" id=\"test" + (l) + "\" >View Parcel" + "</a>",
-                    //	"id": "test" + i,
+    				 "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l) + "\" >" + "</a>" + sWide + s + "</div>",                    //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
                 var zz = dom.byId("test" + (l));
