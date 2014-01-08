@@ -319,11 +319,14 @@
         on(clearButton, "click", function(){
         	try{
         	dom.byId("tableContent").innerHTML = "";
+        	dom.byId("tableTallContent").innerHTML = "";
         	} catch(e){
     
 				document.getElementById('tableContent').innerText="";
+				document.getElementById('tableTallContent').innerText="";
+				
 			}
-        	
+        	dom.byId("filler").innerHTML = "";
         	/*
         	fx.fadeOut({ node: fadeTarget, duration: 225 }).play();
         	fade = false;

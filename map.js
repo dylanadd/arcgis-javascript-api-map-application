@@ -1532,21 +1532,25 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 			try {
 
             	dom.byId("tableContent").innerHTML = "";
+            	dom.byId("tableTallContent").innerHTML = "";
+            	
         		} catch (e) {
         		document.getElementById('tableContent').innerText="";
+        		document.getElementById('tableTallContent').innerText="";
         		}
-        		
+        		dom.byId("filler").innerHTML = "";
                 doBuffer3(results);
             });
         } else if (infoArray2.length == 1) {
 			 try {
 
           		  dom.byId("tableContent").innerHTML = "";
+          		  dom.byId("tableTallContent").innerHTML = "";
         			} catch (e) {
         				document.getElementById('tableContent').innerText="";
-       			 
+       			 		document.getElementById('tableTallContent').innerText="";
        			 }
-       			 
+       			 dom.byId("filler").innerHTML = "";
             doBuffer3(infoArray2[0].geometry);
         } else {
             domAttr.set("bufferMode", "class", "bufferModeOn");
@@ -1692,6 +1696,15 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         try {
             popup.clearFeatures();
         } catch (e) {}
+        try{
+        	dom.byId("tableContent").innerHTML = "";
+        	dom.byId("tableTallContent").innerHTML = "";
+        	} catch(e){
+    
+				document.getElementById('tableContent').innerText="";
+				document.getElementById('tableTallContent').innerText="";
+				
+			}
 
     }
     
@@ -2206,7 +2219,14 @@ function zoomToGeoPoint(evt){
     		contentType = infoMode;
     	} 
     	if(contentType != infoMode){
+    		
+    		try{
     		dom.byId("tableContent").innerHTML = "";
+    		dom.byId("tableTallContent").innerHTML = "";
+    		} catch(e){
+    		document.getElementById('tableContent').innerText="";
+    		document.getElementById('tableTallContent').innerText="";
+    		}
     		dom.byId("filler").innerHTML = "";
     		contentType = infoMode;
     	}
@@ -2234,6 +2254,14 @@ function zoomToGeoPoint(evt){
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
+                
+                 var temp2 = domConstruct.create("tr", {
+                    "innerHTML": "<a class=\"goToParcel\" title=\"View Road Segment\" id=\"test" + (i + l + 10000) + "\" >" + "</a>" + sWide + s,
+                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "tableTallContent");
+                
+                
                 var zz = dom.byId("test" + (i + l));
 
                 //event handlers for search results
@@ -2251,6 +2279,31 @@ function zoomToGeoPoint(evt){
                       
 						//map.centerAndZoom(resultsArray[n].geometry, 8);
                        zoomToRoad(resultsArray[n]);
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+                
+                
+                  var zz2 = dom.byId("test" + (i + l + 10000));
+
+                //event handlers for search results
+                dojo.connect(zz2, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n - 10000);
+                    console.log(resultsArray[n - 10000]);
+                    var t = resultsArray[n - 10000];
+                    console.log(t);
+                    try {
+                        //  safeClear();
+
+                        selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
+                        map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
                     } catch (error) {
                         console.log(error);
                     }
@@ -2274,10 +2327,16 @@ function zoomToGeoPoint(evt){
 				var sWide =  "<td class=\"addrNum sWide\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.FULLADDR + "</span></td>"
 				
                 var temp = domConstruct.create("tr", {
-                    "innerHTML": "<a class=\"goToParcel\" title=\"View Address Point\" id=\"test" + (i + l) + "\" ></a>" + sWide + s,
+                    "innerHTML": "<a class=\"goToParcel\" title=\"View Address Point\" id=\"test" + (i + l) + "\" ></a>" + sWide,
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
+                
+                 var temp2 = domConstruct.create("tr", {
+                    "innerHTML": "<a class=\"goToParcel\" title=\"View Address Point\" id=\"test" + (i + l + 10000) + "\" ></a>" +  s,
+                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "tableTallContent");
                 var zz = dom.byId("test" + (i + l));
 
                 //event handlers for search results
@@ -2301,6 +2360,32 @@ function zoomToGeoPoint(evt){
                     }
 
                 });
+                
+                
+                 var zz2 = dom.byId("test" + (i + l + 10000));
+
+                //event handlers for search results
+                dojo.connect(zz2, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n - 10000);
+                    console.log(resultsArray[n - 10000]);
+                    var t = resultsArray[n - 10000];
+                    console.log(t);
+                    try {
+                        //  safeClear();
+
+                        selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
+                        map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+                
 
                 if (stripe2 == "odd") {
                     stripe2 = "even";
@@ -2366,10 +2451,45 @@ function zoomToGeoPoint(evt){
 			
 
                 var temp = domConstruct.create("tr", {
-                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l) + "\" >" + "</a>" + sWide + s + "</div>",
+                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l) + "\" >" + "</a>" + sWide  + "</div>",
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
+                
+                
+                 var temp2 = domConstruct.create("tr", {
+                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l + 10000) + "\" >" + "</a>" + s + "</div>",
+                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "tableTallContent");
+                
+                
+                
+                var zz2 = dom.byId("test" + (i + l + 10000));
+
+                //event handlers for search results
+                dojo.connect(zz2, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n - 10000);
+                    console.log(resultsArray[n - 10000]);
+                    var t = resultsArray[n - 10000];
+                    console.log(t);
+                    try {
+                        //  safeClear();
+
+                        selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
+                        map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+                
+                
                 var zz = dom.byId("test" + (i + l));
 
                 //event handlers for search results
@@ -2471,6 +2591,14 @@ function zoomToGeoPoint(evt){
     				 "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l) + "\" >" + "</a>" + sWide + s + "</div>",                    //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
+                
+                
+                 var temp2 = domConstruct.create("tr", {
+    				 "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l + 10000) + "\" >" + "</a>" + sWide + s + "</div>",                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "tableTallContent");
+                
+                
                 var zz = dom.byId("test" + (l));
 
                 //event handlers for search results
@@ -2489,6 +2617,30 @@ function zoomToGeoPoint(evt){
 
                         selectParcel(resultsArray[n].attributes.PAR_NUM);
                         map.infoWindow.show(resultsArray[n].geometry.getPoint(0, 0));
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+                
+                  var zz2 = dom.byId("test" + ( l + 10000));
+
+                //event handlers for search results
+                dojo.connect(zz2, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n - 10000);
+                    console.log(resultsArray[n - 10000]);
+                    var t = resultsArray[n - 10000];
+                    console.log(t);
+                    try {
+                        //  safeClear();
+
+                        selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
+                        map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
                     } catch (error) {
                         console.log(error);
                     }
@@ -2520,7 +2672,13 @@ function zoomToGeoPoint(evt){
 
     function displayGeoCoderResults(infoArray5) {
         console.log(infoArray5);
+        try{
         dom.byId("tableContent").innerHTML = "";
+        dom.byId("tableTallContent").innerHTML = "";
+        } catch(e){
+        	document.getElementById('tableContent').innerText="";
+    		document.getElementById('tableTallContent').innerText="";
+        }
     		dom.byId("filler").innerHTML = "";
 		var l = resultsArray.length;
         if (stripe2 == null) {
@@ -2540,10 +2698,17 @@ function zoomToGeoPoint(evt){
 			
 			
             var temp = domConstruct.create("tr", {
-                "innerHTML": "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >" + "</a>" + sWide + s,
+                "innerHTML": "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >" + "</a>" + sWide,
 
                 "class": stripe2 + " selection" + i
             }, "tableContent");
+            
+            var temp2 = domConstruct.create("tr", {
+                "innerHTML": "<a class=\"goToParcel\" id=\"test" + (i + l + 10000) + "\" >" + "</a>" + s,
+
+                "class": stripe2 + " selection" + i
+            }, "tableTallContent");
+            
             var zz = dom.byId("test" + (i + l));
 
             //event handlers for search results
@@ -2568,6 +2733,32 @@ function zoomToGeoPoint(evt){
                 }
 
             });
+            
+            
+             
+                var zz2 = dom.byId("test" + (i + l + 10000));
+
+                //event handlers for search results
+                dojo.connect(zz2, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n - 10000);
+                    console.log(resultsArray[n - 10000]);
+                    var t = resultsArray[n - 10000];
+                    console.log(t);
+                    try {
+                        //  safeClear();
+
+                        selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
+                        map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
 
             if (stripe2 == "odd") {
                 stripe2 = "even";
