@@ -708,7 +708,7 @@ a.action.zoomTo{
 	right: 0px;
 	opacity: 0;
 	
-	z-index: 1000;
+	z-index: 948;
 }
 div#openClose{
 	cursor:pointer;

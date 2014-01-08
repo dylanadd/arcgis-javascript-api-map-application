@@ -139,30 +139,35 @@
         
         
         
-        var selectTF = false;
+       // var selectTF = false;
         on(selectButton,"click",function(){
-        	if(!selectTF){
+        	//if(!selectTF){
+        		if(!selectionTF){
         		domAttr.set(dom.byId("selectionTools"), "class", "show");
         		fx.fadeIn({node: dom.byId("selectionTools"), duration: 225}).play();
-        		selectTF = true;
+        		//selectTF = true;
+        		
+        		//selectionTF = true;
         	} else {
         		fx.fadeOut({node: dom.byId("selectionTools"), duration: 225}).play();
         		setTimeout(function(){
         			domAttr.set(dom.byId("selectionTools"), "class", "hide");
+        			
         		}, 250);
-        		selectTF = false;
+        		//selectTF = false;
+        		//selectionTF = false;
         	}
         	
         });
         
         
         on(selectHelp,"click",function(){
-        	if(selectTF){
+        	if(selectionTF){
         		fx.fadeOut({node: dom.byId("selectionTools"), duration: 225}).play();
         		setTimeout(function(){
         			domAttr.set(dom.byId("selectionTools"), "class", "hide");
         		}, 250);
-        		selectTF = false;
+        		selectionTF = false;
         	}
         	dom.byId("fpoly").checked = false;
         	dom.byId("poly").checked = false;
@@ -387,7 +392,7 @@
   
   var popTemp;
 	ready(function(){
-
+	//console.log(map);
 	//	console.dir(dnd);
 		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
 	domAttr.set(slideTarget, "style", "bottom: 0px;" );

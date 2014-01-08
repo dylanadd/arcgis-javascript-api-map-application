@@ -13,6 +13,7 @@ var mDraw;
 var legendDijit;
 var legendStartup = false;
 var gsvc, p, paramx, sp;
+var selectionTF = false;
 // var gsvc, tb;
 require([
     "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/dijit/LocateButton", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
@@ -228,7 +229,7 @@ require([
         domAttr.remove(dom.byId("measurementDiv"), "style");
 		rubberBandZoomMode(true);
        // navToolbar.activate(Navigation.ZOOM_IN);
-		console.dir(measurement);
+		//console.dir(measurement);
 		legendDijit = new Legend({
     map: map
    
@@ -239,15 +240,23 @@ require([
 	
     });
 
-
+	
+	
+	var finishedLoading = false;
     //Indicate map loading
     map.on("update-start", function () {
-        //  domAttr.set("gallery", "class", "processing");
+        finishedLoading = false;
         domAttr.set("body", "class", "claro buttonMode calculating");
+        setTimeout(function(){
+        	if(!finishedLoading){
+        		domAttr.set("body", "class", "claro buttonMode");
+        	}
+        }, 20000);
 		
     });
 
     map.on("update-end", function () {
+    	finishedLoading = true;
         domAttr.set("gallery", "class", "dormant");
         domAttr.set("body", "class", "claro buttonMode");
 
@@ -314,18 +323,84 @@ require([
         }
 
     });
-	
-	var selectionTF = false;
+	var firstSelectionClick = true;
+	 selectionTF = false;
+
+	var shapeTypeMem = "rect";
     dojo.connect(dom.byId("selection"), "click", function () {
+    	console.log(shapeTypeMem);
+    	console.log(selectionMode);
     	if(!selectionTF){
     	domAttr.set(tools, "class" ,"selectActive");
     	rubberBandZoomMode(false);
         startDrawSelect();
         selectionTF = true;
-     //   drawx.activate(Draw.RECTANGLE);
-     //   mDraw.activate(Draw.LINE);
-      //  dom.byId("parcs").checked = true;
-      //  dom.byId("rect").checked = true;
+        
+        
+        switch(selectionMode){
+        	
+        	case 'parcs':
+        		
+       			
+        		dom.byId("parcs").checked = true;
+        		
+        		break;
+        	case 'addr':
+        		dom.byId("addr").checked = true;
+        		break;
+        	case 'roads':
+        		dom.byId("roads").checked = true;
+        		break;
+        }
+        
+        switch(shapeTypeMem){
+        	
+        	case 'rect':
+        		dom.byId("rect").checked = true;
+        		drawx.activate(Draw.RECTANGLE);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'circ':
+        		dom.byId("circ").checked = true;
+        		drawx.activate(Draw.CIRCLE);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'fpoly':
+        		dom.byId("fpoly").checked = true;
+        		drawx.activate(Draw.FREEHAND_POLYGON);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'poly':
+        		dom.byId("poly").checked = true;
+        		drawx.activate(Draw.POLYGON);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'triangle':
+        		dom.byId("triangle").checked = true;
+        		drawx.activate(Draw.TRIANGLE);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'pt':
+        		dom.byId("pt").checked = true;
+        		drawx.activate(Draw.POINT);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'line':
+        		dom.byId("line").checked = true;
+        		drawx.activate(Draw.LINE);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'polyline':
+        		dom.byId("polyline").checked = true;
+        		drawx.activate(Draw.POLYLINE);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	
+        	
+        }
+        
+        
+        
         
       } else {
       	domAttr.set(tools, "class" ,"panActive");
@@ -376,41 +451,49 @@ require([
     dojo.connect(dom.byId("fpoly"), "click", function () {
         drawx.activate(Draw.FREEHAND_POLYGON);
 		mDraw.activate(Draw.LINE);
+		shapeTypeMem = "fpoly";
     });
 
     dojo.connect(dom.byId("poly"), "click", function () {
         drawx.activate(Draw.POLYGON);
         mDraw.activate(Draw.LINE);
+        shapeTypeMem = "poly";
     });
 
     dojo.connect(dom.byId("rect"), "click", function () {
         drawx.activate(Draw.RECTANGLE);
         mDraw.activate(Draw.LINE);
+        shapeTypeMem = "rect";
     });
 
     dojo.connect(dom.byId("triangle"), "click", function () {
         drawx.activate(Draw.TRIANGLE);
         mDraw.activate(Draw.LINE);
+        shapeTypeMem = "triangle";
     });
 
     dojo.connect(dom.byId("circ"), "click", function () {
         drawx.activate(Draw.CIRCLE);
         mDraw.activate(Draw.LINE);
+        shapeTypeMem = "circ";
     });
 
     dojo.connect(dom.byId("pt"), "click", function () {
         drawx.activate(Draw.POINT);
         mDraw.activate(Draw.LINE);
+        shapeTypeMem = "pt";
     });
 
     dojo.connect(dom.byId("line"), "click", function () {
         drawx.activate(Draw.LINE);
         mDraw.activate(Draw.LINE);
+        shapeTypeMem = "line";
     });
 
     dojo.connect(dom.byId("polyline"), "click", function () {
         drawx.activate(Draw.POLYLINE);
         mDraw.activate(Draw.LINE);
+        shapeTypeMem = "polyline";
     });
 
     var selectionMode = 'parcs';
@@ -741,7 +824,7 @@ require([
 
                 setTimeout(function () {
                     if (!zzz) {
-                        displayResults(results);
+                        displayResults(results,"parcel");
                         zzz = true;
                     }
                 }, 1000);
@@ -1985,7 +2068,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
                     //  ownerResults(selection);
                     //   alert("ownerResults complete");
                     console.log(selection);
-                    displayResults(selection);
+                    displayResults(selection,"parcel");
                 });
                 // console.log(center);
                 
@@ -2086,10 +2169,48 @@ function zoomToPoint(evt){
 }
 
 
+function zoomToGeoPoint(evt){
+	var geom = evt.location;
+	map.graphics.clear();
+	//var symbol = new SimpleMarkerSymbol();
+	var graphic = new Graphic(geom, sfs3);
+                //add a graphic to the map at the geocoded location
+                map.graphics.add(graphic);
+                //add a text symbol to the map listing the location of the matched address.
+                var displayText = evt.address;
+                var font = new Font(
+                    "16pt",
+                    Font.STYLE_NORMAL,
+                    Font.VARIANT_NORMAL,
+                    Font.WEIGHT_BOLD,
+                    "Helvetica");
+
+                var textSymbol = new TextSymbol(
+                    displayText,
+                    font,
+                    new Color("#ff0000"));
+                textSymbol.setOffset(0, 8);
+                map.graphics.add(new Graphic(geom, textSymbol));
+                map.centerAndZoom(geom, 8);
+}
+
+
     var stripe2 = null;
     var resultsArray = new Array();
-
+	var contentType;
     function displayResults(infoArray5, infoMode) {
+    	console.log(contentType);
+    	
+    	if(contentType == undefined){
+    		console.log(infoMode);
+    		contentType = infoMode;
+    	} 
+    	if(contentType != infoMode){
+    		dom.byId("tableContent").innerHTML = "";
+    		dom.byId("filler").innerHTML = "";
+    		contentType = infoMode;
+    	}
+    	
         console.log(infoArray5);
 		domAttr.set(dom.byId("searchResults"),"class","showx");
         if (stripe2 == null) {
@@ -2399,6 +2520,8 @@ function zoomToPoint(evt){
 
     function displayGeoCoderResults(infoArray5) {
         console.log(infoArray5);
+        dom.byId("tableContent").innerHTML = "";
+    		dom.byId("filler").innerHTML = "";
 		var l = resultsArray.length;
         if (stripe2 == null) {
             stripe2 = "even";
@@ -2417,7 +2540,7 @@ function zoomToPoint(evt){
 			
 			
             var temp = domConstruct.create("tr", {
-                "innerHTML": sWide + s + "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >View Parcel" + "</a>",
+                "innerHTML": "<a class=\"goToParcel\" id=\"test" + (i + l) + "\" >" + "</a>" + sWide + s,
 
                 "class": stripe2 + " selection" + i
             }, "tableContent");
@@ -2436,8 +2559,9 @@ function zoomToPoint(evt){
                 console.log(t);
                 try {
                     //  safeClear();
-
-                    selectByPoint(resultsArray[n]);
+					console.log(resultsArray[n]);
+                   // selectByPoint(resultsArray[n]);
+                   zoomToGeoPoint(resultsArray[n]);
                     //map.infoWindow.show(resultsArray[n].location);
                 } catch (error) {
                     console.log(error);

@@ -2734,7 +2734,7 @@
     margin-top: 2px;
     margin-right: 4px;
     cursor: pointer;
-    background: url("../dijit/images/ajax-loader.gif") no-repeat;
+   /* background: url("../dijit/images/ajax-loader.gif") no-repeat; */
     width: 16px;
     height: 16px;
     background-position: 0px 0px;
@@ -2747,7 +2747,7 @@
 }
 
 .esriPopup.blueTheme .titlePane .spinner {
-    background: url("../dijit/images/ajax-loader-blue.gif") no-repeat;
+   /* background: url("../dijit/images/ajax-loader-blue.gif") no-repeat; */
 }
 
 .dj_ie7 .esriPopup .titlePane .spinner.hidden,.dj_ie7 .esriPopup.blueTheme .titlePane .spinner.hidden {
