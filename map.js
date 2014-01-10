@@ -2439,7 +2439,7 @@ function zoomToGeoPoint(evt){
                     "<td class=\"impActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Act. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5[i].attributes.ImprovementsActualValue + ".00</span></td></tr></table></td>" +
                     "<td class=\"impAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5[i].attributes.ImprovementsAssessedValue + ".00</span></td></tr></table></td>" +
                     "<td class=\"landActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Act. Val.:</span></td></tr><tr><td> <span class=\"resultsText\" >$" + infoArray5[i].attributes.LandActualValue + ".00</span></td></tr></table></td>" +
-                    "<td class=\"landAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5[i].attributes.LandAssessedValue + ".00</span></td></tr></table></td></tr></table></td>" +
+                    "<td class=\"landAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5[i].attributes.LandAssessedValue + ".00</span></td></tr></table></td>" +
                     "<td class=\"legalDesc sWide\"><table><tr><td><span class=\"resultsLabel\" >Legal Desc.:</span></td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.LegalDescription + "</span></td></tr></table></td>" +
                     "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.PropertyTax + "</span></td></tr></table></td>" +
                     "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.Subdivision + "</span></td></tr></table></td>" +
@@ -2564,39 +2564,44 @@ function zoomToGeoPoint(evt){
 		
 					
 					 var sWide = "" +
-                    "<td class=\"parNum sWide\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td>" + 
-               		  "<td class=\"assessorLink sWide\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + 
+                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td></tr></table></td>" + 
+               		  "<td class=\"assessorLink sWide\"><table><tr><td><span class=\"resultsLabel\" >Assessor Link:</span></td></tr><tr><td><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + 
                		  infoArray5.attributes.PAR_TXT + 
-               		  "\" target=\"_blank\" >" + infoArray5.attributes.PAR_TXT + "</a></span></td>" + 
-                   "<td class=\"fips sWide\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5.attributes.Fips + "</span></td>" + 
-                    "<td class=\"ownName sWide\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Owner + "</span></td>" + 
-                    "<td class=\"ownOverflow sWide\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerOverflow + "</span></td>" + 
-                    "<td class=\"ownAddress sWide\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerStreetAddress + "</span></td>" + 
-                    "<td class=\"ownCity sWide\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerCity + "</span></td>" + 
-                    "<td class=\"ownState sWide\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerState + "</span></td>" + 
-                    "<td class=\"ownZip sWide\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerZip + "</span></td>" +
-                    "<td class=\"impActVal sWide\"><span class=\"resultsLabel\" >Improvement Act. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsActualValue + ".00</span></td>" +
-                    "<td class=\"impAssVal sWide\"><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsAssessedValue + ".00</span></td>" +
-                    "<td class=\"landActVal sWide\"><span class=\"resultsLabel\" >Land Act. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.LandActualValue + ".00</span></td>" +
-                    "<td class=\"landAssVal sWide\"><span class=\"resultsLabel\" >Land Ass. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.LandAssessedValue + ".00</span></td>" +
-                    "<td class=\"legalDesc sWide\"><span class=\"resultsLabel\" >Legal Desc.:</span> <span class=\"resultsText\" >" + infoArray5.attributes.LegalDescription + "</span></td>" +
-                    "<td class=\"propTax sWide\"><span class=\"resultsLabel\" >Property Tax:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td>" +
-                    "<td class=\"subdivision sWide\"><span class=\"resultsLabel\" >Subdivision:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td>" +
-                    "<td class=\"taxDist sWide\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td>" +
-                    "<td class=\"zoning sWide\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Zoning + "</span></td>" +
+               		  "\" target=\"_blank\" >" + infoArray5.attributes.PAR_TXT + "</a></span></td></tr></table></td>" + 
+                   "<td class=\"fips sWide\"><table><tr><td><span class=\"resultsLabel\" >FIPS:</span></td></tr><tr><td><span class=\"resultsText\" > " + infoArray5.attributes.Fips + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownName sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Name:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.Owner + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownOverflow sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Overflow:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerOverflow + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownAddress sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Address:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.OwnerStreetAddress + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownCity sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. City:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.OwnerCity + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownState sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. State:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerState + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownZip sWide\"><table><tr><td><span class=\"resultsLabel\" >Own Zip:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.OwnerZip + "</span></td></tr></table></td>" +
+                    "<td class=\"impActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Act. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsActualValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"impAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsAssessedValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"landActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Act. Val.:</span></td></tr><tr><td> <span class=\"resultsText\" >$" + infoArray5.attributes.LandActualValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"landAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5.attributes.LandAssessedValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"legalDesc sWide\"><table><tr><td><span class=\"resultsLabel\" >Legal Desc.:</span></td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.LegalDescription + "</span></td></tr></table></td>" +
+                    "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td></tr></table></td>" +
+                    "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td></tr></table></td>" +
+                    "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td></tr></table></td>" +
+                    "<td class=\"zoning sWide\"><table><tr><td><span class=\"resultsLabel\" >Zoning:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.Zoning + "</span></td></tr></table></td>" +
                     
                     "";
 
-                var temp = domConstruct.create("tr", {
-    				 "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l) + "\" >" + "</a>" + sWide + s + "</div>",                    //	"id": "test" + i,
+             
+                
+                  var temp = domConstruct.create("tr", {
+                    "innerHTML":"<td><div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l) + "\" >" + "</a></td>" + sWide  + "</div>",
+                    //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
                 
                 
                  var temp2 = domConstruct.create("tr", {
-    				 "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l + 10000) + "\" >" + "</a>" + sWide + s + "</div>",                    //	"id": "test" + i,
+                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l + 10000) + "\" >" + "</a>" + s + "</div>",
+                    //	"id": "test" + i,
                     "class": stripe2
                 }, "tableTallContent");
+                
                 
                 
                 var zz = dom.byId("test" + (l));
