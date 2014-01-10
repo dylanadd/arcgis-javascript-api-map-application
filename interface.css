@@ -1542,3 +1542,9 @@ z-index: 1000;
 .LocateButton .zoomLocateButton {
 	background-image: url("images/icons/gpslocate.png");
 }
+
+html.dj_ie8 div.dijitDialogUnderlayWrapper{
+	background: none !important;
+}
+
+

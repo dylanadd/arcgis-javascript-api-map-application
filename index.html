@@ -10,7 +10,7 @@
   		   
   	 -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9">
+    <meta http-equiv="X-UA-Compatible" content="IE=8, IE=9">
     <!--The viewport meta tag is used to improve the presentation and behavior
      on iOS devices-->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"> 
@@ -31,9 +31,18 @@
 
 
 if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
- var ieversion=new Number(RegExp.$1) // capture x.x portion and store as a number
+ var ieversion=new Number(RegExp.$1); // capture x.x portion and store as a number
  if (ieversion<=8) {
+ 	if(ieversion==8){
+ 		setTimeout(function(){
+ 		ieAlert.set("title","Notice");
+       	ieAlert.set("content", "<p>Sorry, your web browser (IE-8) is out of date. </p><p>Please update to the newest version (IE-10) for the best experience. Otherwise, the application may not work as intended.</p><p><a href=\"http://www.microsoft.com/en-us/download/internet-explorer-10-details.aspx\" target=\"_blank\">Click here to update to Internet Explorer 10</a></p>");
+		ieAlert.show(); 			
+ 		},1000);
+
+ 	}else {
   alert("Sorry, your web browser is out of date and is not supported by the application. Please update to the newest version. Otherwise, the application may not work as intended.");
+  }
 }
 }
 </script>
@@ -276,7 +285,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
 		<label><input type="radio" name="0" id="circ">Circle</label><br/>
      	 <label><input type="radio" name="0" id="fpoly">Freehand </label><br/>
       	<label><input type="radio" name="0" id="poly">Polygon</label><br/>
-      	<label><input type="radio" name="0" id="triangle">Triange</label><br/>
+      	<label><input type="radio" name="0" id="triangle">Triangle</label><br/>
       	
       	<label><input type="radio" name="0" id="pt">Point</label><br/>
       	<label><input type="radio" name="0" id="line">Line</label><br/>
