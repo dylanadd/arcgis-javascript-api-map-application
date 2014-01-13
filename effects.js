@@ -273,7 +273,7 @@
         
         var unmovedView = false;
        on(fadeButton, "click", function(evt){
-    	
+    
     	on.emit(viewButton, "click", {bubbles: true, cancelable: true});
     	
     showIt();

@@ -538,6 +538,7 @@ require([
 
 	 dojo.connect(dom.byId("identify"), "click", function () {
       popup.hide();
+      	console.log(map.getLayersVisibleAtScale());
     });
 	
 	var distParams = new DistanceParameters();
@@ -672,11 +673,13 @@ require([
 
                 var c = parcels.getSelectedFeatures();
                 console.log(c);
+                map.addLayer(parcels);
+               
                 for (i = 0; i < c.length; i++) {
-                    map.graphics.add(c[i]);
+                   // map.graphics.add(c[i]);
                     infoArray2.push(results[i]);
                 }
-
+				
             }, function (error) {
 
             });
@@ -698,11 +701,13 @@ require([
 
                 var c = points.getSelectedFeatures();
                 console.log(c);
+                map.addLayer(points);
+                
                 for (i = 0; i < c.length; i++) {
-                    map.graphics.add(c[i]);
+                   // map.graphics.add(c[i]);
                     infoArray2.push(results[i]);
                 }
-
+				
             }, function (error) {
 
             });
@@ -722,9 +727,12 @@ require([
                 }, 1000);
                 var temp = new Array();
                 makeGeomArray(results);
+              //  map.addLayer(road);
+				
 				for(i=0;i < results.length;i++){
 					infoArray2.push(results[i]);
 				}
+				
             }, function (error) {
 
             });
@@ -1538,12 +1546,19 @@ function levyUrl(){
     function bufferIt() {
         domAttr.set("bufferMode", "class", "bufferModeOn processing");
         domAttr.set("body", "class", "claro buttonMode calculating");
+      map.graphics.clear();
+      
         try {
-
-          //  resultsArray.length = 0;  //testing behavior after if it doesnt clear
-
+            parcels1.clearSelection();
         } catch (e) {}
-       
+		 /* try {
+            points.clearSelection();
+        } catch (e) {}
+
+		 try {
+            road1.clearSelection();
+        } catch (e) {}
+		*/
 
         if (infoArray2.length > 1) {
             for (i = 0; i < infoArray2.length; i++) {
@@ -1585,9 +1600,12 @@ function levyUrl(){
 			ieAlert.show();
         }
         try {
-            //	parcels.clearSelection();
+            	//parcels.clearSelection();
             parcels1.clearSelection();
         } catch (e) {}
+       
+       try{infoArray3.length = 0;} catch(e){}
+       try{infoArray2.length = 0;} catch(e){}
     }
 
     function safeClear() {
