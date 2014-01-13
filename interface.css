@@ -681,7 +681,16 @@ z-index:30;
 
 a.action.zoomTo{
 	float:left;
+	display:none;	
 	
+}
+.action{
+position: relative;
+top: -17px;
+}
+.action2 {
+position: relative;
+top: -10px;
 }
 .labels{
 	color: white;

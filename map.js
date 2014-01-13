@@ -337,6 +337,11 @@ require([
         selectionTF = true;
         
         
+        if(firstSelectionClick){
+        	firstSelectionClick = false;
+        	dom.byId("bufferParcs").checked = true;
+        }
+        
         switch(selectionMode){
         	
         	case 'parcs':
@@ -796,7 +801,7 @@ require([
 		
         var zzz = false;
         gsvc.on("buffer-complete", function (result) {
-
+		
           //  map.graphics.clear();
             // draw the buffer geometry on the map as a map graphic
             var symbol = new SimpleFillSymbol(
@@ -830,10 +835,13 @@ require([
                 }, 1000);
 
                 var c = parcels1.getSelectedFeatures();
-                console.log(c);
+               // console.log(c);
+                
                 for (i = 0; i < c.length; i++) {
                     map.graphics.add(c[i]);
+                   
                 }
+                
 
             }, function (error) {
                 console.log(error);
@@ -1347,11 +1355,24 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 
     }
 
+
+function levyUrl(){
+	
+	console.log(infoArray);
+	window.open(infoArray.attributes.LevyURL);
+}
+
     map.on("layers-add-result", function (result) {
         // Add a link into the InfoWindow Actions panel       
         var emailLink = domConstruct.create("a", {
             "class": "action",
             "innerHTML": "Add Parcel Info",
+            "href": "javascript:void(0);"
+        }, query(".actionList", map.infoWindow.domNode)[0]);
+
+        var emailLink2 = domConstruct.create("a", {
+            "class": "action2",
+            "innerHTML": "How are taxes on this parcel spent?",
             "href": "javascript:void(0);"
         }, query(".actionList", map.infoWindow.domNode)[0]);
 
@@ -1367,7 +1388,10 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
                window.location;
              window.location.href = emailLink; */
         });
-
+		
+		on(emailLink2,"click", function(evt){
+			levyUrl();
+		});
         //When users navigate through the history using the browser back/forward buttons select appropriate parcel  
         //https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
         window.onpopstate = function (event) {
@@ -2211,11 +2235,12 @@ function zoomToGeoPoint(evt){
     var stripe2 = null;
     var resultsArray = new Array();
 	var contentType;
+	var displayHelp = dom.byId("displayHelp");
     function displayResults(infoArray5, infoMode) {
     	console.log(contentType);
-    	
+    	on.emit(displayHelp, "click", {bubbles: true, cancelable: true});
     	if(contentType == undefined){
-    		console.log(infoMode);
+    		//console.log(infoMode);
     		contentType = infoMode;
     	} 
     	if(contentType != infoMode){
@@ -2399,7 +2424,7 @@ function zoomToGeoPoint(evt){
         if (infoMode == "parcel" || infoMode == undefined) {
             for (i = 0; i < infoArray5.length; i++) {
                 resultsArray.push(infoArray5[i]);
-                console.log(resultsArray);
+              //  console.log(resultsArray);
                var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell tall\">" +
                     "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span><span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5[i].attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></span></td>" + "</tr>" +

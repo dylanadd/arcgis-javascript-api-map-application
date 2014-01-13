@@ -39,7 +39,7 @@
         var dockButton = dom.byId("dockButton");
         var scalebar;
         var identify = dom.byId("identify");
-        
+        var displayHelp = dom.byId("displayHelp");
         
          ieAlert = new Dialog({
         	title: "Web Browser Outdated",
@@ -279,6 +279,11 @@
     showIt();
          
         });
+      
+      on(displayHelp,"click",function(){
+      	showIt(true);
+      	openClose = true;
+      });
       
         
         function showIt(showTF) {
