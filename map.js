@@ -20,7 +20,7 @@ require([
     "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query",
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
     "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate",
-    "esri/urlUtils", "esri/graphicsUtils",
+    "esri/urlUtils", "esri/graphicsUtils", "esri/layers/GraphicsLayer",
     "dojo/_base/Color", "esri/tasks/DistanceParameters",
     "dojo/on", "dojo/query", "dojo/parser", "dojo/dom-construct", "dojo/keys", "dijit/registry", "dojo/dom",
     "esri/dijit/Print", "esri/tasks/PrintTemplate", "esri/request", "esri/config", "dojo/_base/array",
@@ -37,7 +37,7 @@ require([
     ArcGISTiledMapServiceLayer, Query,
     SimpleFillSymbol, SimpleLineSymbol,
     Graphic, Popup, PopupTemplate,
-    urlUtils, graphicsUtils,
+    urlUtils, graphicsUtils, GraphicsLayer,
     Color, DistanceParameters,
     on, query, parser, domConstruct, keys, registry, dom,
     Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
@@ -81,6 +81,8 @@ require([
             2),
         new Color([13, 255, 0, 0.5]),
         2);
+
+var gLayer = new GraphicsLayer();
 
     var  tb;
 
@@ -651,7 +653,11 @@ require([
     }
 
     function selectByShape(evt) {
-
+    	try{
+		infoArray2.length = 0;
+		map.graphics.clear();
+		} catch(e){}
+		try{gLayer.clear();} catch(e){}
         var zzz = false;
         // map.graphics.clear();
 
@@ -662,6 +668,8 @@ require([
         query2.geometry = evt;
 
         if (selectionMode == "parcs") {
+        	try{road.clearSelection();} catch(e){}
+        	try{points.clearSelection();} catch(e){}
             parcels.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
                 console.log(results);
                 setTimeout(function () {
@@ -673,10 +681,11 @@ require([
 
                 var c = parcels.getSelectedFeatures();
                 console.log(c);
-                map.addLayer(parcels);
+               // map.addLayer(parcels);
                
                 for (i = 0; i < c.length; i++) {
                    // map.graphics.add(c[i]);
+                   gLayer.add(c[i]);
                     infoArray2.push(results[i]);
                 }
 				
@@ -684,6 +693,8 @@ require([
 
             });
         } else if (selectionMode == "addr") {
+        	try{parcels.clearSelection();} catch(e){}
+        	try{road.clearSelection();} catch(e){}
             var graphic2;
 
             points.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
@@ -701,19 +712,24 @@ require([
 
                 var c = points.getSelectedFeatures();
                 console.log(c);
-                map.addLayer(points);
                 
+                // map.addLayer(points);
+                 
                 for (i = 0; i < c.length; i++) {
-                   // map.graphics.add(c[i]);
+//                    map.graphics.add(c[i]);
+						gLayer.add(c[i]);
                     infoArray2.push(results[i]);
                 }
-				
+				map.addLayer(gLayer);
             }, function (error) {
 
             });
+           
+            
         } else if (selectionMode == "roads") {
             var graphic2;
-
+			try{parcels.clearSelection();} catch(e){}
+        	try{points.clearSelection();} catch(e){}
             road.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
 
                 console.log(query2);
@@ -726,13 +742,13 @@ require([
                     }
                 }, 1000);
                 var temp = new Array();
-                makeGeomArray(results);
+                makeGeomArray2(results);
               //  map.addLayer(road);
 				
 				for(i=0;i < results.length;i++){
 					infoArray2.push(results[i]);
 				}
-				
+				map.addLayer(gLayer);
             }, function (error) {
 
             });
@@ -876,7 +892,7 @@ require([
                 console.log(c);
                 for (i = 0; i < c.length; i++) {
                     map.graphics.add(c[i]);
-                    infoArray2.push(results[i]);
+                    //infoArray2.push(results[i]); 
                 }
 
             }, function (error) {
@@ -1542,14 +1558,20 @@ function levyUrl(){
     }
 
     var infoArray3 = new Array();
-
+	var bufferTypeMem;
     function bufferIt() {
+    	
+    	//if(bufferTypeMem != selectionMode){
+    		map.graphics.clear();
+    		//bufferTypeMem = selectionMode;
+    	//}
+    	
         domAttr.set("bufferMode", "class", "bufferModeOn processing");
         domAttr.set("body", "class", "claro buttonMode calculating");
-      map.graphics.clear();
+    //  map.graphics.clear();
       
         try {
-            parcels1.clearSelection();
+         //   parcels1.clearSelection();
         } catch (e) {}
 		 /* try {
             points.clearSelection();
@@ -1605,7 +1627,7 @@ function levyUrl(){
         } catch (e) {}
        
        try{infoArray3.length = 0;} catch(e){}
-       try{infoArray2.length = 0;} catch(e){}
+      // try{infoArray2.length = 0;} catch(e){}
     }
 
     function safeClear() {
@@ -1632,8 +1654,10 @@ function levyUrl(){
 
     function clearx() {
 		var  n;
+		  try{gLayer.clear();}catch(e){}
     	domAttr.set(tools, "class" ,"clear");
         map.removeAllLayers();
+      
       //  map.addLayer(basemap);
         try{
          n = basemapGallery.getSelected().id;
@@ -1692,8 +1716,10 @@ function levyUrl(){
   			default:
   			map.addLayer(basemap);
   		}
-        
-        map.addLayer(parcelInfoLayer);
+  		 try{map.addLayer(parcelInfoLayer);} catch(e){console.log(e);}
+        try{map.addLayer(gLayer);} catch(e){console.log(e);}
+      //  map.addLayer(parcelInfoLayer);
+       
         stripe = null;
         empty();
         map.graphics.clear();
@@ -1701,6 +1727,7 @@ function levyUrl(){
         dom.byId("filler").innerHTML = "";
         count = 0;
         tf = false;
+        
         try {
             resultsArray.length = 0;
         } catch (e) {}
@@ -2864,7 +2891,7 @@ function zoomToGeoPoint(evt){
             //console.log(bufferGeometry);
             var graphic2 = new Graphic(bufferGeometry, symbol);
             // console.log(graphic2.geometry.getExtent());
-
+				
             map.graphics.add(graphic2);
             map.setExtent(graphic2.geometry.getExtent());
             
@@ -2873,7 +2900,36 @@ function zoomToGeoPoint(evt){
         });
 
     }
+function makeGeomArray2(selection) {
+		searchTimeout = true;
+        var tempArray = new Array();
 
+        for (i = 0; i < selection.length; i++) {
+            tempArray.push(selection[i].geometry);
+        }
+
+        var tempVar = gsvc.union(tempArray);
+
+        tempVar.then(function (results) {
+
+            var symbol = new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                new Color([13, 255, 0]),
+                5);
+
+            var bufferGeometry = results;
+            //console.log(bufferGeometry);
+            var graphic2 = new Graphic(bufferGeometry, symbol);
+            // console.log(graphic2.geometry.getExtent());
+				gLayer.add(graphic2);
+           // map.graphics.add(graphic2);
+            map.setExtent(graphic2.geometry.getExtent());
+            
+            domAttr.set("locate", "class", "dormant");
+            domAttr.set("body", "class", "claro buttonMode");
+        });
+
+    }
     function findRoad() {
         popup.clearFeatures();
         change = false;
