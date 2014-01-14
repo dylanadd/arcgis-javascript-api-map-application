@@ -1349,6 +1349,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 	var searchTimeout = false;
 	
     function startSearch() {
+    	try{infoArray2.length = 0;} catch(e){}
     	searchTimeout = false;
         domAttr.set("locate", "class", "processing");
        domAttr.set("body", "class", "claro buttonMode calculating");
@@ -1753,7 +1754,7 @@ function levyUrl(){
         try {
             parcels.clearSelection();
         } catch (e) {}
-
+ 
         try {
             parcels1.clearSelection();
         } catch (e) {}
@@ -2137,6 +2138,9 @@ function levyUrl(){
         popup.clearFeatures();
 		
         if (owner) {
+        	try{gLayer.clear();}catch(e){}
+             try{infoArray2.length = 0;}catch(e){}
+             try{map.graphics.clear();}catch(e){}
             var query = new Query();
             query.outFields = ["*"];
            // query.text = owner;
@@ -2156,6 +2160,7 @@ function levyUrl(){
                     //   alert("ownerResults complete");
                     console.log(selection);
                     displayResults(selection,"parcel");
+                     infoArray2.push(selection[0]);
                 });
                 // console.log(center);
                 
@@ -2163,6 +2168,8 @@ function levyUrl(){
                 domAttr.set("body", "class", "claro buttonMode");
                 map.centerAndZoom(center, 2);
                 change = true;
+                
+				try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
 
             });
             
@@ -2282,6 +2289,35 @@ function zoomToGeoPoint(evt){
 }
 
 
+
+function setInfoArray2(geom, gCode){
+	console.log(infoArray2);
+	try{infoArray2.length = 0;} catch(e){}
+	try{gLayer.clear();}catch(e){}
+	try{popup.clearFeatures();} catch(e){}
+	try{parcels.clearSelection();} catch(e){}
+
+	
+	
+	try{
+	if(gCode){
+		geom.geometry = geom.location;
+	}
+	} catch(e){console.log(e);}
+	
+	try{infoArray2.push(geom);} catch(e){}
+	
+		
+          
+             try{map.graphics.clear();}catch(e){}
+		try{gLayer.add(geom.geometry);} catch(e){console.log(e);}
+		console.log(infoArray2);
+	
+}
+
+
+
+
     var stripe2 = null;
     var resultsArray = new Array();
 	var contentType;
@@ -2350,6 +2386,7 @@ function zoomToGeoPoint(evt){
                     console.log(resultsArray[n]);
                     var t = resultsArray[n];
                     console.log(t);
+                    try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     try {
                       
 						//map.centerAndZoom(resultsArray[n].geometry, 8);
@@ -2374,6 +2411,7 @@ function zoomToGeoPoint(evt){
                     console.log(resultsArray[n - 10000]);
                     var t = resultsArray[n - 10000];
                     console.log(t);
+                    try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
                     try {
                         //  safeClear();
 
@@ -2425,6 +2463,8 @@ function zoomToGeoPoint(evt){
                     console.log(resultsArray[n]);
                     var t = resultsArray[n];
                     console.log(t);
+                    
+                    try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     try {
                         //  safeClear();
 						zoomToPoint(resultsArray[n]);
@@ -2450,6 +2490,7 @@ function zoomToGeoPoint(evt){
                     console.log(resultsArray[n - 10000]);
                     var t = resultsArray[n - 10000];
                     console.log(t);
+                    try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
                     try {
                         //  safeClear();
 
@@ -2552,6 +2593,8 @@ function zoomToGeoPoint(evt){
                     console.log(n - 10000);
                     console.log(resultsArray[n - 10000]);
                     var t = resultsArray[n - 10000];
+                    try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
+                    
                     console.log(t);
                     try {
                         //  safeClear();
@@ -2578,6 +2621,7 @@ function zoomToGeoPoint(evt){
                     console.log(resultsArray[n]);
                     var t = resultsArray[n];
                     console.log(t);
+                     try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     try {
                         //  safeClear();
 
@@ -2691,6 +2735,7 @@ function zoomToGeoPoint(evt){
                     console.log(n);
                     console.log(resultsArray[n]);
                     var t = resultsArray[n];
+                    try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     console.log(t);
                     try {
                         //  safeClear();
@@ -2716,6 +2761,7 @@ function zoomToGeoPoint(evt){
                     console.log(resultsArray[n - 10000]);
                     var t = resultsArray[n - 10000];
                     console.log(t);
+                    try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
                     try {
                         //  safeClear();
 
@@ -2751,6 +2797,7 @@ function zoomToGeoPoint(evt){
     }
 
     function displayGeoCoderResults(infoArray5) {
+    	setInfoArray2(infoArray5.addresses[0], true); // so user can buffer first result
     	contentType = "geoCoder"; //ensures results clear when user searches for different data type
         console.log(infoArray5);
         try{
@@ -2803,6 +2850,7 @@ function zoomToGeoPoint(evt){
                 console.log(resultsArray[n]);
                 var t = resultsArray[n];
                 console.log(t);
+                try{setInfoArray2(resultsArray[n], true);} catch(e){console.log(e);}
                 try {
                     //  safeClear();
 					console.log(resultsArray[n]);
@@ -2830,6 +2878,7 @@ function zoomToGeoPoint(evt){
                     console.log(resultsArray[n - 10000]);
                     var t = resultsArray[n - 10000];
                     console.log(t);
+                    try{setInfoArray2(resultsArray[n - 10000], true);} catch(e){console.log(e);}
                     try {
                         //  safeClear();
 
@@ -2927,7 +2976,7 @@ function makeGeomArray2(selection) {
             var graphic2 = new Graphic(bufferGeometry, symbol);
             // console.log(graphic2.geometry.getExtent());
 				gLayer.add(graphic2);
-           // map.graphics.add(graphic2);
+            map.graphics.add(graphic2);
             map.setExtent(graphic2.geometry.getExtent());
             
             domAttr.set("locate", "class", "dormant");
@@ -2953,7 +3002,26 @@ function makeGeomArray2(selection) {
                 map.infoWindow.setFeatures(selection);
 
             });
-
+            /*
+			var temp = new Array();
+			for(i=0;i < selection.length;i++){
+				temp.push(selection[i].geometry);
+			}
+			var x = gsvc.union(temp);
+			
+			x.on("union-complete",function(results){
+				var symbol = new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                new Color([13, 255, 0]),
+                5);
+				console.log(results);
+				var d = results;
+				var z = new Graphic(d, symbol);
+				console.log(z);
+				gLayer.add(z);
+				
+			});
+			*/
             // map.setZoom(3);
             //  map.setZoom(1);
             change = false;
