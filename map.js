@@ -915,7 +915,7 @@ var gLayer = new GraphicsLayer();
                 var temp = new Array();
                 makeGeomArray(results);
 				for(i=0;i < results.length;i++){
-					infoArray2.push(results[i]);
+					//infoArray2.push(results[i]);
 				}
             }, function (error) {
 
@@ -1244,8 +1244,12 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
             // console.log(e);
             // map.centerAndZoom(e.mapPoint, 10);
             //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
-            var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
+             try{gLayer.clear();}catch(e){}
+             try{infoArray2.length = 0;}catch(e){}
+             try{map.graphics.clear();}catch(e){}
+            var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
                 console.debug(selection);
+               
 				try{
 					map.infoWindow.setFeatures(selection);
 					infoArray = selection[0];
@@ -1263,8 +1267,8 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
                         infoArray2.push(selection[0]);
                     }
                 }
-
-                map.addLayer(parcels);
+				try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
+              //  map.addLayer(parcels);
 			
             }, function (error) {
                 alert(error);
@@ -1571,6 +1575,7 @@ function levyUrl(){
     //  map.graphics.clear();
       
         try {
+        	infoArray3.length = 0;
          //   parcels1.clearSelection();
         } catch (e) {}
 		 /* try {
