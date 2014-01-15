@@ -82,6 +82,23 @@ require([
         new Color([13, 255, 0, 0.5]),
         2);
 
+var sfs5 = new SimpleMarkerSymbol(
+        SimpleMarkerSymbol.STYLE_DIAMOND, 15,
+        new SimpleLineSymbol(
+            SimpleLineSymbol.STYLE_SOLID,
+            new Color([255, 0, 0]),
+            2),
+        new Color([255, 0, 0, 0.5]),
+        2);
+
+
+	 var sfs4 = new SimpleLineSymbol(
+        SimpleLineSymbol.STYLE_SOLID, 10,
+        new Color([255, 0, 0]),
+
+        2);
+
+
 var gLayer = new GraphicsLayer();
 
     var  tb;
@@ -742,13 +759,13 @@ var gLayer = new GraphicsLayer();
                     }
                 }, 1000);
                 var temp = new Array();
-                makeGeomArray2(results);
+                makeGeomArray3(results);
               //  map.addLayer(road);
 				
 				for(i=0;i < results.length;i++){
 					infoArray2.push(results[i]);
 				}
-				map.addLayer(gLayer);
+			//	map.addLayer(gLayer);
             }, function (error) {
 
             });
@@ -811,7 +828,7 @@ var gLayer = new GraphicsLayer();
         mode: FeatureLayer.MODE_SELECTION
     });
 
-    points1.setSelectionSymbol(sfs3);
+    points1.setSelectionSymbol(sfs5);
 
         road1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/3", {
         outFields: ["*"],
@@ -821,7 +838,7 @@ var gLayer = new GraphicsLayer();
         spatialRelationship: FeatureLayer.SPATIAL_REL_CROSSES
     });
 
-    road1.setSelectionSymbol(sfs2);
+    road1.setSelectionSymbol(sfs4);
 		
         var zzz = false;
         gsvc.on("buffer-complete", function (result) {
@@ -1479,6 +1496,7 @@ function levyUrl(){
 
     function showResults(evt) {
         displayGeoCoderResults(evt);
+        try{gLayer.clear();}catch(e){}
         var candidate;
         var symbol = new SimpleMarkerSymbol();
         var infoTemplate = new InfoTemplate(
@@ -1500,7 +1518,10 @@ function levyUrl(){
                 geom = candidate.location;
                 var graphic = new Graphic(geom, sfs3, attributes, infoTemplate);
                 //add a graphic to the map at the geocoded location
-                map.graphics.add(graphic);
+                
+               // map.graphics.add(graphic);
+               gLayer.add(graphic);
+               
                 //add a text symbol to the map listing the location of the matched address.
                 var displayText = candidate.address;
                 var font = new Font(
@@ -1515,7 +1536,9 @@ function levyUrl(){
                     font,
                     new Color("#ff0000"));
                 textSymbol.setOffset(0, 8);
-                map.graphics.add(new Graphic(geom, textSymbol));
+                //map.graphics.add(new Graphic(geom, textSymbol));
+                gLayer.add(new Graphic(geom, textSymbol));
+                map.addLayer(gLayer);
                 return false; //break out of loop after one candidate with score greater  than 80 is found.
             }
         });
@@ -2221,12 +2244,15 @@ function makeWordArray(owner){
 function zoomToRoad(evt){
 	var geom = evt.geometry;
 	map.graphics.clear();
+	try{gLayer.clear();}catch(e){}
 	//var symbol = new SimpleMarkerSymbol();
 	var graphic = new Graphic(geom, symbolx);
                 //add a graphic to the map at the geocoded location
                 
                 try{
-                map.graphics.add(graphic);
+                //map.graphics.add(graphic);
+                gLayer.add(graphic);
+                map.addLayer(gLayer);
                 } catch(e){
                 	console.log(e);
                 }
@@ -2240,10 +2266,12 @@ function zoomToRoad(evt){
 function zoomToPoint(evt){
 	var geom = evt.geometry;
 	map.graphics.clear();
+	try{gLayer.clear();}catch(e){}
 	//var symbol = new SimpleMarkerSymbol();
 	var graphic = new Graphic(geom, sfs3);
                 //add a graphic to the map at the geocoded location
-                map.graphics.add(graphic);
+                //map.graphics.add(graphic);
+                gLayer.add(graphic);
                 //add a text symbol to the map listing the location of the matched address.
                 var displayText = evt.attributes.FULLADDR;
                 var font = new Font(
@@ -2258,7 +2286,10 @@ function zoomToPoint(evt){
                     font,
                     new Color("#ff0000"));
                 textSymbol.setOffset(0, 8);
-                map.graphics.add(new Graphic(geom, textSymbol));
+               // map.graphics.add(new Graphic(geom, textSymbol));
+             
+               gLayer.add(new Graphic(geom,textSymbol));
+               map.addLayer(gLayer);
                 map.centerAndZoom(geom, 8);
 }
 
@@ -2266,10 +2297,12 @@ function zoomToPoint(evt){
 function zoomToGeoPoint(evt){
 	var geom = evt.location;
 	map.graphics.clear();
+	try{gLayer.clear();}catch(e){}
 	//var symbol = new SimpleMarkerSymbol();
 	var graphic = new Graphic(geom, sfs3);
                 //add a graphic to the map at the geocoded location
-                map.graphics.add(graphic);
+                //map.graphics.add(graphic);
+                gLayer.add(graphic);
                 //add a text symbol to the map listing the location of the matched address.
                 var displayText = evt.address;
                 var font = new Font(
@@ -2284,7 +2317,10 @@ function zoomToGeoPoint(evt){
                     font,
                     new Color("#ff0000"));
                 textSymbol.setOffset(0, 8);
-                map.graphics.add(new Graphic(geom, textSymbol));
+               // map.graphics.add(new Graphic(geom, textSymbol));
+             
+               gLayer.add(new Graphic(geom,textSymbol));
+               map.addLayer(gLayer);
                 map.centerAndZoom(geom, 8);
 }
 
@@ -2938,7 +2974,8 @@ function setInfoArray2(geom, gCode){
 
             var symbol = new SimpleLineSymbol(
                 SimpleLineSymbol.STYLE_SOLID,
-                new Color([13, 255, 0]),
+               // new Color([13, 255, 0]),
+                new Color([255, 0, 0]),
                 5);
 
             var bufferGeometry = results;
