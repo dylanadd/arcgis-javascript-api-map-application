@@ -2984,6 +2984,45 @@ function makeGeomArray2(selection) {
         });
 
     }
+    
+    
+    function makeGeomArray3(selection) {
+    	try{infoArray2.length = 0;} catch(e){console.log(e);}
+		searchTimeout = true;
+        var tempArray = new Array();
+
+        for (i = 0; i < selection.length; i++) {
+            tempArray.push(selection[i].geometry);
+        }
+        
+
+		
+		
+        var tempVar = gsvc.union(tempArray);
+
+        tempVar.then(function (results) {
+        	selection[0].geometry = results;
+			try{infoArray2.push(selection[0]);} catch(e){console.log(e);}
+            var symbol = new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                new Color([13, 255, 0]),
+                5);
+
+            var bufferGeometry = results;
+            //console.log(bufferGeometry);
+            var graphic2 = new Graphic(bufferGeometry, symbol);
+            // console.log(graphic2.geometry.getExtent());
+				
+           // map.graphics.add(graphic2);
+           gLayer.add(graphic2);
+            map.setExtent(graphic2.geometry.getExtent());
+            map.addLayer(gLayer);
+            domAttr.set("locate", "class", "dormant");
+            domAttr.set("body", "class", "claro buttonMode");
+        });
+
+    }
+    
     function findRoad() {
         popup.clearFeatures();
         change = false;
@@ -3002,6 +3041,9 @@ function makeGeomArray2(selection) {
                 map.infoWindow.setFeatures(selection);
 
             });
+            
+            
+            
             /*
 			var temp = new Array();
 			for(i=0;i < selection.length;i++){
@@ -3025,7 +3067,7 @@ function makeGeomArray2(selection) {
             // map.setZoom(3);
             //  map.setZoom(1);
             change = false;
-            makeGeomArray(selection);
+            makeGeomArray3(selection);
 
         });
     }
