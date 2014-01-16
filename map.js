@@ -9,37 +9,42 @@ var draw = null;
 var buff = null;
 var navToolbar;
 var overviewMapDijit;
+var mDraw;
+var legendDijit;
+var legendStartup = false;
+var gsvc, p, paramx, sp;
+var selectionTF = false;
 // var gsvc, tb;
 require([
-    "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer",
+    "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/dijit/LocateButton", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
     "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query",
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
     "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate",
-    "esri/urlUtils", "esri/graphicsUtils",
-    "dojo/_base/Color",
+    "esri/urlUtils", "esri/graphicsUtils", "esri/layers/GraphicsLayer",
+    "dojo/_base/Color", "esri/tasks/DistanceParameters",
     "dojo/on", "dojo/query", "dojo/parser", "dojo/dom-construct", "dojo/keys", "dijit/registry", "dojo/dom",
     "esri/dijit/Print", "esri/tasks/PrintTemplate", "esri/request", "esri/config", "dojo/_base/array",
     "esri/dijit/BasemapGallery", "esri/arcgis/utils", "esri/dijit/BasemapLayer", "esri/dijit/Basemap",
     "esri/dijit/Scalebar", "esri/dijit/Measurement", "esri/tasks/locator", "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate",
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
-    "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/toolbars/navigation", "esri/tasks/QueryTask", "dojo/_base/connect",
+    "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/toolbars/navigation", "esri/tasks/QueryTask", //"dojo/_base/connect",
     "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "dojo/behavior", "dojo/request", "esri/dijit/PopupMobile",
 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
 ], function (
-    Map, FeatureLayer, OverviewMap, ArcGISImageServiceLayer, ArcGISDynamicMapServiceLayer,
+    Map, FeatureLayer, OverviewMap, LocateButton,  ArcGISImageServiceLayer, ArcGISDynamicMapServiceLayer, Legend,
     ArcGISTiledMapServiceLayer, Query,
     SimpleFillSymbol, SimpleLineSymbol,
     Graphic, Popup, PopupTemplate,
-    urlUtils, graphicsUtils,
-    Color,
+    urlUtils, graphicsUtils, GraphicsLayer,
+    Color, DistanceParameters,
     on, query, parser, domConstruct, keys, registry, dom,
     Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
     Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
     domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, Navigation, QueryTask,
-    Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile
+    Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile 
 
 ) {
 
@@ -77,7 +82,26 @@ require([
         new Color([13, 255, 0, 0.5]),
         2);
 
-    var gsvc, tb;
+var sfs5 = new SimpleMarkerSymbol(
+        SimpleMarkerSymbol.STYLE_DIAMOND, 15,
+        new SimpleLineSymbol(
+            SimpleLineSymbol.STYLE_SOLID,
+            new Color([255, 0, 0]),
+            2),
+        new Color([255, 0, 0, 0.5]),
+        2);
+
+
+	 var sfs4 = new SimpleLineSymbol(
+        SimpleLineSymbol.STYLE_SOLID, 10,
+        new Color([255, 0, 0]),
+
+        2);
+
+
+var gLayer = new GraphicsLayer();
+
+    var  tb;
 
     /*  var popup = new Popup({
         fillSymbol: sfs
@@ -210,30 +234,50 @@ require([
     });
 
     navToolbar = new Navigation(map);
-
+	var rBZoom = new Draw(map, {
+		showTooltips: false});
     var overviewLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer");
-    // console.dir(navToolbar)
+
     map.on("load", function () {
         //	map.setZoom(2);
         map.setZoom(1);
-        on.emit(dom.byId("toggleOutput"), "click", {
-            bubbles: true,
-            cancelable: true
-        });
+        //on.emit(dom.byId("toggleOutput"), "click", {
+          //  bubbles: true,
+           // cancelable: true
+       // });
         domAttr.remove(dom.byId("measurementDiv"), "style");
-
-        navToolbar.activate(Navigation.ZOOM_IN);
-
+		rubberBandZoomMode(true);
+       // navToolbar.activate(Navigation.ZOOM_IN);
+		//console.dir(measurement);
+		legendDijit = new Legend({
+    map: map
+   
+  },"legendDiv");
+  //console.dir(legendDijit);
+  
+//console.log(navigator.geolocation.getCurrentPosition());
+	
     });
 
+	
+	
+	var finishedLoading = false;
     //Indicate map loading
     map.on("update-start", function () {
-        //  domAttr.set("gallery", "class", "processing");
-
+        finishedLoading = false;
+        domAttr.set("body", "class", "claro buttonMode calculating");
+        setTimeout(function(){
+        	if(!finishedLoading){
+        		domAttr.set("body", "class", "claro buttonMode");
+        	}
+        }, 20000);
+		
     });
 
     map.on("update-end", function () {
+    	finishedLoading = true;
         domAttr.set("gallery", "class", "dormant");
+        domAttr.set("body", "class", "claro buttonMode");
 
     });
 
@@ -257,10 +301,12 @@ require([
         }
 
     });
-
+	var tools = dom.byId("tools");
     //Listen for button clicks in text mode
     dojo.connect(dom.byId("zoom"), "click", function () {
-        navToolbar.activate(Navigation.ZOOM_IN);
+        navToolbar.deactivate();
+        rubberBandZoomMode(true);
+        domAttr.set(tools, "class", "zoomActive");
     });
 
     /*  dojo.connect(dom.byId("zoom_out"), "click", function(){
@@ -268,12 +314,15 @@ require([
     });*/
 
     dojo.connect(dom.byId("pan"), "click", function () {
+    	rubberBandZoomMode(false);
         navToolbar.activate(Navigation.PAN);
+        domAttr.set(tools, "class" ,"panActive");
     });
 
     var overView = false;
     var overViewStartUp = false;
     dojo.connect(dom.byId("overviewToggle"), "click", function () {
+    	
         if (!overViewStartUp) {
             overviewMapDijit = new OverviewMap({
                 map: map,
@@ -293,13 +342,107 @@ require([
         }
 
     });
+	var firstSelectionClick = true;
+	 selectionTF = false;
 
+	var shapeTypeMem = "rect";
     dojo.connect(dom.byId("selection"), "click", function () {
+    	console.log(shapeTypeMem);
+    	console.log(selectionMode);
+    	if(!selectionTF){
+    	domAttr.set(tools, "class" ,"selectActive");
+    	rubberBandZoomMode(false);
         startDrawSelect();
+        selectionTF = true;
+        
+        
+        if(firstSelectionClick){
+        	firstSelectionClick = false;
+        	dom.byId("bufferParcs").checked = true;
+        }
+        
+        switch(selectionMode){
+        	
+        	case 'parcs':
+        		
+       			
+        		dom.byId("parcs").checked = true;
+        		
+        		break;
+        	case 'addr':
+        		dom.byId("addr").checked = true;
+        		break;
+        	case 'roads':
+        		dom.byId("roads").checked = true;
+        		break;
+        }
+        
+        switch(shapeTypeMem){
+        	
+        	case 'rect':
+        		dom.byId("rect").checked = true;
+        		drawx.activate(Draw.RECTANGLE);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'circ':
+        		dom.byId("circ").checked = true;
+        		drawx.activate(Draw.CIRCLE);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'fpoly':
+        		dom.byId("fpoly").checked = true;
+        		drawx.activate(Draw.FREEHAND_POLYGON);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'poly':
+        		dom.byId("poly").checked = true;
+        		drawx.activate(Draw.POLYGON);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'triangle':
+        		dom.byId("triangle").checked = true;
+        		drawx.activate(Draw.TRIANGLE);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'pt':
+        		dom.byId("pt").checked = true;
+        		drawx.activate(Draw.POINT);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'line':
+        		dom.byId("line").checked = true;
+        		drawx.activate(Draw.LINE);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	case 'polyline':
+        		dom.byId("polyline").checked = true;
+        		drawx.activate(Draw.POLYLINE);
+				mDraw.activate(Draw.LINE);
+        		break;
+        	
+        	
+        }
+        
+        
+        
+        
+      } else {
+      	domAttr.set(tools, "class" ,"panActive");
+      	selectionTF = false;
+      	drawHelper = false;
+      	draw = false;
+      	drawx.deactivate();
+      	mDraw.deactivate();
+      }
     });
 
     dojo.connect(dom.byId("selectHelp"), "click", function () {
         //Helper Listener - Do not remove
+    });
+
+	 
+	dojo.connect(dom.byId("exportResults"), "click", function () {
+		exportSearchResults();
     });
 
     dojo.connect(dom.byId("textPrint"), "click", function () {
@@ -309,7 +452,14 @@ require([
     dojo.connect(dom.byId("textShowSelection"), "click", function () {
 
     });
-
+	dojo.connect(dom.byId("legendToggle"), "click", function(){
+		if(!legendStartup){
+		legendDijit.startup();
+		legendStartup = true;
+		}
+		
+	});
+	
     dojo.connect(dom.byId("textLegend"), "click", function () {
         on.emit(dom.byId("legendToggle"), "click", {
             bubbles: true,
@@ -324,38 +474,53 @@ require([
 
     dojo.connect(dom.byId("fpoly"), "click", function () {
         drawx.activate(Draw.FREEHAND_POLYGON);
-
+		mDraw.activate(Draw.LINE);
+		shapeTypeMem = "fpoly";
     });
 
     dojo.connect(dom.byId("poly"), "click", function () {
         drawx.activate(Draw.POLYGON);
+        mDraw.activate(Draw.LINE);
+        shapeTypeMem = "poly";
     });
 
     dojo.connect(dom.byId("rect"), "click", function () {
         drawx.activate(Draw.RECTANGLE);
+        mDraw.activate(Draw.LINE);
+        shapeTypeMem = "rect";
     });
 
     dojo.connect(dom.byId("triangle"), "click", function () {
         drawx.activate(Draw.TRIANGLE);
+        mDraw.activate(Draw.LINE);
+        shapeTypeMem = "triangle";
     });
 
     dojo.connect(dom.byId("circ"), "click", function () {
         drawx.activate(Draw.CIRCLE);
+        mDraw.activate(Draw.LINE);
+        shapeTypeMem = "circ";
     });
 
     dojo.connect(dom.byId("pt"), "click", function () {
         drawx.activate(Draw.POINT);
+        mDraw.activate(Draw.LINE);
+        shapeTypeMem = "pt";
     });
 
     dojo.connect(dom.byId("line"), "click", function () {
         drawx.activate(Draw.LINE);
+        mDraw.activate(Draw.LINE);
+        shapeTypeMem = "line";
     });
 
     dojo.connect(dom.byId("polyline"), "click", function () {
         drawx.activate(Draw.POLYLINE);
+        mDraw.activate(Draw.LINE);
+        shapeTypeMem = "polyline";
     });
 
-    var selectionMode = '';
+    var selectionMode = 'parcs';
     dojo.connect(dom.byId("parcs"), "click", function () {
         selectionMode = "parcs";
         dom.byId("bufferParcs").checked = true;
@@ -390,13 +555,107 @@ require([
         console.log(selectionMode);
     });
 
+	 dojo.connect(dom.byId("identify"), "click", function () {
+      popup.hide();
+      	console.log(map.getLayersVisibleAtScale());
+    });
+    
+    var addrSearchMode = "geo"; //default option is geocode the address
+    
+     dojo.connect(dom.byId("geo"), "click", function () {
+      	addrSearchMode = "geo";
+    });
+    
+    dojo.connect(dom.byId("raw"), "click", function () {
+      	addrSearchMode = "raw";
+    });
+    
+     dojo.connect(dom.byId("addrCancel"), "click", function () {
+      	domAttr.set("addrSearchBox","class","hide");
+    });
+	
+	var distParams = new DistanceParameters();
+	distParams.distanceUnit = GeometryService.UNIT_FOOT;
+	
+	
+	
+	map.on("mouse-drag-start", function(evt){
+		
+		if(drawHelper){
+		
+		
+		domAttr.set(dom.byId("junk"), "style", "");
+		console.log(evt.mapPoint);
+		distParams.geometry1 = evt.mapPoint;
+		}
+	});
+	
+	
+	map.on("mouse-drag-end", function(evt){
+		if(drawHelper){
+		console.log(evt.mapPoint);
+		domAttr.set(dom.byId("junk"), "style", "display:none;");
+		setTimeout(function(){dom.byId("junk").innerHTML = "";}, 100);
+		setTimeout(function(){dom.byId("junk").innerHTML = "";}, 200);
+		setTimeout(function(){dom.byId("junk").innerHTML = "";}, 300);
+		setTimeout(function(){dom.byId("junk").innerHTML = "";}, 500);
+		}
+		
+	});
+	var eff = 3;
+	map.on("mouse-drag", function(evt){
+		if(drawHelper){
+		domAttr.set(dom.byId("junk"), "style", "left: " + (evt.x + 15) + "px; top: " + (evt.y + 15) + "px;");
+		
+		if(eff % 3 == 0){
+		distParams.geometry2 = evt.mapPoint;
+		gsvc.distance(distParams, function(distance) {
+			var xxx = parseFloat(distance);
+			console.log(xxx.toFixed(1));
+			dom.byId("junk").innerHTML = xxx.toFixed(1) + " ft.";
+			
+ 
+  		
+		});
+		eff++;
+		 } else {
+  	eff++;}
+  			
+		}
+                
+	});
+	
+	
+	
+	
+	function rubberBandZoomMode(rbTF){
+		if(rbTF){
+		rBZoom.activate(Draw.RECTANGLE);
+		rBZoom.on("draw-end", function(evt){
+		var graphic = new Graphic(evt.geometry, sfs);
+        
+       
+        var ar = new Array();
+        ar.push(graphic);
+
+        map.setExtent(graphicsUtils.graphicsExtent(ar));
+        
+		});
+		
+		} else {rBZoom.deactivate();}
+	}
+
+	var drawHelper;
     var drawx;
     //Select by shape function
     function startDrawSelect() {
+    	drawHelper = true;
         navToolbar.activate(Navigation.PAN);
         drawx = new Draw(map, {
             showTooltips: true
         });
+        mDraw = new Draw(map, {showTooltips: false});
+		
         drawx.on("draw-end", addToMap);
         // draw.activate(Draw.CIRCLE);
         draw = true;
@@ -408,18 +667,28 @@ require([
         // map.graphics.add(graphic);
         console.log(evt);
         console.log(graphic);
-        selectByShape(evt.geometry);
-
+       /* var ar = new Array();
+        ar.push(graphic);
+        console.log(graphicsUtils.graphicsExtent(ar));
+        map.setExtent(graphicsUtils.graphicsExtent(ar));
+ */       selectByShape(evt.geometry);
+		mDraw.deactivate();
         drawx.deactivate();
         draw = false;
+        drawHelper = false;
         on.emit(dom.byId("selectHelp"), "click", {
             bubbles: true,
             cancelable: true
         });
+        
     }
 
     function selectByShape(evt) {
-
+    	try{
+		infoArray2.length = 0;
+		map.graphics.clear();
+		} catch(e){}
+		try{gLayer.clear();} catch(e){}
         var zzz = false;
         // map.graphics.clear();
 
@@ -430,6 +699,8 @@ require([
         query2.geometry = evt;
 
         if (selectionMode == "parcs") {
+        	try{road.clearSelection();} catch(e){}
+        	try{points.clearSelection();} catch(e){}
             parcels.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
                 console.log(results);
                 setTimeout(function () {
@@ -441,15 +712,20 @@ require([
 
                 var c = parcels.getSelectedFeatures();
                 console.log(c);
+               // map.addLayer(parcels);
+               
                 for (i = 0; i < c.length; i++) {
-                    map.graphics.add(c[i]);
+                   // map.graphics.add(c[i]);
+                   gLayer.add(c[i]);
                     infoArray2.push(results[i]);
                 }
-
+				
             }, function (error) {
 
             });
         } else if (selectionMode == "addr") {
+        	try{parcels.clearSelection();} catch(e){}
+        	try{road.clearSelection();} catch(e){}
             var graphic2;
 
             points.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
@@ -467,17 +743,24 @@ require([
 
                 var c = points.getSelectedFeatures();
                 console.log(c);
+                
+                // map.addLayer(points);
+                 
                 for (i = 0; i < c.length; i++) {
-                    map.graphics.add(c[i]);
+//                    map.graphics.add(c[i]);
+						gLayer.add(c[i]);
                     infoArray2.push(results[i]);
                 }
-
+				map.addLayer(gLayer);
             }, function (error) {
 
             });
+           
+            
         } else if (selectionMode == "roads") {
             var graphic2;
-
+			try{parcels.clearSelection();} catch(e){}
+        	try{points.clearSelection();} catch(e){}
             road.selectFeatures(query2, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
 
                 console.log(query2);
@@ -490,23 +773,27 @@ require([
                     }
                 }, 1000);
                 var temp = new Array();
-                makeGeomArray(results);
+                makeGeomArray3(results);
+              //  map.addLayer(road);
+				
 				for(i=0;i < results.length;i++){
 					infoArray2.push(results[i]);
 				}
+			//	map.addLayer(gLayer);
             }, function (error) {
 
             });
 
             // map.addLayer(road);
         }
-
+		domAttr.set(tools, "class", "panActive");
     }
 
     //Buffer Function
     //	 map.on("load", initToolbar);
 
-    gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+  //  gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+   gsvc = new GeometryService("http://maps.co.pueblo.co.us/outside/rest/services/Utilities/Geometry/GeometryServer");
     //add proxy functions for all modules
     esriConfig.defaults.io.proxyUrl = "proxy.php";
     esriConfig.defaults.io.alwaysUseProxy = false;
@@ -555,7 +842,7 @@ require([
         mode: FeatureLayer.MODE_SELECTION
     });
 
-    points1.setSelectionSymbol(sfs3);
+    points1.setSelectionSymbol(sfs5);
 
         road1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/3", {
         outFields: ["*"],
@@ -565,11 +852,11 @@ require([
         spatialRelationship: FeatureLayer.SPATIAL_REL_CROSSES
     });
 
-    road1.setSelectionSymbol(sfs2);
+    road1.setSelectionSymbol(sfs4);
 		
         var zzz = false;
         gsvc.on("buffer-complete", function (result) {
-
+		
           //  map.graphics.clear();
             // draw the buffer geometry on the map as a map graphic
             var symbol = new SimpleFillSymbol(
@@ -597,16 +884,19 @@ require([
 
                 setTimeout(function () {
                     if (!zzz) {
-                        displayResults(results);
+                        displayResults(results,"parcel");
                         zzz = true;
                     }
                 }, 1000);
 
                 var c = parcels1.getSelectedFeatures();
-                console.log(c);
+               // console.log(c);
+                
                 for (i = 0; i < c.length; i++) {
                     map.graphics.add(c[i]);
+                   
                 }
+                
 
             }, function (error) {
                 console.log(error);
@@ -633,7 +923,7 @@ require([
                 console.log(c);
                 for (i = 0; i < c.length; i++) {
                     map.graphics.add(c[i]);
-                    infoArray2.push(results[i]);
+                    //infoArray2.push(results[i]); 
                 }
 
             }, function (error) {
@@ -656,7 +946,7 @@ require([
                 var temp = new Array();
                 makeGeomArray(results);
 				for(i=0;i < results.length;i++){
-					infoArray2.push(results[i]);
+					//infoArray2.push(results[i]);
 				}
             }, function (error) {
 
@@ -665,7 +955,7 @@ require([
             // map.addLayer(road);
         }
             
-
+			domAttr.set("body", "class", "claro buttonMode");
             domAttr.set("bufferMode", "class", "bufferModeOn");
         });
 
@@ -675,8 +965,8 @@ require([
 
     //Buffer Function
     // map.on("load", initToolbar);
-
-    gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+	gsvc = new GeometryService("http://maps.co.pueblo.co.us/outside/rest/services/Utilities/Geometry/GeometryServer");
+   // gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
     //add proxy functions for all modules
     esriConfig.defaults.io.proxyUrl = "proxy.php";
     esriConfig.defaults.io.alwaysUseProxy = false;
@@ -718,8 +1008,8 @@ require([
     map.addLayer(parcelInfoLayer);
 
     //BEGIN functions for print dijit
-    var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
-
+    //var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
+	var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
     // get print templates from the export web map task
     var printInfo = esriRequest({
         "url": printUrl,
@@ -775,11 +1065,13 @@ require([
 
         printer.on("print-start", function () {
             domAttr.set("print_button", "class", "processing");
+            domAttr.set("body", "class", "claro buttonMode calculating");
         });
 
         printer.on("print-complete", function () {
 
             domAttr.set("print_button", "class", "dormant");
+            domAttr.set("body", "class", "claro buttonMode");
 
         });
 
@@ -832,9 +1124,13 @@ require([
     basemapGallery.on("selection-change", function () {
         //	alert("test");
         //basemapGallery.startup();
+       // map.removeAllLayers();
+       
         map.removeLayer(parcelInfoLayer);
         map.addLayer(parcelInfoLayer);
-
+        if(legendStartup){
+		legendDijit.refresh();
+		}
         //    console.dir(basemapGallery.getSelected());
     });
 
@@ -853,8 +1149,8 @@ require([
     //END scalebar Dijit
 
     //BEGIN measurement Dijit
-
-    esriConfig.defaults.geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo.co.us/outside/rest/services/Utilities/Geometry/GeometryServer");
+   // esriConfig.defaults.geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
 
     var measurement = new esri.dijit.Measurement({
         map: map
@@ -939,6 +1235,9 @@ require([
 
     //BEGIN Legend Dijit
 
+
+	
+
     /*
          
          //if (layerInfo.length > 0) {
@@ -967,7 +1266,7 @@ require([
 
     //when users click on the map select the parcel using the map point and update the url parameter
     map.on("click", function (e) {
-
+		
         console.log(e.mapPoint);
 
         if (draw == false || draw == null) {
@@ -976,9 +1275,16 @@ require([
             // console.log(e);
             // map.centerAndZoom(e.mapPoint, 10);
             //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
-            var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_ADD, function (selection) {
+             try{gLayer.clear();}catch(e){}
+             try{infoArray2.length = 0;}catch(e){}
+             try{map.graphics.clear();}catch(e){}
+            var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
                 console.debug(selection);
-
+               
+				try{
+					map.infoWindow.setFeatures(selection);
+					infoArray = selection[0];
+				} catch(e){}
                 //update the url param if a parcel was located
                 if (selection.length > 0) {
                     var parcelid = selection[0].attributes["PAR_NUM"];
@@ -988,17 +1294,18 @@ require([
                     if (typeof history.pushState !== "undefined") {
                         //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
                         infoArray = selection[0];
+                        console.log(infoArray);
                         infoArray2.push(selection[0]);
                     }
                 }
-
-                map.addLayer(parcels);
-
+				try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
+              //  map.addLayer(parcels);
+			
             }, function (error) {
                 alert(error);
             }); //end of defferred variable declaration
-
-            map.infoWindow.setFeatures([deferred]);
+			
+           // map.infoWindow.setFeatures([deferred]);
             map.infoWindow.show(e.mapPoint);
             console.log(popup);
             //  selectedParcel = selection[0];
@@ -1044,6 +1351,7 @@ require([
         domAttr.set("ownerParcelSwitch", "class", "selected");
         domAttr.set("addressSwitch", "class", "deselected");
         domAttr.set("roadSwitch", "class", "deselected");
+        domAttr.set("addrSearchBox","class","hide");
     }
 
     function addressMode() {
@@ -1055,6 +1363,7 @@ require([
         domAttr.set("ownerParcelSwitch", "class", "deselected");
         domAttr.set("addressSwitch", "class", "selected");
         domAttr.set("roadSwitch", "class", "deselected");
+        domAttr.set("addrSearchBox","class","nada");
     }
 
     function roadMode() {
@@ -1067,29 +1376,103 @@ require([
         domAttr.set("ownerParcelSwitch", "class", "deselected");
         domAttr.set("addressSwitch", "class", "deselected");
         domAttr.set("roadSwitch", "class", "selected");
+        domAttr.set("addrSearchBox","class","hide");
     }
-
+	
+	
+	var searchTimeout = false;
+	
     function startSearch() {
+    	try{infoArray2.length = 0;} catch(e){console.log(e);}
+    	try{domAttr.set("addrSearchBox","class","hide");} catch(e){console.log(e);}
+    	searchTimeout = false;
         domAttr.set("locate", "class", "processing");
+       domAttr.set("body", "class", "claro buttonMode calculating");
+       setTimeout(function(){
+       		if(!searchTimeout){
+       			domAttr.set("locate", "class", "dormant");
+       			domAttr.set("body", "class", "claro buttonMode");
+       			ieAlert.set("title","No Results");
+       			ieAlert.set("content", "<p>Sorry, your search did not return any results.</p><p>Please try again.</p>");
+				ieAlert.show();
+       			
+       		}
+       	
+       },15000);
         try {
-            resultsArray.length = 0;
+           // resultsArray.length = 0; //Testing to see how array behaves not being cleared after search.
 
         } catch (e) {}
         try {
 
-            dom.byId("resultsContent").innerHTML = "";
+           // dom.byId("resultsContent").innerHTML = ""; //Testing to see how array behaves not being cleared after search.
         } catch (e) {}
         //	clearx();
         map.graphics.clear();
         if (ownParSearch) {
             findOwnerOrParcel();
         } else if (addrSearch) {
+        	if(addrSearchMode == "geo"){
             locate();
+          } else {
+          	addrTxtSearch();
+          }
         } else if (rdSearch) {
             findRoad();
         }
 
     }
+
+
+function addrTxtSearch(){
+	var zzz = false;
+	var str1 = dom.byId("address").value;
+	var query3 = new Query();
+	query3.where = makeWordArray(str1, "address");
+	console.log(query3.where);
+       try{parcels.clearSelection();} catch(e){}
+        	try{road.clearSelection();} catch(e){}
+            var graphic2;
+
+            points.selectFeatures(query3, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
+
+                console.log(query3);
+                console.log(results);
+                console.log(results[0]);
+                setTimeout(function () {
+                    if (!zzz) {
+                        displayResults(results, "address");
+                        zzz = true;
+                    }
+                }, 1000);
+                var temp = new Array();
+
+                var c = points.getSelectedFeatures();
+                console.log(c);
+                
+                // map.addLayer(points);
+                 
+                for (i = 0; i < c.length; i++) {
+//                    map.graphics.add(c[i]);
+						gLayer.add(c[i]);
+                    infoArray2.push(results[i]);
+                }
+				map.addLayer(gLayer);
+				try{
+					zoomToPoint(infoArray2[0]);
+					domAttr.set(dom.byId("locate"),"class","dormant");
+					}catch(e){console.log(e);}
+            }, function (error) {
+				console.log(error);
+            });
+   
+}
+
+function levyUrl(){
+	
+	console.log(infoArray);
+	window.open(infoArray.attributes.LevyURL);
+}
 
     map.on("layers-add-result", function (result) {
         // Add a link into the InfoWindow Actions panel       
@@ -1099,9 +1482,16 @@ require([
             "href": "javascript:void(0);"
         }, query(".actionList", map.infoWindow.domNode)[0]);
 
+        var emailLink2 = domConstruct.create("a", {
+            "class": "action2",
+            "innerHTML": "How are taxes on this parcel spent?",
+            "href": "javascript:void(0);"
+        }, query(".actionList", map.infoWindow.domNode)[0]);
+
         // Register a function to be called when the user clicks on
         // the above link
         on(emailLink, "click", function (evt) {
+        	console.log(infoArray);
             info();
             /* var feature = map.infoWindow.getSelectedFeature();
              var url = window.location;
@@ -1110,7 +1500,10 @@ require([
                window.location;
              window.location.href = emailLink; */
         });
-
+		
+		on(emailLink2,"click", function(evt){
+			levyUrl();
+		});
         //When users navigate through the history using the browser back/forward buttons select appropriate parcel  
         //https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
         window.onpopstate = function (event) {
@@ -1169,6 +1562,7 @@ require([
 
     function showResults(evt) {
         displayGeoCoderResults(evt);
+        try{gLayer.clear();}catch(e){}
         var candidate;
         var symbol = new SimpleMarkerSymbol();
         var infoTemplate = new InfoTemplate(
@@ -1190,7 +1584,10 @@ require([
                 geom = candidate.location;
                 var graphic = new Graphic(geom, sfs3, attributes, infoTemplate);
                 //add a graphic to the map at the geocoded location
-                map.graphics.add(graphic);
+                
+               // map.graphics.add(graphic);
+               gLayer.add(graphic);
+               
                 //add a text symbol to the map listing the location of the matched address.
                 var displayText = candidate.address;
                 var font = new Font(
@@ -1205,7 +1602,9 @@ require([
                     font,
                     new Color("#ff0000"));
                 textSymbol.setOffset(0, 8);
-                map.graphics.add(new Graphic(geom, textSymbol));
+                //map.graphics.add(new Graphic(geom, textSymbol));
+                gLayer.add(new Graphic(geom, textSymbol));
+                map.addLayer(gLayer);
                 return false; //break out of loop after one candidate with score greater  than 80 is found.
             }
         });
@@ -1214,7 +1613,9 @@ require([
         geom.spatialReference.wkid = 2233;
 		//console.log(geom);
         map.centerAndZoom(geom, 8);
+        
         domAttr.set("locate", "class", "dormant");
+        domAttr.set("body", "class", "claro buttonMode");
     }
     //END Location Dijit
 
@@ -1251,18 +1652,30 @@ require([
     }
 
     var infoArray3 = new Array();
-
+	var bufferTypeMem;
     function bufferIt() {
+    	
+    	//if(bufferTypeMem != selectionMode){
+    		map.graphics.clear();
+    		//bufferTypeMem = selectionMode;
+    	//}
+    	
         domAttr.set("bufferMode", "class", "bufferModeOn processing");
+        domAttr.set("body", "class", "claro buttonMode calculating");
+    //  map.graphics.clear();
+      
         try {
-
-            resultsArray.length = 0;
-
+        	infoArray3.length = 0;
+         //   parcels1.clearSelection();
         } catch (e) {}
-        try {
-
-            dom.byId("resultsContent").innerHTML = "";
+		 /* try {
+            points.clearSelection();
         } catch (e) {}
+
+		 try {
+            road1.clearSelection();
+        } catch (e) {}
+		*/
 
         if (infoArray2.length > 1) {
             for (i = 0; i < infoArray2.length; i++) {
@@ -1272,20 +1685,44 @@ require([
 
             temp.then(function (results) {
                 //console.debug(results);
+			try {
 
+            	dom.byId("tableContent").innerHTML = "";
+            	dom.byId("tableTallContent").innerHTML = "";
+            	
+        		} catch (e) {
+        		document.getElementById('tableContent').innerText="";
+        		document.getElementById('tableTallContent').innerText="";
+        		}
+        		dom.byId("filler").innerHTML = "";
                 doBuffer3(results);
             });
         } else if (infoArray2.length == 1) {
+			 try {
 
+          		  dom.byId("tableContent").innerHTML = "";
+          		  dom.byId("tableTallContent").innerHTML = "";
+        			} catch (e) {
+        				document.getElementById('tableContent').innerText="";
+       			 		document.getElementById('tableTallContent').innerText="";
+       			 }
+       			 dom.byId("filler").innerHTML = "";
             doBuffer3(infoArray2[0].geometry);
         } else {
             domAttr.set("bufferMode", "class", "bufferModeOn");
-            alert("No parcel selected!");
+            domAttr.set("body", "class", "claro buttonMode");
+           // alert("No parcel selected!");
+            ieAlert.set("title","Nothing To Buffer");
+       		ieAlert.set("content", "<p>Sorry, no features have been selected for buffering.</p><p>Please select at least one feature before buffering.</p>");
+			ieAlert.show();
         }
         try {
-            //	parcels.clearSelection();
+            	//parcels.clearSelection();
             parcels1.clearSelection();
         } catch (e) {}
+       
+       try{infoArray3.length = 0;} catch(e){}
+      // try{infoArray2.length = 0;} catch(e){}
     }
 
     function safeClear() {
@@ -1311,10 +1748,73 @@ require([
     }
 
     function clearx() {
-
+		var  n;
+		  try{gLayer.clear();}catch(e){}
+    	domAttr.set(tools, "class" ,"clear");
         map.removeAllLayers();
-        map.addLayer(basemap);
-        map.addLayer(parcelInfoLayer);
+      
+      //  map.addLayer(basemap);
+        try{
+         n = basemapGallery.getSelected().id;
+  		console.log(n);
+  		} catch(e){}
+  		var bmap;
+  		switch(n){
+  			
+  	//		var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
+    //  var basemap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
+    // var basemap = new ArcGISImageServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
+  			case "basemap_0":
+  			bmap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_1":
+  			bmap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_2":
+  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/2005_1meter_imagery/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_3":
+  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/2004_1ft_Imagery/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_4":
+  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/2001_6in_imagery/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_5":
+  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/1991_Imagery/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_6":
+  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_7":
+  			bmap = new ArcGISImageServiceLayer("http://sunshine/outside/rest/services/aerial_photos/ortho2008_4inch/ImageServer");
+  			map.addLayer(bmap);
+  			break;
+  			
+  			case "basemap_8":
+  			
+  			break;
+  			
+  			default:
+  			map.addLayer(basemap);
+  		}
+  		 try{map.addLayer(parcelInfoLayer);} catch(e){console.log(e);}
+        try{map.addLayer(gLayer);} catch(e){console.log(e);}
+      //  map.addLayer(parcelInfoLayer);
+       
         stripe = null;
         empty();
         map.graphics.clear();
@@ -1322,6 +1822,7 @@ require([
         dom.byId("filler").innerHTML = "";
         count = 0;
         tf = false;
+        
         try {
             resultsArray.length = 0;
         } catch (e) {}
@@ -1342,7 +1843,7 @@ require([
         try {
             parcels.clearSelection();
         } catch (e) {}
-
+ 
         try {
             parcels1.clearSelection();
         } catch (e) {}
@@ -1353,21 +1854,149 @@ require([
 		 try {
             road.clearSelection();
         } catch (e) {}
-
+		 try {
+            roads.clearSelection();
+        } catch (e) {}
         try {
             popup.clearFeatures();
         } catch (e) {}
+        try{
+        	dom.byId("tableContent").innerHTML = "";
+        	dom.byId("tableTallContent").innerHTML = "";
+        	} catch(e){
+    
+				document.getElementById('tableContent').innerText="";
+				document.getElementById('tableTallContent').innerText="";
+				
+			}
 
     }
+    
+    
+    function exportSearchResults(){
+    	console.log(resultsArray);
+    	
+    	for(i=0;i<resultsArray.length;i++){
+    		
+    		console.log(resultsArray[i]);
+    		//If row is a parcel
+    		if(resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "polygon"){
+    			console.log("polygon " + i);
+    			 exportArray = {
+          	         "parcelNum": resultsArray[i].attributes.PAR_NUM.toString(),
+        	         "Fips": resultsArray[i].attributes.Fips.toString(),
+        	         "Owner": resultsArray[i].attributes.Owner,
+ 	                 "OwnerOverflow": resultsArray[i].attributes.OwnerOverflow,
+ 	                 "OwnerStreetAddress": resultsArray[i].attributes.OwnerStreetAddress,
+  	                 "OwnerCity": resultsArray[i].attributes.OwnerCity,
+                     "OwnerState": resultsArray[i].attributes.OwnerState,
+                     "OwnerZip": resultsArray[i].attributes.OwnerZip.toString()
+                 };
+                 
+                 var str = dom.byId("filler").innerHTML;
+
+       				 if (str.search("}") > -1) {
+          				  tf = true;
+       				}
+
+      				  if (tf) {
+          				  dom.byId("filler").innerHTML += ',{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+       				 } else {
+           				 dom.byId("filler").innerHTML += '{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+      				  }
+        			 console.log(dom.byId("filler").innerHTML);
+       				 console.log(tf);
+       				 count++;
+        	//If row is an address point
+    		} else if (resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "point"){
+    			console.log("point " + i);
+    			
+    			exportArray = {
+          	         "AddressNumber": resultsArray[i].attributes.ADDRNUM.toString(),
+        	         "FacilityName": resultsArray[i].attributes.FACILITYNAME,
+        	         "FullAddress": resultsArray[i].attributes.FULLADDR
+                 };
+                 
+                 var str = dom.byId("filler").innerHTML;
+
+       				 if (str.search("}") > -1) {
+          				  tf = true;
+       				}
+
+      				  if (tf) {
+          				  dom.byId("filler").innerHTML += ',{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+       				 } else {
+           				 dom.byId("filler").innerHTML += '{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+      				  }
+        			 console.log(dom.byId("filler").innerHTML);
+       				 console.log(tf);
+       				 count++;
+    			
+    			//If row is a geocoded address
+    		} else if (resultsArray[i].geometry == undefined && resultsArray[i].address != undefined){
+    			console.log("address point " + i);
+    			
+    			exportArray = {
+          	         "Address": resultsArray[i].address,
+          	         "Score": resultsArray[i].score.toString()        	         
+                 };
+                 
+                 var str = dom.byId("filler").innerHTML;
+
+       				 if (str.search("}") > -1) {
+          				  tf = true;
+       				}
+
+      				  if (tf) {
+          				  dom.byId("filler").innerHTML += ',{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+       				 } else {
+           				 dom.byId("filler").innerHTML += '{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+      				  }
+        			 console.log(dom.byId("filler").innerHTML);
+       				 console.log(tf);
+       				 count++;
+    			
+    			//If row is a road segment
+    		} else if (resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "polyline"){
+    			console.log("polyline " + i);
+    			
+    			exportArray = {
+          	         "AltName": resultsArray[i].attributes.ALTNAME1,
+          	         "City": resultsArray[i].attributes.CITY
+          	        // "RdLabel": resultsArray[i].attributes.RD_LABEL        	         
+                 };
+                 
+                 var str = dom.byId("filler").innerHTML;
+
+       				 if (str.search("}") > -1) {
+          				  tf = true;
+       				}
+
+      				  if (tf) {
+          				  dom.byId("filler").innerHTML += ',{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+       				 } else {
+           				 dom.byId("filler").innerHTML += '{"' + count + '": ' + dojo.toJson(exportArray) + '}';
+      				  }
+        			 console.log(dom.byId("filler").innerHTML);
+       				 console.log(tf);
+       				 count++;
+    			
+    		} 
+    		
+    		
+    	}
+    }
+    
+    
     var stripe = null;
     var exportArray = new Array();
     var tf = false;
     var count = 0;
 
-    function info() {
-
+    function info() { 
+		displayResults(infoArray,"single");
         console.log(infoArray);
-
+/*
         console.log(infoArray.attributes.LevyURL);
         //infoArray.attributes.LevyURL = "x";
         // exportArray.push(infoArray.attributes);
@@ -1390,9 +2019,9 @@ require([
             stripe = "odd";
         }
 
-        domAttr.set("output", "class", "xxhide");
-        domAttr.set("output", "style", "opacity: 1;");
-        domAttr.set("toggleOutput", "class", "open");
+     //   domAttr.set("output", "class", "xxhide");
+     //   domAttr.set("output", "style", "opacity: 1;");
+      //  domAttr.set("toggleOutput", "class", "open");
         var s = "<tr class=\"" + stripe + " centerCell\">" +
             "<td class=\"parNum\">" + infoArray.attributes.PAR_NUM + "</td>" +
             "<td class=\"assessorLink\"><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray.attributes.PAR_TXT + "</a></td>" +
@@ -1424,7 +2053,7 @@ require([
         //  console.log(exportArray);
         //console.log(dojo.toJson(exportArray));
         //domAttr.set(dom.byId("exportButton"), "href", "test.php?content=" + encodeURIComponent(dojo.toJson(exportArray))); 
-
+		*/
         /*
    var xhrArgs = ({
         url:"test.php",
@@ -1492,14 +2121,16 @@ require([
     function empty() {
 
         var x = "<tr class=\"labels\"><td id=\"parNum\">Parcel Num.</td><td id=\"assesorLink\">Assessor Link</td><td id=\"fips\">FIPS</td><td id=\"ownName\">Own. Name</td><td id=\"ownOverflow\">Own. Overflow</td><td id=\"ownAddress\">Own. Address</td><td id=\"ownCity\">Own. City</td><td id=\"ownState\">Own. State</td><td id=\"ownZip\">Own. Zip</td></tr>";
-
+		try{
         dom.byId("outTable").innerHTML = x;
-
+		}catch(e){}
         domAttr.set("output", "class", "hide");
         domAttr.set("toggleOutput", "class", "closed");
     }
 
     function bufferMode() {
+    	rubberBandZoomMode(false);
+    	navToolbar.activate(Navigation.PAN);
         if (draw) {
             draw = true;
             drawMode();
@@ -1509,15 +2140,18 @@ require([
         if (!buff) {
             buff = true;
             domAttr.set("bufferMode", "class", "bufferModeOn");
+            domAttr.set(tools, "class" ,"bufferActive");
             domAttr.set("buffer-params", "style", "visibility: visible");
             map.infoWindow.hide();
         } else if (buff) {
             buff = false;
             domAttr.set("bufferMode", "class", "bufferModeOff");
+            domAttr.set(tools, "class" ,"clear");
             // domAttr.set("buffer-params", "style", "visibility: hidden");
         } else if (buff == null) {
             buff = true;
             domAttr.set("bufferMode", "class", "bufferModeOn");
+            domAttr.set(tools, "class" ,"bufferActive");
             // domAttr.set("buffer-params", "style", "visibility: visible");
             map.infoWindow.hide();
 
@@ -1526,7 +2160,8 @@ require([
     }
 
     function drawMode() {
-
+		rubberBandZoomMode(false);
+    	navToolbar.activate(Navigation.PAN);
         //measurement.show();
         if (buff) {
             buff = true;
@@ -1536,6 +2171,7 @@ require([
         if (!draw) {
             draw = true;
             domAttr.set("draw", "class", "drawOn");
+            domAttr.set(tools, "class" ,"drawActive");
             // domAttr.set("measurementDiv", "style", "visibility: visible !important;;");
 
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
@@ -1543,12 +2179,14 @@ require([
         } else if (draw) {
             draw = false;
             domAttr.set("draw", "class", "drawOff");
+            domAttr.set(tools, "class" ,"clear");
             //  domAttr.set("measurementDiv", "style", "visibility: hidden !important;");
 
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;visibility: hidden;");
         } else if (draw == null) {
             draw = true;
             domAttr.set("draw", "class", "drawOn");
+            domAttr.set(tools, "class" ,"drawActive");
             //  domAttr.set("measurementDiv", "style", "visibility: visible !important;");
 
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
@@ -1587,10 +2225,18 @@ require([
     //find all owners matching query 
     function selectOwner(owner) {
         popup.clearFeatures();
-
+		
         if (owner) {
+        	try{gLayer.clear();}catch(e){}
+             try{infoArray2.length = 0;}catch(e){}
+             try{map.graphics.clear();}catch(e){}
             var query = new Query();
-            query.text = owner;
+            query.outFields = ["*"];
+           // query.text = owner;
+           		//query.where = "(Owner like '%" + owner + "%' or OwnerOverflow like '%" + owner + "%')";
+           	//	query.where = "(Owner like '%dylan %' or OwnerOverflow like '%dylan %') and (Owner like '%addington%' or OwnerOverflow like '%addington%') ";
+           		query.where = makeWordArray(owner, "owner");
+           		console.log(query.where);
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
                 center = graphicsUtils.graphicsExtent(selection).getCenter();
                 selectionX = selection;
@@ -1602,17 +2248,76 @@ require([
                     //  ownerResults(selection);
                     //   alert("ownerResults complete");
                     console.log(selection);
-                    displayResults(selection);
+                    displayResults(selection,"parcel");
+                     infoArray2.push(selection[0]);
                 });
                 // console.log(center);
+                
                 domAttr.set("locate", "class", "dormant");
+                domAttr.set("body", "class", "claro buttonMode");
                 map.centerAndZoom(center, 2);
                 change = true;
+                
+				try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
 
             });
+            
 
         }
-    }
+    }	
+
+
+//var searchRefine = new Array("and","&","or",);
+
+function makeWordArray(owner, qMode){
+		var q = "";
+		console.log(owner);
+		var temp;
+		
+		owner = owner.match(/\S+\s*/g);
+		console.log(owner);
+		
+		if(qMode == "owner"){
+		
+		
+			for(i=0;i<=owner.length;i++){
+				if(i + 1 != owner.length){
+					try{
+						owner[i] = owner[i].replace(/\s/g, '');
+					} catch(e){}
+					q += "(Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%') and";
+				} else {
+					try{
+						owner[i] = owner[i].replace(/\s/g, '');
+					} catch(e){}
+					q += " (Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%')";
+					console.log(q);
+					return q;
+				}
+			}
+		} else if(qMode = "address"){
+			for(i=0;i<=owner.length;i++){
+				if(i + 1 != owner.length){
+					try{
+						owner[i] = owner[i].replace(/\s/g, '');
+					} catch(e){}
+					q += "(FULLADDR like '%" + owner[i] + "%') and";
+				} else {
+					try{
+						owner[i] = owner[i].replace(/\s/g, '');
+					} catch(e){}
+					q += " (FULLADDR like '%" + owner[i] + "%')";
+					console.log(q);
+					return q;
+				}
+			}			
+		}
+	
+	return 0;
+	
+}
+
+
 
  var symbolx = new SimpleLineSymbol(
                 SimpleLineSymbol.STYLE_SOLID,
@@ -1623,12 +2328,15 @@ require([
 function zoomToRoad(evt){
 	var geom = evt.geometry;
 	map.graphics.clear();
+	try{gLayer.clear();}catch(e){}
 	//var symbol = new SimpleMarkerSymbol();
 	var graphic = new Graphic(geom, symbolx);
                 //add a graphic to the map at the geocoded location
                 
                 try{
-                map.graphics.add(graphic);
+                //map.graphics.add(graphic);
+                gLayer.add(graphic);
+                map.addLayer(gLayer);
                 } catch(e){
                 	console.log(e);
                 }
@@ -1642,10 +2350,12 @@ function zoomToRoad(evt){
 function zoomToPoint(evt){
 	var geom = evt.geometry;
 	map.graphics.clear();
+	try{gLayer.clear();}catch(e){}
 	//var symbol = new SimpleMarkerSymbol();
 	var graphic = new Graphic(geom, sfs3);
                 //add a graphic to the map at the geocoded location
-                map.graphics.add(graphic);
+                //map.graphics.add(graphic);
+                gLayer.add(graphic);
                 //add a text symbol to the map listing the location of the matched address.
                 var displayText = evt.attributes.FULLADDR;
                 var font = new Font(
@@ -1660,37 +2370,130 @@ function zoomToPoint(evt){
                     font,
                     new Color("#ff0000"));
                 textSymbol.setOffset(0, 8);
-                map.graphics.add(new Graphic(geom, textSymbol));
+               // map.graphics.add(new Graphic(geom, textSymbol));
+             
+               gLayer.add(new Graphic(geom,textSymbol));
+               map.addLayer(gLayer);
                 map.centerAndZoom(geom, 8);
 }
 
 
+function zoomToGeoPoint(evt){
+	var geom = evt.location;
+	map.graphics.clear();
+	try{gLayer.clear();}catch(e){}
+	//var symbol = new SimpleMarkerSymbol();
+	var graphic = new Graphic(geom, sfs3);
+                //add a graphic to the map at the geocoded location
+                //map.graphics.add(graphic);
+                gLayer.add(graphic);
+                //add a text symbol to the map listing the location of the matched address.
+                var displayText = evt.address;
+                var font = new Font(
+                    "16pt",
+                    Font.STYLE_NORMAL,
+                    Font.VARIANT_NORMAL,
+                    Font.WEIGHT_BOLD,
+                    "Helvetica");
+
+                var textSymbol = new TextSymbol(
+                    displayText,
+                    font,
+                    new Color("#ff0000"));
+                textSymbol.setOffset(0, 8);
+               // map.graphics.add(new Graphic(geom, textSymbol));
+             
+               gLayer.add(new Graphic(geom,textSymbol));
+               map.addLayer(gLayer);
+                map.centerAndZoom(geom, 8);
+}
+
+
+
+function setInfoArray2(geom, gCode){
+	console.log(infoArray2);
+	try{infoArray2.length = 0;} catch(e){}
+	try{gLayer.clear();}catch(e){}
+	try{popup.clearFeatures();} catch(e){}
+	try{parcels.clearSelection();} catch(e){}
+
+	
+	
+	try{
+	if(gCode){
+		geom.geometry = geom.location;
+	}
+	} catch(e){console.log(e);}
+	
+	try{infoArray2.push(geom);} catch(e){}
+	
+		
+          
+             try{map.graphics.clear();}catch(e){}
+		try{gLayer.add(geom.geometry);} catch(e){console.log(e);}
+		console.log(infoArray2);
+	
+}
+
+
+
+
     var stripe2 = null;
     var resultsArray = new Array();
-
+	var contentType;
+	var displayHelp = dom.byId("displayHelp");
     function displayResults(infoArray5, infoMode) {
-        //console.log(infoMode);
-
+    	console.log(contentType);
+    	on.emit(displayHelp, "click", {bubbles: true, cancelable: true});
+    	if(contentType == undefined){
+    		//console.log(infoMode);
+    		contentType = infoMode;
+    	} 
+    	if(contentType != infoMode){
+    		
+    		try{
+    		dom.byId("tableContent").innerHTML = "";
+    		dom.byId("tableTallContent").innerHTML = "";
+    		} catch(e){
+    		document.getElementById('tableContent').innerText="";
+    		document.getElementById('tableTallContent').innerText="";
+    		}
+    		dom.byId("filler").innerHTML = "";
+    		contentType = infoMode;
+    	}
+    	
+        console.log(infoArray5);
+		domAttr.set(dom.byId("searchResults"),"class","showx");
         if (stripe2 == null) {
             stripe2 = "even";
         }
         
-        
+        var l = resultsArray.length;
         
         
         if(infoMode == "road"){
         	for (i = 0; i < infoArray5.length; i++) {
                 resultsArray.push(infoArray5[i]);
-                var s = "<table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
-                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.ALTNAME1 + "</span></td>" + 
-                    "</tr></table>";
-
-                var temp = domConstruct.create("div", {
-                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Road Segment" + "</a>",
+                var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.ALTNAME1 + "</span></td>" + 
+                    "</tr></table></td>";
+				
+				var sWide =  "<td class=\"parNum sWide\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.ALTNAME1 + "</span></td>"
+               
+                var temp = domConstruct.create("tr", {
+                    "innerHTML": "<td><a class=\"goToParcel\" title=\"View Road Segment\" id=\"test" + (i + l) + "\" >" + "</a></td>" + sWide,
                     //	"id": "test" + i,
                     "class": stripe2
-                }, "resultsContent");
-                var zz = dom.byId("test" + i);
+                }, "tableContent");
+                
+                 var temp2 = domConstruct.create("tr", {
+                    "innerHTML": "<td><a class=\"goToParcel\" title=\"View Road Segment\" id=\"test" + (i + l + 10000) + "\" >" + "</a></td>" + s,
+                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "tableTallContent");
+                
+                
+                var zz = dom.byId("test" + (i + l));
 
                 //event handlers for search results
                 dojo.connect(zz, "onclick", function (node) {
@@ -1703,10 +2506,37 @@ function zoomToPoint(evt){
                     console.log(resultsArray[n]);
                     var t = resultsArray[n];
                     console.log(t);
+                    try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     try {
                       
 						//map.centerAndZoom(resultsArray[n].geometry, 8);
                        zoomToRoad(resultsArray[n]);
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+                
+                
+                  var zz2 = dom.byId("test" + (i + l + 10000));
+
+                //event handlers for search results
+                dojo.connect(zz2, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n - 10000);
+                    console.log(resultsArray[n - 10000]);
+                    var t = resultsArray[n - 10000];
+                    console.log(t);
+                    try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
+                    try {
+                        //  safeClear();
+
+                        zoomToRoad(resultsArray[n - 10000]);
+                       
                     } catch (error) {
                         console.log(error);
                     }
@@ -1723,16 +2553,24 @@ function zoomToPoint(evt){
         if(infoMode == "address"){
         	for (i = 0; i < infoArray5.length; i++) {
                 resultsArray.push(infoArray5[i]);
-                var s = "<table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
+                var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
                     "<td class=\"parNum\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.FULLADDR + "</span></td>" + 
-                    "</tr></table>";
-
-                var temp = domConstruct.create("div", {
-                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Address Point" + "</a>",
+                    "</tr></table></td>";
+				
+				var sWide =  "<td class=\"addrNum sWide\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.FULLADDR + "</span></td>"
+				
+                var temp = domConstruct.create("tr", {
+                    "innerHTML": "<td><a class=\"goToParcel\" title=\"View Address Point\" id=\"test" + (i + l) + "\" ></a></td>" + sWide,
                     //	"id": "test" + i,
                     "class": stripe2
-                }, "resultsContent");
-                var zz = dom.byId("test" + i);
+                }, "tableContent");
+                
+                 var temp2 = domConstruct.create("tr", {
+                    "innerHTML": "<td><a class=\"goToParcel\" title=\"View Address Point\" id=\"test" + (i + l + 10000) + "\" ></a><td>" +  s,
+                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "tableTallContent");
+                var zz = dom.byId("test" + (i + l));
 
                 //event handlers for search results
                 dojo.connect(zz, "onclick", function (node) {
@@ -1745,6 +2583,8 @@ function zoomToPoint(evt){
                     console.log(resultsArray[n]);
                     var t = resultsArray[n];
                     console.log(t);
+                    
+                    try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     try {
                         //  safeClear();
 						zoomToPoint(resultsArray[n]);
@@ -1755,6 +2595,33 @@ function zoomToPoint(evt){
                     }
 
                 });
+                
+                
+                 var zz2 = dom.byId("test" + (i + l + 10000));
+
+                //event handlers for search results
+                dojo.connect(zz2, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n - 10000);
+                    console.log(resultsArray[n - 10000]);
+                    var t = resultsArray[n - 10000];
+                    console.log(t);
+                    try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
+                    try {
+                        //  safeClear();
+
+                        zoomToPoint(resultsArray[n - 10000]);
+                      
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+                
 
                 if (stripe2 == "odd") {
                     stripe2 = "even";
@@ -1768,8 +2635,9 @@ function zoomToPoint(evt){
         if (infoMode == "parcel" || infoMode == undefined) {
             for (i = 0; i < infoArray5.length; i++) {
                 resultsArray.push(infoArray5[i]);
-                var s = "<table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
-                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+              //  console.log(resultsArray);
+               var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell tall\">" +
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span><span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5[i].attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></span></td>" + "</tr>" +
                     "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5[i].attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
@@ -1777,15 +2645,90 @@ function zoomToPoint(evt){
                     "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerZip + "</span></td>" +
-                    "</tr></table>";
+                    "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerZip + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    
+                    "<td class=\"impActVal\"><span class=\"resultsLabel\" >Improvement Act. Val.:</span> <span class=\"resultsText\" >$" + infoArray5[i].attributes.ImprovementsActualValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"impAssVal\"><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> <span class=\"resultsText\" >$" + infoArray5[i].attributes.ImprovementsAssessedValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"landActVal\"><span class=\"resultsLabel\" >Land Act. Val.:</span> <span class=\"resultsText\" >$" + infoArray5[i].attributes.LandActualValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"landAssVal\"><span class=\"resultsLabel\" >Land Ass. Val.:</span> <span class=\"resultsText\" >$" + infoArray5[i].attributes.LandAssessedValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"legalDesc\"><span class=\"resultsLabel\" >Legal Desc.:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.LegalDescription + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"propTax\"><span class=\"resultsLabel\" >Property Tax:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.PropertyTax + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"subdivision\"><span class=\"resultsLabel\" >Subdivision:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Subdivision + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"taxDist\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.TaxDistrict+ "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Zoning + "</span></td>" + 
+                    
+                    "</tr></table></td>";
+		
+					
+					 var sWide = "" +
+                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td></tr></table></td>" + 
+               		  "<td class=\"assessorLink sWide\"><table><tr><td><span class=\"resultsLabel\" >Assessor Link:</span></td></tr><tr><td><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + 
+               		  infoArray5[i].attributes.PAR_TXT + 
+               		  "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></span></td></tr></table></td>" + 
+                   "<td class=\"fips sWide\"><table><tr><td><span class=\"resultsLabel\" >FIPS:</span></td></tr><tr><td><span class=\"resultsText\" > " + infoArray5[i].attributes.Fips + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownName sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Name:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.Owner + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownOverflow sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Overflow:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerOverflow + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownAddress sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Address:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerStreetAddress + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownCity sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. City:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerCity + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownState sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. State:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerState + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownZip sWide\"><table><tr><td><span class=\"resultsLabel\" >Own Zip:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerZip + "</span></td></tr></table></td>" +
+                    "<td class=\"impActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Act. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5[i].attributes.ImprovementsActualValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"impAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5[i].attributes.ImprovementsAssessedValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"landActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Act. Val.:</span></td></tr><tr><td> <span class=\"resultsText\" >$" + infoArray5[i].attributes.LandActualValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"landAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5[i].attributes.LandAssessedValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"legalDesc sWide\"><table><tr><td><span class=\"resultsLabel\" >Legal Desc.:</span></td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.LegalDescription + "</span></td></tr></table></td>" +
+                    "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.PropertyTax + "</span></td></tr></table></td>" +
+                    "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.Subdivision + "</span></td></tr></table></td>" +
+                    "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.TaxDistrict+ "</span></td></tr></table></td>" +
+                    "<td class=\"zoning sWide\"><table><tr><td><span class=\"resultsLabel\" >Zoning:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.Zoning + "</span></td></tr></table></td>" +
+                    
+                    "";
+		
+			
 
-                var temp = domConstruct.create("div", {
-                    "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Parcel" + "</a>",
+                var temp = domConstruct.create("tr", {
+                    "innerHTML":"<td><div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l) + "\" >" + "</a></td>" + sWide  + "</div>",
                     //	"id": "test" + i,
                     "class": stripe2
-                }, "resultsContent");
-                var zz = dom.byId("test" + i);
+                }, "tableContent");
+                
+                
+                 var temp2 = domConstruct.create("tr", {
+                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l + 10000) + "\" >" + "</a>" + s + "</div>",
+                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "tableTallContent");
+                
+                
+                
+                var zz2 = dom.byId("test" + (i + l + 10000));
+
+                //event handlers for search results
+                dojo.connect(zz2, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n - 10000);
+                    console.log(resultsArray[n - 10000]);
+                    var t = resultsArray[n - 10000];
+                    try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
+                    
+                    console.log(t);
+                    try {
+                        //  safeClear();
+
+                        selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
+                        map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+                
+                
+                var zz = dom.byId("test" + (i + l));
 
                 //event handlers for search results
                 dojo.connect(zz, "onclick", function (node) {
@@ -1798,6 +2741,7 @@ function zoomToPoint(evt){
                     console.log(resultsArray[n]);
                     var t = resultsArray[n];
                     console.log(t);
+                     try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     try {
                         //  safeClear();
 
@@ -1811,26 +2755,180 @@ function zoomToPoint(evt){
 
                 if (stripe2 == "odd") {
                     stripe2 = "even";
-                } else if (stripe2 == "even")
+                } else if (stripe2 == "even"){
                     stripe2 = "odd";
+                   }
             }
         }
-        setTimeout(function () {
+        
+        if(infoMode == "single"){
+        	
+        	 resultsArray.push(infoArray5);
+                console.log(resultsArray);
+              /*  var s = "<td class=\"sTall\"><table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5.attributes.PAR_TXT + "</a></span></td>" + "</tr>" +
+                    "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5.attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerOverflow + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerZip + "</span></td>" +
+                    "</tr></table></td>";
+*/
+				
+				var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell tall\">" +
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5.attributes.PAR_TXT + "</a></span></td>" + "</tr>" +
+                    "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5.attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerOverflow + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerZip + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    
+                    "<td class=\"impActVal\"><span class=\"resultsLabel\" >Improvement Act. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsActualValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"impAssVal\"><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsAssessedValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"landActVal\"><span class=\"resultsLabel\" >Land Act. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.LandActualValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"landAssVal\"><span class=\"resultsLabel\" >Land Ass. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.LandAssessedValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"legalDesc\"><span class=\"resultsLabel\" >Legal Desc.:</span> <span class=\"resultsText\" >" + infoArray5.attributes.LegalDescription + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"propTax\"><span class=\"resultsLabel\" >Property Tax:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"subdivision\"><span class=\"resultsLabel\" >Subdivision:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"taxDist\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Zoning + "</span></td>" + 
+                    
+                    "</tr></table></td>";
+		
+					
+					 var sWide = "" +
+                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td></tr></table></td>" + 
+               		  "<td class=\"assessorLink sWide\"><table><tr><td><span class=\"resultsLabel\" >Assessor Link:</span></td></tr><tr><td><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + 
+               		  infoArray5.attributes.PAR_TXT + 
+               		  "\" target=\"_blank\" >" + infoArray5.attributes.PAR_TXT + "</a></span></td></tr></table></td>" + 
+                   "<td class=\"fips sWide\"><table><tr><td><span class=\"resultsLabel\" >FIPS:</span></td></tr><tr><td><span class=\"resultsText\" > " + infoArray5.attributes.Fips + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownName sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Name:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.Owner + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownOverflow sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Overflow:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerOverflow + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownAddress sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Address:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.OwnerStreetAddress + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownCity sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. City:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.OwnerCity + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownState sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. State:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerState + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownZip sWide\"><table><tr><td><span class=\"resultsLabel\" >Own Zip:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.OwnerZip + "</span></td></tr></table></td>" +
+                    "<td class=\"impActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Act. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsActualValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"impAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsAssessedValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"landActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Act. Val.:</span></td></tr><tr><td> <span class=\"resultsText\" >$" + infoArray5.attributes.LandActualValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"landAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5.attributes.LandAssessedValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"legalDesc sWide\"><table><tr><td><span class=\"resultsLabel\" >Legal Desc.:</span></td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.LegalDescription + "</span></td></tr></table></td>" +
+                    "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td></tr></table></td>" +
+                    "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td></tr></table></td>" +
+                    "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td></tr></table></td>" +
+                    "<td class=\"zoning sWide\"><table><tr><td><span class=\"resultsLabel\" >Zoning:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.Zoning + "</span></td></tr></table></td>" +
+                    
+                    "";
 
-            on.emit(dom.byId("openClose"), "click", {
-                bubbles: true,
-                cancelable: true
-            });
+             
+                
+                  var temp = domConstruct.create("tr", {
+                    "innerHTML":"<td><div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l) + "\" >" + "</a></td>" + sWide  + "</div>",
+                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "tableContent");
+                
+                
+                 var temp2 = domConstruct.create("tr", {
+                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l + 10000) + "\" >" + "</a>" + s + "</div>",
+                    //	"id": "test" + i,
+                    "class": stripe2
+                }, "tableTallContent");
+                
+                
+                
+                var zz = dom.byId("test" + (l));
+
+                //event handlers for search results
+                dojo.connect(zz, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n);
+                    console.log(resultsArray[n]);
+                    var t = resultsArray[n];
+                    try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
+                    console.log(t);
+                    try {
+                        //  safeClear();
+
+                        selectParcel(resultsArray[n].attributes.PAR_NUM);
+                        map.infoWindow.show(resultsArray[n].geometry.getPoint(0, 0));
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+                
+                  var zz2 = dom.byId("test" + ( l + 10000));
+
+                //event handlers for search results
+                dojo.connect(zz2, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n - 10000);
+                    console.log(resultsArray[n - 10000]);
+                    var t = resultsArray[n - 10000];
+                    console.log(t);
+                    try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
+                    try {
+                        //  safeClear();
+
+                        selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
+                        map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
+
+                if (stripe2 == "odd") {
+                    stripe2 = "even";
+                } else if (stripe2 == "even"){
+                    stripe2 = "odd";
+                   }
+        	
+        	
+        }
+        
+        
+        setTimeout(function () {
+			
+         //   on.emit(dom.byId("openClose"), "click", {
+         //       bubbles: true,
+           //     cancelable: true
+          //  });
             //on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
         }, 1000);
 
         //connect.subscribe("")
-
+		searchTimeout = true;
     }
 
     function displayGeoCoderResults(infoArray5) {
+    	setInfoArray2(infoArray5.addresses[0], true); // so user can buffer first result
+    	contentType = "geoCoder"; //ensures results clear when user searches for different data type
         console.log(infoArray5);
-
+        try{
+        dom.byId("tableContent").innerHTML = "";
+        dom.byId("tableTallContent").innerHTML = "";
+        } catch(e){
+        	document.getElementById('tableContent').innerText="";
+    		document.getElementById('tableTallContent').innerText="";
+        }
+    		dom.byId("filler").innerHTML = "";
+		var l = resultsArray.length;
         if (stripe2 == null) {
             stripe2 = "even";
         }
@@ -1838,17 +2936,28 @@ function zoomToPoint(evt){
         for (i = 0; i < infoArray5.addresses.length; i++) {
             infoArray5.addresses[i].location.spatialReference.wkid = 2233;
             resultsArray.push(infoArray5.addresses[i]);
-            var s = "<table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
+            var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
                 "<td class=\"parNum\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5.addresses[i].address + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                 "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Address Matching Score: </span><span class=\"resultsText\" ><em>" + infoArray5.addresses[i].score + "</em></span></td>" + "</tr>" +
-                "</table>";
-
-            var temp = domConstruct.create("div", {
-                "innerHTML": s + "<a class=\"goToParcel\" id=\"test" + i + "\" >View Parcel" + "</a>",
+                "</table></td>";
+			
+			var sWide =  "<td class=\"parNum sWide\"><span class=\"resultsLabel\" >Address:</span> <span class=\"resultsText\" >" + infoArray5.addresses[i].address + "</span></td>" +
+                "<td class=\"assessorLink sWide\"><span class=\"resultsLabel\" >Address Matching Score: </span><span class=\"resultsText\" ><em>" + infoArray5.addresses[i].score + "</em></span></td>";
+			
+			
+            var temp = domConstruct.create("tr", {
+                "innerHTML": "<td><a class=\"goToParcel\" id=\"test" + (i + l) + "\" >" + "</a></td>" + sWide,
 
                 "class": stripe2 + " selection" + i
-            }, "resultsContent");
-            var zz = dom.byId("test" + i);
+            }, "tableContent");
+            
+            var temp2 = domConstruct.create("tr", {
+                "innerHTML": "<td><a class=\"goToParcel\" id=\"test" + (i + l + 10000) + "\" >" + "</a></td>" + s,
+
+                "class": stripe2 + " selection" + i
+            }, "tableTallContent");
+            
+            var zz = dom.byId("test" + (i + l));
 
             //event handlers for search results
             dojo.connect(zz, "onclick", function (node) {
@@ -1861,16 +2970,44 @@ function zoomToPoint(evt){
                 console.log(resultsArray[n]);
                 var t = resultsArray[n];
                 console.log(t);
+                try{setInfoArray2(resultsArray[n], true);} catch(e){console.log(e);}
                 try {
                     //  safeClear();
-
-                    selectByPoint(resultsArray[n]);
+					console.log(resultsArray[n]);
+                   // selectByPoint(resultsArray[n]);
+                   zoomToGeoPoint(resultsArray[n]);
                     //map.infoWindow.show(resultsArray[n].location);
                 } catch (error) {
                     console.log(error);
                 }
 
             });
+            
+            
+             
+                var zz2 = dom.byId("test" + (i + l + 10000));
+
+                //event handlers for search results
+                dojo.connect(zz2, "onclick", function (node) {
+
+                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
+                    var n = node.target.id;
+                    n = n.toString();
+                    n = n.replace("test", "");
+                    console.log(n - 10000);
+                    console.log(resultsArray[n - 10000]);
+                    var t = resultsArray[n - 10000];
+                    console.log(t);
+                    try{setInfoArray2(resultsArray[n - 10000], true);} catch(e){console.log(e);}
+                    try {
+                        //  safeClear();
+
+                      zoomToGeoPoint(resultsArray[n - 10000]);
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                });
 
             if (stripe2 == "odd") {
                 stripe2 = "even";
@@ -1878,15 +3015,15 @@ function zoomToPoint(evt){
                 stripe2 = "odd";
         }
         setTimeout(function () {
-            on.emit(dom.byId("openClose"), "click", {
-                bubbles: true,
-                cancelable: true
-            });
+        //    on.emit(dom.byId("openClose"), "click", {
+        //        bubbles: true,
+        //        cancelable: true
+        //    });
             //on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
         }, 1000);
 
         //connect.subscribe("")
-
+		searchTimeout = true;
     }
 
     //detect when popup selection is changed
@@ -1908,7 +3045,38 @@ function zoomToPoint(evt){
 
     // combine all results' geometries into an array and create a single geometry to display on the map
     function makeGeomArray(selection) {
+		searchTimeout = true;
+        var tempArray = new Array();
 
+        for (i = 0; i < selection.length; i++) {
+            tempArray.push(selection[i].geometry);
+        }
+
+        var tempVar = gsvc.union(tempArray);
+
+        tempVar.then(function (results) {
+
+            var symbol = new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+               // new Color([13, 255, 0]),
+                new Color([255, 0, 0]),
+                5);
+
+            var bufferGeometry = results;
+            //console.log(bufferGeometry);
+            var graphic2 = new Graphic(bufferGeometry, symbol);
+            // console.log(graphic2.geometry.getExtent());
+				
+            map.graphics.add(graphic2);
+            map.setExtent(graphic2.geometry.getExtent());
+            
+            domAttr.set("locate", "class", "dormant");
+            domAttr.set("body", "class", "claro buttonMode");
+        });
+
+    }
+function makeGeomArray2(selection) {
+		searchTimeout = true;
         var tempArray = new Array();
 
         for (i = 0; i < selection.length; i++) {
@@ -1928,14 +3096,54 @@ function zoomToPoint(evt){
             //console.log(bufferGeometry);
             var graphic2 = new Graphic(bufferGeometry, symbol);
             // console.log(graphic2.geometry.getExtent());
-
+				gLayer.add(graphic2);
             map.graphics.add(graphic2);
             map.setExtent(graphic2.geometry.getExtent());
+            
             domAttr.set("locate", "class", "dormant");
+            domAttr.set("body", "class", "claro buttonMode");
         });
 
     }
+    
+    
+    function makeGeomArray3(selection) {
+    	try{infoArray2.length = 0;} catch(e){console.log(e);}
+		searchTimeout = true;
+        var tempArray = new Array();
 
+        for (i = 0; i < selection.length; i++) {
+            tempArray.push(selection[i].geometry);
+        }
+        
+
+		
+		
+        var tempVar = gsvc.union(tempArray);
+
+        tempVar.then(function (results) {
+        	selection[0].geometry = results;
+			try{infoArray2.push(selection[0]);} catch(e){console.log(e);}
+            var symbol = new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                new Color([13, 255, 0]),
+                5);
+
+            var bufferGeometry = results;
+            //console.log(bufferGeometry);
+            var graphic2 = new Graphic(bufferGeometry, symbol);
+            // console.log(graphic2.geometry.getExtent());
+				
+           // map.graphics.add(graphic2);
+           gLayer.add(graphic2);
+            map.setExtent(graphic2.geometry.getExtent());
+            map.addLayer(gLayer);
+            domAttr.set("locate", "class", "dormant");
+            domAttr.set("body", "class", "claro buttonMode");
+        });
+
+    }
+    
     function findRoad() {
         popup.clearFeatures();
         change = false;
@@ -1946,18 +3154,41 @@ function zoomToPoint(evt){
         var deferred = roads.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
 
             selectionX = selection;
-            //  console.log(selection);
+              console.log(selection);
+              displayResults(selection, "road");
             var extHandler = map.on("extent-change", function () {
                 extHandler.remove();
                 //zoom to the center then display the popup 
                 map.infoWindow.setFeatures(selection);
 
             });
-
+            
+            
+            
+            /*
+			var temp = new Array();
+			for(i=0;i < selection.length;i++){
+				temp.push(selection[i].geometry);
+			}
+			var x = gsvc.union(temp);
+			
+			x.on("union-complete",function(results){
+				var symbol = new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                new Color([13, 255, 0]),
+                5);
+				console.log(results);
+				var d = results;
+				var z = new Graphic(d, symbol);
+				console.log(z);
+				gLayer.add(z);
+				
+			});
+			*/
             // map.setZoom(3);
             //  map.setZoom(1);
             change = false;
-            makeGeomArray(selection);
+            makeGeomArray3(selection);
 
         });
     }

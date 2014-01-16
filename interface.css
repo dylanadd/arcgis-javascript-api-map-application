@@ -6,8 +6,10 @@ padding:0;
 width:100%;
 }
 
+
+
 #buffer-params {
-background:rgba(255,255,255,0.95);
+background:rgb(255,255,255);
 position:absolute;
 top:100px;
 left:-380px;
@@ -21,10 +23,11 @@ font-size: 12px;
 
 
 #button-console {
-min-height: 37px;
+min-height: 43px;
+
 width: 100%;
 position: absolute;
-z-index: 999;
+z-index: 940;
 background: rgb(16,64,92);
 background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
 font-family: verdana,helvetica;
@@ -70,9 +73,21 @@ padding:0 0 10px;
 background-color:#ADD8E6!important;
 }
 
+#ownerParcelSwitch:hover, #addressSwitch:hover, #roadSwitch:hover {
+	background-color: #feff00 !important;
+}
+
+#ownerParcelSwitch.selected:hover, #addressSwitch.selected:hover, #roadSwitch.selected:hover {
+	background-color: #00FF29 !important;
+}
+
+.search_button:hover{
+	background-color: #feff00 !important;
+}
+
 .search_wrapper {
 -webkit-border-radius:5px;
-background:rgba(255,255,255,1);
+background:rgb(255,255,255);
 border:2px solid #666;
 border-radius:5px;
 height:29px;
@@ -81,9 +96,16 @@ top:-6px;
 right:10px;
 margin-left:10px;
 margin-top:10px;
-width:320px;
+width:290px;
 z-index:30;
 float:right;
+}
+
+
+.search_wrapper.searchFix {
+	position: absolute;
+	top: 49px;
+	left: 75px;
 }
 
 .searchbox {
@@ -99,7 +121,7 @@ margin:0 6px;
 outline:0;
 padding:6px 0;
 vertical-align:middle;
-width:168px;
+width:136px;
 }
 
 div.search_wrapper div.search_button a#locate {
@@ -164,7 +186,7 @@ z-index:30;
 }
 
 div#measurementDiv {
-background:rgba(255,255,255,0.75);
+background:rgb(255,255,255);
 left: -387px;
 position:absolute;
 top:100px;
@@ -220,16 +242,22 @@ z-index:30;
 }
 
 #tools {
-float:left;
+
 position:relative;
 top:10px;
+margin-left:auto;
+margin-right:auto;
+width:690px;
+/*
+float:left;
 margin-bottom:10px;
 margin-right:10px;
+*/
 }
 #tools > a {
 	color:white;
 	float:left;
-	padding-left: 20px;
+	padding-left: 10px;
 	cursor:pointer;
 }
 div.search_button {
@@ -300,6 +328,11 @@ z-index: 30;
 background: url("images/pueblo-logo.png") no-repeat 0 0 !important;
 }
 
+
+.calculating #pclogo {
+	background: url("images/earth.gif") no-repeat 0 0 !important;
+}
+
 .rewrite div#gallery .dijitTitlePaneTitle {
 -moz-user-select:none;
 -ms-user-select:none;
@@ -344,8 +377,13 @@ color:#FFF;
 position:initial!important;
 }
 
+
+.calculating #map_container, body.calculating {
+	cursor: progress !important;
+}
+
 #basemapGallery {
-background:rgba(255,255,255,0.8);
+background:rgb(255,255,255);
 }
 
 .rewrite .dijitArrowButtonInner {
@@ -375,7 +413,7 @@ position:absolute;
 }
 
 table[id^='dijit_Menu_'] {
-background:rgba(255,255,255,0.8);
+background:rgb(255,255,255);
 font-family:verdana,helvetica;
 font-size:16px;
 line-height:25px;
@@ -389,6 +427,13 @@ padding:0 !important;
 .esriPrint td.dijitStretch {
 
 }
+/*Controls the position of the print drop-down*/
+#selectionTools ~ div[id^='dijit_form_ComboButton_'] table{
+	margin-top:16px;
+	width:241px;
+}
+
+
 /* .buttonMode td[id^='dijit_form_ComboButton_'] { */
 .rewrite #tools td[id^='dijit_form_ComboButton_'] {
 -moz-user-select:none;
@@ -416,7 +461,7 @@ z-index:30;
 }
 
 tr.dijitMenuItemHover {
-background:linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
+background:rgb(16,64,92);
 color: white;
 cursor:pointer;
 }
@@ -530,11 +575,11 @@ max-height: 237px;
 }
 
 .even{
-	background-color: rgba(255,255,255,0.9);
+	background-color: rgb(255,255,255);
 }
 
 .odd{
-	background-color: rgba(255,243,197,0.9);
+	background-color: rgb(255,243,197);
 	
 }
 
@@ -636,7 +681,16 @@ z-index:30;
 
 a.action.zoomTo{
 	float:left;
+	display:none;	
 	
+}
+.action{
+position: relative;
+top: -17px;
+}
+.action2 {
+position: relative;
+top: -10px;
 }
 .labels{
 	color: white;
@@ -656,12 +710,14 @@ a.action.zoomTo{
 	display:none;
 }
 
+.showx {opacity: 1 !important;}
+
 #searchResults{
 	position:absolute;
-	right: -179px;
-	top:37px;
-	height:100%;
-	z-index: 1000;
+	right: 0px;
+	opacity: 0;
+	
+	z-index: 948;
 }
 div#openClose{
 	cursor:pointer;
@@ -687,11 +743,16 @@ display:none;
 	height:100%;
 	float:left;
 }
+
+.searchSnapRight #resultsContent, .searchFreeFloat #resultsContent, .searchSnapLeft #resultsContent {
+	width: 91%;
+}
+
 #resultsContent{
 
-	background-color: rgba(255,255,255,0.85);
+	background-color: rgb(255,255,255);
 	height: 97%;
-	width: 91%;
+	
 	margin-top: 0px;
 	margin-left: 15px;
 	margin-right: 15px;
@@ -705,7 +766,7 @@ display:none;
 }
 
 #resultsContent div:hover{
-	background-color:rgba(252,185,241,0.47);
+	/* background-color:rgb(252,185,241); */
 	
 }
 #resultsContent table{
@@ -890,7 +951,7 @@ font-size: 14px;
 }
 #textButtonConsole {
 	padding-top:10px;
-	background-color: rgba(0,0,0,0.45);
+	background-color: rgb(0,0,0);
 	min-height: 35px;
 	border: 2px solid #666;
 	border-radius:0px 0px 5px 5px;
@@ -1028,6 +1089,11 @@ font-size: 16px;
 	cursor:pointer;
 	text-shadow: 2px 1px #171212;
 }
+#gallery span.dijitTitlePaneTextNode:hover {
+	color: #fffd4d;
+	
+}
+
 
 #gallery span.dijitArrowNodeInner{
 	display:none;
@@ -1040,33 +1106,65 @@ font-size: 16px;
 	cursor: pointer;
 	
 }
+#print_button:hover, #print_button a:hover {
+	color: #fffd4d;
+	
+}
+
+
 #print_button a {
 	color: white;
 	text-decoration: none;
 }
 #dijit_layout_ContentPane_2 {
-	margin-top: 9px !important;
+	margin-top: 16px !important;
+	margin-left: 0px !important;
 	position:absolute;
 	z-index: 1000;
 }
 
 
 #close {
+	background: url("images/icons/close.png") no-repeat 0px 1px;
+	width:16px;
+	
 height: 8px;
 color: white;
 padding-bottom: 10px;
 text-align: right;
-margin-right: 13px;
+margin-left: 13px;
 font-family: verdana,helvetica;
 cursor:pointer;
+float:left;
 }
 #close:hover{
-	color:red;
+	background: url("images/icons/closehover.png") no-repeat 0px 1px;
 }
 
+
+#exportResults {
+	background: url("images/icons/download.png") no-repeat 0 2px;
+color: white;
+font-family: verdana, helvetica;
+float: left;
+padding-left: 13px;	
+cursor: pointer;
+width:16px;
+	height:16px;
+	margin-left: 15px;
+}
+
+#exportResults:hover{
+	background: url("images/icons/downloadhover.png") no-repeat 0 2px;
+}
 
 #tools > a {
 	text-shadow: 2px 1px #171212;
+}
+
+#tools > a:hover {
+	color: #fffd4d;
+	
 }
 
 #selectionTools.hide{
@@ -1077,10 +1175,10 @@ cursor:pointer;
 	position: absolute;
 	top:43px;
 	left: 128px;
-	/* background: rgba(255,255,255,0.95);*/
-	color: white;
-text-shadow: 2px 1px #000;
-background: radial-gradient(circle farthest-corner at bottom right, #fff, rgb(16,64,92));
+	background: rgb(255,255,255);
+	color: rgb(16,64,92);
+/* text-shadow: 2px 1px #000;
+background: radial-gradient(circle farthest-corner at bottom right, #fff, rgb(16,64,92)); */
 	font-family: verdana,helvetica;
 	z-index: 1000;
 	opacity:0;
@@ -1089,36 +1187,45 @@ background: radial-gradient(circle farthest-corner at bottom right, #fff, rgb(16
 }
 
 
-#selectionTools label {
+#selectionTools label, #addrSearchBox label, #addrSearchBox input, #selectionTools input {
 	cursor:pointer;
 }
 
-#selectionTools label:hover, .spacer1 label:hover {
+#selectionTools label:hover, .spacer1 label:hover , #addrSearchBox label:hover{
 	color:red;
 }
 
 
 
 #toolSelect {
+	width: 140px;
 float: left;
-padding: 10px 21px 10px 10px;
+padding: 0px 0px 10px 0px;
 border-left: 0px;
 border-top: 0px;
-border-right: 2px;
+border-right: 0px;
 border-bottom: 0px;
-border-style: solid;
+border-style: inset;
 
 }
 
 #infoSelect {
 float: left;
-padding: 10px;
+padding: 0px,10px,10px,10px;
 
+}
+
+
+#toolSelectTitle span{
+	margin-left: 10px;
 }
 
 #toolSelectTitle, #infoSelectTitle {
 	padding-bottom: 5px;
 	font-weight: bold;
+	background: rgb(16,64,92);
+	color:white;
+	background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
 }
 
 .selectLabel {
@@ -1129,4 +1236,377 @@ padding-left: 10px;
 }
 .spacer1 {
 	padding-top: 2px;
+}
+#junk {
+	position: absolute;
+	color: white;
+}
+
+.zoomActive #zoom {
+	background: url("images/icons/rbzoomhover.png") no-repeat 0 0;
+}
+
+#zoom {
+	background: url("images/icons/rbzoom.png") no-repeat 0 0;
+height: 30px;
+width: 30px;	
+}
+
+#zoom:hover {
+	background: url("images/icons/rbzoomhover.png") no-repeat 0 0;
+}
+
+.panActive #pan {
+	background: url("images/icons/panhover.png") no-repeat 0 0;
+}
+
+#pan {
+background: url("images/icons/pan.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+}
+
+#pan:hover {
+background: url("images/icons/panhover.png") no-repeat 0 0;
+}
+#clear {
+background: url("images/icons/clear.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+}
+
+
+#identify {
+background: url("images/icons/identify.png") no-repeat -4px -2px;
+height: 30px;
+width: 30px;
+}
+
+#identify:hover {
+background: url("images/icons/identifyhover.png") no-repeat -4px -2px;
+}
+
+#identify.idActive  {
+background: url("images/icons/identifyhover.png") no-repeat -4px -2px;
+}
+
+
+#clear:hover {
+background: url("images/icons/clearhover.png") no-repeat 0 0;
+}
+
+#selection {
+background: url("images/icons/select.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+}
+
+#selection:hover {
+background: url("images/icons/selecthover.png") no-repeat 0 0;
+}
+
+.selectActive #selection {
+	background: url("images/icons/selecthover.png") no-repeat 0 0;
+}
+
+#helpButton {
+	/*
+background: url("images/icons/help.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+*/
+}
+
+#draw {
+background: url("images/icons/measure.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+}
+
+#draw:hover {
+background: url("images/icons/measurehover.png") no-repeat 0 0;
+}
+
+#bufferMode {
+background: url("images/icons/buffer.png") no-repeat 0 0;
+height: 30px;
+width: 30px;
+}
+
+#bufferMode:hover {
+	background: url("images/icons/bufferhover.png") no-repeat 0 0;
+}
+
+#toggleOutput {
+background: url("images/icons/favorites.png") no-repeat 0 -1px;
+height: 30px;
+width: 30px;
+}
+
+#toggleOutput:hover {
+	background: url("images/icons/favoriteshover.png") no-repeat 0 -1px;
+}
+
+#legendDiv {
+position: absolute !important;
+right: 0px;
+top: 43px;
+z-index: 500;
+height: 300px;
+overflow: auto;
+background-color: white;
+width: 300px;
+}
+.searchSnapBottom #searchResults{
+	left:0px !important;
+	height: 175px !important;
+}
+.searchSnapRight #searchResults{
+	width:322px;
+	top: 43px !important;
+}
+
+
+.searchSnapLeft #searchResults{
+	width:322px;
+	top: 43px !important;
+	
+}
+
+.searchFreeFloat #searchResults {
+	width: 322px;
+}
+.searchSnapBottom #searchResults .resultsWindow{
+	width:100%;
+	margin-left: 0px;
+}
+
+.searchSnapBottom #searchResults #resultsContent{
+
+	margin-top:19px;
+	height: 150px;
+}
+
+#dockButton {
+	cursor:pointer;
+	background: url("images/icons/lock.png") no-repeat 0 0;
+	width:16px;
+	height:16px;
+	color: white;
+font-family: verdana,helvetica;
+font-size: 16px;
+float: left;
+margin-left: 1px;
+}
+#dockButton:hover {
+	background: url("images/icons/lockhover.png") no-repeat 0 0;
+}
+
+
+#dockButton.docked{
+	background: url("images/icons/lock.png") no-repeat 0 0;
+}
+#dockButton.undocked{
+	background: url("images/icons/unlock.png") no-repeat 0 0;
+}
+
+#dockButton.docked:hover{
+	background: url("images/icons/lockhover.png") no-repeat 0 0;
+}
+#dockButton.undocked:hover{
+	background: url("images/icons/unlockhover.png") no-repeat 0 0;
+}
+
+.dockMode{
+	
+}
+.undockMode{
+	cursor:move;
+}
+
+
+.ssbInitial #searchResults{
+	
+}
+#resultsContent{}
+.searchSnapBottom #resultsContent {}
+.searchSnapBottom .fit{}
+.searchSnapBottom .fit  div, .searchSnapBottom  .fit + a{}
+.searchSnapBottom  div.even,.searchSnapBottom div.odd {
+	width:auto;
+	min-width:2000px;
+}
+.searchSnapBottom .resultsText{
+	margin-right: 10px;
+}
+.searchSnapBottom table {
+	width:100%;
+}
+.searchSnapBottom .resultsLabel {
+	/* width:100%; */
+	width: 180px;
+	
+}
+.searchSnapBottom #resultsContent td {
+	vertical-align: top;
+	width:125px;
+}
+.searchSnapBottom #resultsContent table {
+	width: auto;
+/* min-width: 2519px; */
+	
+}
+
+.searchSnapBottom #resultsContent td.ownName {
+	width: 200px;
+}
+.searchSnapBottom #resultsContent td.ownOverflow {
+	width: 200px;
+}
+.searchSnapBottom #resultsContent td.fips {
+	width: 50px;
+}
+.searchSnapBottom #resultsContent td.ownCity {
+	width: 75px;
+}
+.searchSnapBottom #resultsContent td.ownState {
+	width: 100px;
+}
+.searchSnapBottom #resultsContent td.ownZip {
+	width: 110px;
+}
+.searchSnapBottom #resultsContent td.impActVal {
+	width: 200px;
+}
+.searchSnapBottom #resultsContent td.impAssVal {
+	width: 200px;
+}
+.searchSnapBottom .sTall{
+	display:none;
+}
+
+.searchSnapLeft .sWide, .searchSnapRight .sWide,.searchFreeFloat .sWide {
+	display:none;
+}
+
+.searchSnapLeft td, .searchSnapRight td, .searchFreeFloat td {
+	float:left;
+}
+
+.dijitDialog{
+background-color:white;
+padding: 0px 10px 10px 10px;
+border-style: solid;
+border-color: rgb(16,64,92);
+font-family: Verdana,helvetica;
+
+
+}
+.dijitDialog .dijitDialogTitleBar{
+background: rgb(16,64,92);
+color:white;
+margin-left: -10px;
+margin-right: -10px;
+}
+
+.dijitDialog .dijitDialogPaneContent {
+	
+}
+
+.dijitDialog .closeText {
+	margin-top: -2px;
+	padding-right: 4px;
+	float:right;
+	cursor:pointer;
+	font-weight: bold;	
+}
+.dijitDialogCloseIconHover{
+	color:yellow !important;
+
+}
+
+
+div.dijitDialogUnderlayWrapper {
+	position:absolute;
+	background: rgb(255,255,255);
+	background: rgba(255,255,255,0.5);
+}
+
+.searchSnapLeft .sTallFix , .searchSnapRight .sTallFix ,.searchFreeFloat .sTallFix {
+	display:initial;
+}
+.searchSnapBottom .goToParcel{
+background: url("images/icons/zoomRecord.png") no-repeat 11px 0px;
+width: 44px;
+height: 32px;
+display: block;
+}
+
+.goToParcel{
+background: url("images/icons/zoomRecord.png") no-repeat 0px 0px;
+width: 44px;
+height: 32px;
+display: block;
+}
+
+div.LocateButton {
+	display: block;
+top: 100px;
+left: 26px;
+position: absolute;
+z-index: 1000;
+}
+
+.LocateButton .zoomLocateButton {
+	background-image: url("images/icons/gpslocate.png");
+}
+
+html.dj_ie8 div.dijitDialogUnderlayWrapper{
+	background: none !important;
+}
+
+#addrSearchBox{
+position: absolute;
+z-index: 948;
+top: 50px;
+right: 10px;
+background:rgb(255,255,255);
+width: 294px;
+font-family: verdana,helvetica;
+font-size: 14px;
+}
+
+#addrSearchTitle{
+	background: rgb(16,64,92);
+	background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
+color: white;
+text-align: center;
+padding: 5px;
+font-weight: bold;
+}
+
+#addrSearchForm{
+	padding-top: 6px;
+padding-bottom: 15px;
+}
+
+
+#toolsFormWrap{
+	padding: 10px 10px 10px 19px;
+	margin-right: 10px;
+}
+
+#infoFormWrap{
+	padding: 10px;
+}
+
+#addrCancel{
+	position: relative;
+left: 130px;
+top: 8px;
+}
+
+#addrCancel:hover{
+	color:red;
+	cursor:pointer;
 }

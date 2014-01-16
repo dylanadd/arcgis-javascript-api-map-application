@@ -10,11 +10,12 @@
   		   
   	 -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9">
+    <meta http-equiv="X-UA-Compatible" content="IE=8, IE=9">
     <!--The viewport meta tag is used to improve the presentation and behavior
      on iOS devices-->
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-    <title>Parcel Locator</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"> 
+ <!--  <meta name="viewport" content="initial-scale=0.5, user-scalable=no">-->
+    <title>Pueblo County Interactive Map</title>
     <script>var dojoConfig = { parseOnLoad: true };</script>
  	<!-- 	<link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/tundra/tundra.css">  --> 
     <!-- <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css"> -->
@@ -22,7 +23,31 @@
 
      <link rel="stylesheet" href="esri.css">
      <link rel="stylesheet" href="./interface.css">
-		
+     
+     
+     
+<script type="text/javascript">
+
+
+
+if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
+ var ieversion=new Number(RegExp.$1); // capture x.x portion and store as a number
+ if (ieversion<=8) {
+ 	if(ieversion==8){
+ 		setTimeout(function(){
+ 		ieAlert.set("title","Notice");
+       	ieAlert.set("content", "<p>Sorry, your web browser (IE-8) is out of date. </p><p>Please update to the newest version (IE-10) for the best experience. Otherwise, the application may not work as intended.</p>");
+		ieAlert.show(); 			
+ 		},1000);
+
+ 	}else {
+  alert("Sorry, your web browser is out of date and is not supported by the application. Please update to the newest version. Otherwise, the application may not work as intended.");
+  }
+}
+}
+</script>
+
+
 
 	<script>var selectedParcel;</script>
    
@@ -45,7 +70,18 @@
     style="width: 100%; height: 100%; margin: 0;">
       
 
-     
+     <img src="images/icons/selecthover.png" class="hide" />
+     <img src="images/icons/rbzoomhover.png" class="hide" />
+     <img src="images/icons/panhover.png" class="hide" />
+     <img src="images/icons/measurehover.png" class="hide" />
+     <img src="images/icons/favoriteshover.png" class="hide" />
+     <img src="images/icons/clearhover.png" class="hide" />
+     <img src="images/icons/bufferhover.png" class="hide" />
+     <img src="images/icons/downloadhover.png" class="hide" />
+     <img src="images/icons/lockhover.png" class="hide" />
+     <img src="images/icons/unlockhover.png" class="hide" />
+     <img src="images/icons/closehover.png" class="hide" />
+     <img src="images/icons/zoomRecord.png" class="hide" />
      
      
      <div id="button-console" class="visible">
@@ -78,7 +114,7 @@
      <br/>
      <div class="spacer1">
      <div class="selectLabel">Data To Return: </div>
-     <label><input type="radio" name="3" id="bufferParcs">Parcels</label>
+     <label><input type="radio" name="3" id="bufferParcs" checked="checked">Parcels</label>
      <label><input type="radio" name="3" id="bufferAddr">Address Points</label>
      <label><input type="radio" name="3" id="bufferRoad">Roads</label>
     </div>
@@ -100,13 +136,16 @@
           	          
          
           
-          <div id="tools">
-			<a id="zoom">Zoom</a>
-			<a id="pan">Pan</a>
-			<a id="selection">Select</a>
-           <a id="clear" title="Clear all selections on the page.">Clear</a> 
-        <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off.">Buffer</a>
-        <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off">Measure</a>
+          <div id="tools" class="zoomActive">
+			<a id="zoom" title="Rubber Band Zoom"></a>
+			<a id="pan" title="Pan The Map"></a>
+			<a id="selection" title="Turn On The Selection Tool"></a>
+           <a id="clear" title="Clear all selections on the page."></a> 
+           <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off"></a>
+           <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off."></a>
+        	<a id="identify" class="idOff" title="Show parcel info popup when selcting parcels"></a>
+        <a id="toggleOutput" class="closed" title="View your selected info panel"></a>
+          
         
          <div id="gallery" class="dormant">
           <div data-dojo-type="dijit/TitlePane" 
@@ -118,13 +157,13 @@
         
          <div id="print_button" class="dormant"></div>
         
-        <a id="toggleOutput" class="closed" title="View your selected info panel">Bookmarks</a>
+        
         <a id="overviewToggle">Overview</a>
         <a id="legendToggle" title="View Map Legend">Legend</a>
-        <a id="helpButton" title="View instructions on using the map">Help</a>
+         <a id="helpButton" title="View instructions on using the map">Help</a>
           </div>
           
-          
+           <div id="anotherWrapper">
             <div id="search_wrapper" class="search_wrapper">
 	   <div class="search_button">
 	  <!--  <input type="button" id="locate" /> -->
@@ -137,7 +176,7 @@
 		<a id="addressSwitch"  class="deselected" title="Address Search Mode"></a>
 		<a id="roadSwitch" class="deselected" title="Road Search Mode"></a>
 	   </div>
-          
+        </div>  
          </div> 
         </div>
      
@@ -147,13 +186,15 @@
       
       
       
-       
+       <div id="legendWrapper" class="hide">
        <div id="legendDiv"></div>
+       </div>
        </div>
         <div id="output" class="xhide">
         	<div id="wrapper">
         		<div class="gradient">
         		<a id="expButton" href="javascript:void(0)" onclick="return false;">Export</a>
+        		
         		</div>
         		<form id="form2" style="display: none;"></form>
         		<div id="wrapper2">
@@ -171,29 +212,38 @@
         			<td id="ownZip">Own. Zip</td>
         		</tr>
         		
-        	<div id="tableFill"></div></table>
+        	</table><div id="tableFill"></div>
         	</div>
         	</div>
         </div>
         
         
-        <div id="searchResults" style="width:200px;">
+        <div id="modeHelper" class="dockMode">
+       <div id="moveHelper" class="searchSnapBottom ssbInitial">
+        <div id="searchResults" class="hide" style="width:200px;">
         	<div class="buttonWrap">
         	<div id="openClose" class="noResults"></div>
         	</div> 
         	<div id="resultsBody" class="resultsWindow" >
-        		<div id="close">Close X</div>
-        		 <div id="resultsContent"></div>
+        		<div id="exportResults" title="Export CSV of selected features"></div>
+        		<div id="dockButton" title="Unlock the window from this position"></div>
+        		<div id="close" title="Close this window"></div>
+        		 <div id="resultsContent">
+        		 	<table cellspacing="0" id="tableContent" class="sWide"></table>
+        		 	<table cellspacing="0" id="tableTallContent" class = "sTall"></table>
+        		 </div>
         	</div>
         	
         </div>
-        
-        
-        
-       
-        
       </div>
+        </div>
+        
      
+       
+       
+               
+      </div>
+     <div id="junk"></div>
       <div style="display:none;">
       	
       	
@@ -203,7 +253,7 @@
       	<button id="click" type="submit"></button>
       </form>
       </div>
-      <a id="pclogo" href="http://county.pueblo.org/government/county/department/edgis" target="_blank"></a>
+      <a id="pclogo" href="http://county.pueblo.org/government/county/department/edgis" title="Application provided and supported by Pueblo County GIS" target="_blank"></a>
     
       
     <div id="noIconMode">
@@ -224,33 +274,52 @@
         	</div>
         </div>
       
-      
+      <a id="displayHelp" style="display:none"></a>
       <a id="selectHelp" style="display:none"></a>
       <div id="selectionTools" class="hide">
       	<div id="toolSelect">
-      		<div id="toolSelectTitle">Select Tool:</div>
+      		<div id="toolSelectTitle"><span>Select Tool:</span></div>
+      	<div id="toolsFormWrap">
       	<form id="toolsForm" action="">
 
-
-      <label><input type="radio" name="0" id="fpoly">Freehand </label><br/>
+		<label><input type="radio" name="0" id="rect">Rectangle</label><br/>
+		<label><input type="radio" name="0" id="circ">Circle</label><br/>
+     	 <label><input type="radio" name="0" id="fpoly">Freehand </label><br/>
       	<label><input type="radio" name="0" id="poly">Polygon</label><br/>
-      	<label><input type="radio" name="0" id="rect">Rectangle</label><br/>
-      	<label><input type="radio" name="0" id="triangle">Triange</label><br/>
-      	<label><input type="radio" name="0" id="circ">Circle</label><br/>
+      	<label><input type="radio" name="0" id="triangle">Triangle</label><br/>
+      	
       	<label><input type="radio" name="0" id="pt">Point</label><br/>
       	<label><input type="radio" name="0" id="line">Line</label><br/>
       	<label><input type="radio" name="0" id="polyline">Polyline</label><br/>
       	</form>
       	</div>
+      	</div>
       	<div id="infoSelect">
       		<div id="infoSelectTitle">Select Data:</div>
+      		<div id="infoFormWrap">
       	<form id="infoForm" action="">
       		<label><input type="radio" name="1" id="parcs">Parcels</label> <br/>
       		<label><input type="radio" name="1" id="addr">Address Points</label><br/>
       		<label><input type="radio" name="1" id="roads">Roads</label><br/>
       	</form>
       	</div>
+      	</div>
       </div>
+      
+      <div id="addrSearchBox" class="hide">
+      	<div id="addrSearchTitle">
+      		Address Search Options
+      	</div>
+      	<div id="addrSearchForm">
+      	<form id="addrForm">
+      		<label><input type="radio" name="0" id="geo" checked="checked">Geocode the address (default)</label><br/>
+			<label><input type="radio" name="0" id="raw">Search raw text</label>
+      	</form>
+      	<span id="addrCancel">Close</span>
+      	
+      	</div>
+      </div>
+      
       
   </body>
 
