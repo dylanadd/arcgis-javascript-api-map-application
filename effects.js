@@ -66,30 +66,34 @@
         		dojo.connect(dnd, "onMove", function(e){
         			isMoving = true;
         			moved = true;
-      			 	console.log(scalebar);
+      			 //	console.log(scalebar);
       			 	vs = win.getBox();
-       				console.log(vs);
+       			//	console.log(vs);
       				 	 box = domGeom.position(searchResults);
-      			 	console.log(box);
+      			// 	console.log(box);
        	
-      			 	if((vs.h - box.y) <= 175){
+      			 	if((vs.h - box.y) <= 175){  
       			 		//console.log("snap bottom");
      			  		domAttr.set(dom.byId("moveHelper"),"class","searchSnapBottom");
      			  		domAttr.set(dom.byId("resultsContent"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
      			  		domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
      			  		domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
+     			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
      			  		position = "bottom";
      			  		//console.log(vs.h - box.y);
      			  	} else if((vs.w - box.x) <= 375 && box.y < 150 ) {
    			    		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapRight");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
     			   		domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+    			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
     			   		position = "right";
      			  	} else if((box.x) <= 66 && box.y < 150 ) {
     			   		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapLeft");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
     			   		domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
     			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box.w + (box.x + 22) ) +"px; z-index: 30;");
+    			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box.w + (box.x + 88) ) +"px; z-index: 30;");
+    			   		//console.log(query(".searchFix"));
     			   		position = "left";
     			   	}else {
     			   		domAttr.set(dom.byId("moveHelper"),"class", "searchFreeFloat");
@@ -97,6 +101,8 @@
     			   		domAttr.set(dom.byId("pclogo"), "style", "");
      			  		domAttr.set(scalebar, "style", "left: 25px;");
      			  		domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
+     			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
+     			  		
      			  		position = "free";
      			  	}
        				
@@ -555,7 +561,7 @@
      	
      	 vs = win.getBox();
 
-     	
+     	domAttr.set(dom.byId(query(".search_wrapper")[0]),"style","");
      	
 		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
 		moved = false;
