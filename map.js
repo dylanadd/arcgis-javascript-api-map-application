@@ -117,7 +117,10 @@ var gLayer = new GraphicsLayer();
         }, domConstruct.create("div"));
         mobile = false;
     } else {
-        popup = new esri.dijit.PopupMobile(null, dojo.create("div"));
+      //  popup = new esri.dijit.PopupMobile(null, dojo.create("div"));
+       popup = new Popup({
+            fillSymbol: sfs
+        }, domConstruct.create("div"));
         mobile = true;
 
     }

@@ -1614,13 +1614,28 @@ top: 8px;
 .dj_android{}
 
 .dj_ios #tools{
-	width: 706px;
+	width: 740px;
 	top: 7px;
+	font-size:16px;
 }
 .dj_ios #tools a{
-	background-size: 27px 27px;
+	background-size: 25px 25px;
 	padding-left: 14px;
 }
 .dj_ios #tools a#identify{
-	background-size: 37px 35px !important;
+	background-size: 34px 32px !important;
 }
+.dj_ios div#resultsBody div#exportResults, .dj_ios div#resultsBody div#dockButton, .dj_ios div#resultsBody div#close{
+	background-size: 20px 20px;
+	width:20px;
+	height:17px;
+	padding-bottom: 5px;
+}
+.dj_ios div#resultsBody div#dockButton {
+	background-size: 25px 24px !important;
+}
+.dj_ios #searchResults #resultsContent{
+	margin-top:24px !important;
+}
+
+.dj_ios .esriPopup .titleButton.maximize{display:none;}
