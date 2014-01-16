@@ -1610,3 +1610,17 @@ top: 8px;
 	color:red;
 	cursor:pointer;
 }
+
+.dj_android{}
+
+.dj_ios #tools{
+	width: 706px;
+	top: 7px;
+}
+.dj_ios #tools a{
+	background-size: 27px 27px;
+	padding-left: 14px;
+}
+.dj_ios #tools a#identify{
+	background-size: 37px 35px !important;
+}
