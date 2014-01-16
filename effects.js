@@ -422,9 +422,13 @@
   	}, delay);
    
       }
-  
+  var sWidth;
+  var sHeight;
   var popTemp;
 	ready(function(){
+		var initialSize = win.getBox();
+		sWidth = initialSize.w;
+		sHeight = initialSize.h;
 	//console.log(map);
 	//	console.dir(dnd);
 		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
@@ -449,6 +453,23 @@
         	popTemp = query(".esriPopup");
         	popTemp = popTemp[0];
 		domAttr.set(popTemp,"class","esriPopup hide");
+		
+		
+		
+		setInterval(function(){
+			var screenSize = win.getBox();
+			
+			
+			if(sWidth != screenSize.w || sHeight != screenSize.h){
+				console.log(screenSize);
+				sWidth = screenSize.w;
+				sHeight = screenSize.h;
+				respond();
+			}
+			
+		},500);
+		
+		
 		
 		
 		
