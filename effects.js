@@ -50,7 +50,7 @@
         
         
         
-        
+        var isMoving = false; //to help detect whether window is being moved
         var position = "bottom";
         var docked = true;
         var moved = false;
@@ -62,7 +62,9 @@
         	 dnd = new Moveable(dom.byId("searchResults")); 
         		domAttr.set(dockButton,"class","undocked"); 
         		domAttr.set(dom.byId("modeHelper"),"class","undockMode");
+        		
         		dojo.connect(dnd, "onMove", function(e){
+        			isMoving = true;
         			moved = true;
       			 	console.log(scalebar);
       			 	vs = win.getBox();
@@ -97,15 +99,38 @@
      			  		domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
      			  		position = "free";
      			  	}
-       	
-       	
+       				
+       				
+
        	
       			 });
        
         		 
-        		 
-        		 
+        		    dojo.connect(dnd, "onMoveStop", function(e){
+       					//alert();
+       				isMoving = false;
+       				setTimeout(function(){
+       					if(!isMoving){
+       						dnd.destroy();
+        					docked = true;
+        					domAttr.set(dockButton,"class","docked");
+        					domAttr.set(dom.byId("modeHelper"),"class","dockMode");
+       					}
+       				},1000);
+       				      	
+        			});        		 
         		docked = false;
+        		
+        		setTimeout(function(){
+       					if(!isMoving){
+       						dnd.destroy();
+        					docked = true;
+        					domAttr.set(dockButton,"class","docked");
+        					domAttr.set(dom.byId("modeHelper"),"class","dockMode");
+       					}
+       				},1000);
+        		
+        		
         	} else {
         		dnd.destroy();
         		docked = true;
@@ -115,11 +140,11 @@
         });
         
        
-        
-        dojo.connect(dnd, "onMoveStop", function(e){
-        	//dnd.destroy();
-        });
-        
+
+       
+       
+     
+         
         
         
         
