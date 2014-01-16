@@ -1383,6 +1383,16 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 	var searchTimeout = false;
 	
     function startSearch() {
+    	try{document.getElementById("address").blur();}catch(e){console.log(e);}
+    	try{
+    		var hideKeyboard = function() {
+    document.activeElement.blur();
+    $("input").blur();
+    console.log("input");
+};
+    		
+    	}catch(e){console.log(e);}
+    	
     	try{infoArray2.length = 0;} catch(e){console.log(e);}
     	try{domAttr.set("addrSearchBox","class","hide");} catch(e){console.log(e);}
     	searchTimeout = false;
@@ -1543,7 +1553,7 @@ function levyUrl(){
 
     //prepare address query string for Geocoder
     function locate() {
-
+		
         //  domAttr.set("locate", "class", "processing");
         // map.graphics.clear();
         //clearx();
@@ -1558,6 +1568,7 @@ function levyUrl(){
         };
         // console.log(locator.addressToLocations(options));
         locator.addressToLocations(options);
+        
     }
 
     function showResults(evt) {
