@@ -559,6 +559,20 @@ var gLayer = new GraphicsLayer();
       popup.hide();
       	console.log(map.getLayersVisibleAtScale());
     });
+    
+    var addrSearchMode = "geo"; //default option is geocode the address
+    
+     dojo.connect(dom.byId("geo"), "click", function () {
+      	addrSearchMode = "geo";
+    });
+    
+    dojo.connect(dom.byId("raw"), "click", function () {
+      	addrSearchMode = "raw";
+    });
+    
+     dojo.connect(dom.byId("addrCancel"), "click", function () {
+      	domAttr.set("addrSearchBox","class","hide");
+    });
 	
 	var distParams = new DistanceParameters();
 	distParams.distanceUnit = GeometryService.UNIT_FOOT;
@@ -1337,6 +1351,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         domAttr.set("ownerParcelSwitch", "class", "selected");
         domAttr.set("addressSwitch", "class", "deselected");
         domAttr.set("roadSwitch", "class", "deselected");
+        domAttr.set("addrSearchBox","class","hide");
     }
 
     function addressMode() {
@@ -1348,6 +1363,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         domAttr.set("ownerParcelSwitch", "class", "deselected");
         domAttr.set("addressSwitch", "class", "selected");
         domAttr.set("roadSwitch", "class", "deselected");
+        domAttr.set("addrSearchBox","class","nada");
     }
 
     function roadMode() {
@@ -1360,13 +1376,15 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         domAttr.set("ownerParcelSwitch", "class", "deselected");
         domAttr.set("addressSwitch", "class", "deselected");
         domAttr.set("roadSwitch", "class", "selected");
+        domAttr.set("addrSearchBox","class","hide");
     }
 	
 	
 	var searchTimeout = false;
 	
     function startSearch() {
-    	try{infoArray2.length = 0;} catch(e){}
+    	try{infoArray2.length = 0;} catch(e){console.log(e);}
+    	try{domAttr.set("addrSearchBox","class","hide");} catch(e){console.log(e);}
     	searchTimeout = false;
         domAttr.set("locate", "class", "processing");
        domAttr.set("body", "class", "claro buttonMode calculating");
@@ -1394,13 +1412,61 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         if (ownParSearch) {
             findOwnerOrParcel();
         } else if (addrSearch) {
+        	if(addrSearchMode == "geo"){
             locate();
+          } else {
+          	addrTxtSearch();
+          }
         } else if (rdSearch) {
             findRoad();
         }
 
     }
 
+
+function addrTxtSearch(){
+	var zzz = false;
+	var str1 = dom.byId("address").value;
+	var query3 = new Query();
+	query3.where = makeWordArray(str1, "address");
+	console.log(query3.where);
+       try{parcels.clearSelection();} catch(e){}
+        	try{road.clearSelection();} catch(e){}
+            var graphic2;
+
+            points.selectFeatures(query3, FeatureLayer.SELECTION_NEW, function (results) { //This returns all parcel data within buffer.
+
+                console.log(query3);
+                console.log(results);
+                console.log(results[0]);
+                setTimeout(function () {
+                    if (!zzz) {
+                        displayResults(results, "address");
+                        zzz = true;
+                    }
+                }, 1000);
+                var temp = new Array();
+
+                var c = points.getSelectedFeatures();
+                console.log(c);
+                
+                // map.addLayer(points);
+                 
+                for (i = 0; i < c.length; i++) {
+//                    map.graphics.add(c[i]);
+						gLayer.add(c[i]);
+                    infoArray2.push(results[i]);
+                }
+				map.addLayer(gLayer);
+				try{
+					zoomToPoint(infoArray2[0]);
+					domAttr.set(dom.byId("locate"),"class","dormant");
+					}catch(e){console.log(e);}
+            }, function (error) {
+				console.log(error);
+            });
+   
+}
 
 function levyUrl(){
 	
@@ -2169,7 +2235,7 @@ function levyUrl(){
            // query.text = owner;
            		//query.where = "(Owner like '%" + owner + "%' or OwnerOverflow like '%" + owner + "%')";
            	//	query.where = "(Owner like '%dylan %' or OwnerOverflow like '%dylan %') and (Owner like '%addington%' or OwnerOverflow like '%addington%') ";
-           		query.where = makeWordArray(owner);
+           		query.where = makeWordArray(owner, "owner");
            		console.log(query.where);
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
                 center = graphicsUtils.graphicsExtent(selection).getCenter();
@@ -2203,7 +2269,7 @@ function levyUrl(){
 
 //var searchRefine = new Array("and","&","or",);
 
-function makeWordArray(owner){
+function makeWordArray(owner, qMode){
 		var q = "";
 		console.log(owner);
 		var temp;
@@ -2211,26 +2277,44 @@ function makeWordArray(owner){
 		owner = owner.match(/\S+\s*/g);
 		console.log(owner);
 		
+		if(qMode == "owner"){
 		
 		
-		
-		for(i=0;i<=owner.length;i++){
-			if(i + 1 != owner.length){
-				try{
-					owner[i] = owner[i].replace(/\s/g, '');
-				} catch(e){}
-				q += "(Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%') and";
-			} else {
-				try{
-					owner[i] = owner[i].replace(/\s/g, '');
-				} catch(e){}
-				q += " (Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%')";
-				console.log(q);
-				return q;
+			for(i=0;i<=owner.length;i++){
+				if(i + 1 != owner.length){
+					try{
+						owner[i] = owner[i].replace(/\s/g, '');
+					} catch(e){}
+					q += "(Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%') and";
+				} else {
+					try{
+						owner[i] = owner[i].replace(/\s/g, '');
+					} catch(e){}
+					q += " (Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%')";
+					console.log(q);
+					return q;
+				}
 			}
+		} else if(qMode = "address"){
+			for(i=0;i<=owner.length;i++){
+				if(i + 1 != owner.length){
+					try{
+						owner[i] = owner[i].replace(/\s/g, '');
+					} catch(e){}
+					q += "(FULLADDR like '%" + owner[i] + "%') and";
+				} else {
+					try{
+						owner[i] = owner[i].replace(/\s/g, '');
+					} catch(e){}
+					q += " (FULLADDR like '%" + owner[i] + "%')";
+					console.log(q);
+					return q;
+				}
+			}			
 		}
-		
+	
 	return 0;
+	
 }
 
 

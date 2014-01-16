@@ -1187,22 +1187,23 @@ background: radial-gradient(circle farthest-corner at bottom right, #fff, rgb(16
 }
 
 
-#selectionTools label {
+#selectionTools label, #addrSearchBox label, #addrSearchBox input, #selectionTools input {
 	cursor:pointer;
 }
 
-#selectionTools label:hover, .spacer1 label:hover {
+#selectionTools label:hover, .spacer1 label:hover , #addrSearchBox label:hover{
 	color:red;
 }
 
 
 
 #toolSelect {
+	width: 140px;
 float: left;
-padding: 10px 21px 10px 10px;
+padding: 0px 0px 10px 0px;
 border-left: 0px;
 border-top: 0px;
-border-right: 2px;
+border-right: 0px;
 border-bottom: 0px;
 border-style: inset;
 
@@ -1210,13 +1211,21 @@ border-style: inset;
 
 #infoSelect {
 float: left;
-padding: 10px;
+padding: 0px,10px,10px,10px;
 
+}
+
+
+#toolSelectTitle span{
+	margin-left: 10px;
 }
 
 #toolSelectTitle, #infoSelectTitle {
 	padding-bottom: 5px;
 	font-weight: bold;
+	background: rgb(16,64,92);
+	color:white;
+	background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
 }
 
 .selectLabel {
@@ -1556,4 +1565,48 @@ html.dj_ie8 div.dijitDialogUnderlayWrapper{
 	background: none !important;
 }
 
+#addrSearchBox{
+position: absolute;
+z-index: 948;
+top: 50px;
+right: 10px;
+background:rgb(255,255,255);
+width: 294px;
+font-family: verdana,helvetica;
+font-size: 14px;
+}
 
+#addrSearchTitle{
+	background: rgb(16,64,92);
+	background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
+color: white;
+text-align: center;
+padding: 5px;
+font-weight: bold;
+}
+
+#addrSearchForm{
+	padding-top: 6px;
+padding-bottom: 15px;
+}
+
+
+#toolsFormWrap{
+	padding: 10px 10px 10px 19px;
+	margin-right: 10px;
+}
+
+#infoFormWrap{
+	padding: 10px;
+}
+
+#addrCancel{
+	position: relative;
+left: 130px;
+top: 8px;
+}
+
+#addrCancel:hover{
+	color:red;
+	cursor:pointer;
+}
