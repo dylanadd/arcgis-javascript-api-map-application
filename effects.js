@@ -550,7 +550,7 @@
       var smallBig = false;
       var bigSmall = false;
      on(window, "resize", function(){
-     	respond(1250);
+     	//respond(1250);
      }); 
       
       var big1;
