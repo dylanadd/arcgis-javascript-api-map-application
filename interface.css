@@ -1613,29 +1613,29 @@ top: 8px;
 
 .dj_android{}
 
-.dj_ios #tools{
+.dj_android #tools, .dj_ios #tools{
 	width: 740px;
 	top: 7px;
 	font-size:16px;
 }
-.dj_ios #tools a{
+.dj_android #tools a, .dj_ios #tools a{
 	background-size: 25px 25px;
 	padding-left: 14px;
 }
-.dj_ios #tools a#identify{
+.dj_android #tools a#identify, .dj_ios #tools a#identify{
 	background-size: 34px 32px !important;
 }
-.dj_ios div#resultsBody div#exportResults, .dj_ios div#resultsBody div#dockButton, .dj_ios div#resultsBody div#close{
+.dj_android div#resultsBody div#exportResults, .dj_android div#resultsBody div#dockButton, .dj_android div#resultsBody div#close, .dj_ios div#resultsBody div#exportResults, .dj_ios div#resultsBody div#dockButton, .dj_ios div#resultsBody div#close{
 	background-size: 17px 17px;
 	width:20px;
 	height:17px;
 	padding-bottom: 5px;
 }
-.dj_ios div#resultsBody div#dockButton {
+.dj_android  div#resultsBody div#dockButton, .dj_ios div#resultsBody div#dockButton {
 	background-size: 22px 21px !important;
 }
-.dj_ios #searchResults #resultsContent{
+.dj_android  #searchResults #resultsContent, .dj_ios #searchResults #resultsContent{
 	margin-top:22px !important;
 }
 
-.dj_ios .esriPopup .titleButton.maximize{display:none;}
+.dj_android .esriPopup .titleButton.maximize, .dj_ios .esriPopup .titleButton.maximize{display:none;}
