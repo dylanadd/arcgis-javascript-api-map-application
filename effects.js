@@ -76,21 +76,21 @@
       			 		//console.log("snap bottom");
      			  		domAttr.set(dom.byId("moveHelper"),"class","searchSnapBottom");
      			  		domAttr.set(dom.byId("resultsContent"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
-     			  		domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
-     			  		domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
+     			  	//	domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
+     			  	//	domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
      			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
      			  		position = "bottom";
      			  		//console.log(vs.h - box.y);
      			  	} else if((vs.w - box.x) <= 375 && box.y < 150 ) {
    			    		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapRight");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
-    			   		domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+    			   	//	domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
     			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
     			   		position = "right";
      			  	} else if((box.x) <= 66 && box.y < 150 ) {
     			   		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapLeft");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
-    			   		domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
+    			   	//	domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
     			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box.w + (box.x + 22) ) +"px; z-index: 30;");
     			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box.w + (box.x + 88) ) +"px; z-index: 30;");
     			   		//console.log(query(".searchFix"));
@@ -98,8 +98,8 @@
     			   	}else {
     			   		domAttr.set(dom.byId("moveHelper"),"class", "searchFreeFloat");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
-    			   		domAttr.set(dom.byId("pclogo"), "style", "");
-     			  		domAttr.set(scalebar, "style", "left: 25px;");
+    			   		//domAttr.set(dom.byId("pclogo"), "style", "");
+     			  		//domAttr.set(scalebar, "style", "left: 25px;");
      			  		domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
      			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
      			  		
@@ -467,15 +467,69 @@
 			
 			
 			if(sWidth != screenSize.w || sHeight != screenSize.h){
-				console.log(screenSize);
+				//console.log(screenSize);
 				sWidth = screenSize.w;
 				sHeight = screenSize.h;
 				respond();
 			}
 			
+			
 		},500);
-		
-		
+		//Ultimate response algorithm for objects moving out of way of results window.
+		setInterval(function(){
+			var screenSize = win.getBox();
+			box = domGeom.position(searchResults);
+			//
+			try{
+				var ez = query("#searchResults.hide");
+				var ez2 = query("#moveHelper.searchSnapLeft");
+				var ez3 = query("#searchResults.showx");
+				var ez4 = query("#moveHelper.searchSnapBottom");
+				var ez5 = query("#moveHelper.searchFreeFloat");
+				var ez6 = query("#moveHelper.searchSnapRight");
+				//console.log(ez);
+				} catch(e){}
+			if(ez[0] && ez2[0]){
+				//console.log(ez);
+				//console.log(ez2);
+				domAttr.set(scalebar, "style", "left: 25px;");
+				domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
+     			domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
+			} else if(ez2[0] && ez3[0]){
+						domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
+    			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box.w + (box.x + 22) ) +"px; z-index: 30;");
+    			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box.w + (box.x + 88) ) +"px; z-index: 30;");
+			}	else if(ez4[0] && ez3[0]){
+			
+     			  		//domAttr.set(dom.byId("resultsContent"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
+     			  		domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
+     			  		domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
+     			  		try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");} catch(e){}
+			} else if(ez4[0] && ez[0]){
+				domAttr.set(dom.byId("pclogo"), "style", "");
+     			domAttr.set(scalebar, "style", "left: 25px;");
+     			try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");} catch(e){}
+			} else if(ez6[0] && ez[0]){
+				domAttr.set(dom.byId("pclogo"), "style", "");
+			}  else if(ez6[0] && ez3[0]){
+				domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+			} else if(ez5[0] && ez3[0]){
+				if((screenSize.w - box.x) <= 375){
+					domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+				} else {domAttr.set(dom.byId("pclogo"), "style", "");}
+				if((box.x) <= 66){
+					domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
+				} else {
+					domAttr.set(scalebar, "style", "left: 25px;");
+				}
+			}	else if(ez5[0] && ez[0]){
+				domAttr.set(dom.byId("pclogo"), "style", "");
+     			domAttr.set(scalebar, "style", "left: 25px;");
+			}
+			
+			
+			
+		},0);
 		
 		
 		
