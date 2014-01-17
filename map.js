@@ -2239,7 +2239,7 @@ function levyUrl(){
     //find all owners matching query 
     function selectOwner(owner) {
         popup.clearFeatures();
-		
+		var z = new Array();
         if (owner) {
         	try{gLayer.clear();}catch(e){}
              try{infoArray2.length = 0;}catch(e){}
@@ -2252,9 +2252,11 @@ function levyUrl(){
            		query.where = makeWordArray(owner, "owner");
            		console.log(query.where);
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
-                center = graphicsUtils.graphicsExtent(selection).getCenter();
+            	z.push(selection[0]);
+                //center = graphicsUtils.graphicsExtent(selection).getCenter();
+                 center = graphicsUtils.graphicsExtent(z).getCenter();
                 selectionX = selection;
-                var extHandler = map.on("extent-change", function () {
+             /*   var extHandler = map.on("extent-change", function () {
                     extHandler.remove();
                     //zoom to the center then display the popup 
                     map.infoWindow.setFeatures(selection);
@@ -2266,10 +2268,19 @@ function levyUrl(){
                      infoArray2.push(selection[0]);
                 });
                 // console.log(center);
+                */
+                   map.infoWindow.setFeatures(selection);
+                    //   map.infoWindow.show(center);
+                    //  ownerResults(selection);
+                    //   alert("ownerResults complete");
+                    console.log(selection);
+                    displayResults(selection,"parcel");
+                     infoArray2.push(selection[0]);
+                
                 
                 domAttr.set("locate", "class", "dormant");
                 domAttr.set("body", "class", "claro buttonMode");
-                map.centerAndZoom(center, 2);
+                map.centerAndZoom(center, 7);
                 change = true;
                 
 				try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
@@ -3221,8 +3232,11 @@ function makeGeomArray2(selection) {
                     map.infoWindow.setFeatures(selection);
                     map.infoWindow.show(center);
                     infoArray = selection[0];
+                   info(); 
                 });
                 map.centerAndZoom(center, 7);
+                 domAttr.set("locate", "class", "dormant");
+                domAttr.set("body", "class", "claro buttonMode");
             });
         }
     }
