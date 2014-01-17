@@ -475,9 +475,10 @@
 			
 			
 		},500);
+		var screenSize;
 		//Ultimate response algorithm for objects moving out of way of results window.
 		setInterval(function(){
-			var screenSize = win.getBox();
+			screenSize = win.getBox();
 			box = domGeom.position(searchResults);
 			//
 			try{
@@ -487,8 +488,12 @@
 				var ez4 = query("#moveHelper.searchSnapBottom");
 				var ez5 = query("#moveHelper.searchFreeFloat");
 				var ez6 = query("#moveHelper.searchSnapRight");
+				
 				//console.log(ez);
 				} catch(e){}
+			
+			
+			
 			if(ez[0] && ez2[0]){
 				//console.log(ez);
 				//console.log(ez2);
@@ -531,7 +536,11 @@
 			
 		},0);
 		
-		
+		setInterval(function(){
+			if(screenSize <= 1225){
+				domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");
+			}
+		}, 2000);
 		
 	});  
 	
