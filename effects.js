@@ -534,7 +534,7 @@
 			
 			
 			
-		},0);
+		},50);
 		
 		setInterval(function(){
 			if(screenSize <= 1225){
