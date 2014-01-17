@@ -478,6 +478,7 @@
 		var screenSize;
 		//Ultimate response algorithm for objects moving out of way of results window.
 		setInterval(function(){
+			try{
 			screenSize = win.getBox();
 			box = domGeom.position(searchResults);
 			//
@@ -533,15 +534,19 @@
 			}
 			
 			
-			
-		},60);
+			} catch(e){}
+		},50);
 		
 		setInterval(function(){
-			
-			if(screenSize <= 1380){
+			try{
+			if(screenSize.w <= 1380){
 				domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");
+				console.log(screenSize);
 			}
+			} catch(e){}
+			
 		}, 2000);
+		
 		
 	});  
 	
