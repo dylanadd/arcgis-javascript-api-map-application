@@ -3232,7 +3232,9 @@ function makeGeomArray2(selection) {
                     map.infoWindow.setFeatures(selection);
                     map.infoWindow.show(center);
                     infoArray = selection[0];
-                   info(); 
+                  // info();
+                  searchTimeout = true;
+                   
                 });
                 map.centerAndZoom(center, 7);
                  domAttr.set("locate", "class", "dormant");
