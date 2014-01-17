@@ -537,7 +537,8 @@
 		},60);
 		
 		setInterval(function(){
-			if(screenSize <= 1225){
+			
+			if(screenSize <= 1380){
 				domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");
 			}
 		}, 2000);
@@ -657,7 +658,7 @@
 		docked = true;
 		domAttr.set(dockButton, "class","docked");
 		domAttr.set(dom.byId("modeHelper"),"class","dockMode");
-		if(vs.w <= 1225){
+		if(vs.w <= 1380){
 			domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");
 			
 		} else {
