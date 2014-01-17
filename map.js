@@ -1922,7 +1922,7 @@ function levyUrl(){
        				 console.log(tf);
        				 count++;
         	//If row is an address point
-    		} else if (resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "point"){
+    		} else if (resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "point" && resultsArray[i].location == undefined){
     			console.log("point " + i);
     			
     			exportArray = {
@@ -1947,7 +1947,7 @@ function levyUrl(){
        				 count++;
     			
     			//If row is a geocoded address
-    		} else if (resultsArray[i].geometry == undefined && resultsArray[i].address != undefined){
+    		} else if (resultsArray[i].location != undefined && resultsArray[i].address != undefined){
     			console.log("address point " + i);
     			
     			exportArray = {
@@ -2468,6 +2468,8 @@ function setInfoArray2(geom, gCode){
 	var contentType;
 	var displayHelp = dom.byId("displayHelp");
     function displayResults(infoArray5, infoMode) {
+    	count = 0;
+    	tf = false;
     	console.log(contentType);
     	on.emit(displayHelp, "click", {bubbles: true, cancelable: true});
     	if(contentType == undefined){
@@ -2954,6 +2956,8 @@ function setInfoArray2(geom, gCode){
     }
 
     function displayGeoCoderResults(infoArray5) {
+    	count = 0;
+    	tf = false;
     	setInfoArray2(infoArray5.addresses[0], true); // so user can buffer first result
     	contentType = "geoCoder"; //ensures results clear when user searches for different data type
         console.log(infoArray5);
@@ -2972,6 +2976,8 @@ function setInfoArray2(geom, gCode){
         }
 
         for (i = 0; i < infoArray5.addresses.length; i++) {
+        	//console.log(infoArray5);
+        	console.log(infoArray5.addresses[0].address);
             infoArray5.addresses[i].location.spatialReference.wkid = 2233;
             resultsArray.push(infoArray5.addresses[i]);
             var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
