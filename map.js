@@ -2475,7 +2475,7 @@ function setInfoArray2(geom, gCode){
     		contentType = infoMode;
     	} 
     	if(contentType != infoMode){
-    		
+    	/*	try{resultsArray.length = 0;}catch(e){}
     		try{
     		dom.byId("tableContent").innerHTML = "";
     		dom.byId("tableTallContent").innerHTML = "";
@@ -2484,8 +2484,20 @@ function setInfoArray2(geom, gCode){
     		document.getElementById('tableTallContent').innerText="";
     		}
     		dom.byId("filler").innerHTML = "";
+    		*/
     		contentType = infoMode;
+    		
     	}
+    	
+    	 try{resultsArray.length = 0;}catch(e){}
+        try{
+        dom.byId("tableContent").innerHTML = "";
+        dom.byId("tableTallContent").innerHTML = "";
+        } catch(e){
+        	document.getElementById('tableContent').innerText="";
+    		document.getElementById('tableTallContent').innerText="";
+        }
+    	try{	dom.byId("filler").innerHTML = "";} catch(e){}
     	
         console.log(infoArray5);
 		domAttr.set(dom.byId("searchResults"),"class","showx");
@@ -2945,6 +2957,7 @@ function setInfoArray2(geom, gCode){
     	setInfoArray2(infoArray5.addresses[0], true); // so user can buffer first result
     	contentType = "geoCoder"; //ensures results clear when user searches for different data type
         console.log(infoArray5);
+        try{resultsArray.length = 0;}catch(e){}
         try{
         dom.byId("tableContent").innerHTML = "";
         dom.byId("tableTallContent").innerHTML = "";
