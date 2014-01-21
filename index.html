@@ -36,12 +36,12 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
  	if(ieversion==8){
  		setTimeout(function(){
  		ieAlert.set("title","Notice");
-       	ieAlert.set("content", "<p>Sorry, your web browser (IE-8) is out of date. </p><p>Please update to the newest version (IE-10) for the best experience. Otherwise, the application may not work as intended.</p>");
+       	ieAlert.set("content", "<p>Sorry, your web browser (IE-8) is out of date. </p><p>Please update to the newest version (IE-10), or use an alternative browser such as Mozilla Firefox or Google Chrome for the best experience. Otherwise, the application may not work as intended.</p>");
 		ieAlert.show(); 			
  		},1000);
 
  	}else {
-  alert("Sorry, your web browser is out of date and is not supported by the application. Please update to the newest version. Otherwise, the application may not work as intended.");
+  alert("Sorry, your web browser is out of date and is not supported by the application. Please update to the newest version, or use an alternative browser such as Mozilla Firefox or Google Chrome. Otherwise, the application may not work as intended.");
   }
 }
 }
@@ -59,9 +59,19 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
     <script src="effects.js"></script>
      
     <script>
-   /* setInterval(function(){
-        window.scrollTo(0, 1);
-    }, 500);*/
+    setInterval(function(){
+    	try{
+    		if(window.pageYOffset == 0){
+    			
+    		} else{
+    			window.scrollTo(0, 1);
+    		}
+    	}catch(e){
+    		window.scrollTo(0, 1);
+    	}
+    	//console.log(window.pageYOffset);
+      //  
+    }, 1000);
 </script>
   </head>
   
