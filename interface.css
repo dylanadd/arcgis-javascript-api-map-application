@@ -1639,3 +1639,20 @@ top: 8px;
 }
 
 .dj_android .esriPopup .titleButton.maximize, .dj_ios .esriPopup .titleButton.maximize{display:none;}
+
+.help div.example {
+display: inline;
+background: rgb(16,64,92);
+padding-top: 9px;
+padding-left: 5px;
+}
+.content.right, .content.left{
+	float:left;
+	width:50%;
+}
+.content.left:{
+	margin-right:45px;
+}
+.dijitDialogPaneContent{
+	overflow:hidden !important;
+}
