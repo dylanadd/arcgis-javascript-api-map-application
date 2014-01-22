@@ -12,7 +12,7 @@ width:100%;
 background:rgb(255,255,255);
 position:absolute;
 top:100px;
-left:-380px;
+left:-383px;
 width: 380px;
 z-index:1000;
 height: 75px;
@@ -187,7 +187,7 @@ z-index:30;
 
 div#measurementDiv {
 background:rgb(255,255,255);
-left: -387px;
+left: -390px;
 position:absolute;
 top:100px;
 width: 370px;
@@ -431,6 +431,8 @@ padding:0 !important;
 #selectionTools ~ div[id^='dijit_form_ComboButton_'] table{
 	margin-top:16px;
 	width:241px;
+border-style: solid;
+border-color: rgb(16, 64, 92);	
 }
 
 
@@ -1121,6 +1123,8 @@ font-size: 16px;
 	margin-left: 0px !important;
 	position:absolute;
 	z-index: 1000;
+	border-style: solid;
+border-color: rgb(16,64,92);
 }
 
 
@@ -1655,4 +1659,25 @@ padding-left: 5px;
 }
 .dijitDialogPaneContent{
 	overflow:hidden !important;
+}
+
+html.dj_ie div#button-console {
+	background-image: url('images/ie-bg.png');
+	background-repeat:repeat-x;
+}
+
+#selectionTools {
+	border-style: solid;
+border-top-width: 0px;
+border-color: rgb(16, 64, 92);
+}
+#buffer-params{
+	border-style: solid;
+border-color: rgb(16,64,92);
+border-left-width: 0px;
+}
+#measurementDiv {
+	border-style: solid;
+border-color: rgb(16,64,92);
+border-left-width: 0px;
 }
