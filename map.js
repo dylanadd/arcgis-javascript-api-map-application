@@ -3239,6 +3239,10 @@ function makeGeomArray2(selection) {
 
     //select parcel from the feature layer by creating a query to look for the input parcel id 
     function selectParcel(parcelid) {
+    	try{
+		infoArray2.length = 0;
+		
+		} catch(e){}
         popup.clearFeatures();
         if (parcelid) {
             var query = new Query();
@@ -3251,6 +3255,8 @@ function makeGeomArray2(selection) {
                     map.infoWindow.setFeatures(selection);
                     map.infoWindow.show(center);
                     infoArray = selection[0];
+                    try{infoArray2.push(selection[0]);}catch(e){console.log(e);}
+                    try{displayResults(selection[0],"single");}catch(e){console.log(e);}
                   // info();
                   searchTimeout = true;
                    
