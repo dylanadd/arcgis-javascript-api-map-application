@@ -49,7 +49,7 @@ $z = array('Parcel Number','FIPS','Owner Name', 'Owner Overflow', 'Owner Street'
 $tf = false;
 foreach($temp->export as $result){
 	if(isset($result->$i->parcelNum)){
-	$y = array($result->$i->parcelNum, $result->$i->Fips, $result->$i->Owner, $result->$i->OwnerOverflow, $result->$i->OwnerStreetAddress, $result->$i->OwnerCity, $result->$i->OwnerState, $result->$i->OwnerZip );
+	$y = array($result->$i->parcelNum, $result->$i->Fips, $result->$i->Owner, $result->$i->OwnerOverflow, $result->$i->OwnerStreetAddress, $result->$i->OwnerCity, $result->$i->OwnerState, $result->$i->OwnerZip, $result->$i->OwnerCountry, $result->$i->TaxDistrict, $result->$i->Subdivision, $result->$i->Zoning, $result->$i->LegalDescription, $result->$i->LandAssessedValue, $result->$i->LandActualValue, $result->$i->ImprovementsAssessedValue, $result->$i->ImprovementsActualValue, $result->$i->Fire, $result->$i->PropertyTax);
 	} else if(isset($result->$i->FullAddress)){
 		$y = array($result->$i->AddressNumber, $result->$i->FacilityName, $result->$i->FullAddress);
 	} else if(isset($result->$i->Score)){

@@ -1988,7 +1988,19 @@ function levyUrl(){
  	                 "OwnerStreetAddress": resultsArray[i].attributes.OwnerStreetAddress,
   	                 "OwnerCity": resultsArray[i].attributes.OwnerCity,
                      "OwnerState": resultsArray[i].attributes.OwnerState,
-                     "OwnerZip": resultsArray[i].attributes.OwnerZip.toString()
+                     "OwnerZip": resultsArray[i].attributes.OwnerZip.toString(),
+                     "OwnerCountry": resultsArray[i].attributes.OwnerCountry,
+                     "TaxDistrict": resultsArray[i].attributes.TaxDistrict,
+                     "Subdivision": resultsArray[i].attributes.Subdivision,
+                     "Zoning": resultsArray[i].attributes.Zoning,
+                     "LegalDescription": resultsArray[i].attributes.LegalDescription,
+                     "LandAssessedValue": resultsArray[i].attributes.LandAssessedValue.toString(),
+                     "LandActualValue": resultsArray[i].attributes.LandActualValue.toString(),
+                     "ImprovementsAssessedValue": resultsArray[i].attributes.ImprovementsAssessedValue.toString(),
+                     "ImprovementsActualValue": resultsArray[i].attributes.ImprovementsActualValue.toString(),
+                     "Fire": resultsArray[i].attributes.Fire,
+                     "PropertyTax": resultsArray[i].attributes.PropertyTax 
+                    
                  };
                  
                  var str = dom.byId("filler").innerHTML;
