@@ -472,6 +472,7 @@ var gLayer = new GraphicsLayer();
 
     dojo.connect(dom.byId("gpsButton"), "click", function () {
         //	on.emit(dom.byId("helpButton"), "click", {bubbles: true, cancelable: true});
+        map.graphics.clear();
         navigator.geolocation.getCurrentPosition(showPosition);		
 
     });

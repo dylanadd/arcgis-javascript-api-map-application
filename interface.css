@@ -1300,6 +1300,10 @@ html.dj_android a#gpsButton , html.dj_ios a#gpsButton  {
 	background-size: 35px 34px;
 }
 
+html.dj_android #gallery, html.dj_ios #gallery{
+	padding-left: 0px;
+}
+
 #identify:hover {
 background: url("images/icons/identifyhover.png") no-repeat -4px -2px;
 }
@@ -1634,11 +1638,12 @@ top: 8px;
 .dj_android #tools, .dj_ios #tools{
 	width: 780px;
 	top: 7px;
+	left:15px;
 	font-size:16px;
 }
 .dj_android #tools a, .dj_ios #tools a{
 	background-size: 25px 25px;
-	padding-left: 14px;
+	padding-left: 11px;
 }
 .dj_android #tools a#identify, .dj_ios #tools a#identify{
 	background-size: 34px 32px !important;
