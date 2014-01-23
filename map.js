@@ -470,8 +470,9 @@ var gLayer = new GraphicsLayer();
         });
     });
 
-    dojo.connect(dom.byId("helpButton"), "click", function () {
+    dojo.connect(dom.byId("gpsButton"), "click", function () {
         //	on.emit(dom.byId("helpButton"), "click", {bubbles: true, cancelable: true});
+        navigator.geolocation.getCurrentPosition(showPosition);		
 
     });
 
@@ -3332,6 +3333,56 @@ function makeGeomArray2(selection) {
 
         });
     }
+
+
+
+
+
+		
+		function showPosition(position){
+			var x, y;
+			console.log(position);
+			x = position.coords.longitude;
+			y = position.coords.latitude;
+			console.log(x);
+			console.log(y);
+			var p = new Point(x, y);
+			console.log(p);
+			var params = new ProjectParameters();
+			//params.geometries = [p];
+			 var outSR = new SpatialReference(2233);
+			//params.transformation = {"wkid": 2233};
+			console.log(params);
+			try{
+				gsvc.project([ p ], outSR, function(result){
+					console.log(result);
+				
+					
+				
+    					
+    					var sfs6 = new SimpleMarkerSymbol(
+        SimpleMarkerSymbol.STYLE_CIRCLE, 15,
+        new SimpleLineSymbol(
+            SimpleLineSymbol.STYLE_SOLID,
+            new Color([13, 255, 0]),
+            2),
+        new Color([13, 255, 0, 0.5]),
+        2);
+        
+					var loc = new Graphic(result[0],sfs6);
+					console.log(loc);
+					map.graphics.add(loc);
+					map.centerAndZoom(result[0], 8);
+				}
+				//,function(e){console.log(e);}
+				);
+				
+			}catch(e){console.log(e);}
+		}
+		
+
+
+
 
     //select parcel from the feature layer by creating a query to look for the input parcel id 
     function selectParcel(parcelid) {

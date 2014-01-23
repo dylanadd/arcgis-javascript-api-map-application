@@ -1286,6 +1286,20 @@ height: 30px;
 width: 30px;
 }
 
+#gpsButton {
+display:none;
+background: url("images/icons/gps.png") no-repeat -3px -6px;
+height: 30px;
+width: 30px;
+}
+
+html.dj_android #gpsButton, html.dj_ios #gpsButton {
+	display:initial;
+}
+html.dj_android a#gpsButton , html.dj_ios a#gpsButton  {
+	background-size: 35px 34px;
+}
+
 #identify:hover {
 background: url("images/icons/identifyhover.png") no-repeat -4px -2px;
 }
@@ -1618,7 +1632,7 @@ top: 8px;
 .dj_android{}
 
 .dj_android #tools, .dj_ios #tools{
-	width: 740px;
+	width: 780px;
 	top: 7px;
 	font-size:16px;
 }
