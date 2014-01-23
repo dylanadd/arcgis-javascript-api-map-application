@@ -1521,18 +1521,72 @@ function levyUrl(){
         //https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
         window.onpopstate = function (event) {
             var parcelid = getParcelFromUrl(document.location.href);
+           
             if (parcelid) {
-                selectParcel(parcelid);
-
+               // selectParcel(parcelid);  //bring back-----------------
+				console.log(parcelid);
             } else {
                 parcels.clearSelection();
                 map.infoWindow.hide();
             }
+            
+         
+            
+            
         };
 
         //if a parcelid is specified in url param select that feature 
-        var parcelid = getParcelFromUrl(document.location.href);
-        selectParcel(parcelid);
+        
+        	var layerid = getLayerFromUrl(document.location.href);
+            var addressid = getAddressFromUrl(document.location.href);
+            var roadid = getRoadFromUrl(document.location.href);
+        
+        
+        
+        
+           if(layerid){
+            	console.log(layerid);
+            	switch(layerid){
+            		
+            		case 'zoning':
+            			var qMap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer");
+
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
+            		
+            		case 'floodplains':
+            			var qMap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer");
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
+            		
+            		
+            		
+            	}
+            }
+            
+            if(addressid){
+            	addressMode();
+            	dom.byId("address").value = addressid;
+            	addrSearchMode ="raw";
+            	domAttr.set("addrSearchBox","class","hide");
+            	dom.byId("raw").checked = true;
+            	startSearch();
+            }
+            
+            if(roadid){
+            	console.log(roadid);
+            	roadMode();
+            	dom.byId("address").value = roadid;
+            	startSearch();
+            }
+            
+            
+            var parcelid = getParcelFromUrl(document.location.href);
+        	selectParcel(parcelid);
 
     });
 
@@ -1543,6 +1597,36 @@ function levyUrl(){
         var urlObject = urlUtils.urlToObject(url);
         if (urlObject.query && urlObject.query.parcelid) {
             return urlObject.query.parcelid;
+        } else {
+            return null;
+        }
+    }
+    
+    //extract the layer id from the url
+    function getLayerFromUrl(url) {
+        var urlObject = urlUtils.urlToObject(url);
+        if (urlObject.query && urlObject.query.basemap) {
+            return urlObject.query.basemap;
+        } else {
+            return null;
+        }
+    }
+    
+    //extract the address from the url
+    function getAddressFromUrl(url) {
+        var urlObject = urlUtils.urlToObject(url);
+        if (urlObject.query && urlObject.query.address) {
+            return urlObject.query.address;
+        } else {
+            return null;
+        }
+    }
+    
+    //extract the road from the url
+    function getRoadFromUrl(url) {
+        var urlObject = urlUtils.urlToObject(url);
+        if (urlObject.query && urlObject.query.road) {
+            return urlObject.query.road;
         } else {
             return null;
         }
