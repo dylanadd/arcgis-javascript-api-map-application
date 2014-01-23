@@ -473,7 +473,12 @@ var gLayer = new GraphicsLayer();
     dojo.connect(dom.byId("gpsButton"), "click", function () {
         //	on.emit(dom.byId("helpButton"), "click", {bubbles: true, cancelable: true});
         map.graphics.clear();
-        navigator.geolocation.getCurrentPosition(showPosition);		
+        var geo_options = {
+  enableHighAccuracy: true, 
+  maximumAge        : 5000, 
+  timeout           : 27000
+};
+        navigator.geolocation.getCurrentPosition(showPosition, function(err){},geo_options);		
 
     });
 
@@ -1006,9 +1011,9 @@ var gLayer = new GraphicsLayer();
     };
 
     var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
-    //  var basemap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
-    // var basemap = new ArcGISImageServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
-    var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer");
+      var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer");
+  
+    //var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer"); //fast
     map.addLayer(basemap);
     map.addLayer(parcelInfoLayer);
 
