@@ -1292,7 +1292,9 @@ background: url("images/icons/gps.png") no-repeat -3px -6px;
 height: 30px;
 width: 30px;
 }
-
+#gpsButton.gpsOn{
+	background: url("images/icons/gpsOn.png") no-repeat -3px -6px;
+} 
 html.dj_android #gpsButton, html.dj_ios #gpsButton {
 	display:initial;
 }
@@ -1699,4 +1701,19 @@ border-left-width: 0px;
 	border-style: solid;
 border-color: rgb(16,64,92);
 border-left-width: 0px;
+}
+
+.mobile-mode-portrait #tools {
+	width:310px !important;
+}
+
+.mobile-mode-landscape #tools{
+	width:412px !important;
+}
+
+.mobile-mode-portrait #draw, .mobile-mode-portrait #bufferMode, .mobile-mode-portrait #toggleOutput, .mobile-mode-portrait #gallery, .mobile-mode-portrait #print_button, .mobile-mode-portrait #overviewToggle, .mobile-mode-portrait #legendToggle {
+	display:none;
+}
+.mobile-mode-landscape #draw,   .mobile-mode-landscape #gallery, .mobile-mode-landscape #print_button, .mobile-mode-landscape #overviewToggle, .mobile-mode-landscape #legendToggle {
+display:none;
 }

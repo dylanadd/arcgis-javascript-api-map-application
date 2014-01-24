@@ -492,8 +492,11 @@
 				var ez4 = query("#moveHelper.searchSnapBottom");
 				var ez5 = query("#moveHelper.searchFreeFloat");
 				var ez6 = query("#moveHelper.searchSnapRight");
+			//	var ez7 = query(".mobile-mode-portrait");
+			//	var ez8 = query(".mobile-mode-landscape");
 				
-				//console.log(ez);
+		//		console.log(ez7);
+			//	console.log(ez8);
 				} catch(e){}
 			
 			
@@ -541,16 +544,41 @@
 		},50);
 		
 		setInterval(function(){
+			console.log(screenSize);
 			try{
 			if(screenSize.w <= 1380){
 				domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");
 				//console.log(screenSize);
 			}
 			} catch(e){}
+		
 			
 		}, 2000);
 		
-		
+		setInterval(function(){
+			//console.log(screenSize);
+			
+			if(screenSize.w <= 680){
+				var mobDet = query(".dj_ios");
+				var mobDet2 = query(".dj_android");
+				if(mobDet[0] || mobDet2[0]){
+					if(screenSize.w <= 499){
+					domAttr.set(dom.byId("button-console"),"class","mobile-mode-portrait");
+				//	domAttr.set(dom.byId("tools"),"style","width: 310px;");
+					}
+					if(screenSize.w > 500 ){
+						domAttr.set(dom.byId("button-console"),"class","mobile-mode-landscape");
+					//	domAttr.set(dom.byId("tools"),"style","width: 412px;");
+					}
+					domAttr.set(dom.byId("map_zoom_slider"),"class","esriSimpleSlider esriSimpleSliderVertical esriSimpleSliderTL hide");
+					domAttr.set(dom.byId("dockButton"),"class","hide");
+					//domAttr.set(dom.byId("tools"),"style","width: 412px;");
+					domAttr.set(dom.byId("search_wrapper"),"style","z-index: 30; left: 27px !important;");
+				}
+				
+			}
+			
+		}, 50);
 	});  
 	
 	function fadeConsole(){

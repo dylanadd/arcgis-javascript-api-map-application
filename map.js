@@ -469,16 +469,32 @@ var gLayer = new GraphicsLayer();
             cancelable: true
         });
     });
-
+	
+	var gpsIO = false;
+	var gpsID;
     dojo.connect(dom.byId("gpsButton"), "click", function () {
+    	
         //	on.emit(dom.byId("helpButton"), "click", {bubbles: true, cancelable: true});
         map.graphics.clear();
+        
         var geo_options = {
   enableHighAccuracy: true, 
   maximumAge        : 5000, 
   timeout           : 27000
 };
-        navigator.geolocation.getCurrentPosition(showPosition, function(err){},geo_options);		
+
+		if(!gpsIO){
+			domAttr.set(dom.byId("gpsButton"),"class", "gpsOn");
+		//	navigator.geolocation.getCurrentPosition(showPosition, function(err){},geo_options);
+		gpsID = navigator.geolocation.watchPosition(showPosition, function(err){},geo_options);
+			gpsIO = true;
+		} else {
+			domAttr.set(dom.byId("gpsButton"),"class", "gpsOff");
+			gpsIO = false;
+			navigator.geolocation.clearWatch(gpsID);
+			zoomOnce = true;
+		}
+        		
 
     });
 
@@ -3344,8 +3360,9 @@ function makeGeomArray2(selection) {
 
 
 
-		
+		var zoomOnce = true;
 		function showPosition(position){
+			map.graphics.clear();
 			var x, y;
 			console.log(position);
 			x = position.coords.longitude;
@@ -3378,7 +3395,10 @@ function makeGeomArray2(selection) {
 					var loc = new Graphic(result[0],sfs6);
 					console.log(loc);
 					map.graphics.add(loc);
-					map.centerAndZoom(result[0], 8);
+					if(zoomOnce){
+					map.centerAndZoom(result[0], 7);
+					zoomOnce = false;
+					}
 				}
 				//,function(e){console.log(e);}
 				);
