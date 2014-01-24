@@ -562,18 +562,18 @@
 				var mobDet = query(".dj_ios");
 				var mobDet2 = query(".dj_android");
 				if(mobDet[0] || mobDet2[0]){
-					if(screenSize.w <= 499){
+					if(screenSize.w <= 479){
 					domAttr.set(dom.byId("button-console"),"class","mobile-mode-portrait");
 				//	domAttr.set(dom.byId("tools"),"style","width: 310px;");
 					}
-					if(screenSize.w > 500 ){
+					if(screenSize.w >= 480 ){
 						domAttr.set(dom.byId("button-console"),"class","mobile-mode-landscape");
 					//	domAttr.set(dom.byId("tools"),"style","width: 412px;");
 					}
 					domAttr.set(dom.byId("map_zoom_slider"),"class","esriSimpleSlider esriSimpleSliderVertical esriSimpleSliderTL hide");
 					domAttr.set(dom.byId("dockButton"),"class","hide");
 					//domAttr.set(dom.byId("tools"),"style","width: 412px;");
-					domAttr.set(dom.byId("search_wrapper"),"style","z-index: 30; left: 27px !important;");
+					domAttr.set(dom.byId("search_wrapper"),"style","z-index: 30; left: 7px !important;");
 				}
 				
 			}
