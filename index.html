@@ -36,12 +36,12 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
  	if(ieversion==8){
  		setTimeout(function(){
  		ieAlert.set("title","Notice");
-       	ieAlert.set("content", "<p>Sorry, your web browser (IE-8) is out of date. </p><p>Please update to the newest version (IE-10), or use an alternative browser such as Mozilla Firefox or Google Chrome for the best experience. Otherwise, the application may not work as intended.</p>");
+       	ieAlert.set("content", "<p>Sorry, your web browser (IE-8) is out of date. </p><p>Please update to the newest version (IE-10), or use an alternative browser such as Mozilla Firefox or Google Chrome for the best experience. Otherwise, the application may not work as intended.</p><p>You may still use the old application <a href=\"http://maps.co.pueblo.co.us\">here</a>, but it will be retired on 05/02/2014.</p>");
 		ieAlert.show(); 			
  		},1000);
 
  	}else {
-  alert("Sorry, your web browser is out of date and is not supported by the application. Please update to the newest version, or use an alternative browser such as Mozilla Firefox or Google Chrome. Otherwise, the application may not work as intended.");
+  alert("Sorry, your web browser is out of date and is not supported by the application. Please update to the newest version, or use an alternative browser such as Mozilla Firefox or Google Chrome. You may still use the old application at http://maps.co.pueblo.co.us, but it will be retired on 05/02/2014.");
   }
 }
 }

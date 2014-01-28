@@ -492,8 +492,8 @@
 				var ez4 = query("#moveHelper.searchSnapBottom");
 				var ez5 = query("#moveHelper.searchFreeFloat");
 				var ez6 = query("#moveHelper.searchSnapRight");
-			//	var ez7 = query(".mobile-mode-portrait");
-			//	var ez8 = query(".mobile-mode-landscape");
+				var ez7 = query(".mobile-mode-portrait");
+				var ez8 = query(".mobile-mode-landscape");
 				
 		//		console.log(ez7);
 			//	console.log(ez8);
@@ -506,21 +506,34 @@
 				//console.log(ez2);
 				domAttr.set(scalebar, "style", "left: 25px;");
 				domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
-     			domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
+					if(!ez7[0] && !ez8[0]){
+						domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
+					}
+     			
 			} else if(ez2[0] && ez3[0]){
 						domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
     			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box.w + (box.x + 22) ) +"px; z-index: 30;");
-    			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box.w + (box.x + 88) ) +"px; z-index: 30;");
+    			   		if(!ez7[0] && !ez8[0]){
+						domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box.w + (box.x + 88) ) +"px; z-index: 30;");
+						}
+    			   		
 			}	else if(ez4[0] && ez3[0]){
 			
      			  		//domAttr.set(dom.byId("resultsContent"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
      			  		domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
      			  		domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
-     			  		try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");} catch(e){}
+     			  		if(!ez7[0] && !ez8[0]){
+						try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");} catch(e){}
+						}
+     			  		
 			} else if(ez4[0] && ez[0]){
 				domAttr.set(dom.byId("pclogo"), "style", "");
      			domAttr.set(scalebar, "style", "left: 25px;");
-     			try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");} catch(e){}
+     			
+     			if(!ez7[0] && !ez8[0]){
+					try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");} catch(e){}
+					}
+     		
 			} else if(ez6[0] && ez[0]){
 				domAttr.set(dom.byId("pclogo"), "style", "");
 			}  else if(ez6[0] && ez3[0]){
