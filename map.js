@@ -1578,6 +1578,14 @@ function levyUrl(){
   						map.addLayer(qMap);
   					    map.addLayer(parcelInfoLayer);
   						break;
+  						
+  						case 'Zoning':
+            			var qMap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer");
+
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
             		
             		case 'floodplains':
             			var qMap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer");
@@ -1586,7 +1594,12 @@ function levyUrl(){
   					    map.addLayer(parcelInfoLayer);
   						break;
             		
-            		
+            		case 'Floodplains':
+            			var qMap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer");
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
             		
             	}
             }
@@ -2813,7 +2826,7 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"propTax\"><span class=\"resultsLabel\" >Property Tax:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.PropertyTax + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"subdivision\"><span class=\"resultsLabel\" >Subdivision:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Subdivision + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"taxDist\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.TaxDistrict+ "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Zoning + "</span></td>" + 
+  					"<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5[i].attributes.ZoningURL + "\" target=\"blank\">" + infoArray5[i].attributes.Zoning + "</a></span></td>" +                     
                     
                     "</tr></table></td>";
 		
@@ -2838,7 +2851,7 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.PropertyTax + "</span></td></tr></table></td>" +
                     "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.Subdivision + "</span></td></tr></table></td>" +
                     "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.TaxDistrict+ "</span></td></tr></table></td>" +
-                    "<td class=\"zoning sWide\"><table><tr><td><span class=\"resultsLabel\" >Zoning:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.Zoning + "</span></td></tr></table></td>" +
+  					"<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5[i].attributes.ZoningURL + "\" target=\"blank\">" + infoArray5[i].attributes.Zoning + "</a></span></td>" +                     
                     
                     "";
 		
@@ -2955,7 +2968,7 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"propTax\"><span class=\"resultsLabel\" >Property Tax:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"subdivision\"><span class=\"resultsLabel\" >Subdivision:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"taxDist\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Zoning + "</span></td>" + 
+                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5.attributes.ZoningURL + "\" target=\"blank\">" + infoArray5.attributes.Zoning + "</a></span></td>" + 
                     
                     "</tr></table></td>";
 		
@@ -2980,8 +2993,7 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td></tr></table></td>" +
                     "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td></tr></table></td>" +
                     "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td></tr></table></td>" +
-                    "<td class=\"zoning sWide\"><table><tr><td><span class=\"resultsLabel\" >Zoning:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.Zoning + "</span></td></tr></table></td>" +
-                    
+  "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5.attributes.ZoningURL + "\" target=\"blank\">" + infoArray5.attributes.Zoning + "</a></span></td>" +                     
                     "";
 
              
@@ -3434,7 +3446,7 @@ function makeGeomArray2(selection) {
                   searchTimeout = true;
                    
                 });
-                map.centerAndZoom(center, 7);
+                map.centerAndZoom(center, 6);
                  domAttr.set("locate", "class", "dormant");
                 domAttr.set("body", "class", "claro buttonMode");
             });

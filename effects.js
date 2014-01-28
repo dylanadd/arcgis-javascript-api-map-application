@@ -557,7 +557,7 @@
 		},50);
 		
 		setInterval(function(){
-			console.log(screenSize);
+			//console.log(screenSize);
 			try{
 			if(screenSize.w <= 1380){
 				domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");
