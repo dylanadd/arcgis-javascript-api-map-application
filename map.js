@@ -117,7 +117,10 @@ var gLayer = new GraphicsLayer();
         }, domConstruct.create("div"));
         mobile = false;
     } else {
-        popup = new esri.dijit.PopupMobile(null, dojo.create("div"));
+      //  popup = new esri.dijit.PopupMobile(null, dojo.create("div"));
+       popup = new Popup({
+            fillSymbol: sfs
+        }, domConstruct.create("div"));
         mobile = true;
 
     }
@@ -466,9 +469,32 @@ var gLayer = new GraphicsLayer();
             cancelable: true
         });
     });
-
-    dojo.connect(dom.byId("helpButton"), "click", function () {
+	
+	var gpsIO = false;
+	var gpsID;
+    dojo.connect(dom.byId("gpsButton"), "click", function () {
+    	
         //	on.emit(dom.byId("helpButton"), "click", {bubbles: true, cancelable: true});
+        map.graphics.clear();
+        
+        var geo_options = {
+  enableHighAccuracy: true, 
+  maximumAge        : 5000, 
+  timeout           : 27000
+};
+
+		if(!gpsIO){
+			domAttr.set(dom.byId("gpsButton"),"class", "gpsOn");
+		//	navigator.geolocation.getCurrentPosition(showPosition, function(err){},geo_options);
+		gpsID = navigator.geolocation.watchPosition(showPosition, function(err){},geo_options);
+			gpsIO = true;
+		} else {
+			domAttr.set(dom.byId("gpsButton"),"class", "gpsOff");
+			gpsIO = false;
+			navigator.geolocation.clearWatch(gpsID);
+			zoomOnce = true;
+		}
+        		
 
     });
 
@@ -1001,9 +1027,9 @@ var gLayer = new GraphicsLayer();
     };
 
     var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
-    //  var basemap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
-    // var basemap = new ArcGISImageServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
-    var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer");
+     // var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer");
+  
+    var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer"); //fast
     map.addLayer(basemap);
     map.addLayer(parcelInfoLayer);
 
@@ -1383,6 +1409,16 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 	var searchTimeout = false;
 	
     function startSearch() {
+    	try{document.getElementById("address").blur();}catch(e){console.log(e);}
+    	try{
+    		var hideKeyboard = function() {
+    document.activeElement.blur();
+    $("input").blur();
+    console.log("input");
+};
+    		
+    	}catch(e){console.log(e);}
+    	
     	try{infoArray2.length = 0;} catch(e){console.log(e);}
     	try{domAttr.set("addrSearchBox","class","hide");} catch(e){console.log(e);}
     	searchTimeout = false;
@@ -1508,18 +1544,85 @@ function levyUrl(){
         //https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
         window.onpopstate = function (event) {
             var parcelid = getParcelFromUrl(document.location.href);
+           
             if (parcelid) {
-                selectParcel(parcelid);
-
+               // selectParcel(parcelid);  //bring back-----------------
+				console.log(parcelid);
             } else {
                 parcels.clearSelection();
                 map.infoWindow.hide();
             }
+            
+         
+            
+            
         };
 
         //if a parcelid is specified in url param select that feature 
-        var parcelid = getParcelFromUrl(document.location.href);
-        selectParcel(parcelid);
+        
+        	var layerid = getLayerFromUrl(document.location.href);
+            var addressid = getAddressFromUrl(document.location.href);
+            var roadid = getRoadFromUrl(document.location.href);
+        
+        
+        
+        
+           if(layerid){
+            	console.log(layerid);
+            	switch(layerid){
+            		
+            		case 'zoning':
+            			var qMap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer");
+
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
+  						
+  						case 'Zoning':
+            			var qMap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer");
+
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
+            		
+            		case 'floodplains':
+            			var qMap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer");
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
+            		
+            		case 'Floodplains':
+            			var qMap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer");
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
+            		
+            	}
+            }
+            
+            if(addressid){
+            	addressMode();
+            	dom.byId("address").value = addressid;
+            	addrSearchMode ="raw";
+            	domAttr.set("addrSearchBox","class","hide");
+            	dom.byId("raw").checked = true;
+            	startSearch();
+            }
+            
+            if(roadid){
+            	console.log(roadid);
+            	roadMode();
+            	dom.byId("address").value = roadid;
+            	startSearch();
+            }
+            
+            
+            var parcelid = getParcelFromUrl(document.location.href);
+        	selectParcel(parcelid);
 
     });
 
@@ -1534,6 +1637,36 @@ function levyUrl(){
             return null;
         }
     }
+    
+    //extract the layer id from the url
+    function getLayerFromUrl(url) {
+        var urlObject = urlUtils.urlToObject(url);
+        if (urlObject.query && urlObject.query.basemap) {
+            return urlObject.query.basemap;
+        } else {
+            return null;
+        }
+    }
+    
+    //extract the address from the url
+    function getAddressFromUrl(url) {
+        var urlObject = urlUtils.urlToObject(url);
+        if (urlObject.query && urlObject.query.address) {
+            return urlObject.query.address;
+        } else {
+            return null;
+        }
+    }
+    
+    //extract the road from the url
+    function getRoadFromUrl(url) {
+        var urlObject = urlUtils.urlToObject(url);
+        if (urlObject.query && urlObject.query.road) {
+            return urlObject.query.road;
+        } else {
+            return null;
+        }
+    }
 
     //BEGIN Location Dijit
 
@@ -1543,7 +1676,7 @@ function levyUrl(){
 
     //prepare address query string for Geocoder
     function locate() {
-
+		
         //  domAttr.set("locate", "class", "processing");
         // map.graphics.clear();
         //clearx();
@@ -1558,6 +1691,7 @@ function levyUrl(){
         };
         // console.log(locator.addressToLocations(options));
         locator.addressToLocations(options);
+        
     }
 
     function showResults(evt) {
@@ -1890,7 +2024,19 @@ function levyUrl(){
  	                 "OwnerStreetAddress": resultsArray[i].attributes.OwnerStreetAddress,
   	                 "OwnerCity": resultsArray[i].attributes.OwnerCity,
                      "OwnerState": resultsArray[i].attributes.OwnerState,
-                     "OwnerZip": resultsArray[i].attributes.OwnerZip.toString()
+                     "OwnerZip": resultsArray[i].attributes.OwnerZip.toString(),
+                     "OwnerCountry": resultsArray[i].attributes.OwnerCountry,
+                     "TaxDistrict": resultsArray[i].attributes.TaxDistrict,
+                     "Subdivision": resultsArray[i].attributes.Subdivision,
+                     "Zoning": resultsArray[i].attributes.Zoning,
+                     "LegalDescription": resultsArray[i].attributes.LegalDescription,
+                     "LandAssessedValue": resultsArray[i].attributes.LandAssessedValue.toString(),
+                     "LandActualValue": resultsArray[i].attributes.LandActualValue.toString(),
+                     "ImprovementsAssessedValue": resultsArray[i].attributes.ImprovementsAssessedValue.toString(),
+                     "ImprovementsActualValue": resultsArray[i].attributes.ImprovementsActualValue.toString(),
+                     "Fire": resultsArray[i].attributes.Fire,
+                     "PropertyTax": resultsArray[i].attributes.PropertyTax 
+                    
                  };
                  
                  var str = dom.byId("filler").innerHTML;
@@ -1908,7 +2054,7 @@ function levyUrl(){
        				 console.log(tf);
        				 count++;
         	//If row is an address point
-    		} else if (resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "point"){
+    		} else if (resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "point" && resultsArray[i].location == undefined){
     			console.log("point " + i);
     			
     			exportArray = {
@@ -1933,7 +2079,7 @@ function levyUrl(){
        				 count++;
     			
     			//If row is a geocoded address
-    		} else if (resultsArray[i].geometry == undefined && resultsArray[i].address != undefined){
+    		} else if (resultsArray[i].location != undefined && resultsArray[i].address != undefined){
     			console.log("address point " + i);
     			
     			exportArray = {
@@ -2225,7 +2371,7 @@ function levyUrl(){
     //find all owners matching query 
     function selectOwner(owner) {
         popup.clearFeatures();
-		
+		var z = new Array();
         if (owner) {
         	try{gLayer.clear();}catch(e){}
              try{infoArray2.length = 0;}catch(e){}
@@ -2238,9 +2384,11 @@ function levyUrl(){
            		query.where = makeWordArray(owner, "owner");
            		console.log(query.where);
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
-                center = graphicsUtils.graphicsExtent(selection).getCenter();
+            	z.push(selection[0]);
+                //center = graphicsUtils.graphicsExtent(selection).getCenter();
+                 center = graphicsUtils.graphicsExtent(z).getCenter();
                 selectionX = selection;
-                var extHandler = map.on("extent-change", function () {
+             /*   var extHandler = map.on("extent-change", function () {
                     extHandler.remove();
                     //zoom to the center then display the popup 
                     map.infoWindow.setFeatures(selection);
@@ -2252,10 +2400,19 @@ function levyUrl(){
                      infoArray2.push(selection[0]);
                 });
                 // console.log(center);
+                */
+                   map.infoWindow.setFeatures(selection);
+                    //   map.infoWindow.show(center);
+                    //  ownerResults(selection);
+                    //   alert("ownerResults complete");
+                    console.log(selection);
+                    displayResults(selection,"parcel");
+                     infoArray2.push(selection[0]);
+                
                 
                 domAttr.set("locate", "class", "dormant");
                 domAttr.set("body", "class", "claro buttonMode");
-                map.centerAndZoom(center, 2);
+                map.centerAndZoom(center, 7);
                 change = true;
                 
 				try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
@@ -2443,6 +2600,8 @@ function setInfoArray2(geom, gCode){
 	var contentType;
 	var displayHelp = dom.byId("displayHelp");
     function displayResults(infoArray5, infoMode) {
+    	count = 0;
+    	tf = false;
     	console.log(contentType);
     	on.emit(displayHelp, "click", {bubbles: true, cancelable: true});
     	if(contentType == undefined){
@@ -2450,7 +2609,7 @@ function setInfoArray2(geom, gCode){
     		contentType = infoMode;
     	} 
     	if(contentType != infoMode){
-    		
+    	/*	try{resultsArray.length = 0;}catch(e){}
     		try{
     		dom.byId("tableContent").innerHTML = "";
     		dom.byId("tableTallContent").innerHTML = "";
@@ -2459,8 +2618,20 @@ function setInfoArray2(geom, gCode){
     		document.getElementById('tableTallContent').innerText="";
     		}
     		dom.byId("filler").innerHTML = "";
+    		*/
     		contentType = infoMode;
+    		
     	}
+    	
+    	 try{resultsArray.length = 0;}catch(e){}
+        try{
+        dom.byId("tableContent").innerHTML = "";
+        dom.byId("tableTallContent").innerHTML = "";
+        } catch(e){
+        	document.getElementById('tableContent').innerText="";
+    		document.getElementById('tableTallContent').innerText="";
+        }
+    	try{	dom.byId("filler").innerHTML = "";} catch(e){}
     	
         console.log(infoArray5);
 		domAttr.set(dom.byId("searchResults"),"class","showx");
@@ -2655,7 +2826,7 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"propTax\"><span class=\"resultsLabel\" >Property Tax:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.PropertyTax + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"subdivision\"><span class=\"resultsLabel\" >Subdivision:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Subdivision + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"taxDist\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.TaxDistrict+ "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Zoning + "</span></td>" + 
+  					"<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5[i].attributes.ZoningURL + "\" target=\"blank\">" + infoArray5[i].attributes.Zoning + "</a></span></td>" +                     
                     
                     "</tr></table></td>";
 		
@@ -2680,7 +2851,7 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.PropertyTax + "</span></td></tr></table></td>" +
                     "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.Subdivision + "</span></td></tr></table></td>" +
                     "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.TaxDistrict+ "</span></td></tr></table></td>" +
-                    "<td class=\"zoning sWide\"><table><tr><td><span class=\"resultsLabel\" >Zoning:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.Zoning + "</span></td></tr></table></td>" +
+  					"<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5[i].attributes.ZoningURL + "\" target=\"blank\">" + infoArray5[i].attributes.Zoning + "</a></span></td>" +                     
                     
                     "";
 		
@@ -2797,7 +2968,7 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"propTax\"><span class=\"resultsLabel\" >Property Tax:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"subdivision\"><span class=\"resultsLabel\" >Subdivision:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"taxDist\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Zoning + "</span></td>" + 
+                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5.attributes.ZoningURL + "\" target=\"blank\">" + infoArray5.attributes.Zoning + "</a></span></td>" + 
                     
                     "</tr></table></td>";
 		
@@ -2822,8 +2993,7 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td></tr></table></td>" +
                     "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td></tr></table></td>" +
                     "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td></tr></table></td>" +
-                    "<td class=\"zoning sWide\"><table><tr><td><span class=\"resultsLabel\" >Zoning:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.Zoning + "</span></td></tr></table></td>" +
-                    
+  "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5.attributes.ZoningURL + "\" target=\"blank\">" + infoArray5.attributes.Zoning + "</a></span></td>" +                     
                     "";
 
              
@@ -2917,9 +3087,12 @@ function setInfoArray2(geom, gCode){
     }
 
     function displayGeoCoderResults(infoArray5) {
+    	count = 0;
+    	tf = false;
     	setInfoArray2(infoArray5.addresses[0], true); // so user can buffer first result
     	contentType = "geoCoder"; //ensures results clear when user searches for different data type
         console.log(infoArray5);
+        try{resultsArray.length = 0;}catch(e){}
         try{
         dom.byId("tableContent").innerHTML = "";
         dom.byId("tableTallContent").innerHTML = "";
@@ -2934,6 +3107,8 @@ function setInfoArray2(geom, gCode){
         }
 
         for (i = 0; i < infoArray5.addresses.length; i++) {
+        	//console.log(infoArray5);
+        	console.log(infoArray5.addresses[0].address);
             infoArray5.addresses[i].location.spatialReference.wkid = 2233;
             resultsArray.push(infoArray5.addresses[i]);
             var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
@@ -3193,8 +3368,66 @@ function makeGeomArray2(selection) {
         });
     }
 
+
+
+
+
+		var zoomOnce = true;
+		function showPosition(position){
+			map.graphics.clear();
+			var x, y;
+			console.log(position);
+			x = position.coords.longitude;
+			y = position.coords.latitude;
+			console.log(x);
+			console.log(y);
+			var p = new Point(x, y);
+			console.log(p);
+			var params = new ProjectParameters();
+			//params.geometries = [p];
+			 var outSR = new SpatialReference(2233);
+			//params.transformation = {"wkid": 2233};
+			console.log(params);
+			try{
+				gsvc.project([ p ], outSR, function(result){
+					console.log(result);
+				
+					
+				
+    					
+    					var sfs6 = new SimpleMarkerSymbol(
+        SimpleMarkerSymbol.STYLE_CIRCLE, 15,
+        new SimpleLineSymbol(
+            SimpleLineSymbol.STYLE_SOLID,
+            new Color([13, 255, 0]),
+            2),
+        new Color([13, 255, 0, 0.5]),
+        2);
+        
+					var loc = new Graphic(result[0],sfs6);
+					console.log(loc);
+					map.graphics.add(loc);
+					if(zoomOnce){
+					map.centerAndZoom(result[0], 7);
+					zoomOnce = false;
+					}
+				}
+				//,function(e){console.log(e);}
+				);
+				
+			}catch(e){console.log(e);}
+		}
+		
+
+
+
+
     //select parcel from the feature layer by creating a query to look for the input parcel id 
     function selectParcel(parcelid) {
+    	try{
+		infoArray2.length = 0;
+		
+		} catch(e){}
         popup.clearFeatures();
         if (parcelid) {
             var query = new Query();
@@ -3207,8 +3440,15 @@ function makeGeomArray2(selection) {
                     map.infoWindow.setFeatures(selection);
                     map.infoWindow.show(center);
                     infoArray = selection[0];
+                    try{infoArray2.push(selection[0]);}catch(e){console.log(e);}
+                    try{displayResults(selection[0],"single");}catch(e){console.log(e);}
+                  // info();
+                  searchTimeout = true;
+                   
                 });
-                map.centerAndZoom(center, 7);
+                map.centerAndZoom(center, 6);
+                 domAttr.set("locate", "class", "dormant");
+                domAttr.set("body", "class", "claro buttonMode");
             });
         }
     }

@@ -24,11 +24,11 @@
      <link rel="stylesheet" href="esri.css">
      <link rel="stylesheet" href="./interface.css">
      
-     
+ 
      
 <script type="text/javascript">
 
-
+var helpAlert;
 
 if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
  var ieversion=new Number(RegExp.$1); // capture x.x portion and store as a number
@@ -36,12 +36,12 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
  	if(ieversion==8){
  		setTimeout(function(){
  		ieAlert.set("title","Notice");
-       	ieAlert.set("content", "<p>Sorry, your web browser (IE-8) is out of date. </p><p>Please update to the newest version (IE-10) for the best experience. Otherwise, the application may not work as intended.</p>");
+       	ieAlert.set("content", "<p>Sorry, your web browser (IE-8) is out of date. </p><p>Please update to the newest version (IE-10), or use an alternative browser such as Mozilla Firefox or Google Chrome for the best experience. Otherwise, the application may not work as intended.</p><p>You may still use the old application <a href=\"http://maps.co.pueblo.co.us\">here</a>, but it will be retired on 05/02/2014.</p>");
 		ieAlert.show(); 			
  		},1000);
 
  	}else {
-  alert("Sorry, your web browser is out of date and is not supported by the application. Please update to the newest version. Otherwise, the application may not work as intended.");
+  alert("Sorry, your web browser is out of date and is not supported by the application. Please update to the newest version, or use an alternative browser such as Mozilla Firefox or Google Chrome. You may still use the old application at http://maps.co.pueblo.co.us, but it will be retired on 05/02/2014.");
   }
 }
 }
@@ -60,9 +60,29 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
      
     <script>
     setInterval(function(){
-        window.scrollTo(0, 1);
-    }, 0);
+    	try{
+    		if(window.pageYOffset == 0){
+    			
+    		} else{
+    			window.scrollTo(0, 1);
+    		}
+    	}catch(e){
+    		window.scrollTo(0, 1);
+    	}
+    	//console.log(window.pageYOffset);
+      //  
+    }, 1000);
 </script>
+ <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-9959429-11', 'pueblo.org');
+  ga('send', 'pageview');
+
+</script>   
   </head>
   
   <body class="claro buttonMode" id="body"> 
@@ -82,7 +102,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
      <img src="images/icons/unlockhover.png" class="hide" />
      <img src="images/icons/closehover.png" class="hide" />
      <img src="images/icons/zoomRecord.png" class="hide" />
-     
+     <img src="images/icons/gpsOn.png" class="hide" />
      
      <div id="button-console" class="visible">
       
@@ -137,10 +157,12 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
          
           
           <div id="tools" class="zoomActive">
+          	<a id="gpsButton" title="Find My Location"></a>
 			<a id="zoom" title="Rubber Band Zoom"></a>
 			<a id="pan" title="Pan The Map"></a>
 			<a id="selection" title="Turn On The Selection Tool"></a>
            <a id="clear" title="Clear all selections on the page."></a> 
+           
            <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off"></a>
            <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off."></a>
         	<a id="identify" class="idOff" title="Show parcel info popup when selcting parcels"></a>
@@ -164,7 +186,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
           </div>
           
            <div id="anotherWrapper">
-            <div id="search_wrapper" class="search_wrapper">
+            <div id="search_wrapper" class="search_wrapper searchFix">
 	   <div class="search_button">
 	  <!--  <input type="button" id="locate" /> -->
 	  <a id="locate" title="Begin search" class="dormant"></a>

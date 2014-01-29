@@ -46,11 +46,14 @@
         	style: "width:300px"
         });
         
+        helpAlert = new Dialog({
+        	title:"Help",
+        	style:"width: 90%; height:90%; overflow:scroll;"
+        });
         
+        helpAlert.set("content",' <div id="mapHelpContent" class="help"> <div class="content left"> <div> <h4>Zoom In/Out</h4> <p>Zooming in on the map.</p> <ol> <li><img src="images/icons/zoomexample.png"> , or</li> <li><div class="example"><img src="images/icons/rbzoom.png"></div> , and drag the mouse across the map, or</li> <li>Use the mouse wheel</li> </ol> </div> <div> <h4>Select Items</h4> <p>Select Items on the map graphically with the mouse</p> <ol> <li>Click the select button <div class="example"><img src="images/icons/select.png"></div></li> <li>Choose a shape and the type of data you wish to select</li> <li>Draw a shape around the item to select on the map</li> </ol> </div> <div> <h4>Clear</h4> <p>Clear all graphics from the map and items in the Results Window</p> <ol> <li><div class="example" style="padding-left: 0px !important;"><img src="images/icons/clear.png"></div> </li></ol> </div> <div> <h4>Measure</h4> <p>Measure the distance between two or more points.</p> <ol> <li>Turn on the measure tool by clicking <div class="example" style="padding-left: 0px !important;"><img src="images/icons/measure.png"></div> </li><li>Select the measure tool from the measure dialog</li> <li>Click on the map, then connect to another point on the map and click.</li> <li>Repeat as necessary</li> <li>Turn off the measure tool by double-clicking on the map, or clicking <div class="example" style="padding-left: 0px !important;"><img src="images/icons/measure.png"></div></li> </ol> </div> <div> <h4>Buffer Selection</h4> <p>Selects parcels/address points/roads within a specified distance of currently selected item(s) on map</p> <ol> <li>Turn on the buffer tool by clicking <div class="example" style="padding-left: 0px !important;"><img src="images/icons/buffer.png"></div> </li> <li>Input the distance you wish to buffer</li> <li>Choose what type of items you want the buffer to return (Parcels, Address Points, or Roads)</li> <li>Click the "Buffer" button to begin the buffer</li> <li>Repeat as necessary</li> <li>Turn off the buffer tool by again clicking <div class="example" style="padding-left: 0px !important;"><img src="images/icons/buffer.png"></div></li> </ol> </div> </div> <div class="content right"> <div> <h4>Results Window</h4> <p>The Results Window is located by default in the bottom panel and displays selected items and search results</p> <ol> <li>Click the export button <div class="example" style="padding-right: 5px; padding-top: 5px;"><img src="images/icons/download.png"></div> to export content of Results Window to a CSV</li> <li style="margin-top: 10px;">Click the dock button <div class="example"><img src="images/icons/lock.png"></div> to move Results Window around the screen</li> <li style="margin-top: 10px;">Click the show/hide button <div class="example" style="padding-left: 0px !important;"><img src="images/icons/favorites.png"></div> to toggle the Results Window</li> <li style="margin-top: 10px;">Click the close button <div class="example" style="padding-right: 5px; padding-top: 5px;"><img src="images/icons/close.png"></div> to hide the results window</li> <li>Click the zoom button <img src="images/icons/zoomRecord.png"> to zoom to selected item and highlight on map</li> </ol> </div> <div> <h4>Identify Tool</h4> <p>Quickly identifies items on the map</p> <ol> <li>Click the identify button <div class="example" style="padding-left: 0px !important; "><img src="images/icons/identify.png" style="margin-bottom: -5px;"></div> </li> <li>Click on a location on the map to identify items at that location</li> </ol> </div> <div> <h4>Pan</h4> <p>Pan the map in a given direction.</p> <ol> <li>Click the pan button <div class="example" style="padding-left: 0px !important; "><img src="images/icons/pan.png"></div> and drag the mouse over the map</li> </ol> </div> <div> <h4>Overview Map</h4> <p>Shows the position of the main map in a small overview map</p> <ol> <li>Click "Overview" to toggle on/off</li> </ol> </div> <div> <h4>Basemap</h4> <p>Change the map being displayed</p> <ol> <li>Click "Basemap" and select a map from the dropdown list</li> <li>Basemaps are marked (Fast) or (Slow) depending on how quickly they load</li> </ol> </div> <div> <h4>Legend</h4> <p>The visible map\'s legend</p> <ol> <li>Click "Legend" to toggle the map legend on/off</li> <li>The legend will change automatically when you change the basemap</li> </ol> </div> <div> <h4>Print</h4> <p>Print whatever is currently visible on the map, including graphics</p> <ol> <li>Click "Print" to generate a PDF in the default size.</li> <li>Click &#x25BC; to view a dropdown list of available alternative sizes and options</li> </ol> </div> </div> </div>');
         
-        
-        
-        
+        var isMoving = false; //to help detect whether window is being moved
         var position = "bottom";
         var docked = true;
         var moved = false;
@@ -62,50 +65,81 @@
         	 dnd = new Moveable(dom.byId("searchResults")); 
         		domAttr.set(dockButton,"class","undocked"); 
         		domAttr.set(dom.byId("modeHelper"),"class","undockMode");
+        		
         		dojo.connect(dnd, "onMove", function(e){
+        			isMoving = true;
         			moved = true;
-      			 	console.log(scalebar);
+      			 //	console.log(scalebar);
       			 	vs = win.getBox();
-       				console.log(vs);
+       			//	console.log(vs);
       				 	 box = domGeom.position(searchResults);
-      			 	console.log(box);
+      			// 	console.log(box);
        	
-      			 	if((vs.h - box.y) <= 175){
+      			 	if((vs.h - box.y) <= 175){  
       			 		//console.log("snap bottom");
      			  		domAttr.set(dom.byId("moveHelper"),"class","searchSnapBottom");
      			  		domAttr.set(dom.byId("resultsContent"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
-     			  		domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
-     			  		domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
+     			  	//	domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
+     			  	//	domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
+     			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
      			  		position = "bottom";
      			  		//console.log(vs.h - box.y);
      			  	} else if((vs.w - box.x) <= 375 && box.y < 150 ) {
    			    		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapRight");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
-    			   		domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+    			   	//	domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+    			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
     			   		position = "right";
      			  	} else if((box.x) <= 66 && box.y < 150 ) {
     			   		domAttr.set(dom.byId("moveHelper"),"class", "searchSnapLeft");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
-    			   		domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
+    			   	//	domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
     			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box.w + (box.x + 22) ) +"px; z-index: 30;");
+    			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box.w + (box.x + 88) ) +"px; z-index: 30;");
+    			   		//console.log(query(".searchFix"));
     			   		position = "left";
     			   	}else {
     			   		domAttr.set(dom.byId("moveHelper"),"class", "searchFreeFloat");
     			   		domAttr.set(dom.byId("resultsContent"),"style",  "");
-    			   		domAttr.set(dom.byId("pclogo"), "style", "");
-     			  		domAttr.set(scalebar, "style", "left: 25px;");
+    			   		//domAttr.set(dom.byId("pclogo"), "style", "");
+     			  		//domAttr.set(scalebar, "style", "left: 25px;");
      			  		domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
+     			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
+     			  		
      			  		position = "free";
      			  	}
-       	
-       	
+       				
+       				
+
        	
       			 });
        
         		 
-        		 
-        		 
+        		    dojo.connect(dnd, "onMoveStop", function(e){
+       					//alert();
+       				isMoving = false;
+       				setTimeout(function(){
+       					if(!isMoving){
+       						dnd.destroy();
+        					docked = true;
+        					domAttr.set(dockButton,"class","docked");
+        					domAttr.set(dom.byId("modeHelper"),"class","dockMode");
+       					}
+       				},1000);
+       				      	
+        			});        		 
         		docked = false;
+        		
+        		setTimeout(function(){
+       					if(!isMoving){
+       						dnd.destroy();
+        					docked = true;
+        					domAttr.set(dockButton,"class","docked");
+        					domAttr.set(dom.byId("modeHelper"),"class","dockMode");
+       					}
+       				},1000);
+        		
+        		
         	} else {
         		dnd.destroy();
         		docked = true;
@@ -115,11 +149,11 @@
         });
         
        
-        
-        dojo.connect(dnd, "onMoveStop", function(e){
-        	//dnd.destroy();
-        });
-        
+
+       
+       
+     
+         
         
         
         
@@ -190,9 +224,9 @@
        
        
        on(helpButton,"click",function(){
-       			ieAlert.set("title","Comming Soon");
-       			ieAlert.set("content", "<p>This feature is not available yet.</p><p>Please check again later.</p>");
-				ieAlert.show();
+       			//ieAlert.set("title","Comming Soon");
+       			//ieAlert.set("content", "<p>This feature is not available yet.</p><p>Please check again later.</p>");
+				helpAlert.show();
        		//alert("Feature comming soon.")
        	});
        
@@ -397,9 +431,13 @@
   	}, delay);
    
       }
-  
+  var sWidth;
+  var sHeight;
   var popTemp;
 	ready(function(){
+		var initialSize = win.getBox();
+		sWidth = initialSize.w;
+		sHeight = initialSize.h;
 	//console.log(map);
 	//	console.dir(dnd);
 		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
@@ -427,6 +465,133 @@
 		
 		
 		
+		setInterval(function(){
+			var screenSize = win.getBox();
+			
+			
+			if(sWidth != screenSize.w || sHeight != screenSize.h){
+				//console.log(screenSize);
+				sWidth = screenSize.w;
+				sHeight = screenSize.h;
+				respond();
+			}
+			
+			
+		},500);
+		var screenSize;
+		//Ultimate response algorithm for objects moving out of way of results window.
+		setInterval(function(){
+			try{
+			screenSize = win.getBox();
+			box = domGeom.position(searchResults);
+			//
+			try{
+				var ez = query("#searchResults.hide");
+				var ez2 = query("#moveHelper.searchSnapLeft");
+				var ez3 = query("#searchResults.showx");
+				var ez4 = query("#moveHelper.searchSnapBottom");
+				var ez5 = query("#moveHelper.searchFreeFloat");
+				var ez6 = query("#moveHelper.searchSnapRight");
+				var ez7 = query(".mobile-mode-portrait");
+				var ez8 = query(".mobile-mode-landscape");
+				
+		//		console.log(ez7);
+			//	console.log(ez8);
+				} catch(e){}
+			
+			
+			
+			if(ez[0] && ez2[0]){
+				//console.log(ez);
+				//console.log(ez2);
+				domAttr.set(scalebar, "style", "left: 25px;");
+				domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
+					if(!ez7[0] && !ez8[0]){
+						domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
+					}
+     			
+			} else if(ez2[0] && ez3[0]){
+						domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
+    			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box.w + (box.x + 22) ) +"px; z-index: 30;");
+    			   		if(!ez7[0] && !ez8[0]){
+						domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box.w + (box.x + 88) ) +"px; z-index: 30;");
+						}
+    			   		
+			}	else if(ez4[0] && ez3[0]){
+			
+     			  		//domAttr.set(dom.byId("resultsContent"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
+     			  		domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
+     			  		domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
+     			  		if(!ez7[0] && !ez8[0]){
+						try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");} catch(e){}
+						}
+     			  		
+			} else if(ez4[0] && ez[0]){
+				domAttr.set(dom.byId("pclogo"), "style", "");
+     			domAttr.set(scalebar, "style", "left: 25px;");
+     			
+     			if(!ez7[0] && !ez8[0]){
+					try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");} catch(e){}
+					}
+     		
+			} else if(ez6[0] && ez[0]){
+				domAttr.set(dom.byId("pclogo"), "style", "");
+			}  else if(ez6[0] && ez3[0]){
+				domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+			} else if(ez5[0] && ez3[0]){
+				if((screenSize.w - box.x) <= 375){
+					domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+				} else {domAttr.set(dom.byId("pclogo"), "style", "");}
+				if((box.x) <= 66){
+					domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
+				} else {
+					domAttr.set(scalebar, "style", "left: 25px;");
+				}
+			}	else if(ez5[0] && ez[0]){
+				domAttr.set(dom.byId("pclogo"), "style", "");
+     			domAttr.set(scalebar, "style", "left: 25px;");
+			}
+			
+			
+			} catch(e){}
+		},50);
+		
+		setInterval(function(){
+			//console.log(screenSize);
+			try{
+			if(screenSize.w <= 1380){
+				domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");
+				//console.log(screenSize);
+			}
+			} catch(e){}
+		
+			
+		}, 2000);
+		
+		setInterval(function(){
+			//console.log(screenSize);
+			
+			if(screenSize.w <= 680){
+				var mobDet = query(".dj_ios");
+				var mobDet2 = query(".dj_android");
+				if(mobDet[0] || mobDet2[0]){
+					if(screenSize.w <= 479){
+					domAttr.set(dom.byId("button-console"),"class","mobile-mode-portrait");
+				//	domAttr.set(dom.byId("tools"),"style","width: 310px;");
+					}
+					if(screenSize.w >= 480 ){
+						domAttr.set(dom.byId("button-console"),"class","mobile-mode-landscape");
+					//	domAttr.set(dom.byId("tools"),"style","width: 412px;");
+					}
+					domAttr.set(dom.byId("map_zoom_slider"),"class","esriSimpleSlider esriSimpleSliderVertical esriSimpleSliderTL hide");
+					domAttr.set(dom.byId("dockButton"),"class","hide");
+					//domAttr.set(dom.byId("tools"),"style","width: 412px;");
+					domAttr.set(dom.byId("search_wrapper"),"style","z-index: 30; left: 7px !important;");
+				}
+				
+			}
+			
+		}, 50);
 	});  
 	
 	function fadeConsole(){
@@ -498,7 +663,7 @@
       var smallBig = false;
       var bigSmall = false;
      on(window, "resize", function(){
-     	respond(1250);
+     	//respond(1250);
      }); 
       
       var big1;
@@ -506,10 +671,9 @@
       var small1;
       function respond(respTime){
       	
-     	
      	 vs = win.getBox();
 
-     	
+     	domAttr.set(dom.byId(query(".search_wrapper")[0]),"style","");
      	
 		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
 		moved = false;
@@ -542,7 +706,7 @@
 		docked = true;
 		domAttr.set(dockButton, "class","docked");
 		domAttr.set(dom.byId("modeHelper"),"class","dockMode");
-		if(vs.w <= 1225){
+		if(vs.w <= 1380){
 			domAttr.set(dom.byId("search_wrapper"), "class", "search_wrapper searchFix");
 			
 		} else {
