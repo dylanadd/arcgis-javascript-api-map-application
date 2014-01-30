@@ -127,44 +127,44 @@ var gLayer = new GraphicsLayer();
 
     //Create basemaps
     var countyLayer = new BasemapLayer({
-        url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer"
+        url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
     });
 
     var countyBasemap = new Basemap({
         layers: [countyLayer],
-        title: "2008 Imagery (Fast)",
+        title: "Satellite",
         thumbnailUrl: "images/map_thumbs/2008imagery.png"
     });
 
     var zoningLayer = new BasemapLayer({
-        url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer"
+        url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"
     });
 
     var zoningBasemap = new Basemap({
         layers: [zoningLayer],
-        title: "Zoning Basemap (Fast)",
+        title: "Street",
         thumbnailUrl: "images/map_thumbs/zoningBasemap.png"
 
     });
 
     var imagery2005Layer = new BasemapLayer({
-        url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/2005_1meter_imagery/MapServer"
+        url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"
     });
 
     var imagery2005Basemap = new Basemap({
         layers: [imagery2005Layer],
-        title: "2005 Imagery (Slow)",
+        title: "Topo",
         thumbnailUrl: "images/map_thumbs/2005imagery.png"
 
     });
 
     var imagery2004Layer = new BasemapLayer({
-        url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/2004_1ft_Imagery/MapServer"
+        url: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"
     });
 
     var imagery2004Basemap = new Basemap({
         layers: [imagery2004Layer],
-        title: "2004 Imagery (Slow)",
+        title: "NatGeo",
         thumbnailUrl: "images/map_thumbs/2004imagery.png"
 
     });
@@ -737,16 +737,22 @@ var gLayer = new GraphicsLayer();
                     }
                 }, 1000);
 
-                var c = parcels.getSelectedFeatures();
-                console.log(c);
+              //  var c = parcels.getSelectedFeatures();
+              var c = results.length;
+               // console.log(c);
                // map.addLayer(parcels);
                
-                for (i = 0; i < c.length; i++) {
+                for (i = 0; i < c; i++) {
                    // map.graphics.add(c[i]);
-                   gLayer.add(c[i]);
+                   console.log(results[i].geometry);
+                   var g = new Graphic(results[i].geometry, sfs1);
+                   
+                   gLayer.add(g);
+                  // console.log(gLayer);
+                   map.addLayer(gLayer);
                     infoArray2.push(results[i]);
                 }
-				
+				 
             }, function (error) {
 
             });
@@ -1143,11 +1149,7 @@ var gLayer = new GraphicsLayer();
     basemapGallery.add(zoningBasemap);
     basemapGallery.add(imagery2005Basemap);
     basemapGallery.add(imagery2004Basemap);
-    basemapGallery.add(imagery2001Basemap);
-    basemapGallery.add(imagery1991Basemap);
-    basemapGallery.add(floodplainsBasemap);
-    basemapGallery.add(taxSaleBasemap);
-    basemapGallery.add(harnBasemap);
+    
 
     basemapGallery.on("error", function (msg) {
         console.log("basemap gallery error:  ", msg);
@@ -1217,7 +1219,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
     parcels = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer/2", {
         outFields: ["*"],
-
+		objectIdField: "ACCTNM",
         infoTemplate: popupTemplate,
         mode: FeatureLayer.MODE_SELECTION
     });
@@ -1897,25 +1899,25 @@ function levyUrl(){
     //  var basemap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
     // var basemap = new ArcGISImageServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
   			case "basemap_0":
-  			bmap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
+  			bmap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
   			map.addLayer(bmap);
   			break;
   			
   			case "basemap_1":
-  			bmap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer");
+  			bmap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer");
   			map.addLayer(bmap);
   			break;
   			
   			case "basemap_2":
-  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/2005_1meter_imagery/MapServer");
+  			bmap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
   			map.addLayer(bmap);
   			break;
   			
   			case "basemap_3":
-  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/2004_1ft_Imagery/MapServer");
+  			bmap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer");
   			map.addLayer(bmap);
   			break;
-  			
+  			/*
   			case "basemap_4":
   			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/2001_6in_imagery/MapServer");
   			map.addLayer(bmap);
@@ -1939,7 +1941,7 @@ function levyUrl(){
   			case "basemap_8":
   			
   			break;
-  			
+  			*/
   			default:
   			map.addLayer(basemap);
   		}
