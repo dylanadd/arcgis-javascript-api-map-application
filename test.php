@@ -43,18 +43,18 @@ header("Location: file.csv");
 }
 */
 $i=0;
-$fp = fopen('temp/' . $filename, 'w');
-$z = array('Parcel Number','FIPS','Owner Name', 'Owner Overflow', 'Owner Street','Owner City','Owner State', 'Owner Zip', 'Owner Country', 'Tax District', 'Subdivision', 'Zoning', 'Legal Description', 'Land Assessed Value', 'Land Actual Value','Improvements Assessed Value', 'Improvements Actual Value', 'Fire', 'Property Tax');
+$fp = fopen('./temp/' . $filename, 'w');
+$z = array('Parcel Number','Owner Name', 'Owner Overflow', 'Owner Address','Owner State');
 $a = array('Address Number', 'Facility Name', 'Full Address');
 $b = array('Address','Geocoder Score');
-$c = array('Road Name', 'City');
+$c = array('Road Name', 'County');
 $top = true;
 //fputcsv($fp,$z);
 $tf = false;
 foreach($temp->export as $result){
 	if(isset($result->$i->parcelNum)){
 		$g = $z;
-	$y = array($result->$i->parcelNum, $result->$i->Fips, $result->$i->Owner, $result->$i->OwnerOverflow, $result->$i->OwnerStreetAddress, $result->$i->OwnerCity, $result->$i->OwnerState, $result->$i->OwnerZip, $result->$i->OwnerCountry, $result->$i->TaxDistrict, $result->$i->Subdivision, $result->$i->Zoning, $result->$i->LegalDescription, $result->$i->LandAssessedValue, $result->$i->LandActualValue, $result->$i->ImprovementsAssessedValue, $result->$i->ImprovementsActualValue, $result->$i->Fire, $result->$i->PropertyTax);
+	$y = array($result->$i->parcelNum, $result->$i->Owner, $result->$i->OwnerOverflow, $result->$i->OwnerStreetAddress, $result->$i->OwnerCity);
 	} else if(isset($result->$i->FullAddress)){
 		$g = $a;
 		$y = array($result->$i->AddressNumber, $result->$i->FacilityName, $result->$i->FullAddress);

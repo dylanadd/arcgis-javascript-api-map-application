@@ -121,7 +121,7 @@ margin:0 6px;
 outline:0;
 padding:6px 0;
 vertical-align:middle;
-width:136px;
+width:173px;
 }
 
 div.search_wrapper div.search_button a#locate {
@@ -156,6 +156,7 @@ width:20px;
 
 div.search_wrapper a#addressSwitch {
 background:url(images/address.png) no-repeat 0 0;
+display:none;
 }
 
 div.search_wrapper a#roadSwitch {
@@ -1232,6 +1233,10 @@ padding: 0px,10px,10px,10px;
 	background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
 }
 
+#infoSelectTitle {
+	padding-right:17px;
+}
+
 .selectLabel {
 	float: left;
 padding-top: 5px;
@@ -1716,4 +1721,8 @@ border-left-width: 0px;
 }
 .mobile-mode-landscape #draw,   .mobile-mode-landscape #gallery, .mobile-mode-landscape #print_button, .mobile-mode-landscape #overviewToggle, .mobile-mode-landscape #legendToggle {
 display:none;
+}
+
+.esriControlsBR{
+	display:none;
 }
