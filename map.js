@@ -1514,11 +1514,7 @@ function levyUrl(){
             "href": "javascript:void(0);"
         }, query(".actionList", map.infoWindow.domNode)[0]);
 
-        var emailLink2 = domConstruct.create("a", {
-            "class": "action2",
-            "innerHTML": "How are taxes on this parcel spent?",
-            "href": "javascript:void(0);"
-        }, query(".actionList", map.infoWindow.domNode)[0]);
+      
 
         // Register a function to be called when the user clicks on
         // the above link
@@ -1533,9 +1529,7 @@ function levyUrl(){
              window.location.href = emailLink; */
         });
 		
-		on(emailLink2,"click", function(evt){
-			levyUrl();
-		});
+	
         //When users navigate through the history using the browser back/forward buttons select appropriate parcel  
         //https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
         window.onpopstate = function (event) {
@@ -1567,31 +1561,62 @@ function levyUrl(){
             	console.log(layerid);
             	switch(layerid){
             		
-            		case 'zoning':
-            			var qMap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer");
+            		case 'satellite':
+            			var qMap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
 
   						map.removeAllLayers();
   						map.addLayer(qMap);
   					    map.addLayer(parcelInfoLayer);
   						break;
   						
-  						case 'Zoning':
-            			var qMap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/zoning/MapServer");
+  						case 'Satellite':
+            			var qMap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
 
   						map.removeAllLayers();
   						map.addLayer(qMap);
   					    map.addLayer(parcelInfoLayer);
   						break;
             		
-            		case 'floodplains':
-            			var qMap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer");
+            		case 'streets':
+            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer");
   						map.removeAllLayers();
   						map.addLayer(qMap);
   					    map.addLayer(parcelInfoLayer);
   						break;
             		
-            		case 'Floodplains':
-            			var qMap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer");
+            		case 'Streets':
+            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer");
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
+  						
+  					case 'topo':
+            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
+            		
+            		
+            		case 'Topo':
+            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
+            		
+            		
+            		case 'natgeo':
+            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer");
+  						map.removeAllLayers();
+  						map.addLayer(qMap);
+  					    map.addLayer(parcelInfoLayer);
+  						break;
+            		
+            		
+            		case 'NatGeo':
+            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer");
   						map.removeAllLayers();
   						map.addLayer(qMap);
   					    map.addLayer(parcelInfoLayer);
