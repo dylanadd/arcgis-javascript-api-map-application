@@ -2826,7 +2826,7 @@ function setInfoArray2(geom, gCode){
                 resultsArray.push(infoArray5[i]);
               //  console.log(resultsArray);
                var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell tall\">" +
-                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span><span class=\"resultsText\" >" + infoArray5[i].attributes.ACCTNM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span><span class=\"resultsText\" ><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrallbroker.wsc/savesession.p?dept=404103&County=rig&Par=" + infoArray5[i].attributes.ACCTNM  + "\" target=\"blank\">" + infoArray5[i].attributes.ACCTNM + "</a></span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Own. Name:</span><span class=\"resultsText\" >" + infoArray5[i].attributes.ANAME1 + "</span></td>" + "</tr>" +
                     "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >Own. Overflow:</span><span class=\"resultsText\" > " + infoArray5[i].attributes.AADDR1 + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.AADDR2 + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
@@ -2835,7 +2835,7 @@ function setInfoArray2(geom, gCode){
 		
 					
 					 var sWide = "" +
-                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.ACCTNM + "</span></td></tr></table></td>" + 
+                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" ><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrallbroker.wsc/savesession.p?dept=404103&County=rig&Par=" + infoArray5[i].attributes.ACCTNM  + "\" target=\"blank\">" + infoArray5[i].attributes.ACCTNM + "</a></span></td></tr></table></td>" + 
                		  
                    "<td class=\"fips sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Name:</span></td></tr><tr><td><span class=\"resultsText\" > " + infoArray5[i].attributes.ANAME1 + "</span></td></tr></table></td>" + 
                     "<td class=\"ownName sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Overflow:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.AADDR1 + "</span></td></tr></table></td>" + 
@@ -2928,7 +2928,7 @@ function setInfoArray2(geom, gCode){
             
 				
 				  var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell tall\">" +
-                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span><span class=\"resultsText\" >" + infoArray5.attributes.ACCTNM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span><span class=\"resultsText\" ><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrallbroker.wsc/savesession.p?dept=404103&County=rig&Par=" + infoArray5.attributes.ACCTNM  + "\" target=\"blank\">" + infoArray5.attributes.ACCTNM + "</a></span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Own. Name:</span><span class=\"resultsText\" >" + infoArray5.attributes.ANAME1 + "</span></td>" + "</tr>" +
                     "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >Own. Overflow:</span><span class=\"resultsText\" > " + infoArray5.attributes.AADDR1 + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5.attributes.AADDR2 + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
@@ -2937,7 +2937,7 @@ function setInfoArray2(geom, gCode){
 		
 					
 					 var sWide = "" +
-                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.ACCTNM + "</span></td></tr></table></td>" + 
+                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" ><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrallbroker.wsc/savesession.p?dept=404103&County=rig&Par=" + infoArray5.attributes.ACCTNM  + "\" target=\"blank\">" + infoArray5.attributes.ACCTNM + "</a></span></td></tr></table></td>" + 
                		  
                    "<td class=\"fips sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Name:</span></td></tr><tr><td><span class=\"resultsText\" > " + infoArray5.attributes.ANAME1 + "</span></td></tr></table></td>" + 
                     "<td class=\"ownName sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Overflow:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.AADDR1 + "</span></td></tr></table></td>" + 
@@ -3363,6 +3363,7 @@ function makeGeomArray2(selection) {
 
     //select parcel from the feature layer by creating a query to look for the input parcel id 
     function selectParcel(parcelid) {
+    	var z = new Array();
     	try{
 		infoArray2.length = 0;
 		
@@ -3372,7 +3373,16 @@ function makeGeomArray2(selection) {
             var query = new Query();
             query.where = "ACCTNM = '" + parcelid + "'";
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
-                var center = graphicsUtils.graphicsExtent(selection).getCenter();
+            	console.log(selection);
+            	var outSR = new SpatialReference(102100);
+	 			gsvc.project([ selection[0].geometry ], outSR, function(result) {
+	 			console.log(result);
+	 			selection[0].geometry = result[0];
+	 			console.log(selection);
+	 			z.push(selection[0]);
+	 			console.log(z);
+               try{ var center = graphicsUtils.graphicsExtent(z).getCenter();} catch(e){console.log(e);}
+                console.log(center);
                 var extHandler = map.on("extent-change", function () {
                     extHandler.remove();
                     //zoom to the center then display the popup 
@@ -3385,9 +3395,14 @@ function makeGeomArray2(selection) {
                   searchTimeout = true;
                    
                 });
-                map.centerAndZoom(center, 18);
+               
+                try{ map.centerAndZoom(center, 18);}catch(e){console.log(e);}
+            //  map.setExtent(graphicsUtils.graphicsExtent(z));
+             //  map.centerAt(center);
+             //  map.setZoom(18);
                  domAttr.set("locate", "class", "dormant");
                 domAttr.set("body", "class", "claro buttonMode");
+             });
             });
         }
     }
