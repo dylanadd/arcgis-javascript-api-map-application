@@ -2549,7 +2549,7 @@ function zoomToPoint(evt){
              
                gLayer.add(new Graphic(geom,textSymbol));
                map.addLayer(gLayer);
-                map.centerAndZoom(geom, 8);
+                map.centerAndZoom(geom, 18);
 }
 
 
@@ -2580,7 +2580,7 @@ function zoomToGeoPoint(evt){
              
                gLayer.add(new Graphic(geom,textSymbol));
                map.addLayer(gLayer);
-                map.centerAndZoom(geom, 8);
+                map.centerAndZoom(geom, 18);
 }
 
 
@@ -3159,7 +3159,7 @@ function setInfoArray2(geom, gCode){
 
                 infoArray = selectionX[popup.selectedIndex];
 
-                map.centerAndZoom(popup.features[popup.selectedIndex].geometry.getPoint(0, 0), 8);
+                map.centerAndZoom(popup.features[popup.selectedIndex].geometry.getPoint(0, 0), 18);
 
                 map.infoWindow.show(popup.features[popup.selectedIndex].geometry.getPoint(0, 0));
             } catch (e) {}
