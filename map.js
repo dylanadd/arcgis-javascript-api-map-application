@@ -3256,8 +3256,8 @@ function makeGeomArray2(selection) {
         var tempVar = gsvc.union(projectedPoints);
 
         tempVar.then(function (results) {
-        	selection[0].geometry = results;
-			try{infoArray2.push(selection[0]);} catch(e){console.log(e);}
+        	//selection[0].geometry = results;
+			//try{infoArray2.push(selection[0]);} catch(e){console.log(e);}
             var symbol = new SimpleLineSymbol(
                 SimpleLineSymbol.STYLE_SOLID,
                 new Color([13, 255, 0]),
