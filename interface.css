@@ -1080,6 +1080,7 @@ font-size: 16px;
 #basemapGallery {
 	color: black;
 	font-size: 12px;
+	height:222px;
 }
 
 #gallery{
@@ -1119,12 +1120,19 @@ font-size: 16px;
 	color: white;
 	text-decoration: none;
 }
+
+
+.esriBasemapGalleryNode {
+	margin: 5px 10px 0 16px;
+}
+
 #dijit_layout_ContentPane_2 {
 	margin-top: 16px !important;
 	margin-left: 0px !important;
 	position:absolute;
 	z-index: 1000;
 	border-style: solid;
+	height: 222px !important;
 border-color: rgb(16,64,92);
 }
 
