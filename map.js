@@ -854,7 +854,7 @@ var gLayer = new GraphicsLayer();
         //      gsvc.buffer(params);
 
         //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels in buffer area
-        parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer/2", {
+        parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer/2", {
             outFields: ["*"],
             objectIdField: "ACCTNM",
             //infoTemplate: popupTemplate,
@@ -872,7 +872,7 @@ var gLayer = new GraphicsLayer();
 
     points1.setSelectionSymbol(sfs5);
 
-        road1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer/1", {
+        road1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer/1", {
         outFields: ["*"],
         objectIdField: "Shape_Leng",
         //  infoTemplate: popupTemplate,
@@ -1031,7 +1031,8 @@ var gLayer = new GraphicsLayer();
  //   var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
      // var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer");
 
-    var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer"); //fast
+ //   var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer"); //fast
+  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer");
     var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
   //basemap.spatialReference = 2233;
    
@@ -1212,7 +1213,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     });
 
     //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
-    parcels = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer/2", {
+    parcels = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer/2", {
         outFields: ["*"],
 		objectIdField: "ACCTNM",
         infoTemplate: popupTemplate,
@@ -1230,7 +1231,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 
     points.setSelectionSymbol(sfs3);
 
-    var road = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer/1", {
+    var road = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer/1", {
         outFields: ["*"],
         objectIdField: "Shape_Leng",
         //  infoTemplate: popupTemplate,
@@ -1276,7 +1277,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     //END Legend Dijit 
 
     //add the road layer in selection mode
-    roads = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer/1", {
+    roads = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer/1", {
         objectIdField: "Shape_Leng",
         outFields: ["*"],
         // infoTemplate: popupRoadTemplate,
