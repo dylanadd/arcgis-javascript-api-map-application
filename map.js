@@ -3004,7 +3004,7 @@ function setInfoArray2(geom, gCode){
                     try {
                         //  safeClear();
 
-                        selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
+                        selectParcel(resultsArray[n - 10000].attributes.ACCTNM);
                         map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
                     } catch (error) {
                         console.log(error);
