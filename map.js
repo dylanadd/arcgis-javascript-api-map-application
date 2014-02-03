@@ -138,6 +138,7 @@ var gLayer = new GraphicsLayer();
 
     var zoningLayer = new BasemapLayer({
         url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"
+   
     });
 
     var zoningBasemap = new Basemap({
@@ -1032,7 +1033,7 @@ var gLayer = new GraphicsLayer();
      // var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer");
 
  //   var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer"); //fast
-  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer");
+  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer", {maxScale: 20});
     var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
   //basemap.spatialReference = 2233;
    
