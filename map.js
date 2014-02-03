@@ -1079,10 +1079,10 @@ var gLayer = new GraphicsLayer();
             plate.layout = plate.label = ch;
             plate.format = "PDF";
             plate.layoutOptions = {
-                "authorText": "Made by:  Esri's JS API Team",
-                "copyrightText": "<copyright info here>",
+                "authorText": "Provided by: Pueblo County EDGIS",
+                "copyrightText": "Copyright 2014",
                 "legendLayers": [],
-                "titleText": "Pueblo County GIS",
+                "titleText": "Rio Grande County",
                 "scalebarUnit": "Miles"
             };
             return plate;
