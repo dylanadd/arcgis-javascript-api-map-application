@@ -3324,7 +3324,7 @@ function makeGeomArray2(selection) {
 			console.log(p);
 			var params = new ProjectParameters();
 			//params.geometries = [p];
-			 var outSR = new SpatialReference(2233);
+			 var outSR = new SpatialReference(102100);
 			//params.transformation = {"wkid": 2233};
 			console.log(params);
 			try{
@@ -3347,7 +3347,7 @@ function makeGeomArray2(selection) {
 					console.log(loc);
 					map.graphics.add(loc);
 					if(zoomOnce){
-					map.centerAndZoom(result[0], 7);
+					map.centerAndZoom(result[0], 17);
 					zoomOnce = false;
 					}
 				}
