@@ -61,8 +61,8 @@ require([
         intermediateChanges: true,
         style: "width:200px;",
         onChange: function(value){
-         
-           parcelInfoLayer.setOpacity(value);
+         	  try{ floodLayer.setOpacity(value);} catch(e){console.log(e);}
+          try{ zoneLayer.setOpacity(value);} catch(e){console.log(e);}
         }
     }, "slider");
 
@@ -619,6 +619,40 @@ var gLayer = new GraphicsLayer();
       	domAttr.set("addrSearchBox","class","hide");
     });
 	
+	
+	
+	
+	  
+	
+	//begin layer toggle menu
+	  dojo.connect(dom.byId("toggleFlood"), "click", function () {
+			console.log(dom.byId("toggleFlood").checked);
+			if(dom.byId("toggleFlood").checked){
+				map.addLayer(floodLayer);
+			} else{
+				map.removeLayer(floodLayer);
+			}
+    });
+	
+	dojo.connect(dom.byId("toggleZoning"), "click", function () {
+			if(dom.byId("toggleZoning").checked){
+				map.addLayer(zoneLayer);
+			} else{
+				map.removeLayer(zoneLayer);
+			}
+    });
+    
+	dojo.connect(dom.byId("toggleParcs"), "click", function () {
+			if(dom.byId("toggleParcs").checked){
+				map.addLayer(parcelInfoLayer);
+			} else{
+				map.removeLayer(parcelInfoLayer);
+			}
+    });
+
+	
+	//end layer toggle menu
+	
 	var distParams = new DistanceParameters();
 	distParams.distanceUnit = GeometryService.UNIT_FOOT;
 	
@@ -1046,21 +1080,21 @@ var gLayer = new GraphicsLayer();
         gsvc: gsvc
     };
 
- //   var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
-     // var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer");
 
- //   var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer"); //fast
-  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/thematic/floodplains/MapServer", {maxScale: 20, opacity: 0.65});
- // var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/thematic/zoning/MapServer", {maxScale: 20, opacity: 0.65});
 
-    var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
-  //basemap.spatialReference = 2233;
-   
-   // map.addLayer(parcelInfoLayer);
-   //  map.removeAllLayers();
+
+  	  var floodLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/thematic/floodplains/MapServer", {maxScale: 20, opacity: 0.65});
+	  var zoneLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/thematic/zoning/MapServer", {maxScale: 20, opacity: 0.65});
+	
+	  
+	  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {maxScale: 20, opacity: 0.65});
+      
+      var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
+  
    
      map.addLayer(basemap);
-       map.addLayer(parcelInfoLayer);
+	map.addLayer(parcelInfoLayer);
+
     //BEGIN functions for print dijit
     //var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
 	var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";

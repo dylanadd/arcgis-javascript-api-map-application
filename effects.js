@@ -462,7 +462,7 @@
         	popTemp = popTemp[0];
 		domAttr.set(popTemp,"class","esriPopup hide");
 		
-		
+	//	domAttr.set(dom.byId("sliderWrap2"),"style","height: " + (initialSize.h - 70) + "px;");
 		
 		setInterval(function(){
 			var screenSize = win.getBox();

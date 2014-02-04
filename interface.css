@@ -1738,8 +1738,22 @@ display:none;
 
 #sliderWrap{
 	position:absolute;
-	top:500px;
-	left:20px;
+	top: 43px;
+	bottom:0px;
+left: 0px;
 	z-index: 1000;
+	background-color: rgb(16,64,92);
+	background: linear-gradient(to bottom, rgb(16,64,92),rgb(16,64,92),#fff);
+
+width: 270px;
+font-family:Verdana,helvetica;
+font-size:14px;
+padding:14px;
+}
+
+#sliderWrap2{
+	background-color:white;
+	position: relative;
+height: 100%;
 }
 
