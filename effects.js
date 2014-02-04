@@ -1,5 +1,5 @@
   var ieAlert;
-  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dnd/Moveable","dijit/Dialog","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window", "dojo/_base/xhr", "dojo/request/iframe","dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, Moveable, Dialog, domAttr, query, domGeom, coreFx, ready, domStyle, win, xhr, iframe) {
+  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dnd/Moveable","dijit/Dialog","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window", "dojo/_base/xhr", "dojo/request/iframe","dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, Moveable, Dialog,  domAttr, query, domGeom, coreFx, ready, domStyle, win, xhr, iframe) {
         var fadeButton = dom.byId("toggleOutput"),
             fadeTarget = dom.byId("output");
  		var clearButton = dom.byId("clear");
@@ -151,8 +151,7 @@
        
 
        
-       
-     
+  
          
         
         

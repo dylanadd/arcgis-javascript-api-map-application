@@ -1734,3 +1734,12 @@ display:none;
 .esriControlsBR{
 	display:none;
 }
+
+
+#sliderWrap{
+	position:absolute;
+	top:500px;
+	left:20px;
+	z-index: 1000;
+}
+

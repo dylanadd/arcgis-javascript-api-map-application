@@ -1,0 +1,631 @@
+
+.dijitReset {
+	
+	margin:0;
+	border:0;
+	padding:0;
+	font: inherit;
+	line-height:normal;
+	color: inherit;
+}
+
+
+.dijitSliderMoveable {
+	z-index:99;
+	position:absolute !important;
+	display:block;
+	vertical-align:middle;
+}
+.dijitSliderMoveableH {
+	right:0;
+}
+.dijitSliderMoveableV {
+	right:50%;
+}
+.dj_a11y div.dijitSliderImageHandle,
+.dijitSliderImageHandle {
+	margin:0;
+	padding:0;
+	position:relative !important;
+	border:8px solid gray;
+	width:0;
+	height:0;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+.dj_iequirks .dj_a11y .dijitSliderImageHandle {
+	font-size: 0;
+}
+.dj_ie7 .dijitSliderImageHandle {
+	overflow: hidden; 
+}
+.dj_ie7 .dj_a11y .dijitSliderImageHandle {
+	overflow: visible; 
+}
+.dj_a11y .dijitSliderFocused .dijitSliderImageHandle {
+	border:4px solid #000;
+	height:8px;
+	width:8px;
+}
+.dijitSliderImageHandleV {
+	top:-8px;
+	right: -50%;
+}
+.dijitSliderImageHandleH {
+	left:50%;
+	top:-5px;
+	vertical-align:top;
+}
+.dijitSliderBar {
+	border-style:solid;
+	border-color:black;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+.dijitSliderBarContainerV {
+	position:relative;
+	height:100%;
+	z-index:1;
+}
+.dijitSliderBarContainerH {
+	position:relative;
+	z-index:1;
+}
+.dijitSliderBarH {
+	height:4px;
+	border-width:1px 0;
+}
+.dijitSliderBarV {
+	width:4px;
+	border-width:0 1px;
+}
+.dijitSliderProgressBar {
+	background-color:red;
+	z-index:1;
+}
+.dijitSliderProgressBarV {
+	position:static !important;
+	height:0;
+	vertical-align:top;
+	text-align:left;
+}
+.dijitSliderProgressBarH {
+	position:absolute !important;
+	width:0;
+	vertical-align:middle;
+	overflow:visible;
+}
+.dijitSliderRemainingBar {
+	overflow:hidden;
+	background-color:transparent;
+	z-index:1;
+}
+.dijitSliderRemainingBarV {
+	height:100%;
+	text-align:left;
+}
+.dijitSliderRemainingBarH {
+	width:100% !important;
+}
+.dijitSliderBumper {
+	overflow:hidden;
+	z-index:1;
+}
+.dijitSliderBumperV {
+	width:4px;
+	height:8px;
+	border-width:0 1px;
+}
+.dijitSliderBumperH {
+	width:8px;
+	height:4px;
+	border-width:1px 0;
+}
+.dijitSliderBottomBumper,
+.dijitSliderLeftBumper {
+	background-color:red;
+}
+.dijitSliderTopBumper,
+.dijitSliderRightBumper {
+	background-color:transparent;
+}
+.dijitSliderDecoration {
+	text-align:center;
+}
+.dijitSliderDecorationC,
+.dijitSliderDecorationV {
+	position: relative; 
+}
+.dijitSliderDecorationH {
+	width: 100%;
+}
+.dijitSliderDecorationV {
+	height: 100%;
+	white-space: nowrap;
+}
+.dijitSliderButton {
+	font-family:monospace;
+	margin:0;
+	padding:0;
+	display:block;
+}
+.dj_a11y .dijitSliderButtonInner {
+	visibility:visible !important;
+}
+.dijitSliderButtonContainer {
+	text-align:center;
+	height:0;	
+}
+.dijitSliderButtonContainer * {
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+.dijitSlider .dijitButtonNode {
+	padding:0;
+	display:block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.dijitSliderMoveable {
+	z-index:99;
+	position:absolute !important;
+	display:block;
+	vertical-align:middle;
+}
+.dijitSliderMoveableH {
+	right:0;
+}
+.dijitSliderMoveableV {
+	right:50%;
+}
+.dj_a11y div.dijitSliderImageHandle,
+.dijitSliderImageHandle {
+	margin:0;
+	padding:0;
+	position:relative !important;
+	border:8px solid gray;
+	width:0;
+	height:0;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+.dj_iequirks .dj_a11y .dijitSliderImageHandle {
+	font-size: 0;
+}
+.dj_ie7 .dijitSliderImageHandle {
+	overflow: hidden; 
+}
+.dj_ie7 .dj_a11y .dijitSliderImageHandle {
+	overflow: visible; 
+}
+.dj_a11y .dijitSliderFocused .dijitSliderImageHandle {
+	border:4px solid #000;
+	height:8px;
+	width:8px;
+}
+.dijitSliderImageHandleV {
+	top:-8px;
+	right: -50%;
+}
+.dijitSliderImageHandleH {
+	left:50%;
+	top:-5px;
+	vertical-align:top;
+}
+.dijitSliderBar {
+	border-style:solid;
+	border-color:black;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+.dijitSliderBarContainerV {
+	position:relative;
+	height:100%;
+	z-index:1;
+}
+.dijitSliderBarContainerH {
+	position:relative;
+	z-index:1;
+}
+.dijitSliderBarH {
+	height:4px;
+	border-width:1px 0;
+}
+.dijitSliderBarV {
+	width:4px;
+	border-width:0 1px;
+}
+.dijitSliderProgressBar {
+	background-color:red;
+	z-index:1;
+}
+.dijitSliderProgressBarV {
+	position:static !important;
+	height:0;
+	vertical-align:top;
+	text-align:left;
+}
+.dijitSliderProgressBarH {
+	position:absolute !important;
+	width:0;
+	vertical-align:middle;
+	overflow:visible;
+}
+.dijitSliderRemainingBar {
+	overflow:hidden;
+	background-color:transparent;
+	z-index:1;
+}
+.dijitSliderRemainingBarV {
+	height:100%;
+	text-align:left;
+}
+.dijitSliderRemainingBarH {
+	width:100% !important;
+}
+.dijitSliderBumper {
+	overflow:hidden;
+	z-index:1;
+}
+.dijitSliderBumperV {
+	width:4px;
+	height:8px;
+	border-width:0 1px;
+}
+.dijitSliderBumperH {
+	width:8px;
+	height:4px;
+	border-width:1px 0;
+}
+.dijitSliderBottomBumper,
+.dijitSliderLeftBumper {
+	background-color:red;
+}
+.dijitSliderTopBumper,
+.dijitSliderRightBumper {
+	background-color:transparent;
+}
+.dijitSliderDecoration {
+	text-align:center;
+}
+.dijitSliderDecorationC,
+.dijitSliderDecorationV {
+	position: relative; 
+}
+.dijitSliderDecorationH {
+	width: 100%;
+}
+.dijitSliderDecorationV {
+	height: 100%;
+	white-space: nowrap;
+}
+.dijitSliderButton {
+	font-family:monospace;
+	margin:0;
+	padding:0;
+	display:block;
+}
+.dj_a11y .dijitSliderButtonInner {
+	visibility:visible !important;
+}
+.dijitSliderButtonContainer {
+	text-align:center;
+	height:0;	
+}
+.dijitSliderButtonContainer * {
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+.dijitSlider .dijitButtonNode {
+	padding:0;
+	display:block;
+}
+
+
+
+
+
+
+
+
+
+.xslider .dijitSliderBar {
+  border-style: solid;
+  outline: 1px;
+}
+.xslider .dijitSliderFocused .dijitSliderBar {
+  border-color: #759dc0;
+}
+.xslider .dijitSliderHover .dijitSliderBar {
+  border-color: #759dc0;
+}
+.xslider .dijitSliderDisabled .dijitSliderBar {
+  background-image: none;
+  border-color: #d3d3d3;
+}
+.xslider .dijitRuleLabelsContainer {
+  color: #000000;
+}
+.xslider .dijitRuleLabelsContainerH {
+  padding: 2px 0;
+}
+.xslider .dijitSlider .dijitSliderProgressBarH,
+.xslider .dijitSlider .dijitSliderLeftBumper {
+  border-color: #b5bcc7;
+  background-color: #cfe5fa;
+  background-image: -moz-linear-gradient(top, #ffffff 0px, #ffffff 1px, rgba(255, 255, 255, 0) 2px);
+  background-image: -webkit-linear-gradient(top, #ffffff 0px, #ffffff 1px, rgba(255, 255, 255, 0) 2px);
+  background-image: -o-linear-gradient(top, #ffffff 0px, #ffffff 1px, rgba(255, 255, 255, 0) 2px);
+  background-image: linear-gradient(top, #ffffff 0px, #ffffff 1px, rgba(255, 255, 255, 0) 2px);
+}
+.xslider .dijitSlider .dijitSliderRemainingBarH,
+.xslider .dijitSlider .dijitSliderRightBumper {
+  border-color: #b5bcc7;
+  background-color: #ffffff;
+}
+.xslider .dijitSliderRightBumper {
+  border-right: solid 1px #b5bcc7;
+}
+.xslider .dijitSliderLeftBumper {
+  border-left: solid 1px #b5bcc7;
+}
+.xslider .dijitSliderHover .dijitSliderProgressBarH,
+.xslider .dijitSliderHover .dijitSliderLeftBumper {
+  background-color: #abd6ff;
+  border-color: #759dc0;
+}
+.xslider .dijitSliderHover .dijitSliderRemainingBarH,
+.xslider .dijitSliderHover .dijitSliderRightBumper {
+  background-color: #ffffff;
+  border-color: #759dc0;
+}
+.xslider .dijitSliderFocused .dijitSliderProgressBarH,
+.xslider .dijitSliderFocused .dijitSliderLeftBumper {
+  background-color: #abd6ff;
+  border-color: #759dc0;
+  -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+.xslider .dijitSliderFocused .dijitSliderRemainingBarH,
+.xslider .dijitSliderFocused .dijitSliderRightBumper {
+  background-color: #ffffff;
+  border-color: #759dc0;
+  -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+.xslider .dijitSliderDisabled .dijitSliderProgressBarH,
+.xslider .dijitSliderDisabled .dijitSliderLeftBumper {
+  background-color: #d3d3d3;
+  
+  background-image: none;
+}
+.xslider .dijitSliderDisabled .dijitSliderRemainingBarH,
+.xslider .dijitSliderDisabled .dijitSliderRightBumper {
+  background-color: #efefef;
+}
+.xslider .dijitRuleLabelsContainerV {
+  padding: 0 2px;
+}
+.xslider .dijitSlider .dijitSliderProgressBarV,
+.xslider .dijitSlider .dijitSliderBottomBumper {
+  border-color: #b5bcc7;
+  background-color: #cfe5fa;
+  background-image: -moz-linear-gradient(left, #ffffff 0px, rgba(255, 255, 255, 0) 1px);
+  background-image: -webkit-linear-gradient(left, #ffffff 0px, rgba(255, 255, 255, 0) 1px);
+  background-image: -o-linear-gradient(left, #ffffff 0px, rgba(255, 255, 255, 0) 1px);
+  background-image: linear-gradient(left, #ffffff 0px, rgba(255, 255, 255, 0) 1px);
+}
+.xslider .dijitSlider .dijitSliderRemainingBarV,
+.xslider .dijitSlider .dijitSliderTopBumper {
+  border-color: #b5bcc7;
+  background-color: #ffffff;
+}
+.xslider .dijitSliderBottomBumper {
+  border-bottom: solid 1px #b5bcc7;
+}
+.xslider .dijitSliderTopBumper {
+  border-top: solid 1px #b5bcc7;
+}
+.xslider .dijitSliderHover .dijitSliderProgressBarV,
+.xslider .dijitSliderHover .dijitSliderBottomBumper {
+  background-color: #abd6ff;
+  border-color: #759dc0;
+}
+.xslider .dijitSliderHover .dijitSliderRemainingBarV,
+.xslider .dijitSliderHover .dijitSliderTopBumper {
+  background-color: #ffffff;
+  border-color: #759dc0;
+}
+.xslider .dijitSliderFocused .dijitSliderProgressBarV,
+.xslider .dijitSliderFocused .dijitSliderBottomBumper {
+  background-color: #abd6ff;
+  border-color: #759dc0;
+  -webkit-box-shadow: inset 1px 0px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 1px 0px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 1px 0px 1px rgba(0, 0, 0, 0.2);
+}
+.xslider .dijitSliderFocused .dijitSliderRemainingBarV,
+.xslider .dijitSliderFocused .dijitSliderTopBumper {
+  background-color: #ffffff;
+  border-color: #759dc0;
+  -webkit-box-shadow: inset 1px 0px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 1px 0px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 1px 0px 1px rgba(0, 0, 0, 0.2);
+}
+.xslider .dijitSliderDisabled .dijitSliderProgressBarV,
+.xslider .dijitSliderDisabled .dijitSliderBottomBumper {
+  background-color: #d3d3d3;
+  
+}
+.xslider .dijitSliderDisabled .dijitSliderRemainingBarV,
+.xslider .dijitSliderDisabled .dijitSliderTopBumper {
+  background-color: #efefef;
+}
+.xslider .dijitSliderImageHandleH {
+  border: 0;
+  width: 18px;
+  height: 16px;
+  background-image: url("images/sliderThumbs.png");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+.xslider .dijitSliderHover .dijitSliderImageHandleH {
+  background-position: -18px 0;
+}
+.xslider .dijitSliderFocused .dijitSliderImageHandleH {
+  background-position: -36px 0;
+}
+.xslider .dijitSliderProgressBarH .dijitSliderThumbHover {
+  background-position: -36px 0;
+}
+.xslider .dijitSliderProgressBarH .dijitSliderThumbActive {
+  background-position: -36px 0;
+}
+.xslider .dijitSliderReadOnly .dijitSliderImageHandleH,
+.xslider .dijitSliderDisabled .dijitSliderImageHandleH {
+  background-position: -54px 0;
+}
+.xslider .dijitSliderImageHandleV {
+  border: 0;
+  width: 18px;
+  height: 16px;
+  background-image: url("../../dijit/themes/claro/form/images/sliderThumbs.png");
+  background-repeat: no-repeat;
+  background-position: -289px 0;
+}
+.xslider .dijitSliderHover .dijitSliderImageHandleV {
+  background-position: -307px 0;
+}
+.xslider .dijitSliderFocused .dijitSliderImageHandleV {
+  background-position: -325px 0;
+}
+.xslider .dijitSliderProgressBarV .dijitSliderThumbHover {
+  background-position: -325px 0;
+}
+.xslider .dijitSliderProgressBarV .dijitSliderThumbActive {
+  background-position: -325px 0;
+}
+.xslider .dijitSliderReadOnly .dijitSliderImageHandleV,
+.xslider .dijitSliderDisabled .dijitSliderImageHandleV {
+  background-position: -343px 0;
+}
+.xslider .dijitSliderButtonContainerH {
+  padding: 1px 3px 1px 2px;
+}
+.xslider .dijitSliderButtonContainerV {
+  padding: 3px 1px 2px 1px;
+}
+.xslider .dijitSliderDecrementIconH,
+.xslider .dijitSliderIncrementIconH,
+.xslider .dijitSliderDecrementIconV,
+.xslider .dijitSliderIncrementIconV {
+  background-image: url("images/commonFormArrows.png");
+  background-repeat: no-repeat;
+  background-color: #efefef;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  border: solid 1px #b5bcc7;
+  font-size: 1px;
+}
+.xslider .dijitSliderDecrementIconH,
+.xslider .dijitSliderIncrementIconH {
+  height: 12px;
+  width: 9px;
+}
+.xslider .dijitSliderDecrementIconV,
+.xslider .dijitSliderIncrementIconV {
+  height: 9px;
+  width: 12px;
+}
+.xslider .dijitSliderActive .dijitSliderDecrementIconH,
+.xslider .dijitSliderActive .dijitSliderIncrementIconH,
+.xslider .dijitSliderActive .dijitSliderDecrementIconV,
+.xslider .dijitSliderActive .dijitSliderIncrementIconV,
+.xslider .dijitSliderHover .dijitSliderDecrementIconH,
+.xslider .dijitSliderHover .dijitSliderIncrementIconH,
+.xslider .dijitSliderHover .dijitSliderDecrementIconV,
+.xslider .dijitSliderHover .dijitSliderIncrementIconV {
+  
+  border: solid 1px #759dc0;
+  background-color: #ffffff;
+}
+.xslider .dijitSliderDecrementIconH {
+  background-position: -357px 50%;
+}
+.xslider .dijitSliderActive .dijitSliderDecrementIconH .xslider .dijitSliderHover .dijitSliderDecrementIconH {
+  background-position: -393px 50%;
+}
+.xslider .dijitSliderIncrementIconH {
+  background-position: -251px 50%;
+}
+.xslider .dijitSliderActive .dijitSliderIncrementIconH .xslider .dijitSliderHover .dijitSliderIncrementIconH {
+  background-position: -283px 50%;
+}
+.xslider .dijitSliderDecrementIconV {
+  background-position: -38px 50%;
+}
+.xslider .dijitSliderActive .dijitSliderDecrementIconV .xslider .dijitSliderHover .dijitSliderDecrementIconV {
+  background-position: -73px 50%;
+}
+.xslider .dijitSliderIncrementIconV {
+  background-position: -143px 49%;
+}
+.xslider .dijitSliderActive .dijitSliderIncrementIconV .xslider .dijitSliderHover .dijitSliderIncrementIconV {
+  background-position: -178px 49%;
+}
+.xslider .dijitSliderButtonContainerV .dijitSliderDecrementButtonHover,
+.xslider .dijitSliderButtonContainerH .dijitSliderDecrementButtonHover,
+.xslider .dijitSliderButtonContainerV .dijitSliderIncrementButtonHover,
+.xslider .dijitSliderButtonContainerH .dijitSliderIncrementButtonHover {
+  background-color: #cfe5fa;
+}
+.xslider .dijitSliderButtonContainerV .dijitSliderDecrementButtonActive,
+.xslider .dijitSliderButtonContainerH .dijitSliderDecrementButtonActive,
+.xslider .dijitSliderButtonContainerV .dijitSliderIncrementButtonActive,
+.xslider .dijitSliderButtonContainerH .dijitSliderIncrementButtonActive {
+  background-color: #abd6ff;
+  border-color: #759dc0;
+}
+.xslider .dijitSliderButtonInner {
+  visibility: hidden;
+}
+.xslider .dijitSliderDisabled .dijitSliderBar {
+  border-color: #d3d3d3;
+}
+.xslider .dijitSliderReadOnly *,
+.xslider .dijitSliderDisabled * {
+  border-color: #d3d3d3;
+  color: #818181;
+}
+.xslider .dijitSliderReadOnly .dijitSliderDecrementIconH,
+.xslider .dijitSliderDisabled .dijitSliderDecrementIconH {
+  background-position: -321px 50%;
+  background-color: #efefef;
+}
+.xslider .dijitSliderReadOnly .dijitSliderIncrementIconH,
+.xslider .dijitSliderDisabled .dijitSliderIncrementIconH {
+  background-position: -215px 50%;
+  background-color: #efefef;
+}
+.xslider .dijitSliderReadOnly .dijitSliderDecrementIconV,
+.xslider .dijitSliderDisabled .dijitSliderDecrementIconV {
+  background-position: -3px 49%;
+  background-color: #efefef;
+}
+.xslider .dijitSliderReadOnly .dijitSliderIncrementIconV,
+.xslider .dijitSliderDisabled .dijitSliderIncrementIconV {
+  background-position: -107px 49%;
+  background-color: #efefef;
+}

@@ -17,7 +17,7 @@ var selectionTF = false;
 // var gsvc, tb;
 require([
     "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/dijit/LocateButton", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
-    "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query",
+    "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query","dijit/form/HorizontalSlider",
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
     "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate",
     "esri/urlUtils", "esri/graphicsUtils", "esri/layers/GraphicsLayer",
@@ -34,7 +34,7 @@ require([
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
 ], function (
     Map, FeatureLayer, OverviewMap, LocateButton,  ArcGISImageServiceLayer, ArcGISDynamicMapServiceLayer, Legend,
-    ArcGISTiledMapServiceLayer, Query,
+    ArcGISTiledMapServiceLayer, Query,HorizontalSlider,
     SimpleFillSymbol, SimpleLineSymbol,
     Graphic, Popup, PopupTemplate,
     urlUtils, graphicsUtils, GraphicsLayer,
@@ -49,6 +49,23 @@ require([
 ) {
 
     parser.parse();
+
+
+
+     //for layer opacity
+      var slider = new HorizontalSlider({
+        name: "slider",
+        value: 0.65,
+        minimum: 0,
+        maximum: 1,
+        intermediateChanges: true,
+        style: "width:200px;",
+        onChange: function(value){
+         
+           parcelInfoLayer.setOpacity(value);
+        }
+    }, "slider");
+
 
     //apply a selection symbol that determines the symbology for selected features 
     var sfs = new SimpleFillSymbol(
@@ -1034,6 +1051,8 @@ var gLayer = new GraphicsLayer();
 
  //   var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer"); //fast
   var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/thematic/floodplains/MapServer", {maxScale: 20, opacity: 0.65});
+ // var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/thematic/zoning/MapServer", {maxScale: 20, opacity: 0.65});
+
     var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
   //basemap.spatialReference = 2233;
    
