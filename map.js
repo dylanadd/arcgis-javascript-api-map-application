@@ -229,7 +229,7 @@ var gLayer = new GraphicsLayer();
       //  basemap: "hybrid",
         infoWindow: popup,
         isZoomSlider: true,
-        center: [-106.354866, 37.596008],
+        center: [-104.595337, 38.255706],
         //  sliderOrientation: "vertical",
         spatialReference: 2233,
         //  sliderPosition: "bottom-right",
@@ -1033,7 +1033,7 @@ var gLayer = new GraphicsLayer();
      // var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer");
 
  //   var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/riogrande_parcels/MapServer"); //fast
-  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer", {maxScale: 20});
+  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/thematic/floodplains/MapServer", {maxScale: 20, opacity: 0.65});
     var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
   //basemap.spatialReference = 2233;
    
