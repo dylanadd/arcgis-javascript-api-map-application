@@ -251,6 +251,7 @@ var gLayer = new GraphicsLayer();
         spatialReference: 2233,
         //  sliderPosition: "bottom-right",
         //   sliderStyle: "large",
+        maxZoom: 19,
         zoom: 11
 
     });
@@ -650,7 +651,64 @@ var gLayer = new GraphicsLayer();
 			}
     });
 
-	
+	dojo.connect(dom.byId("toggleSat"), "click", function () {
+			if(dom.byId("toggleSat").checked){
+				try{map.removeLayer(natGeoLayer);}catch(e){}
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				dom.byId("toggleTopo").checked = false;
+				dom.byId("toggleStreet").checked = false;
+				dom.byId("toggleNat").checked = false;
+				map.addLayer(basemap);
+				map.reorderLayer(basemap,0);
+			} else{
+				map.removeLayer(basemap);
+			}
+    });
+	dojo.connect(dom.byId("toggleStreet"), "click", function () {
+			if(dom.byId("toggleStreet").checked){
+				try{map.removeLayer(natGeoLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				dom.byId("toggleTopo").checked = false;
+				dom.byId("toggleNat").checked = false;
+				dom.byId("toggleSat").checked = false;
+				map.addLayer(streetLayer);
+				map.reorderLayer(streetLayer,0);
+			} else{
+				map.removeLayer(streetLayer);
+			}
+    });
+    
+    dojo.connect(dom.byId("toggleTopo"), "click", function () {
+			if(dom.byId("toggleTopo").checked){
+				try{map.removeLayer(natGeoLayer);}catch(e){}
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				dom.byId("toggleStreet").checked = false;
+				dom.byId("toggleNat").checked = false;
+				dom.byId("toggleSat").checked = false;
+				map.addLayer(topoLayer);
+				map.reorderLayer(topoLayer,0);
+			} else{
+				map.removeLayer(topoLayer);
+			}
+    });
+    dojo.connect(dom.byId("toggleNat"), "click", function () {
+			if(dom.byId("toggleNat").checked){
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				dom.byId("toggleTopo").checked = false;
+				dom.byId("toggleStreet").checked = false;
+				dom.byId("toggleSat").checked = false;
+				
+				map.addLayer(natGeoLayer);
+				map.reorderLayer(natGeoLayer,0);
+			} else{
+				map.removeLayer(natGeoLayer);
+			}
+    });
 	//end layer toggle menu
 	
 	var distParams = new DistanceParameters();
@@ -1085,15 +1143,17 @@ var gLayer = new GraphicsLayer();
 
   	  var floodLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/thematic/floodplains/MapServer", {maxScale: 20, opacity: 0.65});
 	  var zoneLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/thematic/zoning/MapServer", {maxScale: 20, opacity: 0.65});
-	
+	  var streetLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer", {maxScale: 20});
+	  var topoLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", {maxScale: 20});
+	  var natGeoLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", {maxScale: 20});
 	  
-	  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {maxScale: 20, opacity: 0.65});
+	  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {maxScale: 20});
       
       var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
   
    
      map.addLayer(basemap);
-	map.addLayer(parcelInfoLayer);
+	//map.addLayer(parcelInfoLayer);
 
     //BEGIN functions for print dijit
     //var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";

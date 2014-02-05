@@ -1,5 +1,5 @@
   var ieAlert;
-  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dnd/Moveable","dijit/Dialog","dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window", "dojo/_base/xhr", "dojo/request/iframe","dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, Moveable, Dialog,  domAttr, query, domGeom, coreFx, ready, domStyle, win, xhr, iframe) {
+  require(["dojo/_base/fx", "dojo/on", "dojo/dom","dojo/dnd/Moveable","dijit/Dialog","dijit/layout/AccordionContainer","dijit/layout/ContentPane", "dojo/dom-attr","dojo/query","dojo/dom-geometry","dojo/fx", "dojo/ready", "dojo/dom-style" , "dojo/window", "dojo/_base/xhr", "dojo/request/iframe","dojo/NodeList-manipulate",  "dojo/domReady!" ], function(fx, on, dom, Moveable, Dialog, AccordionContainer, ContentPane, domAttr, query, domGeom, coreFx, ready, domStyle, win, xhr, iframe) {
         var fadeButton = dom.byId("toggleOutput"),
             fadeTarget = dom.byId("output");
  		var clearButton = dom.byId("clear");
@@ -40,6 +40,48 @@
         var scalebar;
         var identify = dom.byId("identify");
         var displayHelp = dom.byId("displayHelp");
+        
+        
+        
+        
+        console.dir(ContentPane);
+        
+        
+         var aContainer = new AccordionContainer({style:"height:inherit"}, "accordion");
+       aContainer.addChild(new ContentPane({
+        title:'<div class="accordionTitle">Thematic Layers</div>',
+        content:'<div class="accordionContent">' +
+        		'<label><input type="checkbox" name="layer" id="toggleFlood">Floodplain</label> <br/>' +
+      			'<label><input type="checkbox" name="layer" id="toggleZoning">Zoning</label><br/>' +
+      			'</div><div id="slider"></div>',
+         'class':"minwax1"
+    }));    
+    aContainer.addChild(new ContentPane({
+        title: '<div class="accordionTitle">County Data</div>',
+        content: '<div class="accordionContent">' +
+        '	<label><input type="checkbox"  name="layer" id="toggleParcs">Parcels</label><br/> ' +
+   				
+      			'</div><div id="slider"></div>',
+		'class':"minwax2"
+    }));
+    aContainer.addChild(new ContentPane({
+        title:'<div class="accordionTitle">Basemaps</div>',
+        content:'<div class="accordionContent">' +
+        		'<label><input type="checkbox" checked="checked" name="layer" id="toggleSat">Satellite</label><br/>' +
+      			'<label><input type="checkbox" name="layer" id="toggleStreet">Street</label><br/>' +
+      			'<label><input type="checkbox" name="layer" id="toggleTopo">Topographic</label><br/>' +
+      			'<label><input type="checkbox" name="layer" id="toggleNat">National Geographic</label><br/>'+
+      			'</div>',
+         'class':"minwax3"
+    }));
+  
+    aContainer.startup();
+      
+        
+        
+        
+        
+        
         
          ieAlert = new Dialog({
         	title: "Web Browser Outdated",

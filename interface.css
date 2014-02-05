@@ -1748,7 +1748,7 @@ left: 0px;
 width: 270px;
 font-family:Verdana,helvetica;
 font-size:14px;
-padding:14px;
+padding:17px;
 }
 
 #sliderWrap2{
@@ -1756,4 +1756,39 @@ padding:14px;
 	position: relative;
 height: 100%;
 }
-
+#sliderWrap2 table{
+	margin-left:auto;
+	margin-right:auto;
+}
+.arrowTextUp,.arrowTextDown{
+	display:none;
+}
+.minwax1 .accordionContent{
+	margin-bottom:10px;
+}
+.accordionTitle{
+	background:rgb(16,64,92);
+	background: linear-gradient(to bottom, #fff,rgb(16,64,92),rgb(16,64,92));
+color: white;
+height: 22px;
+font-weight: bold;
+padding-left: 9px;
+cursor:pointer;
+}
+.accordionTitle:hover{
+	color:yellow;
+}
+.dijitAccordionInnerContainer {
+	background-color:white;
+}
+.minwax1{
+	/*height: 86x !important;*/
+}
+.minwax2{
+	/*height: 120x !important;*/
+}
+#dijit_layout_ContentPane_2.minwax3{
+	/*height: 120x !important;*/
+	border:none !important;
+	
+}
