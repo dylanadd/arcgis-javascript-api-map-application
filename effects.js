@@ -44,22 +44,22 @@
         
         
         
-        console.dir(ContentPane);
+        
         
         
          var aContainer = new AccordionContainer({style:"height:inherit"}, "accordion");
        aContainer.addChild(new ContentPane({
         title:'<div class="accordionTitle">Thematic Layers</div>',
         content:'<div class="accordionContent">' +
-        		'<label><input type="checkbox" name="layer" id="toggleFlood">Floodplain</label> <br/>' +
-      			'<label><input type="checkbox" name="layer" id="toggleZoning">Zoning</label><br/>' +
+        		'<label><input type="checkbox" name="layer" id="toggleFlood"><span>Floodplain</span></label> <br/>' +
+      			'<label><input type="checkbox" name="layer" id="toggleZoning"><span>Zoning</span></label><br/>' +
       			'</div><div id="slider"></div>',
          'class':"minwax1"
     }));    
     aContainer.addChild(new ContentPane({
         title: '<div class="accordionTitle">County Data</div>',
         content: '<div class="accordionContent">' +
-        '	<label><input type="checkbox"  name="layer" id="toggleParcs">Parcels</label><br/> ' +
+        '	<label><input type="checkbox"  name="layer" id="toggleParcs"><span>Parcels</span></label><br/> ' +
    				
       			'</div><div id="slider"></div>',
 		'class':"minwax2"
@@ -67,17 +67,17 @@
     aContainer.addChild(new ContentPane({
         title:'<div class="accordionTitle">Basemaps</div>',
         content:'<div class="accordionContent">' +
-        		'<label><input type="checkbox" checked="checked" name="layer" id="toggleSat">Satellite</label><br/>' +
-      			'<label><input type="checkbox" name="layer" id="toggleStreet">Street</label><br/>' +
-      			'<label><input type="checkbox" name="layer" id="toggleTopo">Topographic</label><br/>' +
-      			'<label><input type="checkbox" name="layer" id="toggleNat">National Geographic</label><br/>'+
+        		'<label><input type="checkbox" checked="checked" name="layer" id="toggleSat"><span>Satellite</span></label><br/>' +
+      			'<label><input type="checkbox" name="layer" id="toggleStreet"><span>Street</span></label><br/>' +
+      			'<label><input type="checkbox" name="layer" id="toggleTopo"><span>Topographic</span></label><br/>' +
+      			'<label><input type="checkbox" name="layer" id="toggleNat"><span>National Geographic</span></label><br/>'+
       			'</div>',
          'class':"minwax3"
     }));
   
     aContainer.startup();
-      
-        
+      console.dir(aContainer);
+       
         
         
         
@@ -187,6 +187,115 @@
         		docked = true;
         		domAttr.set(dockButton,"class","docked");
         		domAttr.set(dom.byId("modeHelper"),"class","dockMode");
+        	}
+        });
+        
+       
+		var ldButton = dom.byId("layerDock");
+        on(ldButton,"click", function(){
+        	
+        	
+        	if(docked){
+        	 dnd = new Moveable(dom.byId("sliderWrap")); 
+        		domAttr.set(ldButton,"class","undocked"); 
+        		
+        		
+        		dojo.connect(dnd, "onMove", function(e){
+        			isMoving = true;
+        			moved = true;
+      			 //	console.log(scalebar);
+      			 	vs = win.getBox();
+       			//	console.log(vs);
+      				 	 box = domGeom.position(ldButton);
+      			// 	console.log(box);
+       			console.log(query("#sliderWrap .dijitSelected .dijitContentPane")[0])
+      			 	if((vs.h - box.y) <= 175){  
+      			 		console.log("bottom");
+      			 		domAttr.set(dom.byId("sliderWrapHelper"),"class", "layerSnapBottom");
+      			 		domAttr.set(dom.byId("sliderWrap"),"style", "width:" + (vs.w - 34) + "px;");
+      			 		
+      			 	/*	//console.log("snap bottom");
+     			  		domAttr.set(dom.byId("moveHelper"),"class","searchSnapBottom");
+     			  		domAttr.set(dom.byId("sliderWrap"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
+     			  	//	domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
+     			  	//	domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
+     			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
+     			  		position = "bottom";
+     			  		//console.log(vs.h - box.y);
+     			  		*/
+     			  	} else if((vs.w - box.x) <= 375 && box.y < 150 ) {
+     			  		console.log("right");
+     			  		domAttr.set(dom.byId("sliderWrapHelper"),"class", "layerSnapRight");
+						
+   			    	/*	domAttr.set(dom.byId("moveHelper"),"class", "searchSnapRight");
+    			   		domAttr.set(dom.byId("sliderWrap"),"style",  "");
+    			   	//	domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
+    			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
+    			   		position = "right";
+    			   		*/
+     			  	} else if((box.x) <= 66 && box.y < 150 ) {
+     			  		console.log("left");
+     			  		domAttr.set(dom.byId("sliderWrapHelper"),"class", "layerSnapLeft");
+    			  	domAttr.set(dom.byId(query("#sliderWrap .dijitSelected .dijitContentPane")[0]),"style","height:" + (box.y - 300) + "px;");
+    			   	/*	domAttr.set(dom.byId("moveHelper"),"class", "searchSnapLeft");
+    			   		domAttr.set(dom.byId("sliderWrap"),"style",  "");
+    			   	//	domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
+    			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box.w + (box.x + 22) ) +"px; z-index: 30;");
+    			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box.w + (box.x + 88) ) +"px; z-index: 30;");
+    			   		//console.log(query(".searchFix"));
+    			   		position = "left";
+    			   		*/
+    			   	}else {
+    			   		console.log("free");
+    			   		domAttr.set(dom.byId("sliderWrapHelper"),"class", "layerFreeFloat");
+    			  		
+    			   	/*	domAttr.set(dom.byId("moveHelper"),"class", "searchFreeFloat");
+    			   		domAttr.set(dom.byId("sliderWrap"),"style",  "");
+    			   		//domAttr.set(dom.byId("pclogo"), "style", "");
+     			  		//domAttr.set(scalebar, "style", "left: 25px;");
+     			  		domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
+     			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
+     			  		
+     			  		position = "free";
+     			  		*/
+     			  	}
+       				
+       				
+
+       	
+      			 });
+       
+        		 
+        		    dojo.connect(dnd, "onMoveStop", function(e){
+       					//alert();
+       				isMoving = false;
+       				setTimeout(function(){
+       					if(!isMoving){
+       						dnd.destroy();
+        					docked = true;
+        				//	domAttr.set(dockButton,"class","docked");
+        				//	domAttr.set(dom.byId("modeHelper"),"class","dockMode");
+       					}
+       				},1000);
+       				      	
+        			});        		 
+        		docked = false;
+        		
+        		setTimeout(function(){
+       					if(!isMoving){
+       						dnd.destroy();
+        					docked = true;
+        					domAttr.set(ldButton,"class","docked");
+        					domAttr.set(dom.byId("modeHelper"),"class","dockMode");
+       					}
+       				},1000);
+        		
+        		
+        	} else {
+        		dnd.destroy();
+        		docked = true;
+        		//domAttr.set(dockButton,"class","docked");
+        		//domAttr.set(dom.byId("modeHelper"),"class","dockMode");
         	}
         });
         

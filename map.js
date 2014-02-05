@@ -142,105 +142,6 @@ var gLayer = new GraphicsLayer();
 
     }
 
-    //Create basemaps
-    var countyLayer = new BasemapLayer({
-        url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
-    });
-
-    var countyBasemap = new Basemap({
-        layers: [countyLayer],
-        title: "Satellite",
-        thumbnailUrl: "images/map_thumbs/2008imagery.png"
-    });
-
-    var zoningLayer = new BasemapLayer({
-        url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"
-   
-    });
-
-    var zoningBasemap = new Basemap({
-        layers: [zoningLayer],
-        title: "Street",
-        thumbnailUrl: "images/map_thumbs/zoningBasemap.png"
-
-    });
-
-    var imagery2005Layer = new BasemapLayer({
-        url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"
-    });
-
-    var imagery2005Basemap = new Basemap({
-        layers: [imagery2005Layer],
-        title: "Topo",
-        thumbnailUrl: "images/map_thumbs/2005imagery.png"
-
-    });
-
-    var imagery2004Layer = new BasemapLayer({
-        url: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"
-    });
-
-    var imagery2004Basemap = new Basemap({
-        layers: [imagery2004Layer],
-        title: "NatGeo",
-        thumbnailUrl: "images/map_thumbs/2004imagery.png"
-
-    });
-
-    var imagery2001Layer = new BasemapLayer({
-        url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/2001_6in_imagery/MapServer"
-    });
-
-    var imagery2001Basemap = new Basemap({
-        layers: [imagery2001Layer],
-        title: "2001 Imagery (Slow)",
-        thumbnailUrl: "images/map_thumbs/2001imagery.png"
-
-    });
-
-    var imagery1991Layer = new BasemapLayer({
-        url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/1991_Imagery/MapServer"
-    });
-
-    var imagery1991Basemap = new Basemap({
-        layers: [imagery1991Layer],
-        title: "1991 Imagery (Slow)",
-        thumbnailUrl: "images/map_thumbs/1991imagery.png"
-
-    });
-
-    var floodplainsLayer = new BasemapLayer({
-        url: "http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer"
-    });
-
-    var floodplainsBasemap = new Basemap({
-        layers: [floodplainsLayer],
-        title: "Floodplains (Slow)",
-        thumbnailUrl: "images/map_thumbs/floodplains.png"
-
-    });
-
-    var taxSaleLayer = new BasemapLayer({
-        url: "http://sunshine/outside/rest/services/aerial_photos/ortho2008_4inch/ImageServer"
-    });
-
-    var taxSaleBasemap = new Basemap({
-        layers: [taxSaleLayer],
-        title: "test 2008 (Slow)"
-        //  thumbnailUrl:"images/waterThumb.png"
-    });
-
-    var harnLayer = new BasemapLayer({
-        url: ""
-    });
-
-    var harnBasemap = new Basemap({
-        layers: [harnLayer],
-        title: "No Basemap",
-        thumbnailUrl: "images/map_thumbs/noBasemap.png"
-
-    });
-
     //Map constructor
     map = new Map("map", {
       //  basemap: "hybrid",
@@ -299,7 +200,7 @@ var gLayer = new GraphicsLayer();
 
     map.on("update-end", function () {
     	finishedLoading = true;
-        domAttr.set("gallery", "class", "dormant");
+       
         domAttr.set("body", "class", "claro buttonMode");
 
     });
@@ -1248,13 +1149,13 @@ var gLayer = new GraphicsLayer();
     //END print dijit functions
 
     //BEGIN Basemap Toggle
-    var basemapGallery = new BasemapGallery({
+  /*  var basemapGallery = new BasemapGallery({
         showArcGISBasemaps: false,
         map: map
     }, "basemapGallery");
-
-    basemapGallery.startup();
-
+*/
+   // basemapGallery.startup();
+/*
     basemapGallery.add(countyBasemap);
     basemapGallery.add(zoningBasemap);
     basemapGallery.add(imagery2005Basemap);
@@ -1277,7 +1178,7 @@ var gLayer = new GraphicsLayer();
 		}
         //    console.dir(basemapGallery.getSelected());
     });
-
+*/
     //End Basemap Toggle
 
     //BEGIN scalebar Dijit
