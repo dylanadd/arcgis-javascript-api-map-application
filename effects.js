@@ -594,25 +594,32 @@
 	domAttr.set(slideTarget, "style", "bottom: 0px;" );
 	
 	
-		domAttr.set(dom.byId("dijit_TitlePane_0_titleBarNode"), "title", "Change the application's basemap");
+	try{	
 		setTimeout(function(){
 			try{
 			domAttr.set(dom.byId("dijit_form_ComboButton_0_arrow"), "title", "Print the map");
-			} catch(e){}
-		},2000);
-		domAttr.set(dom.byId("map_zoom_slider"), "title", "Zoom the map in or out");
-		query(".dijitTitlePaneTextNode").innerHTML("Basemap");
+					domAttr.set(dom.byId("map_zoom_slider"), "title", "Zoom the map in or out");
+
+			} catch(e){console.log(e);}
+		},5000);
+		} catch(e){console.log(e);}
 
 	//	query(".esriSimpleSliderIncrementButton").wrap("<div id=\"increment\"></div>");
 	//	query(".esriSimpleSliderDecrementButton").wrap("<div id=\"decrement\"></div>");
-		
-		scalebar = query(".esriScalebar");
+		try{
+		setTimeout(function(){
+			scalebar = query(".esriScalebar");
         	scalebar = dom.byId(scalebar[0]);
         	respond(0);
         	popTemp = query(".esriPopup");
         	popTemp = popTemp[0];
 		domAttr.set(popTemp,"class","esriPopup hide");
+			
+			
+		},500);	
 		
+	}catch(e){console.log(e);}
+	
 	//	domAttr.set(dom.byId("sliderWrap2"),"style","height: " + (initialSize.h - 70) + "px;");
 		
 		setInterval(function(){
@@ -631,6 +638,7 @@
 		var screenSize;
 		//Ultimate response algorithm for objects moving out of way of results window.
 		setInterval(function(){
+			
 			try{
 			screenSize = win.getBox();
 			box = domGeom.position(searchResults);
