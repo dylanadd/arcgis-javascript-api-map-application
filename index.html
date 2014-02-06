@@ -170,7 +170,14 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
         <a id="toggleOutput" class="closed" title="View your selected info panel"></a>
           
         <a id="toggleLayerMenu">Layers</a>
-        
+        <!-- Gallery div not in use, but app breaks without it -->
+         <div id="gallery" class="dormant">
+          <div data-dojo-type="dijit/TitlePane" 
+               data-dojo-props=" closable:false,  open:false">
+            <div data-dojo-type="dijit/layout/ContentPane" style="width:264px; height:238px; overflow:auto;margin-top: 73px;margin-left: -130px;">
+          </div>
+          </div>
+        </div>
          <div id="print_button" class="dormant"></div>
         
         
