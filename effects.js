@@ -45,7 +45,7 @@
         
         
        
-        
+       
          var aContainer = new AccordionContainer({style:"height:inherit"}, "accordion");
        aContainer.addChild(new ContentPane({
         title:'<div class="accordionTitle">Thematic Layers</div>',
@@ -54,6 +54,7 @@
       			'<label><input type="checkbox" name="layer" id="toggleZoning"><span>Zoning</span></label><br/>' +
       			'</div><div id="slider"></div>',
          'class':"minwax1"
+         
     }));    
     aContainer.addChild(new ContentPane({
         title: '<div class="accordionTitle">County Data</div>',
@@ -75,10 +76,12 @@
     }));
   
     aContainer.startup();
-     // console.dir(aContainer);
-       
-        
-        
+      console.dir(AccordionContainer);
+       console.log(aContainer);
+       try{aContainer.resize();}catch(e){console.log(e);}
+         on(dom.byId(query(".accordionTitle")),"click",function(){
+        	
+        });        
         console.log(map);
         
         
@@ -189,7 +192,7 @@
         	}
         });
         
-       
+       var ldMoving = false;
 		var ldButton = dom.byId("layerDock");
         on(ldButton,"click", function(){
         	
@@ -200,7 +203,9 @@
         		
         		
         		dojo.connect(dnd, "onMove", function(e){
+        			ldMoving = true;
         			isMoving = true;
+        			aContainer.resize();
         			moved = true;
       			 //	console.log(scalebar);
       			 	vs = win.getBox();
@@ -267,6 +272,7 @@
         		 
         		    dojo.connect(dnd, "onMoveStop", function(e){
        					//alert();
+       					ldMoving = false;
        				isMoving = false;
        				setTimeout(function(){
        					if(!isMoving){
@@ -386,9 +392,11 @@
        		if(showLayerWindow){
        			domAttr.set(dom.byId("sliderWrap"), "class","xslider hide");
        			showLayerWindow = false;
+       			aContainer.resize();
        		} else {
        			domAttr.set(dom.byId("sliderWrap"), "class","xslider");
        			showLayerWindow = true;
+       			aContainer.resize();
        		}
        			
        });
@@ -605,12 +613,11 @@
 	domAttr.set(slideTarget, "style", "bottom: 0px;" );
 	
 	
-	
-	setInterval(function(){
-		var box1 = domGeom.position(sliderWrap2);
-		domAttr.set(dom.byId(query("#sliderWrap .dijitSelected .dijitContentPane")[0]),"style","height:" + (box1.h - 75) + "px;");
-		
-	},0);
+	ldMoving = true;
+	setTimeout(function(){
+
+		//aContainer.resize();
+	},1000);
 	
 	try{	
 		setTimeout(function(){
