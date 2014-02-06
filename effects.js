@@ -6,7 +6,7 @@
  		var viewButton = dom.byId("openClose");
  		var locateButton = dom.byId("locate");
  		var bufferButton = dom.byId("buffer");
- 		var map = dom.byId("map");
+ 		var map1 = dom.byId("map");
 		var fade = null;       
 		var  secondary;
         var slideTarget = dom.byId("searchResults");
@@ -44,8 +44,7 @@
         
         
         
-        
-        
+       
         
          var aContainer = new AccordionContainer({style:"height:inherit"}, "accordion");
        aContainer.addChild(new ContentPane({
@@ -76,11 +75,11 @@
     }));
   
     aContainer.startup();
-      console.dir(aContainer);
+     // console.dir(aContainer);
        
         
         
-        
+        console.log(map);
         
         
          ieAlert = new Dialog({
@@ -146,7 +145,7 @@
     			   		//domAttr.set(dom.byId("pclogo"), "style", "");
      			  		//domAttr.set(scalebar, "style", "left: 25px;");
      			  		domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
-     			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
+     			  		try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");}catch(e){}
      			  		
      			  		position = "free";
      			  	}
@@ -206,7 +205,7 @@
       			 //	console.log(scalebar);
       			 	vs = win.getBox();
        			//	console.log(vs);
-      				 	 box = domGeom.position(ldButton);
+      				 	 box = domGeom.position(sliderWrap);
       			// 	console.log(box);
        			console.log(query("#sliderWrap .dijitSelected .dijitContentPane")[0])
       			 	if((vs.h - box.y) <= 175){  
@@ -234,9 +233,9 @@
     			   		position = "right";
     			   		*/
      			  	} else if((box.x) <= 66 && box.y < 150 ) {
-     			  		console.log("left");
+     			  		console.log(box);
      			  		domAttr.set(dom.byId("sliderWrapHelper"),"class", "layerSnapLeft");
-    			  	domAttr.set(dom.byId(query("#sliderWrap .dijitSelected .dijitContentPane")[0]),"style","height:" + (box.y - 300) + "px;");
+    			  	//	domAttr.set(dom.byId(query("#sliderWrap .dijitSelected .dijitContentPane")[0]),"style","height:" + (box.h - 100 ) + "px;");
     			   	/*	domAttr.set(dom.byId("moveHelper"),"class", "searchSnapLeft");
     			   		domAttr.set(dom.byId("sliderWrap"),"style",  "");
     			   	//	domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
@@ -246,9 +245,9 @@
     			   		position = "left";
     			   		*/
     			   	}else {
-    			   		console.log("free");
+    			   		//console.log("free");
     			   		domAttr.set(dom.byId("sliderWrapHelper"),"class", "layerFreeFloat");
-    			  		
+    			  	//	domAttr.set(dom.byId(query("#sliderWrap .dijitSelected .dijitContentPane")[0]),"style","height:" + (box.h - 100 ) + "px;");
     			   	/*	domAttr.set(dom.byId("moveHelper"),"class", "searchFreeFloat");
     			   		domAttr.set(dom.byId("sliderWrap"),"style",  "");
     			   		//domAttr.set(dom.byId("pclogo"), "style", "");
@@ -381,6 +380,18 @@
        	});
        
        
+       
+       var showLayerWindow = false;
+       on(dom.byId("toggleLayerMenu"), "click",function(){
+       		if(showLayerWindow){
+       			domAttr.set(dom.byId("sliderWrap"), "class","xslider hide");
+       			showLayerWindow = false;
+       		} else {
+       			domAttr.set(dom.byId("sliderWrap"), "class","xslider");
+       			showLayerWindow = true;
+       		}
+       			
+       });
        
        var showLegend = false;
        on(legendButton,"click",function(){
@@ -536,7 +547,7 @@
         
         var temp = true;
         
-      	on(map, "click", function(){
+      	on(map1, "click", function(){
       	
       	  try{
       	  
@@ -593,6 +604,13 @@
 		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
 	domAttr.set(slideTarget, "style", "bottom: 0px;" );
 	
+	
+	
+	setInterval(function(){
+		var box1 = domGeom.position(sliderWrap2);
+		domAttr.set(dom.byId(query("#sliderWrap .dijitSelected .dijitContentPane")[0]),"style","height:" + (box1.h - 75) + "px;");
+		
+	},0);
 	
 	try{	
 		setTimeout(function(){
@@ -713,6 +731,15 @@
 			
 			} catch(e){}
 		},50);
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		setInterval(function(){
 			//console.log(screenSize);
