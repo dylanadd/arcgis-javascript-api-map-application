@@ -667,6 +667,8 @@
 			try{
 			screenSize = win.getBox();
 			box = domGeom.position(searchResults);
+			var box1 = domGeom.position(dom.byId("sliderWrap"));
+			var sliderWrap = dom.byId("sliderWrap");
 			//
 			try{
 				var ez = query("#searchResults.hide");
@@ -677,9 +679,33 @@
 				var ez6 = query("#moveHelper.searchSnapRight");
 				var ez7 = query(".mobile-mode-portrait");
 				var ez8 = query(".mobile-mode-landscape");
+				var layerHidden = query("#sliderWrap.hide");
+				var layerLeft = query("#sliderWrapHelper.layerSnapLeft");
+				var layerFree = query("#sliderWrapHelper.layerFreeFloat");
+				//console.log(domAttr.get(dom.byId("searchResults"),"style"));
 				
-		//		console.log(ez7);
-			//	console.log(ez8);
+				if(!layerHidden[0] && layerLeft[0] && ez4[0]){
+					//domAttr.set(searchResults,"style",domAttr.get(dom.byId("searchResults"),"style") + "padding-left:" + (box1.w + box1.x) + "px;");
+					
+				
+				} else if(!layerHidden[0] && layerFree[0] && ez4[0]){
+					//domAttr.set(sliderWrap,"style", "bottom:" + (box.h) + "px;")
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				//console.log(layer1);
+		
 				} catch(e){}
 			
 			
@@ -864,7 +890,7 @@
       function respond(respTime){
       	
      	 vs = win.getBox();
-
+		aContainer.resize();
      	domAttr.set(dom.byId(query(".search_wrapper")[0]),"style","");
      	
 		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
