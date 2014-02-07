@@ -1821,3 +1821,30 @@ right: 0px !important;
 height:200px;
 
 }
+
+
+#sizeHelper.resultsBottomLayerLeft #searchResults{
+	padding-left:304px;
+}
+#sizeHelper.resultsBottomLayerRight #searchResults{
+	padding-right:304px;
+}
+
+#sizeHelper.resultsLeftLayerBottom #searchResults{}
+
+
+#sizeHelper.resultsFreeLayerBottom #searchResults {
+	bottom:230px !important;
+}
+
+
+#sliderWrapHelper0.resultsLeftLayerBottom #sliderWrap{
+	margin-left:300px;
+}
+
+#sliderWrapHelper0.resultsBottomLayerFree #sliderWrap {
+	bottom:175px !important;
+}
+#sliderWrapHelper0.resultsBottomLayerFree #sliderWrap {
+	bottom:175px !important;
+}

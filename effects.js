@@ -111,6 +111,7 @@
         		domAttr.set(dom.byId("modeHelper"),"class","undockMode");
         		
         		dojo.connect(dnd, "onMove", function(e){
+        			aContainer.resize();
         			isMoving = true;
         			moved = true;
       			 //	console.log(scalebar);
@@ -213,55 +214,28 @@
       				 	 box = domGeom.position(sliderWrap);
       			// 	console.log(box);
        			console.log(query("#sliderWrap .dijitSelected .dijitContentPane")[0])
-      			 	if((vs.h - box.y) <= 175){  
+      			 	if((vs.h - box.y) <= 201){  
+      			 		
+      			 		if(!ez4[0] || ez[0]){
       			 		console.log("bottom");
       			 		domAttr.set(dom.byId("sliderWrapHelper"),"class", "layerSnapBottom");
-      			 		domAttr.set(dom.byId("sliderWrap"),"style", "width:" + (vs.w - 34) + "px;");
-      			 		
-      			 	/*	//console.log("snap bottom");
-     			  		domAttr.set(dom.byId("moveHelper"),"class","searchSnapBottom");
-     			  		domAttr.set(dom.byId("sliderWrap"),"style",  "height:" + (vs.h - box.y - 25) + "px !important;");
-     			  	//	domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
-     			  	//	domAttr.set(scalebar, "style", "top: " + (box.y - 30) + "px !important; left: 25px;");
-     			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
-     			  		position = "bottom";
-     			  		//console.log(vs.h - box.y);
-     			  		*/
+      			 		//domAttr.set(dom.byId("sliderWrap"),"style", "width:" + (vs.w - 34) + "px;");
+      			 		}
+      			 	
      			  	} else if((vs.w - box.x) <= 375 && box.y < 150 ) {
      			  		console.log("right");
      			  		domAttr.set(dom.byId("sliderWrapHelper"),"class", "layerSnapRight");
 						
-   			    	/*	domAttr.set(dom.byId("moveHelper"),"class", "searchSnapRight");
-    			   		domAttr.set(dom.byId("sliderWrap"),"style",  "");
-    			   	//	domAttr.set(dom.byId("pclogo"), "style", "left: " + (box.x - 50) +"px;");
-    			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
-    			   		position = "right";
-    			   		*/
+   			    	
      			  	} else if((box.x) <= 66 && box.y < 150 ) {
      			  		console.log(box);
      			  		domAttr.set(dom.byId("sliderWrapHelper"),"class", "layerSnapLeft");
-    			  	//	domAttr.set(dom.byId(query("#sliderWrap .dijitSelected .dijitContentPane")[0]),"style","height:" + (box.h - 100 ) + "px;");
-    			   	/*	domAttr.set(dom.byId("moveHelper"),"class", "searchSnapLeft");
-    			   		domAttr.set(dom.byId("sliderWrap"),"style",  "");
-    			   	//	domAttr.set(scalebar, "style", "left: " + (box.w + (box.x + 22) + 20) +"px;");
-    			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box.w + (box.x + 22) ) +"px; z-index: 30;");
-    			   		domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box.w + (box.x + 88) ) +"px; z-index: 30;");
-    			   		//console.log(query(".searchFix"));
-    			   		position = "left";
-    			   		*/
+    			  	
     			   	}else {
     			   		//console.log("free");
     			   		domAttr.set(dom.byId("sliderWrapHelper"),"class", "layerFreeFloat");
     			  	//	domAttr.set(dom.byId(query("#sliderWrap .dijitSelected .dijitContentPane")[0]),"style","height:" + (box.h - 100 ) + "px;");
-    			   	/*	domAttr.set(dom.byId("moveHelper"),"class", "searchFreeFloat");
-    			   		domAttr.set(dom.byId("sliderWrap"),"style",  "");
-    			   		//domAttr.set(dom.byId("pclogo"), "style", "");
-     			  		//domAttr.set(scalebar, "style", "left: 25px;");
-     			  		domAttr.set(dom.byId("map_zoom_slider"), "style", "z-index: 30;");
-     			  		domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");
-     			  		
-     			  		position = "free";
-     			  		*/
+    			   
      			  	}
        				
        				
@@ -389,6 +363,9 @@
        
        var showLayerWindow = false;
        on(dom.byId("toggleLayerMenu"), "click",function(){
+       	
+       	
+       	
        		if(showLayerWindow){
        			domAttr.set(dom.byId("sliderWrap"), "class","xslider hide");
        			showLayerWindow = false;
@@ -398,6 +375,8 @@
        			showLayerWindow = true;
        			aContainer.resize();
        		}
+       		
+       		
        			
        });
        
@@ -603,10 +582,27 @@
   var sWidth;
   var sHeight;
   var popTemp;
+  
+  
+  var ez; 
+				var ez2; 
+				var ez3; 
+				var ez4; 
+				var ez5;
+				var ez6;
+				var ez7; 
+				var ez8; 
+				var layerHidden; 
+				var layerLeft;
+				var layerFree; 
+				var layerRight;
+				var layerBottom; 
+  
 	ready(function(){
 		var initialSize = win.getBox();
 		sWidth = initialSize.w;
 		sHeight = initialSize.h;
+		
 	//console.log(map);
 	//	console.dir(dnd);
 		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
@@ -667,29 +663,68 @@
 			try{
 			screenSize = win.getBox();
 			box = domGeom.position(searchResults);
+	
 			var box1 = domGeom.position(dom.byId("sliderWrap"));
 			var sliderWrap = dom.byId("sliderWrap");
 			//
 			try{
-				var ez = query("#searchResults.hide");
-				var ez2 = query("#moveHelper.searchSnapLeft");
-				var ez3 = query("#searchResults.showx");
-				var ez4 = query("#moveHelper.searchSnapBottom");
-				var ez5 = query("#moveHelper.searchFreeFloat");
-				var ez6 = query("#moveHelper.searchSnapRight");
-				var ez7 = query(".mobile-mode-portrait");
-				var ez8 = query(".mobile-mode-landscape");
-				var layerHidden = query("#sliderWrap.hide");
-				var layerLeft = query("#sliderWrapHelper.layerSnapLeft");
-				var layerFree = query("#sliderWrapHelper.layerFreeFloat");
+				 ez = query("#searchResults.hide");
+				 ez2 = query("#moveHelper.searchSnapLeft");
+				 ez3 = query("#searchResults.showx");
+				 ez4 = query("#moveHelper.searchSnapBottom");
+				 ez5 = query("#moveHelper.searchFreeFloat");
+				 ez6 = query("#moveHelper.searchSnapRight");
+				 ez7 = query(".mobile-mode-portrait");
+				 ez8 = query(".mobile-mode-landscape");
+				 layerHidden = query("#sliderWrap.hide");
+				 layerLeft = query("#sliderWrapHelper.layerSnapLeft");
+				 layerFree = query("#sliderWrapHelper.layerFreeFloat");
+				 layerRight = query("#sliderWrapHelper.layerSnapRight");
+				 layerBottom = query("#sliderWrapHelper.layerSnapBottom");
 				//console.log(domAttr.get(dom.byId("searchResults"),"style"));
 				
 				if(!layerHidden[0] && layerLeft[0] && ez4[0]){
 					//domAttr.set(searchResults,"style",domAttr.get(dom.byId("searchResults"),"style") + "padding-left:" + (box1.w + box1.x) + "px;");
+					domAttr.set(dom.byId("sizeHelper"),"class","resultsBottomLayerLeft");
+					domAttr.set(dom.byId("sliderWrapHelper0"),"class","resultsBottomLayerLeft");
 					
-				
-				} else if(!layerHidden[0] && layerFree[0] && ez4[0]){
-					//domAttr.set(sliderWrap,"style", "bottom:" + (box.h) + "px;")
+				}  else if(layerHidden[0] && ez4[0] && !ez[0]){
+					domAttr.set(dom.byId("sizeHelper"),"class","resultsBottomLayerHidden");
+					domAttr.set(dom.byId("sliderWrapHelper0"),"class","resultsBottomLayerHidden");
+				}  else if(!layerHidden[0] && layerFree[0] && ez4[0] && !ez[0]){
+					domAttr.set(dom.byId("sizeHelper"),"class","resultsBottomLayerFree");
+					domAttr.set(dom.byId("sliderWrapHelper0"),"class","resultsBottomLayerFree");
+				}  else if(!layerHidden[0] && layerRight[0] && ez4[0]&& !ez[0]){
+					domAttr.set(dom.byId("sizeHelper"),"class","resultsBottomLayerRight");
+					domAttr.set(dom.byId("sliderWrapHelper0"),"class","resultsBottomLayerRight");
+				}  else if(!ez[0] && ez2[0] && layerBottom[0]){
+					domAttr.set(dom.byId("sizeHelper"),"class","resultsLeftLayerBottom");
+					domAttr.set(dom.byId("sliderWrapHelper0"),"class","resultsLeftLayerBottom");
+					domAttr.set(dom.byId("sliderWrap"),"style", "width:" + (screenSize.w - 334) + "px;");
+					//console.log("bingo");
+				}  else if(!ez[0] && !ez4[0] && !layerBottom[0]){
+					domAttr.set(dom.byId("sizeHelper"),"class","resultsNotBottomLayerNotBottom");
+					domAttr.set(dom.byId("sliderWrapHelper0"),"class","resultsNotBottomLayerNotBottom");
+					//domAttr.set(dom.byId("sliderWrap"),"style", "width:" + (screenSize.w - 334) + "px;");
+					//console.log("bingo");
+				}  else if(!ez[0] && ez6[0] && layerBottom[0]){
+					domAttr.set(dom.byId("sizeHelper"),"class","resultsRightLayerBottom");
+					domAttr.set(dom.byId("sliderWrapHelper0"),"class","resultsRightLayerBottom");
+					domAttr.set(dom.byId("sliderWrap"),"style", "width:" + (screenSize.w - 334) + "px;");
+					
+					//console.log("bingo");
+				} else if(ez[0] && layerBottom[0]){
+					domAttr.set(dom.byId("sizeHelper"),"class","resultsRightLayerBottom");
+					domAttr.set(dom.byId("sliderWrapHelper0"),"class","resultsRightLayerBottom");
+					domAttr.set(dom.byId("sliderWrap"),"style", "width:" + (screenSize.w - 34) + "px;");
+					
+					//console.log("bingo");
+				} else if(!ez[0] && ez5[0] && layerBottom[0] && !layerHidden[0]){
+					domAttr.set(dom.byId("sizeHelper"),"class","resultsFreeLayerBottom");
+					domAttr.set(dom.byId("sliderWrapHelper0"),"class","resultsFreeLayerBottom");
+					domAttr.set(dom.byId("sliderWrap"),"style", "width:" + (screenSize.w - 34) + "px;");
+					domAttr.set(dom.byId("resultsContent"),"style", "height:" + (box.h - 34) + "px;");
+					//console.log("bingo");
 				}
 				
 				
@@ -763,7 +798,7 @@
 			
 			
 			} catch(e){}
-		},50);
+		},65);
 		
 		
 		
@@ -870,7 +905,9 @@
  				//domAttr.set(dom.byId("searchResults"), "style", "top: 37px; left:" + (vs.w - 21) + "px;");
  			}, 500);
  			}
- 			
+ 			if(layerBottom[0] && ez4[0] ){
+       			respond();
+       		}
  			
         });
       
@@ -890,8 +927,14 @@
       function respond(respTime){
       	
      	 vs = win.getBox();
-		aContainer.resize();
+		
      	domAttr.set(dom.byId(query(".search_wrapper")[0]),"style","");
+     	domAttr.set(dom.byId(query("#sliderWrap")[0]),"style","");
+     	domAttr.set(dom.byId("sliderWrapHelper"),"class","layerSnapLeft");
+     	domAttr.set(dom.byId("sliderWrapHelper0"),"class","resultsBottomLayerLeft");
+     	domAttr.set(dom.byId("sizeHelper"),"class","resultsBottomLayerLeft");
+     	
+     	aContainer.resize();
      	
 		//domAttr.set(slideTarget, "style", "top: " + domGeom.getMarginBox(dom.byId("button-console")).h + "px; height: " + (win.getBox().h - domGeom.getMarginBox(dom.byId("button-console")).h) + "px;" );
 		moved = false;
