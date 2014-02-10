@@ -150,7 +150,7 @@ var gLayer = new GraphicsLayer();
         isZoomSlider: true,
         center: [-104.595337, 38.255706],
         //  sliderOrientation: "vertical",
-        spatialReference: 2233,
+        spatialReference: 102100,
         //  sliderPosition: "bottom-right",
         //   sliderStyle: "large",
         maxZoom: 19,
@@ -873,16 +873,16 @@ var gLayer = new GraphicsLayer();
         //      gsvc.buffer(params);
 
         //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels in buffer area
-        parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer/2", {
+        parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/13", {
             outFields: ["*"],
-            objectIdField: "ACCTNM",
+            objectIdField: "PAR_NUM",
             //infoTemplate: popupTemplate,
             mode: FeatureLayer.MODE_SELECTION
         });
 
         parcels1.setSelectionSymbol(sfs1);
 		
-		points1 = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/0", {
+		points1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/0", {
         outFields: ["*"],
         objectIdField: "FULLADDR",
         //infoTemplate: popupTemplate,
@@ -891,9 +891,9 @@ var gLayer = new GraphicsLayer();
 
     points1.setSelectionSymbol(sfs5);
 
-        road1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer/1", {
+        road1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/3", {
         outFields: ["*"],
-        objectIdField: "Shape_Leng",
+        objectIdField: "OBJECTID",
         //  infoTemplate: popupTemplate,
         mode: FeatureLayer.MODE_SELECTION,
         spatialRelationship: FeatureLayer.SPATIAL_REL_CROSSES
@@ -1107,7 +1107,7 @@ var gLayer = new GraphicsLayer();
                 "authorText": "Provided by: Pueblo County EDGIS",
                 "copyrightText": "Copyright 2014",
                 "legendLayers": [],
-                "titleText": "Rio Grande County",
+                "titleText": "Pueblo County",
                 "scalebarUnit": "Miles"
             };
             return plate;
@@ -1216,37 +1216,45 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 
     //apply a popup template to the parcels layer to format popup info 
     var popupTemplate = new PopupTemplate({
-        title: "Parcel Number: {ACCTNM}",
+        title: "Parcel Number: {PAR_NUM}",
         fieldInfos: [{
-            fieldName: "ANAME1",
-            label: "Owner Name:",
+            fieldName: "Owner",
+            label: "Owner:",
             visible: true
         }, {
-            fieldName: "AADDR1",
+            fieldName: "OwnerOverflow",
             label: "Owner Overflow:",
             visible: true
         }, {
-            fieldName: "AADDR2",
-            label: "Owner Address 2:",
+            fieldName: "OwnerStreetAddress",
+            label: "Owner Address:",
             visible: true
         }, {
-            fieldName: "ASTATE",
+            fieldName: "OwnerCity",
+            label: "Owner City:",
+            visible: true
+        }, {
+            fieldName: "OwnerState",
             label: "Owner State:",
+            visible: true
+        }, {
+            fieldName: "OwnerZip",
+            label: "Owner Zip Code:",
             visible: true
         }]
     });
 
     //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
-    parcels = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer/2", {
+    parcels = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/13", {
         outFields: ["*"],
-		objectIdField: "ACCTNM",
+		objectIdField: "PAR_NUM",
         infoTemplate: popupTemplate,
         mode: FeatureLayer.MODE_SELECTION
     });
 
     parcels.setSelectionSymbol(sfs);
 
-    var points = new FeatureLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/pueblocounty/MapServer/0", {
+    var points = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/0", {
         outFields: ["*"],
         objectIdField: "FULLADDR",
         //infoTemplate: popupTemplate,
@@ -1255,9 +1263,9 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 
     points.setSelectionSymbol(sfs3);
 
-    var road = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer/1", {
+    var road = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/3", {
         outFields: ["*"],
-        objectIdField: "Shape_Leng",
+        objectIdField: "OBJECTID",
         //  infoTemplate: popupTemplate,
         mode: FeatureLayer.MODE_SELECTION,
         spatialRelationship: FeatureLayer.SPATIAL_REL_CROSSES
@@ -1301,8 +1309,8 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     //END Legend Dijit 
 
     //add the road layer in selection mode
-    roads = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/riogrande_county/MapServer/1", {
-        objectIdField: "Shape_Leng",
+    roads = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/3", {
+        objectIdField: "OBJECTID",
         outFields: ["*"],
         // infoTemplate: popupRoadTemplate,
         mode: FeatureLayer.MODE_SELECTION
@@ -1469,9 +1477,10 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         if (ownParSearch) {
             findOwnerOrParcel();
         } else if (addrSearch) {
+        	
         	if(addrSearchMode == "geo"){
             locate();
-          } else {
+          } else if(addrSearchMode == "raw"){
           	addrTxtSearch();
           }
         } else if (rdSearch) {
@@ -1539,7 +1548,11 @@ function levyUrl(){
             "href": "javascript:void(0);"
         }, query(".actionList", map.infoWindow.domNode)[0]);
 
-      
+        var emailLink2 = domConstruct.create("a", {
+            "class": "action2",
+            "innerHTML": "How are taxes on this parcel spent?",
+            "href": "javascript:void(0);"
+        }, query(".actionList", map.infoWindow.domNode)[0]);
 
         // Register a function to be called when the user clicks on
         // the above link
@@ -1554,7 +1567,9 @@ function levyUrl(){
              window.location.href = emailLink; */
         });
 		
-	
+		on(emailLink2,"click", function(evt){
+			levyUrl();
+		});
         //When users navigate through the history using the browser back/forward buttons select appropriate parcel  
         //https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
         window.onpopstate = function (event) {
@@ -1717,7 +1732,7 @@ function levyUrl(){
     //BEGIN Location Dijit
 
     var locator = new Locator("http://maps.co.pueblo.co.us/ArcGIS/rest/services/PCGIS_Geocoding_Service/GeocodeServer");
-    // var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+   //  var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
     locator.on("address-to-locations-complete", showResults);
 
     //prepare address query string for Geocoder
@@ -1730,7 +1745,7 @@ function levyUrl(){
 
             "Street": dom.byId("address").value
         };
-        locator.outSpatialReference = map.spatialReference;
+        locator.outSpatialReference = new SpatialReference(102100);
         var options = {
             address: address,
             outFields: ["Loc_name"]
@@ -1741,6 +1756,7 @@ function levyUrl(){
     }
 
     function showResults(evt) {
+    	console.log(evt);
         displayGeoCoderResults(evt);
         try{gLayer.clear();}catch(e){}
         var candidate;
@@ -2063,13 +2079,25 @@ function levyUrl(){
     		if(resultsArray[i].geometry != undefined && resultsArray[i].geometry.type == "polygon"){
     			console.log("polygon " + i);
     			 exportArray = {
-          	         "parcelNum": resultsArray[i].attributes.ACCTNM.toString(),
-        	         
-        	         "Owner": resultsArray[i].attributes.ANAME1,
- 	                 "OwnerOverflow": resultsArray[i].attributes.AADDR1,
- 	                 "OwnerStreetAddress": resultsArray[i].attributes.AADDR2,
-  	                 "OwnerCity": resultsArray[i].attributes.ASTATE
-                  
+          	         "parcelNum": resultsArray[i].attributes.PAR_NUM.toString(),
+        	         "Fips": resultsArray[i].attributes.Fips.toString(),
+        	         "Owner": resultsArray[i].attributes.Owner,
+ 	                 "OwnerOverflow": resultsArray[i].attributes.OwnerOverflow,
+ 	                 "OwnerStreetAddress": resultsArray[i].attributes.OwnerStreetAddress,
+  	                 "OwnerCity": resultsArray[i].attributes.OwnerCity,
+                     "OwnerState": resultsArray[i].attributes.OwnerState,
+                     "OwnerZip": resultsArray[i].attributes.OwnerZip.toString(),
+                     "OwnerCountry": resultsArray[i].attributes.OwnerCountry,
+                     "TaxDistrict": resultsArray[i].attributes.TaxDistrict,
+                     "Subdivision": resultsArray[i].attributes.Subdivision,
+                     "Zoning": resultsArray[i].attributes.Zoning,
+                     "LegalDescription": resultsArray[i].attributes.LegalDescription,
+                     "LandAssessedValue": resultsArray[i].attributes.LandAssessedValue.toString(),
+                     "LandActualValue": resultsArray[i].attributes.LandActualValue.toString(),
+                     "ImprovementsAssessedValue": resultsArray[i].attributes.ImprovementsAssessedValue.toString(),
+                     "ImprovementsActualValue": resultsArray[i].attributes.ImprovementsActualValue.toString(),
+                     "Fire": resultsArray[i].attributes.Fire,
+                     "PropertyTax": resultsArray[i].attributes.PropertyTax 
                     
                  };
                  
@@ -2141,8 +2169,8 @@ function levyUrl(){
     			console.log("polyline " + i);
     			
     			exportArray = {
-          	         "AltName": resultsArray[i].attributes.COMP_NAM,
-          	         "City": resultsArray[i].attributes.COUNTY
+          	         "AltName": resultsArray[i].attributes.ALTNAME1,
+          	         "City": resultsArray[i].attributes.CITY
           	        // "RdLabel": resultsArray[i].attributes.RD_LABEL        	         
                  };
                  
@@ -2468,6 +2496,8 @@ function makeWordArray(owner, qMode){
 		owner = owner.match(/\S+\s*/g);
 		console.log(owner);
 		
+		
+		
 		if(qMode == "owner"){
 		
 		
@@ -2476,17 +2506,35 @@ function makeWordArray(owner, qMode){
 					try{
 						owner[i] = owner[i].replace(/\s/g, '');
 					} catch(e){}
-					q += "(ANAME1 like '%" + owner[i] + "%' or AADDR1 like '%" + owner[i] + "%') and";
+					q += "(Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%') and";
 				} else {
 					try{
 						owner[i] = owner[i].replace(/\s/g, '');
 					} catch(e){}
-					q += " (ANAME1 like '%" + owner[i] + "%' or AADDR1 like '%" + owner[i] + "%')";
+					q += " (Owner like '%" + owner[i] + "%' or OwnerOverflow like '%" + owner[i] + "%')";
 					console.log(q);
 					return q;
 				}
 			}
-		} else if(qMode = "road"){
+		} else if(qMode = "address"){
+			for(i=0;i<=owner.length;i++){
+				if(i + 1 != owner.length){
+					try{
+						owner[i] = owner[i].replace(/\s/g, '');
+					} catch(e){}
+					q += "(FULLADDR like '%" + owner[i] + "%') and";
+				} else {
+					try{
+						owner[i] = owner[i].replace(/\s/g, '');
+					} catch(e){}
+					q += " (FULLADDR like '%" + owner[i] + "%')";
+					console.log(q);
+					return q;
+				}
+			}			
+		}
+		
+		 else if(qMode = "road"){
 			for(i=0;i<=owner.length;i++){
 				if(i + 1 != owner.length){
 					try{
@@ -2642,7 +2690,7 @@ function setInfoArray2(geom, gCode){
     var resultsArray = new Array();
 	var contentType;
 	var displayHelp = dom.byId("displayHelp");
-    function displayResults(infoArray5, infoMode) {
+       function displayResults(infoArray5, infoMode) {
     	count = 0;
     	tf = false;
     	console.log(contentType);
@@ -2689,10 +2737,10 @@ function setInfoArray2(geom, gCode){
         	for (i = 0; i < infoArray5.length; i++) {
                 resultsArray.push(infoArray5[i]);
                 var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
-                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.COMP_NAM + "</span></td>" + 
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.ALTNAME1 + "</span></td>" + 
                     "</tr></table></td>";
 				
-				var sWide =  "<td class=\"parNum sWide\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.COMP_NAM + "</span></td>";
+				var sWide =  "<td class=\"parNum sWide\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.ALTNAME1 + "</span></td>"
                
                 var temp = domConstruct.create("tr", {
                     "innerHTML": "<td><a class=\"goToParcel\" title=\"View Road Segment\" id=\"test" + (i + l) + "\" >" + "</a></td>" + sWide,
@@ -2851,35 +2899,64 @@ function setInfoArray2(geom, gCode){
                 resultsArray.push(infoArray5[i]);
               //  console.log(resultsArray);
                var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell tall\">" +
-                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span><span class=\"resultsText\" ><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrallbroker.wsc/savesession.p?dept=404103&County=rig&Par=" + infoArray5[i].attributes.ACCTNM  + "\" target=\"blank\">" + infoArray5[i].attributes.ACCTNM + "</a></span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Own. Name:</span><span class=\"resultsText\" >" + infoArray5[i].attributes.ANAME1 + "</span></td>" + "</tr>" +
-                    "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >Own. Overflow:</span><span class=\"resultsText\" > " + infoArray5[i].attributes.AADDR1 + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.AADDR2 + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.ASTATE + "</span></td>" + 
-					 "</tr></table></td>";
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span><span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5[i].attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></span></td>" + "</tr>" +
+                    "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5[i].attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerOverflow + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerZip + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    
+                    "<td class=\"impActVal\"><span class=\"resultsLabel\" >Improvement Act. Val.:</span> <span class=\"resultsText\" >$" + infoArray5[i].attributes.ImprovementsActualValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"impAssVal\"><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> <span class=\"resultsText\" >$" + infoArray5[i].attributes.ImprovementsAssessedValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"landActVal\"><span class=\"resultsLabel\" >Land Act. Val.:</span> <span class=\"resultsText\" >$" + infoArray5[i].attributes.LandActualValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"landAssVal\"><span class=\"resultsLabel\" >Land Ass. Val.:</span> <span class=\"resultsText\" >$" + infoArray5[i].attributes.LandAssessedValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"legalDesc\"><span class=\"resultsLabel\" >Legal Desc.:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.LegalDescription + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"propTax\"><span class=\"resultsLabel\" >Property Tax:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.PropertyTax + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"subdivision\"><span class=\"resultsLabel\" >Subdivision:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Subdivision + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"taxDist\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.TaxDistrict+ "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+  					"<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5[i].attributes.ZoningURL + "\" target=\"blank\">" + infoArray5[i].attributes.Zoning + "</a></span></td>" +                     
+                    
+                    "</tr></table></td>";
 		
 					
 					 var sWide = "" +
-                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" ><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrallbroker.wsc/savesession.p?dept=404103&County=rig&Par=" + infoArray5[i].attributes.ACCTNM  + "\" target=\"blank\">" + infoArray5[i].attributes.ACCTNM + "</a></span></td></tr></table></td>" + 
-               		  
-                   "<td class=\"fips sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Name:</span></td></tr><tr><td><span class=\"resultsText\" > " + infoArray5[i].attributes.ANAME1 + "</span></td></tr></table></td>" + 
-                    "<td class=\"ownName sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Overflow:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.AADDR1 + "</span></td></tr></table></td>" + 
-                    "<td class=\"ownOverflow sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Address:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.AADDR2 + "</span></td></tr></table></td>" + 
-                    "<td class=\"ownAddress sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. State:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.ASTATE + "</span></td></tr></table></td>" +                   
+                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td></tr></table></td>" + 
+               		  "<td class=\"assessorLink sWide\"><table><tr><td><span class=\"resultsLabel\" >Assessor Link:</span></td></tr><tr><td><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + 
+               		  infoArray5[i].attributes.PAR_TXT + 
+               		  "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></span></td></tr></table></td>" + 
+                   "<td class=\"fips sWide\"><table><tr><td><span class=\"resultsLabel\" >FIPS:</span></td></tr><tr><td><span class=\"resultsText\" > " + infoArray5[i].attributes.Fips + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownName sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Name:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.Owner + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownOverflow sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Overflow:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerOverflow + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownAddress sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Address:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerStreetAddress + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownCity sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. City:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerCity + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownState sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. State:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerState + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownZip sWide\"><table><tr><td><span class=\"resultsLabel\" >Own Zip:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.OwnerZip + "</span></td></tr></table></td>" +
+                    "<td class=\"impActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Act. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5[i].attributes.ImprovementsActualValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"impAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5[i].attributes.ImprovementsAssessedValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"landActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Act. Val.:</span></td></tr><tr><td> <span class=\"resultsText\" >$" + infoArray5[i].attributes.LandActualValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"landAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5[i].attributes.LandAssessedValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"legalDesc sWide\"><table><tr><td><span class=\"resultsLabel\" >Legal Desc.:</span></td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.LegalDescription + "</span></td></tr></table></td>" +
+                    "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.PropertyTax + "</span></td></tr></table></td>" +
+                    "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.Subdivision + "</span></td></tr></table></td>" +
+                    "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.TaxDistrict+ "</span></td></tr></table></td>" +
+  					"<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5[i].attributes.ZoningURL + "\" target=\"blank\">" + infoArray5[i].attributes.Zoning + "</a></span></td>" +                     
                     
                     "";
 		
 			
 
                 var temp = domConstruct.create("tr", {
-                    "innerHTML":"<td><div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.ACCTNM + "\" id=\"test" + (i + l) + "\" >" + "</a></td>" + sWide  + "</div>",
+                    "innerHTML":"<td><div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l) + "\" >" + "</a></td>" + sWide  + "</div>",
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
                 
                 
                  var temp2 = domConstruct.create("tr", {
-                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.ACCTNM + "\" id=\"test" + (i + l + 10000) + "\" >" + "</a>" + s + "</div>",
+                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l + 10000) + "\" >" + "</a>" + s + "</div>",
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableTallContent");
@@ -2904,7 +2981,7 @@ function setInfoArray2(geom, gCode){
                     try {
                         //  safeClear();
 
-                        selectParcel(resultsArray[n - 10000].attributes.ACCTNM);
+                        selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
                         map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
                     } catch (error) {
                         console.log(error);
@@ -2930,7 +3007,7 @@ function setInfoArray2(geom, gCode){
                     try {
                         //  safeClear();
 
-                        selectParcel(resultsArray[n].attributes.ACCTNM);
+                        selectParcel(resultsArray[n].attributes.PAR_NUM);
                         map.infoWindow.show(resultsArray[n].geometry.getPoint(0, 0));
                     } catch (error) {
                         console.log(error);
@@ -2950,37 +3027,77 @@ function setInfoArray2(geom, gCode){
         	
         	 resultsArray.push(infoArray5);
                 console.log(resultsArray);
-            
+              /*  var s = "<td class=\"sTall\"><table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5.attributes.PAR_TXT + "</a></span></td>" + "</tr>" +
+                    "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5.attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerOverflow + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerZip + "</span></td>" +
+                    "</tr></table></td>";
+*/
 				
-				  var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell tall\">" +
-                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span><span class=\"resultsText\" ><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrallbroker.wsc/savesession.p?dept=404103&County=rig&Par=" + infoArray5.attributes.ACCTNM  + "\" target=\"blank\">" + infoArray5.attributes.ACCTNM + "</a></span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Own. Name:</span><span class=\"resultsText\" >" + infoArray5.attributes.ANAME1 + "</span></td>" + "</tr>" +
-                    "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >Own. Overflow:</span><span class=\"resultsText\" > " + infoArray5.attributes.AADDR1 + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5.attributes.AADDR2 + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5.attributes.ASTATE + "</span></td>" + 
-					 "</tr></table></td>";
+				var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell tall\">" +
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5.attributes.PAR_TXT + "</a></span></td>" + "</tr>" +
+                    "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5.attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerOverflow + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerZip + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    
+                    "<td class=\"impActVal\"><span class=\"resultsLabel\" >Improvement Act. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsActualValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"impAssVal\"><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsAssessedValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"landActVal\"><span class=\"resultsLabel\" >Land Act. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.LandActualValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"landAssVal\"><span class=\"resultsLabel\" >Land Ass. Val.:</span> <span class=\"resultsText\" >$" + infoArray5.attributes.LandAssessedValue + ".00</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"legalDesc\"><span class=\"resultsLabel\" >Legal Desc.:</span> <span class=\"resultsText\" >" + infoArray5.attributes.LegalDescription + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"propTax\"><span class=\"resultsLabel\" >Property Tax:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"subdivision\"><span class=\"resultsLabel\" >Subdivision:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"taxDist\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
+                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5.attributes.ZoningURL + "\" target=\"blank\">" + infoArray5.attributes.Zoning + "</a></span></td>" + 
+                    
+                    "</tr></table></td>";
 		
 					
 					 var sWide = "" +
-                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" ><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrallbroker.wsc/savesession.p?dept=404103&County=rig&Par=" + infoArray5.attributes.ACCTNM  + "\" target=\"blank\">" + infoArray5.attributes.ACCTNM + "</a></span></td></tr></table></td>" + 
-               		  
-                   "<td class=\"fips sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Name:</span></td></tr><tr><td><span class=\"resultsText\" > " + infoArray5.attributes.ANAME1 + "</span></td></tr></table></td>" + 
-                    "<td class=\"ownName sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Overflow:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.AADDR1 + "</span></td></tr></table></td>" + 
-                    "<td class=\"ownOverflow sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Address:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.AADDR2 + "</span></td></tr></table></td>" + 
-                    "<td class=\"ownAddress sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. State:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.ASTATE + "</span></td></tr></table></td>" +                   
-                    
+                    "<td class=\"parNum sWide\"><table><tr><td><span class=\"resultsLabel\" >Parcel Number:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td></tr></table></td>" + 
+               		  "<td class=\"assessorLink sWide\"><table><tr><td><span class=\"resultsLabel\" >Assessor Link:</span></td></tr><tr><td><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + 
+               		  infoArray5.attributes.PAR_TXT + 
+               		  "\" target=\"_blank\" >" + infoArray5.attributes.PAR_TXT + "</a></span></td></tr></table></td>" + 
+                   "<td class=\"fips sWide\"><table><tr><td><span class=\"resultsLabel\" >FIPS:</span></td></tr><tr><td><span class=\"resultsText\" > " + infoArray5.attributes.Fips + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownName sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Name:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.Owner + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownOverflow sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Overflow:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerOverflow + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownAddress sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. Address:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.OwnerStreetAddress + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownCity sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. City:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.OwnerCity + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownState sWide\"><table><tr><td><span class=\"resultsLabel\" >Own. State:</span></td></tr><tr><td> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerState + "</span></td></tr></table></td>" + 
+                    "<td class=\"ownZip sWide\"><table><tr><td><span class=\"resultsLabel\" >Own Zip:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.OwnerZip + "</span></td></tr></table></td>" +
+                    "<td class=\"impActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Act. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsActualValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"impAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Improvement Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5.attributes.ImprovementsAssessedValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"landActVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Act. Val.:</span></td></tr><tr><td> <span class=\"resultsText\" >$" + infoArray5.attributes.LandActualValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"landAssVal sWide\"><table><tr><td><span class=\"resultsLabel\" >Land Ass. Val.:</span> </td></tr><tr><td><span class=\"resultsText\" >$" + infoArray5.attributes.LandAssessedValue + ".00</span></td></tr></table></td>" +
+                    "<td class=\"legalDesc sWide\"><table><tr><td><span class=\"resultsLabel\" >Legal Desc.:</span></td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.LegalDescription + "</span></td></tr></table></td>" +
+                    "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td></tr></table></td>" +
+                    "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td></tr></table></td>" +
+                    "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td></tr></table></td>" +
+  "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5.attributes.ZoningURL + "\" target=\"blank\">" + infoArray5.attributes.Zoning + "</a></span></td>" +                     
                     "";
-				
+
+             
                 
                   var temp = domConstruct.create("tr", {
-                    "innerHTML":"<td><div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.ACCTNM + "\" id=\"test" + (l) + "\" >" + "</a></td>" + sWide  + "</div>",
+                    "innerHTML":"<td><div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l) + "\" >" + "</a></td>" + sWide  + "</div>",
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableContent");
                 
                 
                  var temp2 = domConstruct.create("tr", {
-                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.ACCTNM + "\" id=\"test" + (l + 10000) + "\" >" + "</a>" + s + "</div>",
+                    "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l + 10000) + "\" >" + "</a>" + s + "</div>",
                     //	"id": "test" + i,
                     "class": stripe2
                 }, "tableTallContent");
@@ -3004,7 +3121,7 @@ function setInfoArray2(geom, gCode){
                     try {
                         //  safeClear();
 
-                        selectParcel(resultsArray[n].attributes.ACCTNM);
+                        selectParcel(resultsArray[n].attributes.PAR_NUM);
                         map.infoWindow.show(resultsArray[n].geometry.getPoint(0, 0));
                     } catch (error) {
                         console.log(error);
@@ -3029,7 +3146,7 @@ function setInfoArray2(geom, gCode){
                     try {
                         //  safeClear();
 
-                        selectParcel(resultsArray[n - 10000].attributes.ACCTNM);
+                        selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
                         map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
                     } catch (error) {
                         console.log(error);
@@ -3059,6 +3176,7 @@ function setInfoArray2(geom, gCode){
         //connect.subscribe("")
 		searchTimeout = true;
     }
+
 
     function displayGeoCoderResults(infoArray5) {
     	count = 0;
@@ -3396,7 +3514,7 @@ function makeGeomArray2(selection) {
         popup.clearFeatures();
         if (parcelid) {
             var query = new Query();
-            query.where = "ACCTNM = '" + parcelid + "'";
+            query.where = "PAR_NUM = '" + parcelid + "'";
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
             	console.log(selection);
             	var outSR = new SpatialReference(102100);
