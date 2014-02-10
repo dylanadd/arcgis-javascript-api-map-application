@@ -1848,3 +1848,47 @@ height:200px;
 #sliderWrapHelper0.resultsBottomLayerFree #sliderWrap {
 	bottom:175px !important;
 }
+
+
+
+
+#layerDock {
+	cursor:pointer;
+	background: url("images/icons/lock.png") no-repeat 0 0;
+	width:16px;
+	height:16px;
+	color: white;
+font-family: verdana,helvetica;
+font-size: 16px;
+float: left;
+margin-left: 1px;
+}
+#layerDock:hover {
+	background: url("images/icons/lockhover.png") no-repeat 0 0;
+}
+
+
+#layerDock.docked{
+	background: url("images/icons/lock.png") no-repeat 0 0;
+}
+#layerDock.undocked{
+	background: url("images/icons/unlock.png") no-repeat 0 0;
+}
+
+#layerDock.docked:hover{
+	background: url("images/icons/lockhover.png") no-repeat 0 0;
+}
+#layerDock.undocked:hover{
+	background: url("images/icons/unlockhover.png") no-repeat 0 0;
+}
+
+#layerClose {
+	background: url("images/icons/close.png") no-repeat -1px 1px;
+	width:16px;
+	margin-left: 10px;
+	
+
+}
+#layerClose:hover{
+	background: url("images/icons/closehover.png") no-repeat -1px 1px;
+}

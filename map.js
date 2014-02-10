@@ -63,6 +63,7 @@ require([
         onChange: function(value){
          	  try{ floodLayer.setOpacity(value);} catch(e){console.log(e);}
           try{ zoneLayer.setOpacity(value);} catch(e){console.log(e);}
+          try{ layer1816.setOpacity(value);} catch(e){console.log(e);}
         }
     }, "slider");
 
@@ -538,13 +539,18 @@ var gLayer = new GraphicsLayer();
 	
 	dojo.connect(dom.byId("toggleZoning"), "click", function () {
 			if(dom.byId("toggleZoning").checked){
-				console.log("wtf?");
+				
 				map.addLayer(zoneLayer);
 				
 			} else{
 				map.removeLayer(zoneLayer);
 			}
     });
+    
+   
+    
+  
+    
     
 	dojo.connect(dom.byId("toggleParcs"), "click", function () {
 			if(dom.byId("toggleParcs").checked){
@@ -1050,6 +1056,7 @@ var gLayer = new GraphicsLayer();
 	  var topoLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", {maxScale: 20});
 	  var natGeoLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", {maxScale: 20});
 	  
+	 
 	  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {maxScale: 20});
       
       var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");

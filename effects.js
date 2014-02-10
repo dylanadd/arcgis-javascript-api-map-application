@@ -52,6 +52,7 @@
         content:'<div class="accordionContent">' +
         		'<label><input type="checkbox" name="layer" id="toggleFlood"><span>Floodplain</span></label> <br/>' +
       			'<label><input type="checkbox" name="layer" id="toggleZoning"><span>Zoning</span></label><br/>' +
+      			
       			'</div><div id="slider"></div>',
          'class':"minwax1"
          
@@ -257,7 +258,7 @@
        					if(!isMoving){
        						dnd.destroy();
         					docked = true;
-        				//	domAttr.set(dockButton,"class","docked");
+        					domAttr.set(ldButton,"class","docked");
         				//	domAttr.set(dom.byId("modeHelper"),"class","dockMode");
        					}
        				},1000);
@@ -383,6 +384,10 @@
        		
        		
        			
+       });
+       
+       on(dom.byId("layerClose"),"click",function(){
+       		on.emit(dom.byId("toggleLayerMenu"), "click", {bubbles: true, cancelable: true});
        });
        
        var showLegend = false;
@@ -780,6 +785,7 @@
 							
 						domAttr.set(scalebar, "style", "left: " + (box1.w + (box1.x + 22) + 20) +"px;");
     			   		domAttr.set(dom.byId("map_zoom_slider"), "style", "left: " + (box1.w + (box1.x + 22) ) +"px; z-index: 30;");
+    			   		//try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box1.w + (box1.x + 88) ) +"px; z-index: 30;");}catch(e){}
     			   		if(!mobilePortrait[0] && !mobileLandscape[0]){
 						try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","left: " + (box1.w + (box1.x + 88) ) +"px; z-index: 30;");}catch(e){}
 						} }else{
@@ -817,7 +823,7 @@
      			  		
      			  		domAttr.set(dom.byId("pclogo"), "style", "top: " + (box.y - 65) + "px !important;");
      			  		}
-     			  		if(!mobilePortrait[0] && !mobileLandscape[0]){
+     			  		if(!mobilePortrait[0] && !mobileLandscape[0] && !layerLeft[0] && layerHidden[0]){
 						try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");} catch(e){}
 						}
      			  		
@@ -830,7 +836,7 @@
 
      			domAttr.set(scalebar, "style", "left: 25px;");
      		}
-     			if(!mobilePortrait[0] && !mobileLandscape[0]){
+     			if(!mobilePortrait[0] && !mobileLandscape[0] && !layerLeft[0] && layerHidden[0]){
 					try{domAttr.set(dom.byId(query(".searchFix")[0]),"style","z-index: 30;");} catch(e){}
 					}
      		
