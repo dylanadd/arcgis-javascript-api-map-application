@@ -538,7 +538,9 @@ var gLayer = new GraphicsLayer();
 	
 	dojo.connect(dom.byId("toggleZoning"), "click", function () {
 			if(dom.byId("toggleZoning").checked){
+				console.log("wtf?");
 				map.addLayer(zoneLayer);
+				
 			} else{
 				map.removeLayer(zoneLayer);
 			}

@@ -51,7 +51,7 @@
         title:'<div class="accordionTitle">Thematic Layers</div>',
         content:'<div class="accordionContent">' +
         		'<label><input type="checkbox" name="layer" id="toggleFlood"><span>Floodplain</span></label> <br/>' +
-      			'<label><input type="checkbox" name="layer" id="togglsearchHiddenoning"><span>Zoning</span></label><br/>' +
+      			'<label><input type="checkbox" name="layer" id="toggleZoning"><span>Zoning</span></label><br/>' +
       			'</div><div id="slider"></div>',
          'class':"minwax1"
          
