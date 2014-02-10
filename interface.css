@@ -1663,7 +1663,7 @@ top: 8px;
 .dj_android #tools a#identify, .dj_ios #tools a#identify{
 	background-size: 34px 32px !important;
 }
-.dj_android div#resultsBody div#exportResults, .dj_android div#resultsBody div#dockButton, .dj_android div#resultsBody div#close, .dj_ios div#resultsBody div#exportResults, .dj_ios div#resultsBody div#dockButton, .dj_ios div#resultsBody div#close{
+.dj_android div#resultsBody div#exportResults, .dj_android div#resultsBody div#dockButton, .dj_android div#resultsBody div#close, .dj_ios div#resultsBody div#exportResults, .dj_ios div#resultsBody div#dockButton, .dj_ios div#resultsBody div#close {
 	background-size: 17px 17px;
 	width:20px;
 	height:17px;
@@ -1891,4 +1891,20 @@ margin-left: 1px;
 }
 #layerClose:hover{
 	background: url("images/icons/closehover.png") no-repeat -1px 1px;
+}
+
+.dj_android #layerClose, .dj_ios #layerClose {
+	background-size: 17px 17px;
+	width:20px;
+	height:17px;
+	background-position: 1px -1px;
+
+}
+
+.dj_android #layerDock, .dj_ios #layerDock {
+	background-size: 22px 20px;
+background-position: 1px -2px;
+	width:20px;
+	height:17px;
+
 }
