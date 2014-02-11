@@ -16,7 +16,11 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"> 
  <!--  <meta name="viewport" content="initial-scale=0.5, user-scalable=no">-->
     <title>Pueblo County Interactive Map</title>
-    <script>var dojoConfig = { parseOnLoad: true };</script>
+    <script>var dojoConfig = { parseOnLoad: true,
+    			packages: [{
+                "name": "agsjs",
+                "location": 'http://localhost/test/agsjs/build/agsjs' // if same domain, point to build, if cross domain, point to xbuild.
+               }] };</script>
  	<!-- 	<link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/tundra/tundra.css">  --> 
     <!-- <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css"> -->
    
@@ -58,7 +62,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
     
    
     <script src="effects.js"></script>
-     
+     <script></script>
     <script>
     setInterval(function(){
     	try{
