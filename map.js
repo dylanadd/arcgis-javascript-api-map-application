@@ -1484,6 +1484,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
           	addrTxtSearch();
           }
         } else if (rdSearch) {
+        	
             findRoad();
         }
 
@@ -2494,6 +2495,7 @@ function levyUrl(){
 function makeWordArray(owner, qMode){
 		var q = "";
 		console.log(owner);
+		console.log(qMode);
 		var temp;
 		
 		owner = owner.match(/\S+\s*/g);
@@ -2519,7 +2521,7 @@ function makeWordArray(owner, qMode){
 					return q;
 				}
 			}
-		} else if(qMode = "address"){
+		} else if(qMode == "address"){
 			for(i=0;i<=owner.length;i++){
 				if(i + 1 != owner.length){
 					try{
@@ -2537,18 +2539,18 @@ function makeWordArray(owner, qMode){
 			}			
 		}
 		
-		 else if(qMode = "road"){
+		 else if(qMode == "road"){
 			for(i=0;i<=owner.length;i++){
 				if(i + 1 != owner.length){
 					try{
 						owner[i] = owner[i].replace(/\s/g, '');
 					} catch(e){}
-					q += "(COMP_NAM like '%" + owner[i] + "%') and";
+					q += "(ALTNAME1 like '%" + owner[i] + "%') and";
 				} else {
 					try{
 						owner[i] = owner[i].replace(/\s/g, '');
 					} catch(e){}
-					q += " (COMP_NAM like '%" + owner[i] + "%')";
+					q += " (ALTNAME1 like '%" + owner[i] + "%')";
 					console.log(q);
 					return q;
 				}
@@ -3431,6 +3433,7 @@ function makeGeomArray2(selection) {
         map.infoWindow.hide();
         var query = new Query();
         query.where = query.where = makeWordArray(dom.byId("address").value, "road");
+        console.log(query);
         var deferred = roads.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
 
             selectionX = selection;
