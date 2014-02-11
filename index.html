@@ -53,10 +53,10 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
    
   <!--  <script src="init.js"></script> -->
       <script src="http://js.arcgis.com/3.7/"></script>
-    
+    <script src="dojo-v-1_9_1.js"></script>
     <script src="map.js"></script>
     
-   <script src="dojo-v-1_9_1.js"></script>
+   
     <script src="effects.js"></script>
      
     <script>
@@ -136,7 +136,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
      <div class="spacer1">
      <div class="selectLabel">Data To Return: </div>
      <label><input type="radio" name="3" id="bufferParcs" checked="checked">Parcels</label>
-     <label class="hide"><input type="radio" name="3" id="bufferAddr">Address Points</label>
+     <label ><input type="radio" name="3" id="bufferAddr">Address Points</label>
      <label><input type="radio" name="3" id="bufferRoad">Roads</label>
     </div>
       </div>
@@ -323,7 +323,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
       	<form id="infoForm" action="">
       		<label><input type="radio" name="1" id="parcs">Parcels</label> <br/>
       		<label><input type="radio" name="1" id="roads">Roads</label><br/>
-       		<label><input  name="1" id="addr">Address Points</label><br/>    		
+       		<label><input type="radio" name="1" id="addr">Address Points</label><br/>    		
       	</form>
       	</div>
       	</div>

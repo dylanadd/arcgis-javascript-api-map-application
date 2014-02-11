@@ -39,8 +39,6 @@
    */
   $serverUrls = array(
     array( 'url' => 'http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/', 'matchAll' => true, 'token' => '' ),
-        array( 'url' => 'http://http://maps.co.pueblo.co.us/', 'matchAll' => true, 'token' => '' ),
-	
     array( 'url' => 'http://sampleserver2.arcgisonline.com/ArcGIS/rest/services/', 'matchAll' => true, 'token' => '' ),
     array( 'url' => 'http://sampleserver1a.arcgisonline.com/arcgisoutput/',        'matchAll' => true, 'token' => '' ),
     array( 'url' => 'http://sampleserver1b.arcgisonline.com/arcgisoutput/',        'matchAll' => true, 'token' => '' ),

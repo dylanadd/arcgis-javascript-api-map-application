@@ -16,7 +16,7 @@ var gsvc, p, paramx, sp;
 var selectionTF = false;
 // var gsvc, tb;
 require([
-    "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/dijit/LocateButton", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
+    "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/tasks/locator", "esri/dijit/LocateButton", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
     "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query","dijit/form/HorizontalSlider",
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
     "esri/graphic", "esri/dijit/Popup", "esri/dijit/PopupTemplate",
@@ -25,7 +25,7 @@ require([
     "dojo/on", "dojo/query", "dojo/parser", "dojo/dom-construct", "dojo/keys", "dijit/registry", "dojo/dom",
     "esri/dijit/Print", "esri/tasks/PrintTemplate", "esri/request", "esri/config", "dojo/_base/array",
     "esri/dijit/BasemapGallery", "esri/arcgis/utils", "esri/dijit/BasemapLayer", "esri/dijit/Basemap",
-    "esri/dijit/Scalebar", "esri/dijit/Measurement", "esri/tasks/locator", "esri/symbols/SimpleMarkerSymbol",
+    "esri/dijit/Scalebar", "esri/dijit/Measurement",  "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/Font", "esri/symbols/TextSymbol", "dojo/number", "esri/geometry/webMercatorUtils", "esri/InfoTemplate",
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
     "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/toolbars/navigation", "esri/tasks/QueryTask", //"dojo/_base/connect",
@@ -33,7 +33,7 @@ require([
 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
 ], function (
-    Map, FeatureLayer, OverviewMap, LocateButton,  ArcGISImageServiceLayer, ArcGISDynamicMapServiceLayer, Legend,
+    Map, FeatureLayer, OverviewMap,Locator, LocateButton,  ArcGISImageServiceLayer, ArcGISDynamicMapServiceLayer, Legend,
     ArcGISTiledMapServiceLayer, Query,HorizontalSlider,
     SimpleFillSymbol, SimpleLineSymbol,
     Graphic, Popup, PopupTemplate,
@@ -42,7 +42,7 @@ require([
     on, query, parser, domConstruct, keys, registry, dom,
     Print, PrintTemplate, esriRequest, esriConfig, arrayUtils,
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
-    Locator, SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
+     SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
     domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, Navigation, QueryTask,
     Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile 
 
@@ -1732,9 +1732,11 @@ function levyUrl(){
     //BEGIN Location Dijit
 
     var locator = new Locator("http://maps.co.pueblo.co.us/ArcGIS/rest/services/PCGIS_Geocoding_Service/GeocodeServer");
-   //  var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
-    locator.on("address-to-locations-complete", showResults);
-
+    // var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+    //locator.on("address-to-locations-complete", showResults);
+ locator.on("address-to-locations-complete", function(res){
+ 	console.log(res);
+ });
     //prepare address query string for Geocoder
     function locate() {
 		
@@ -1745,13 +1747,14 @@ function levyUrl(){
 
             "Street": dom.byId("address").value
         };
-        locator.outSpatialReference = new SpatialReference(102100);
+       // console.log(address);
+      //  locator.outSpatialReference = new SpatialReference(102100);
         var options = {
             address: address,
             outFields: ["Loc_name"]
         };
         // console.log(locator.addressToLocations(options));
-        locator.addressToLocations(options);
+        locator.addressToLocations(options, function(){},function(e){console.log(e);});
         
     }
 
