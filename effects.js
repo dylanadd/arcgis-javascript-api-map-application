@@ -68,10 +68,13 @@
     aContainer.addChild(new ContentPane({
         title:'<div class="accordionTitle">Basemaps</div>',
         content:'<div class="accordionContent">' +
-        		'<label><input type="checkbox" checked="checked" name="layer" id="toggleSat"><span>Satellite</span></label><br/>' +
-      			'<label><input type="checkbox" name="layer" id="toggleStreet"><span>Street</span></label><br/>' +
-      			'<label><input type="checkbox" name="layer" id="toggleTopo"><span>Topographic</span></label><br/>' +
-      			'<label><input type="checkbox" name="layer" id="toggleNat"><span>National Geographic</span></label><br/>'+
+        		'<label><input type="radio" checked="checked" name="blayer" id="toggleSat"><span>ESRI Satellite</span></label><br/>' +
+      			'<label><input type="radio" name="blayer" id="toggleStreet"><span>ESRI Street</span></label><br/>' +
+      			'<label><input type="radio" name="blayer" id="toggleTopo"><span>ESRI Topographic</span></label><br/>' +
+      			'<label><input type="radio" name="blayer" id="toggleNat"><span>National Geographic</span></label><br/>'+
+      			'<label><input type="radio" name="blayer" id="toggleOpenStreet"><span>Open Street</span></label><br/>'+
+      			'<label><input type="radio" name="blayer" id="toggleGSat"><span>Google Satellite</span></label><br/>'+
+      			'<label><input type="radio" name="blayer" id="toggleGStreet"><span>Google Street</span></label><br/>'+
       			'</div>',
          'class':"minwax3"
     }));

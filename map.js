@@ -31,6 +31,7 @@ require([
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
     "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/toolbars/navigation", "esri/tasks/QueryTask", //"dojo/_base/connect",
     "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "dojo/behavior", "dojo/request", "esri/dijit/PopupMobile", 
+    "esri/layers/OpenStreetMapLayer","esri/layers/WebTiledLayer",
 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
 ], function (
@@ -45,13 +46,13 @@ require([
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
      SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
     domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, Navigation, QueryTask,
-    Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile
+    Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile, OpenStreetMapLayer, WebTiledLayer
 
 ) {
 
     parser.parse();
 
-
+//declare google map layers
 var  googleLayer = new agsjs.layers.GoogleMapsLayer({
                 //id: 'google', // optional. esri layer id.
                 // apiOptions: { // load google API should be loaded.
@@ -63,7 +64,23 @@ var  googleLayer = new agsjs.layers.GoogleMapsLayer({
                 
                 }
               });
-              console.dir(googleLayer);
+           
+           
+  var  googleLayerStreet = new agsjs.layers.GoogleMapsLayer({
+                //id: 'google', // optional. esri layer id.
+                // apiOptions: { // load google API should be loaded.
+                // v: '3.6' // API version. use a specific version is recommended for production system. 
+                // client: gme-myclientID // for enterprise accounts;
+                // },
+                mapOptions: {  // options passed to google.maps.Map contrustor
+                // streetViewControl: false // whether to display street view control. Default is true.
+                
+                }
+              });   
+              
+  //declare Open Street Map Layer
+  var osmLayer = new OpenStreetMapLayer({displayLevels:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]});
+                    
      //for layer opacity
       var slider = new HorizontalSlider({
         name: "slider",
@@ -75,7 +92,7 @@ var  googleLayer = new agsjs.layers.GoogleMapsLayer({
         onChange: function(value){
          	  try{ floodLayer.setOpacity(value);} catch(e){console.log(e);}
           try{ zoneLayer.setOpacity(value);} catch(e){console.log(e);}
-          try{ layer1816.setOpacity(value);} catch(e){console.log(e);}
+         
         }
     }, "slider");
 
@@ -165,7 +182,7 @@ var gLayer = new GraphicsLayer();
         spatialReference: 102100,
         //  sliderPosition: "bottom-right",
         //   sliderStyle: "large",
-       // maxZoom: 19,
+        maxZoom: 19,
         zoom: 11
 
     });
@@ -212,6 +229,7 @@ var gLayer = new GraphicsLayer();
     });
 
     map.on("update-end", function () {
+    	console.log(map.getZoom());
     	finishedLoading = true;
        
         domAttr.set("body", "class", "claro buttonMode");
@@ -577,6 +595,9 @@ var gLayer = new GraphicsLayer();
 				try{map.removeLayer(natGeoLayer);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				try{map.removeLayer(osmLayer);}catch(e){}
 				dom.byId("toggleTopo").checked = false;
 				dom.byId("toggleStreet").checked = false;
 				dom.byId("toggleNat").checked = false;
@@ -591,6 +612,9 @@ var gLayer = new GraphicsLayer();
 				try{map.removeLayer(natGeoLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				try{map.removeLayer(osmLayer);}catch(e){}
 				dom.byId("toggleTopo").checked = false;
 				dom.byId("toggleNat").checked = false;
 				dom.byId("toggleSat").checked = false;
@@ -606,6 +630,9 @@ var gLayer = new GraphicsLayer();
 				try{map.removeLayer(natGeoLayer);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				try{map.removeLayer(osmLayer);}catch(e){}
 				dom.byId("toggleStreet").checked = false;
 				dom.byId("toggleNat").checked = false;
 				dom.byId("toggleSat").checked = false;
@@ -620,16 +647,82 @@ var gLayer = new GraphicsLayer();
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				try{map.removeLayer(osmLayer);}catch(e){}
 				dom.byId("toggleTopo").checked = false;
 				dom.byId("toggleStreet").checked = false;
 				dom.byId("toggleSat").checked = false;
 				
 				map.addLayer(natGeoLayer);
 				map.reorderLayer(natGeoLayer,0);
+				if(map.getZoom() > 16){
+				map.setZoom(16);
+				}
+				
 			} else{
 				map.removeLayer(natGeoLayer);
 			}
     });
+    
+      dojo.connect(dom.byId("toggleOpenStreet"), "click", function () {
+			if(dom.byId("toggleOpenStreet").checked){
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				dom.byId("toggleTopo").checked = false;
+				dom.byId("toggleStreet").checked = false;
+				dom.byId("toggleSat").checked = false;
+				
+				map.addLayer(osmLayer);
+				map.reorderLayer(osmLayer,0);
+				if(map.getZoom() > 17){
+				map.setZoom(17);
+				}
+				
+			} else{
+				try{map.removeLayer(osmLayer);}catch(e){}
+			}
+    });
+    
+    
+      dojo.connect(dom.byId("toggleGSat"), "click", function () {
+			if(dom.byId("toggleGSat").checked){
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+
+				googleLayer.setMapTypeId(agsjs.layers.GoogleMapsLayer.MAP_TYPE_SATELLITE);
+				
+				map.addLayer(googleLayer);
+				map.reorderLayer(googleLayer,1);
+			} else{
+				map.removeLayer(googleLayer);
+			}
+    });
+      dojo.connect(dom.byId("toggleGStreet"), "click", function () {
+			if(dom.byId("toggleGStreet").checked){
+				try{map.removeLayer(googleLayer);}catch(e){}
+				
+				
+
+			
+
+				googleLayerStreet.setMapTypeId(agsjs.layers.GoogleMapsLayer.MAP_TYPE_ROADMAP);
+					map.addLayer(googleLayerStreet);	
+				
+				
+				map.reorderLayer(googleLayerStreet,1);
+			} else{
+				map.removeLayer(googleLayerStreet);
+			}
+    });
+   
+    
+    
+    
+    
+    
 	//end layer toggle menu
 	
 	var distParams = new DistanceParameters();
@@ -1074,8 +1167,9 @@ var gLayer = new GraphicsLayer();
       var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
   
    map.addLayer(basemap);
-     map.addLayer(googleLayer);
-    setTimeout(function(){try{googleLayer.setMapTypeId(agsjs.layers.GoogleMapsLayer.MAP_TYPE_SATELLITE);}catch(e){console.log(e);}},9000); 
+    
+   // setTimeout(function(){try{googleLayer.setMapTypeId(agsjs.layers.GoogleMapsLayer.MAP_TYPE_SATELLITE);
+   // 	 map.addLayer(googleLayer);}catch(e){console.log(e);}},9000); 
 
 	//map.addLayer(parcelInfoLayer);
 
