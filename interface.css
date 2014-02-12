@@ -1912,3 +1912,8 @@ background-position: 1px -2px;
 .dj_android .layerSnapBottom #sliderWrap, .dj_ios .layerSnapBottom #sliderWrap  {
 padding-top: 4px;
 }
+
+#caveats {
+padding: 15px;
+font-size: 9px;
+}

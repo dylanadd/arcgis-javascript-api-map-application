@@ -51,9 +51,13 @@ require([
 ) {
 
     parser.parse();
-
+    
+    
+    var googleLayer,googleLayerStreet,osmLayer,stamenTerrainLayer,mapBoxTerrainLayer,mapQuestLayer,cloudmadePaleLayer,cloudmadeNightLayer,waterColorLayer,stamenTonerLayer;
+    
+setTimeout(function(){
 //declare google map layers
-var  googleLayer = new agsjs.layers.GoogleMapsLayer({
+  googleLayer = new agsjs.layers.GoogleMapsLayer({
                 //id: 'google', // optional. esri layer id.
                 // apiOptions: { // load google API should be loaded.
                 // v: '3.6' // API version. use a specific version is recommended for production system. 
@@ -66,7 +70,7 @@ var  googleLayer = new agsjs.layers.GoogleMapsLayer({
               });
            
            
-  var  googleLayerStreet = new agsjs.layers.GoogleMapsLayer({
+  googleLayerStreet = new agsjs.layers.GoogleMapsLayer({
                 //id: 'google', // optional. esri layer id.
                 // apiOptions: { // load google API should be loaded.
                 // v: '3.6' // API version. use a specific version is recommended for production system. 
@@ -79,19 +83,19 @@ var  googleLayer = new agsjs.layers.GoogleMapsLayer({
               });   
               
   //declare Open Street Map Layer
-  var osmLayer = new OpenStreetMapLayer({displayLevels:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]});
+ osmLayer = new OpenStreetMapLayer({displayLevels:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]});
      
     //declare web tiled layers 
-   var stamenTerrainLayer = new WebTiledLayer("http://${subDomain}.tile.stamen.com/terrain/${level}/${col}/${row}.jpg", { "id": "Stamen Terrain", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
-   var mapBoxTerrainLayer = new WebTiledLayer("http://${subDomain}.tiles.mapbox.com/v3/mapbox.mapbox-warden/${level}/${col}/${row}.png", { "id": "Mapbox", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
-   var mapQuestLayer = new WebTiledLayer("http://${subDomain}.mqcdn.com/tiles/1.0.0/vx/map/${level}/${col}/${row}.jpg", { "id": "Mapquest", "visible": true, "subDomains": ["mtile01", "mtile02", "mtile03", "mtile04"], "copyright": "Stamen Watercolor" });  
-   var cloudmadePaleLayer = new WebTiledLayer("http://${subDomain}.tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/998/256/${level}/${col}/${row}.png", { "id": "Cloudmade Pale", "visible": true, "subDomains":  ["a", "b", "c"], "copyright": "Stamen Watercolor" });  
-   var cloudmadeNightLayer = new WebTiledLayer("http://tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/999/256/${level}/${col}/${row}.png", { "id": "Cloudmade Midnight", "visible": true,  "copyright": "Stamen Watercolor" });  
-   var waterColorLayer = new WebTiledLayer("http://${subDomain}.tile.stamen.com/watercolor/${level}/${col}/${row}.jpg", { "id": "Stamen Watercolor", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
-   var stamenTonerLayer = new WebTiledLayer("http://${subDomain}.tile.stamen.com/toner/${level}/${col}/${row}.png", { "id": "Stamen Toner", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
+ stamenTerrainLayer = new WebTiledLayer("http://${subDomain}.tile.stamen.com/terrain/${level}/${col}/${row}.jpg", { "id": "Stamen Terrain", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
+ mapBoxTerrainLayer = new WebTiledLayer("http://${subDomain}.tiles.mapbox.com/v3/mapbox.mapbox-warden/${level}/${col}/${row}.png", { "id": "Mapbox", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
+ mapQuestLayer = new WebTiledLayer("http://${subDomain}.mqcdn.com/tiles/1.0.0/vx/map/${level}/${col}/${row}.jpg", { "id": "Mapquest", "visible": true, "subDomains": ["mtile01", "mtile02", "mtile03", "mtile04"], "copyright": "Stamen Watercolor" });  
+cloudmadePaleLayer = new WebTiledLayer("http://${subDomain}.tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/998/256/${level}/${col}/${row}.png", { "id": "Cloudmade Pale", "visible": true, "subDomains":  ["a", "b", "c"], "copyright": "Stamen Watercolor" });  
+ cloudmadeNightLayer = new WebTiledLayer("http://tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/999/256/${level}/${col}/${row}.png", { "id": "Cloudmade Midnight", "visible": true,  "copyright": "Stamen Watercolor" });  
+  waterColorLayer = new WebTiledLayer("http://${subDomain}.tile.stamen.com/watercolor/${level}/${col}/${row}.jpg", { "id": "Stamen Watercolor", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
+  stamenTonerLayer = new WebTiledLayer("http://${subDomain}.tile.stamen.com/toner/${level}/${col}/${row}.png", { "id": "Stamen Toner", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
 
     
-    
+  },1000);
     
      
   //    "options": { "id": "Stamen Watercolor", "visible": false, "subDomains": mapLayers.abcd, "copyright": "Stamen Watercolor" },
@@ -2161,10 +2165,10 @@ function levyUrl(){
 
     var locator = new Locator("http://maps.co.pueblo.co.us/outside/rest/services/SDE_Geocoding_Files/EDGIS_Address_Locator/GeocodeServer");
     // var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
-    //locator.on("address-to-locations-complete", showResults);
- locator.on("address-to-locations-complete", function(res){
- 	console.log(res);
- });
+    locator.on("address-to-locations-complete", showResults);
+ //locator.on("address-to-locations-complete", function(res){
+ //	console.log(res);
+ //});
     //prepare address query string for Geocoder
     function locate() {
 		
@@ -2176,7 +2180,7 @@ function levyUrl(){
             "Street": dom.byId("address").value
         };
        // console.log(address);
-      //  locator.outSpatialReference = new SpatialReference(102100);
+        locator.outSpatialReference = new SpatialReference(102100);
         var options = {
             address: address,
             outFields: ["Loc_name"]
@@ -2237,9 +2241,9 @@ function levyUrl(){
         });
         //  geom.spatialReference.wkid = "2233";
 
-        geom.spatialReference.wkid = 2233;
+        geom.spatialReference.wkid = 102100;
 		//console.log(geom);
-        map.centerAndZoom(geom, 8);
+        map.centerAndZoom(geom, 18);
         
         domAttr.set("locate", "class", "dormant");
         domAttr.set("body", "class", "claro buttonMode");
