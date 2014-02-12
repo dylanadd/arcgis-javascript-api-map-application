@@ -75,6 +75,14 @@
       			'<label><input type="radio" name="blayer" id="toggleOpenStreet"><span>Open Street</span></label><br/>'+
       			'<label><input type="radio" name="blayer" id="toggleGSat"><span>Google Satellite</span></label><br/>'+
       			'<label><input type="radio" name="blayer" id="toggleGStreet"><span>Google Street</span></label><br/>'+
+      			'<label><input type="radio" name="blayer" id="toggleSTerrain"><span>Stamen Terrain</span></label><br/>'+
+      			'<label><input type="radio" name="blayer" id="toggleMapbox"><span>MapBox Terrain</span></label><br/>'+
+      			'<label><input type="radio" name="blayer" id="toggleMapquest"><span>MapQuest Street</span></label><br/>'+
+      			'<label><input type="radio" name="blayer" id="toggleCPale"><span>Cloudmade Pale</span></label><br/>'+
+      			'<label><input type="radio" name="blayer" id="toggleCNight"><span>Cloudmade Midnight</span></label><br/>'+
+      			'<label><input type="radio" name="blayer" id="toggleToner"><span>Toner</span></label><br/>'+
+      			'<label><input type="radio" name="blayer" id="toggleWColor"><span>Watercolor</span></label><br/>'+
+
       			'</div>',
          'class':"minwax3"
     }));

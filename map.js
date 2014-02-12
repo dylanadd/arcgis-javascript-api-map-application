@@ -80,6 +80,22 @@ var  googleLayer = new agsjs.layers.GoogleMapsLayer({
               
   //declare Open Street Map Layer
   var osmLayer = new OpenStreetMapLayer({displayLevels:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]});
+     
+    //declare web tiled layers 
+   var stamenTerrainLayer = new WebTiledLayer("http://${subDomain}.tile.stamen.com/terrain/${level}/${col}/${row}.jpg", { "id": "Stamen Terrain", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
+   var mapBoxTerrainLayer = new WebTiledLayer("http://${subDomain}.tiles.mapbox.com/v3/mapbox.mapbox-warden/${level}/${col}/${row}.png", { "id": "Mapbox", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
+   var mapQuestLayer = new WebTiledLayer("http://${subDomain}.mqcdn.com/tiles/1.0.0/vx/map/${level}/${col}/${row}.jpg", { "id": "Mapquest", "visible": true, "subDomains": ["mtile01", "mtile02", "mtile03", "mtile04"], "copyright": "Stamen Watercolor" });  
+   var cloudmadePaleLayer = new WebTiledLayer("http://${subDomain}.tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/998/256/${level}/${col}/${row}.png", { "id": "Cloudmade Pale", "visible": true, "subDomains":  ["a", "b", "c"], "copyright": "Stamen Watercolor" });  
+   var cloudmadeNightLayer = new WebTiledLayer("http://tile.cloudmade.com/1a1b06b230af4efdbb989ea99e9841af/999/256/${level}/${col}/${row}.png", { "id": "Cloudmade Midnight", "visible": true,  "copyright": "Stamen Watercolor" });  
+   var waterColorLayer = new WebTiledLayer("http://${subDomain}.tile.stamen.com/watercolor/${level}/${col}/${row}.jpg", { "id": "Stamen Watercolor", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
+   var stamenTonerLayer = new WebTiledLayer("http://${subDomain}.tile.stamen.com/toner/${level}/${col}/${row}.png", { "id": "Stamen Toner", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
+
+    
+    
+    
+     
+  //    "options": { "id": "Stamen Watercolor", "visible": false, "subDomains": mapLayers.abcd, "copyright": "Stamen Watercolor" },
+ // "url": "http://${subDomain}.tile.stamen.com/watercolor/${level}/${col}/${row}.jpg"
                     
      //for layer opacity
       var slider = new HorizontalSlider({
@@ -598,9 +614,16 @@ var gLayer = new GraphicsLayer();
 				try{map.removeLayer(googleLayer);}catch(e){}
 				try{map.removeLayer(googleLayerStreet);}catch(e){}
 				try{map.removeLayer(osmLayer);}catch(e){}
-				dom.byId("toggleTopo").checked = false;
-				dom.byId("toggleStreet").checked = false;
-				dom.byId("toggleNat").checked = false;
+				
+				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+				
+			
 				map.addLayer(basemap);
 				map.reorderLayer(basemap,0);
 			} else{
@@ -615,9 +638,16 @@ var gLayer = new GraphicsLayer();
 				try{map.removeLayer(googleLayer);}catch(e){}
 				try{map.removeLayer(googleLayerStreet);}catch(e){}
 				try{map.removeLayer(osmLayer);}catch(e){}
-				dom.byId("toggleTopo").checked = false;
-				dom.byId("toggleNat").checked = false;
-				dom.byId("toggleSat").checked = false;
+				
+				
+				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+				
 				map.addLayer(streetLayer);
 				map.reorderLayer(streetLayer,0);
 			} else{
@@ -633,6 +663,16 @@ var gLayer = new GraphicsLayer();
 				try{map.removeLayer(googleLayer);}catch(e){}
 				try{map.removeLayer(googleLayerStreet);}catch(e){}
 				try{map.removeLayer(osmLayer);}catch(e){}
+				
+				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+				
+				
 				dom.byId("toggleStreet").checked = false;
 				dom.byId("toggleNat").checked = false;
 				dom.byId("toggleSat").checked = false;
@@ -650,9 +690,15 @@ var gLayer = new GraphicsLayer();
 				try{map.removeLayer(googleLayer);}catch(e){}
 				try{map.removeLayer(googleLayerStreet);}catch(e){}
 				try{map.removeLayer(osmLayer);}catch(e){}
-				dom.byId("toggleTopo").checked = false;
-				dom.byId("toggleStreet").checked = false;
-				dom.byId("toggleSat").checked = false;
+				
+
+				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
 				
 				map.addLayer(natGeoLayer);
 				map.reorderLayer(natGeoLayer,0);
@@ -667,16 +713,30 @@ var gLayer = new GraphicsLayer();
     
       dojo.connect(dom.byId("toggleOpenStreet"), "click", function () {
 			if(dom.byId("toggleOpenStreet").checked){
+				try{map.removeLayer(natGeoLayer);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
 				try{map.removeLayer(googleLayer);}catch(e){}
 				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				dom.byId("toggleTopo").checked = false;
-				dom.byId("toggleStreet").checked = false;
-				dom.byId("toggleSat").checked = false;
+			
+				
+				try{map.removeLayer(osmLayer);}catch(e){}
+				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+				
 				
 				map.addLayer(osmLayer);
+			
+			
+			//map.addLayer(stamenTerrainLayer);
+			//map.addLayer(stamenTonerLayer);
+			
 				map.reorderLayer(osmLayer,0);
 				if(map.getZoom() > 17){
 				map.setZoom(17);
@@ -686,6 +746,265 @@ var gLayer = new GraphicsLayer();
 				try{map.removeLayer(osmLayer);}catch(e){}
 			}
     });
+    
+      dojo.connect(dom.byId("toggleSTerrain"), "click", function () {
+			if(dom.byId("toggleSTerrain").checked){
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				dom.byId("toggleTopo").checked = false;
+				dom.byId("toggleStreet").checked = false;
+				dom.byId("toggleSat").checked = false;
+				try{map.removeLayer(osmLayer);}catch(e){}
+		try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+				try{map.removeLayer(natGeoLayer);}catch(e){}
+			
+	
+			map.addLayer(stamenTerrainLayer);
+			
+				map.reorderLayer(stamenTerrainLayer,0);
+				if(map.getZoom() > 17){
+				//map.setZoom(17);
+				}
+				
+			} else{
+				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+			}
+    });  
+    
+     dojo.connect(dom.byId("toggleMapbox"), "click", function () {
+			if(dom.byId("toggleMapbox").checked){
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				dom.byId("toggleTopo").checked = false;
+				dom.byId("toggleStreet").checked = false;
+				dom.byId("toggleSat").checked = false;
+				try{map.removeLayer(osmLayer);}catch(e){}
+		try{map.removeLayer(natGeoLayer);}catch(e){}
+			try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+			
+	
+			map.addLayer(mapBoxTerrainLayer);
+			
+				map.reorderLayer(mapBoxTerrainLayer,0);
+				if(map.getZoom() > 17){
+				//map.setZoom(17);
+				}
+				
+			} else{
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+			}
+    });  
+      dojo.connect(dom.byId("toggleMapquest"), "click", function () {
+			if(dom.byId("toggleMapquest").checked){
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				dom.byId("toggleTopo").checked = false;
+				dom.byId("toggleStreet").checked = false;
+				dom.byId("toggleSat").checked = false;
+				try{map.removeLayer(osmLayer);}catch(e){}
+		try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+			try{map.removeLayer(natGeoLayer);}catch(e){}
+			
+	
+			map.addLayer(mapQuestLayer);
+			
+				map.reorderLayer(mapQuestLayer,0);
+				if(map.getZoom() > 17){
+				//map.setZoom(17);
+				}
+				
+			} else{
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+			}
+    });  
+    
+        dojo.connect(dom.byId("toggleCPale"), "click", function () {
+			if(dom.byId("toggleCPale").checked){
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				dom.byId("toggleTopo").checked = false;
+				dom.byId("toggleStreet").checked = false;
+				dom.byId("toggleSat").checked = false;
+				try{map.removeLayer(osmLayer);}catch(e){}
+			try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+			try{map.removeLayer(natGeoLayer);}catch(e){}
+			
+	
+			map.addLayer(cloudmadePaleLayer);
+			
+				map.reorderLayer(cloudmadePaleLayer,0);
+				if(map.getZoom() > 17){
+				//map.setZoom(17);
+				}
+				
+			} else{
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+			}
+    });  
+    
+    
+      dojo.connect(dom.byId("toggleCNight"), "click", function () {
+			if(dom.byId("toggleCNight").checked){
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				dom.byId("toggleTopo").checked = false;
+				dom.byId("toggleStreet").checked = false;
+				dom.byId("toggleSat").checked = false;
+				try{map.removeLayer(osmLayer);}catch(e){}
+		try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+			try{map.removeLayer(natGeoLayer);}catch(e){}
+			
+	
+			map.addLayer(cloudmadeNightLayer);
+			
+				map.reorderLayer(cloudmadeNightLayer,0);
+				if(map.getZoom() > 17){
+				//map.setZoom(17);
+				}
+				
+			} else{
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+			}
+    });  
+    
+      dojo.connect(dom.byId("toggleToner"), "click", function () {
+			if(dom.byId("toggleToner").checked){
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				dom.byId("toggleTopo").checked = false;
+				dom.byId("toggleStreet").checked = false;
+				dom.byId("toggleSat").checked = false;
+				try{map.removeLayer(osmLayer);}catch(e){}
+		try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+			try{map.removeLayer(natGeoLayer);}catch(e){}
+			
+	
+			map.addLayer(stamenTonerLayer);
+			
+				map.reorderLayer(stamenTonerLayer,0);
+				if(map.getZoom() > 17){
+				//map.setZoom(17);
+				}
+				
+			} else{
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+			}
+    });  
+    
+     dojo.connect(dom.byId("toggleWColor"), "click", function () {
+			if(dom.byId("toggleWColor").checked){
+				try{map.removeLayer(streetLayer);}catch(e){}
+				try{map.removeLayer(topoLayer);}catch(e){}
+				try{map.removeLayer(basemap);}catch(e){}
+				try{map.removeLayer(googleLayer);}catch(e){}
+				try{map.removeLayer(googleLayerStreet);}catch(e){}
+				try{map.removeLayer(osmLayer);}catch(e){}
+				try{map.removeLayer(natGeoLayer);}catch(e){}
+				
+				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+				try{map.removeLayer(mapQuestLayer);}catch(e){}
+				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+				try{map.removeLayer(stamenTonerLayer);}catch(e){}
+			
+	
+			map.addLayer(waterColorLayer);
+			
+				map.reorderLayer(waterColorLayer,0);
+				if(map.getZoom() > 17){
+				//map.setZoom(17);
+				}
+				
+			} else{
+				try{map.removeLayer(waterColorLayer);}catch(e){}
+			}
+    });  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
       dojo.connect(dom.byId("toggleGSat"), "click", function () {
@@ -1840,7 +2159,7 @@ function levyUrl(){
 
     //BEGIN Location Dijit
 
-    var locator = new Locator("http://maps.co.pueblo.co.us/ArcGIS/rest/services/PCGIS_Geocoding_Service/GeocodeServer");
+    var locator = new Locator("http://maps.co.pueblo.co.us/outside/rest/services/SDE_Geocoding_Files/EDGIS_Address_Locator/GeocodeServer");
     // var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
     //locator.on("address-to-locations-complete", showResults);
  locator.on("address-to-locations-complete", function(res){
