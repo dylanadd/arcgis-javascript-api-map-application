@@ -610,6 +610,14 @@ var gLayer = new GraphicsLayer();
 				map.removeLayer(parcelInfoLayer);
 			}
     });
+    
+    dojo.connect(dom.byId("toggleEsriLabels"), "click", function () {
+            if(dom.byId("toggleEsriLabels").checked){
+                map.addLayer(esriLabelLayer);
+            } else{
+                map.removeLayer(esriLabelLayer);
+            }
+    });
 
 	dojo.connect(dom.byId("toggleSat"), "click", function () {
 			if(dom.byId("toggleSat").checked){
@@ -1484,14 +1492,15 @@ var gLayer = new GraphicsLayer();
 	  var streetLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer", {maxScale: 20});
 	  var topoLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", {maxScale: 20});
 	  var natGeoLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", {maxScale: 20});
-	  
+	  var esriLabelLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer", {maxScale: 20});
+
 	 
-	  var parcelInfoLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {maxScale: 20});
+	  var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {maxScale: 20});
       
       var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
   
-   map.addLayer(basemap);
-    
+    map.addLayer(basemap);
+   // map.addLayer(esriLabelLayer);
    // setTimeout(function(){try{googleLayer.setMapTypeId(agsjs.layers.GoogleMapsLayer.MAP_TYPE_SATELLITE);
    // 	 map.addLayer(googleLayer);}catch(e){console.log(e);}},9000); 
 
@@ -2164,7 +2173,7 @@ function levyUrl(){
 
     //BEGIN Location Dijit
 
-    var locator = new Locator("http://maps.co.pueblo.co.us/outside/rest/services/SDE_Geocoding_Files/EDGIS_Address_Locator/GeocodeServer");
+    var locator = new Locator("http://maps.co.pueblo.co.us/outside/rest/services/Web_Geocoding/Web_EDGIS_Locator/GeocodeServer");
     // var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
     locator.on("address-to-locations-complete", showResults);
  //locator.on("address-to-locations-complete", function(res){
@@ -2380,70 +2389,77 @@ function levyUrl(){
     }
 
     function clearx() {
+    	console.log(map.layerIds);
 		var  n;
 		  try{gLayer.clear();}catch(e){}
     	domAttr.set(tools, "class" ,"clear");
         map.removeAllLayers();
-      
+      /*
       //  map.addLayer(basemap);
         try{
          n = basemapGallery.getSelected().id;
   		console.log(n);
   		} catch(e){}
   		var bmap;
-  		switch(n){
-  			
-  	//		var basemap = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/Pueblo_photos/MapServer");
-    //  var basemap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
-    // var basemap = new ArcGISImageServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/ortho2008_8inch/ImageServer");
-  			case "basemap_0":
-  			bmap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
-  			map.addLayer(bmap);
-  			break;
-  			
-  			case "basemap_1":
-  			bmap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer");
-  			map.addLayer(bmap);
-  			break;
-  			
-  			case "basemap_2":
-  			bmap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
-  			map.addLayer(bmap);
-  			break;
-  			
-  			case "basemap_3":
-  			bmap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer");
-  			map.addLayer(bmap);
-  			break;
-  			/*
-  			case "basemap_4":
-  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/2001_6in_imagery/MapServer");
-  			map.addLayer(bmap);
-  			break;
-  			
-  			case "basemap_5":
-  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/1991_Imagery/MapServer");
-  			map.addLayer(bmap);
-  			break;
-  			
-  			case "basemap_6":
-  			bmap = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/ArcGIS/rest/services/floodplains/MapServer");
-  			map.addLayer(bmap);
-  			break;
-  			
-  			case "basemap_7":
-  			bmap = new ArcGISImageServiceLayer("http://sunshine/outside/rest/services/aerial_photos/ortho2008_4inch/ImageServer");
-  			map.addLayer(bmap);
-  			break;
-  			
-  			case "basemap_8":
-  			
-  			break;
-  			*/
-  			default:
-  			map.addLayer(basemap);
-  		}
-  		 try{map.addLayer(parcelInfoLayer);} catch(e){console.log(e);}
+  	
+  		
+  		 */
+  		
+  		try{
+  		    
+  		    if(dom.byId("toggleSat").checked){
+  		       map.addLayer(basemap); 
+  		    } else if(dom.byId("toggleStreet").checked){
+               map.addLayer(streetLayer); 
+            }else if(dom.byId("toggleTopo").checked){
+               map.addLayer(topoLayer); 
+            }else if(dom.byId("toggleNat").checked){
+               map.addLayer(natGeoLayer); 
+            }else if(dom.byId("toggleOpenStreet").checked){
+               map.addLayer(osmLayer); 
+            }else if(dom.byId("toggleSTerrain").checked){
+               map.addLayer(stamenTerrainLayer); 
+            }else if(dom.byId("toggleMapbox").checked){
+               map.addLayer(mapBoxTerrainLayer); 
+            }else if(dom.byId("toggleMapquest").checked){
+               map.addLayer(mapQuestLayer); 
+            }else if(dom.byId("toggleCPale").checked){
+               map.addLayer(cloudmadePaleLayer); 
+            }else if(dom.byId("toggleCNight").checked){
+               map.addLayer(cloudmadeNightLayer); 
+            }else if(dom.byId("toggleToner").checked){
+               map.addLayer(stamenTonerLayer); 
+            }else if(dom.byId("toggleWColor").checked){
+               map.addLayer(waterColorLayer); 
+            }
+  		    
+  		    
+  		    
+  		    
+  		    
+  		    
+  		    
+  		    
+  		    
+  		    
+  		    
+  		}catch(e){console.log(e);}
+
+  		
+  		 try{
+  		     if(dom.byId("toggleParcs").checked){
+  		         map.addLayer(parcelInfoLayer);
+  		     }
+             if(dom.byId("toggleZoning").checked){
+                 map.addLayer(zoneLayer);
+             }
+  		      if(dom.byId("toggleFlood").checked){
+                 map.addLayer(floodLayer);
+             }
+              if(dom.byId("toggleEsriLabels").checked){
+                 map.addLayer(esriLabelLayer);
+             }
+  		     } catch(e){console.log(e);}
         try{map.addLayer(gLayer);} catch(e){console.log(e);}
       //  map.addLayer(parcelInfoLayer);
        
@@ -3862,6 +3878,7 @@ function makeGeomArray2(selection) {
         popup.clearFeatures();
         change = false;
         map.graphics.clear();
+        gLayer.clear();
         map.infoWindow.hide();
         var query = new Query();
         query.where = query.where = makeWordArray(dom.byId("address").value, "road");

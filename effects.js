@@ -58,9 +58,10 @@
          
     }));    
     aContainer.addChild(new ContentPane({
-        title: '<div class="accordionTitle">County Data</div>',
+        title: '<div class="accordionTitle">Labels & Data</div>',
         content: '<div class="accordionContent">' +
-        '	<label><input type="checkbox"  name="layer" id="toggleParcs"><span>Parcels</span></label><br/> ' +
+        '<label><input type="checkbox"  name="layer" id="toggleParcs"><span>Pueblo County Data</span></label><br/>' +
+        '<label><input type="checkbox"  name="layer" id="toggleEsriLabels"><span>Boundaries & Places</span></label><br/>' +
    				
       			'</div><div id="slider"></div>',
 		'class':"minwax2"
