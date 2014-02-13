@@ -57,6 +57,7 @@ require([
     
 setTimeout(function(){
 //declare google map layers
+ /*
   googleLayer = new agsjs.layers.GoogleMapsLayer({
                 //id: 'google', // optional. esri layer id.
                 // apiOptions: { // load google API should be loaded.
@@ -81,7 +82,7 @@ setTimeout(function(){
                 
                 }
               });   
-              
+        */      
   //declare Open Street Map Layer
  osmLayer = new OpenStreetMapLayer({displayLevels:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]});
      
@@ -95,7 +96,7 @@ cloudmadePaleLayer = new WebTiledLayer("http://${subDomain}.tile.cloudmade.com/1
   stamenTonerLayer = new WebTiledLayer("http://${subDomain}.tile.stamen.com/toner/${level}/${col}/${row}.png", { "id": "Stamen Toner", "visible": true, "subDomains":  ["a", "b", "c", "d"], "copyright": "Stamen Watercolor" });  
 
     
-  },1000);
+  },3000);
     
      
   //    "options": { "id": "Stamen Watercolor", "visible": false, "subDomains": mapLayers.abcd, "copyright": "Stamen Watercolor" },
@@ -2186,7 +2187,7 @@ function levyUrl(){
             outFields: ["Loc_name"]
         };
         // console.log(locator.addressToLocations(options));
-        locator.addressToLocations(options, function(){},function(e){console.log(e);});
+        locator.addressToLocations(options, function(x){console.log(x);},function(e){console.log(e);});
         
     }
 
