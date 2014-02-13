@@ -14,7 +14,7 @@ var legendDijit;
 var legendStartup = false;
 var gsvc, p, paramx, sp;
 var selectionTF = false;
-dojo.require("agsjs/layers/GoogleMapsLayer");
+
 // var gsvc, tb;
 require([
     "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/tasks/locator", "esri/dijit/LocateButton", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
