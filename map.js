@@ -51,6 +51,46 @@ require([
 ) {
 
     parser.parse();
+   
+   
+   
+   
+    $('.sortable').sortable().bind('sortupdate',function(e){
+           // console.log($('.sortable li input').get());
+           
+           setLayerOrder($('.sortable li input').get());
+           
+           
+           
+           
+           
+        });
+   
+   
+   function setLayerOrder(order){
+       
+       try{map.removeLayer(floodLayer);}catch(e){}
+       try{map.removeLayer(zoneLayer);}catch(e){}
+       
+       
+       for(i=(order.length - 1);i>=0;i--){
+           console.log(order[i].id);
+           if(dom.byId(order[i].id).checked){
+              switch(order[i].id){
+                  case 'toggleFlood':
+                    map.addLayer(floodLayer);
+                    break;
+                  case 'toggleZoning':
+                    map.addLayer(zoneLayer);
+                    break;
+              }
+           }
+           
+       }
+       
+       console.log(order);  
+            
+   }
     
     
     var googleLayer,googleLayerStreet,osmLayer,stamenTerrainLayer,mapBoxTerrainLayer,mapQuestLayer,cloudmadePaleLayer,cloudmadeNightLayer,waterColorLayer,stamenTonerLayer;
@@ -582,7 +622,8 @@ var gLayer = new GraphicsLayer();
 	  dojo.connect(dom.byId("toggleFlood"), "click", function () {
 			console.log(dom.byId("toggleFlood").checked);
 			if(dom.byId("toggleFlood").checked){
-				map.addLayer(floodLayer);
+				//map.addLayer(floodLayer);
+				setLayerOrder($('.sortable li input').get());
 			} else{
 				map.removeLayer(floodLayer);
 			}
@@ -591,8 +632,8 @@ var gLayer = new GraphicsLayer();
 	dojo.connect(dom.byId("toggleZoning"), "click", function () {
 			if(dom.byId("toggleZoning").checked){
 				
-				map.addLayer(zoneLayer);
-				
+			//	map.addLayer(zoneLayer);
+				setLayerOrder($('.sortable li input').get());
 			} else{
 				map.removeLayer(zoneLayer);
 			}
@@ -611,6 +652,10 @@ var gLayer = new GraphicsLayer();
 			}
     });
     
+    
+    
+    
+    
     dojo.connect(dom.byId("toggleEsriLabels"), "click", function () {
             if(dom.byId("toggleEsriLabels").checked){
                 map.addLayer(esriLabelLayer);
@@ -618,6 +663,25 @@ var gLayer = new GraphicsLayer();
                 map.removeLayer(esriLabelLayer);
             }
     });
+
+
+dojo.connect(dom.byId("toggleParcels"), "click", function () {
+            if(dom.byId("toggleParcels").checked){
+                map.addLayer(puebloParcelLayer);
+            } else{
+                map.removeLayer(puebloParcelLayer);
+            }
+    });
+
+dojo.connect(dom.byId("togglePoints"), "click", function () {
+            if(dom.byId("togglePoints").checked){
+                map.addLayer(puebloPointsLayer);
+            } else{
+                map.removeLayer(puebloPointsLayer);
+            }
+    });
+
+
 
 	dojo.connect(dom.byId("toggleSat"), "click", function () {
 			if(dom.byId("toggleSat").checked){
@@ -1493,6 +1557,8 @@ var gLayer = new GraphicsLayer();
 	  var topoLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", {maxScale: 20});
 	  var natGeoLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer", {maxScale: 20});
 	  var esriLabelLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer", {maxScale: 20});
+      var puebloPointsLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_address_points/MapServer", {maxScale: 20});
+      var puebloParcelLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_parcels_bld_footprints/MapServer", {maxScale: 20});
 
 	 
 	  var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {maxScale: 20});
@@ -2124,8 +2190,8 @@ function levyUrl(){
             }
             
             
-            var parcelid = getParcelFromUrl(document.location.href);
-        	selectParcel(parcelid);
+          //  var parcelid = getParcelFromUrl(document.location.href);
+        	//selectParcel(parcelid);
 
     });
 

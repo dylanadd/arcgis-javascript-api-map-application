@@ -49,11 +49,11 @@
          var aContainer = new AccordionContainer({style:"height:inherit"}, "accordion");
        aContainer.addChild(new ContentPane({
         title:'<div class="accordionTitle">Thematic Layers</div>',
-        content:'<div class="accordionContent">' +
-        		'<label><input type="checkbox" name="layer" id="toggleFlood"><span>Floodplain</span></label> <br/>' +
-      			'<label><input type="checkbox" name="layer" id="toggleZoning"><span>Zoning</span></label><br/>' +
-      			
-      			'</div><div id="slider"></div>',
+        content:'<div class="accordionContent"><ul class="sortable">' +
+        		'<li><label><input type="checkbox" name="layer" id="toggleFlood"><span>Floodplain</span></label> </li>' +
+      			 '<li><label><input type="checkbox" name="layer" id="toggleZoning"><span>Zoning</span></label></li>' +
+      			'</ul>' +
+      			'</div><div id="sliderLabel">Opacity:</div><div id="slider"></div>',
          'class':"minwax1"
          
     }));    
@@ -61,9 +61,11 @@
         title: '<div class="accordionTitle">Labels & Data</div>',
         content: '<div class="accordionContent">' +
         '<label><input type="checkbox"  name="layer" id="toggleParcs"><span>Pueblo County Data</span></label><br/>' +
+                '<label><input type="checkbox"  name="layer" id="toggleParcels"><span>Pueblo County Parcels</span></label><br/>' +
+                        '<label><input type="checkbox"  name="layer" id="togglePoints"><span>Pueblo County Address Points</span></label><br/>' +
         '<label><input type="checkbox"  name="layer" id="toggleEsriLabels"><span>Boundaries & Places</span></label><br/>' +
    				
-      			'</div><div id="slider"></div>',
+      			'</div>',
 		'class':"minwax2"
     }));
     aContainer.addChild(new ContentPane({
@@ -95,9 +97,9 @@
          on(dom.byId(query(".accordionTitle")),"click",function(){
         	
         });        
-        console.log(map);
+       
         
-        
+      
          ieAlert = new Dialog({
         	title: "Web Browser Outdated",
         	style: "width:300px"

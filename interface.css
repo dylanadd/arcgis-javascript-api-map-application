@@ -1766,7 +1766,8 @@ height: 100%;
 	display:none;
 }
 .minwax1 .accordionContent{
-	margin-bottom:10px;
+	margin-bottom:24px;
+	height:34px;
 }
 .accordionTitle{
 	background:rgb(16,64,92);
@@ -1916,4 +1917,25 @@ padding-top: 4px;
 #caveats {
 padding: 15px;
 font-size: 9px;
+}
+
+
+ul.sortable
+{
+
+padding: 13px 0px 0px 0px;
+margin:  0px;
+}
+ul.sortable li
+{
+background-image: url(images/icons/drag.jpg);
+background-repeat: no-repeat;
+background-position: 4px 1px;
+padding-left: 17px;
+background-size: 15px;
+}
+
+#sliderLabel{
+text-align: center;
+margin-bottom: 3px;	
 }
