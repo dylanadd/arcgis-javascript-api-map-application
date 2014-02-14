@@ -56,7 +56,7 @@
                         '<li><label><input type="checkbox"  name="layer" id="togglePoints"><span>Address Points</span></label></li>' +
                         '<li><label><input type="checkbox"  name="layer" id="toggleRoads"><span>Roads</span></label></li>' +
                         '<li><label><input type="checkbox"  name="layer" id="toggleRailroads"><span>Railroads</span></label></li>' +
-                        '<li><label><input type="checkbox"  name="layer" id="toggleTowns"><span>Municipalities</span></label></li>' +
+                       // '<li><label><input type="checkbox"  name="layer" id="toggleTowns"><span>Municipalities</span></label></li>' +
                         '<li><label><input type="checkbox"  name="layer" id="toggleBoundaries"><span>County Boundaries</span></label></li>' +
                         
                         '<li><label><input type="checkbox"  name="layer" id="toggleEsriLabels"><span>World Boundaries & Places</span></label></li>' +

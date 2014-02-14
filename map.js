@@ -747,6 +747,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
                 map.removeLayer(puebloRailroadLayer);
             }
     });
+    /*
     dojo.connect(dom.byId("toggleTowns"), "click", function () {
             if(dom.byId("toggleTowns").checked){
                layerSorter();
@@ -754,6 +755,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
                 map.removeLayer(puebloPointsLayer);
             }
     });
+    */
     dojo.connect(dom.byId("toggleBoundaries"), "click", function () {
             if(dom.byId("toggleBoundaries").checked){
              layerSorter();
