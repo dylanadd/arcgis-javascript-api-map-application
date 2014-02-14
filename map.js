@@ -53,18 +53,76 @@ require([
     parser.parse();
    
    
+     $('.sortableData').sortable().bind('sortupdate',function(e){
+           // console.log($('.sortableData li input').get());
+        layerSorter();
+
+        });
    
-   
-    $('.sortable').sortable().bind('sortupdate',function(e){
-           // console.log($('.sortable li input').get());
+    $('.sortableThematic').sortable().bind('sortupdate',function(e){
+           // console.log($('.sortableThematic li input').get());
            
-           setLayerOrder($('.sortable li input').get());
-           
-           
+           layerSorter();
            
            
            
         });
+   
+   
+   function layerSorter(){
+            setLayerOrder($('.sortableThematic li input').get());
+           setDataLayerOrder($('.sortableData li input').get());
+   }
+   
+   function setDataLayerOrder(order){
+       
+       try{map.removeLayer(puebloParcelLayer);}catch(e){}
+       try{map.removeLayer(puebloPointsLayer);}catch(e){}
+       try{map.removeLayer(puebloRoadLayer);}catch(e){}
+       try{map.removeLayer(puebloRailroadLayer);}catch(e){}
+       try{map.removeLayer(puebloBoundaryLayer);}catch(e){}
+       try{map.removeLayer(esriLabelLayer);}catch(e){}
+     //  try{map.removeLayer(zoneLayer);}catch(e){}
+     //  try{map.removeLayer(zoneLayer);}catch(e){}
+       
+       for(i=(order.length - 1);i>=0;i--){
+           console.log(order[i].id);
+           if(dom.byId(order[i].id).checked){
+              switch(order[i].id){
+                  case 'toggleParcels':
+                    map.addLayer(puebloParcelLayer);
+                    break;
+                  case 'togglePoints':
+                    map.addLayer(puebloPointsLayer);
+                    break;
+                  case 'toggleRoads':
+                    map.addLayer(puebloRoadLayer);
+                    break;
+                  case 'toggleRailroads':
+                    map.addLayer(puebloRailroadLayer);
+                    break;
+                  case 'toggleTowns':
+                    map.addLayer(zoneLayer);
+                    break;
+                  case 'toggleBoundaries':
+                    map.addLayer(puebloBoundaryLayer);
+                    break;
+                  case 'toggleEsriLabels':
+                    map.addLayer(esriLabelLayer);
+                    break;
+                 case 'toggleZoning':
+                    map.addLayer(esriLabelLayer);
+                    break;
+                    
+              }
+           }
+           
+       }
+       
+       console.log(order);  
+            
+   }
+   
    
    
    function setLayerOrder(order){
@@ -623,7 +681,7 @@ var gLayer = new GraphicsLayer();
 			console.log(dom.byId("toggleFlood").checked);
 			if(dom.byId("toggleFlood").checked){
 				//map.addLayer(floodLayer);
-				setLayerOrder($('.sortable li input').get());
+				layerSorter();
 			} else{
 				map.removeLayer(floodLayer);
 			}
@@ -633,17 +691,12 @@ var gLayer = new GraphicsLayer();
 			if(dom.byId("toggleZoning").checked){
 				
 			//	map.addLayer(zoneLayer);
-				setLayerOrder($('.sortable li input').get());
+				layerSorter();
 			} else{
 				map.removeLayer(zoneLayer);
 			}
     });
-    
-   
-    
-  
-    
-    
+    /*
 	dojo.connect(dom.byId("toggleParcs"), "click", function () {
 			if(dom.byId("toggleParcs").checked){
 				map.addLayer(parcelInfoLayer);
@@ -652,13 +705,13 @@ var gLayer = new GraphicsLayer();
 			}
     });
     
-    
+    */
     
     
     
     dojo.connect(dom.byId("toggleEsriLabels"), "click", function () {
             if(dom.byId("toggleEsriLabels").checked){
-                map.addLayer(esriLabelLayer);
+               layerSorter();
             } else{
                 map.removeLayer(esriLabelLayer);
             }
@@ -667,7 +720,7 @@ var gLayer = new GraphicsLayer();
 
 dojo.connect(dom.byId("toggleParcels"), "click", function () {
             if(dom.byId("toggleParcels").checked){
-                map.addLayer(puebloParcelLayer);
+              layerSorter();
             } else{
                 map.removeLayer(puebloParcelLayer);
             }
@@ -675,12 +728,39 @@ dojo.connect(dom.byId("toggleParcels"), "click", function () {
 
 dojo.connect(dom.byId("togglePoints"), "click", function () {
             if(dom.byId("togglePoints").checked){
-                map.addLayer(puebloPointsLayer);
+               layerSorter();
             } else{
                 map.removeLayer(puebloPointsLayer);
             }
     });
-
+dojo.connect(dom.byId("toggleRoads"), "click", function () {
+            if(dom.byId("toggleRoads").checked){
+               layerSorter();
+            } else{
+                map.removeLayer(puebloRoadLayer);
+            }
+    });
+    dojo.connect(dom.byId("toggleRailroads"), "click", function () {
+            if(dom.byId("toggleRailroads").checked){
+             layerSorter();
+            } else{
+                map.removeLayer(puebloRailroadLayer);
+            }
+    });
+    dojo.connect(dom.byId("toggleTowns"), "click", function () {
+            if(dom.byId("toggleTowns").checked){
+               layerSorter();
+            } else{
+                map.removeLayer(puebloPointsLayer);
+            }
+    });
+    dojo.connect(dom.byId("toggleBoundaries"), "click", function () {
+            if(dom.byId("toggleBoundaries").checked){
+             layerSorter();
+            } else{
+                map.removeLayer(puebloBoundaryLayer);
+            }
+    });
 
 
 	dojo.connect(dom.byId("toggleSat"), "click", function () {
@@ -1559,6 +1639,9 @@ dojo.connect(dom.byId("togglePoints"), "click", function () {
 	  var esriLabelLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer", {maxScale: 20});
       var puebloPointsLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_address_points/MapServer", {maxScale: 20});
       var puebloParcelLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_parcels_bld_footprints/MapServer", {maxScale: 20});
+      var puebloRoadLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_roads/MapServer", {maxScale: 20});
+      var puebloBoundaryLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_counties/MapServer", {maxScale: 20});
+      var puebloRailroadLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_railroads/MapServer", {maxScale: 20});
 
 	 
 	  var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {maxScale: 20});

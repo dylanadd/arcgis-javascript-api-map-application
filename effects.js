@@ -47,9 +47,28 @@
        
        
          var aContainer = new AccordionContainer({style:"height:inherit"}, "accordion");
+          aContainer.addChild(new ContentPane({
+        title: '<div class="accordionTitle">Labels & Data</div>',
+        content: '<div class="accordionContent">' +
+                        '<div class="optionFit"><ul class="sortableData">' + 
+                       // '<li><label><input type="checkbox"  name="layer" id="toggleParcs"><span>Pueblo County Data</span></label></li>' +
+                        '<li><label><input type="checkbox"  name="layer" id="toggleParcels"><span>Parcels</span></label></li>' +
+                        '<li><label><input type="checkbox"  name="layer" id="togglePoints"><span>Address Points</span></label></li>' +
+                        '<li><label><input type="checkbox"  name="layer" id="toggleRoads"><span>Roads</span></label></li>' +
+                        '<li><label><input type="checkbox"  name="layer" id="toggleRailroads"><span>Railroads</span></label></li>' +
+                        '<li><label><input type="checkbox"  name="layer" id="toggleTowns"><span>Municipalities</span></label></li>' +
+                        '<li><label><input type="checkbox"  name="layer" id="toggleBoundaries"><span>County Boundaries</span></label></li>' +
+                        
+                        '<li><label><input type="checkbox"  name="layer" id="toggleEsriLabels"><span>World Boundaries & Places</span></label></li>' +
+                       
+                        '</ul></div>' + 
+                        '' +
+                '</div>',
+        'class':"minwax2"
+    }));
        aContainer.addChild(new ContentPane({
         title:'<div class="accordionTitle">Thematic Layers</div>',
-        content:'<div class="accordionContent"><ul class="sortable">' +
+        content:'<div class="accordionContent"><ul class="sortableThematic">' +
         		'<li><label><input type="checkbox" name="layer" id="toggleFlood"><span>Floodplain</span></label> </li>' +
       			 '<li><label><input type="checkbox" name="layer" id="toggleZoning"><span>Zoning</span></label></li>' +
       			'</ul>' +
@@ -57,20 +76,11 @@
          'class':"minwax1"
          
     }));    
-    aContainer.addChild(new ContentPane({
-        title: '<div class="accordionTitle">Labels & Data</div>',
-        content: '<div class="accordionContent">' +
-        '<label><input type="checkbox"  name="layer" id="toggleParcs"><span>Pueblo County Data</span></label><br/>' +
-                '<label><input type="checkbox"  name="layer" id="toggleParcels"><span>Pueblo County Parcels</span></label><br/>' +
-                        '<label><input type="checkbox"  name="layer" id="togglePoints"><span>Pueblo County Address Points</span></label><br/>' +
-        '<label><input type="checkbox"  name="layer" id="toggleEsriLabels"><span>Boundaries & Places</span></label><br/>' +
-   				
-      			'</div>',
-		'class':"minwax2"
-    }));
+ 
     aContainer.addChild(new ContentPane({
         title:'<div class="accordionTitle">Basemaps</div>',
         content:'<div class="accordionContent">' +
+                '<div class="optionFit">' +
         		'<label><input type="radio" checked="checked" name="blayer" id="toggleSat"><span>ESRI Satellite</span></label><br/>' +
       			'<label><input type="radio" name="blayer" id="toggleStreet"><span>ESRI Street</span></label><br/>' +
       			'<label><input type="radio" name="blayer" id="toggleTopo"><span>ESRI Topographic</span></label><br/>' +
@@ -79,12 +89,16 @@
       			//'<label><input type="radio" name="blayer" id="toggleGSat"><span>Google Satellite*</span></label><br/>'+
       			//'<label><input type="radio" name="blayer" id="toggleGStreet"><span>Google Street*</span></label><br/>'+
       			'<label><input type="radio" name="blayer" id="toggleSTerrain"><span>Stamen Terrain*</span></label><br/>'+
+      			
+      			'</div><div class="optionFit">' +
+      			
       			'<label><input type="radio" name="blayer" id="toggleMapbox"><span>MapBox Terrain*</span></label><br/>'+
       			'<label><input type="radio" name="blayer" id="toggleMapquest"><span>MapQuest Street*</span></label><br/>'+
       			'<label><input type="radio" name="blayer" id="toggleCPale"><span>Cloudmade Pale*</span></label><br/>'+
       			'<label><input type="radio" name="blayer" id="toggleCNight"><span>Cloudmade Midnight*</span></label><br/>'+
       			'<label><input type="radio" name="blayer" id="toggleToner"><span>Toner*</span></label><br/>'+
       			'<label><input type="radio" name="blayer" id="toggleWColor"><span>Watercolor*</span></label><br/>'+
+				'</div>' +
 				'<div id="caveats">*Not Printable</div>' +
       			'</div>',
          'class':"minwax3"

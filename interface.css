@@ -1789,6 +1789,7 @@ cursor:pointer;
 }
 .minwax2{
 	/*height: 120x !important;*/
+	overflow:auto;
 }
 #dijit_layout_ContentPane_2.minwax3{
 	/*height: 120x !important;*/
@@ -1920,13 +1921,13 @@ font-size: 9px;
 }
 
 
-ul.sortable
+ul.sortableThematic,ul.sortableData
 {
 
 padding: 13px 0px 0px 0px;
 margin:  0px;
 }
-ul.sortable li
+ul.sortableThematic li,ul.sortableData li
 {
 background-image: url(images/icons/drag.jpg);
 background-repeat: no-repeat;
@@ -1938,4 +1939,9 @@ background-size: 15px;
 #sliderLabel{
 text-align: center;
 margin-bottom: 3px;	
+}
+
+div.optionFit{
+	float: left;
+width: 260px;
 }
