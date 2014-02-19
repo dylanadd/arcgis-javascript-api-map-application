@@ -1791,6 +1791,9 @@ cursor:pointer;
 	/*height: 120x !important;*/
 	overflow:auto;
 }
+.minwax3{
+	overflow:auto;
+}
 #dijit_layout_ContentPane_2.minwax3{
 	/*height: 120x !important;*/
 	border:none !important;
@@ -1916,7 +1919,7 @@ padding-top: 4px;
 }
 
 #caveats {
-padding: 15px;
+padding: 23px;
 font-size: 9px;
 }
 
@@ -1929,14 +1932,16 @@ margin:  0px;
 }
 ul.sortableThematic li,ul.sortableData li
 {
-background-image: url(images/icons/drag.jpg);
+/*background-image: url(images/icons/drag.jpg);
+ padding-left: 17px;
+ */
 background-repeat: no-repeat;
 background-position: 4px 1px;
-padding-left: 17px;
+
 background-size: 15px;
 }
 
-#sliderLabel{
+.sliderLabel{
 text-align: center;
 margin-bottom: 3px;	
 }
@@ -1944,4 +1949,126 @@ margin-bottom: 3px;
 div.optionFit{
 	float: left;
 width: 260px;
+}
+
+
+.UDControls {
+	float:right;
+	cursor: pointer;
+}
+
+
+.sortableData > div {
+	padding: 8px;
+}
+
+.cDown {
+background: url(images/icons/down-arrow.png);
+background-position: 24px 0px;
+width: 30px;
+height: 30px;
+background-size: 22px 17px;
+margin-right: 8px;
+}
+
+.cUp {
+background: url(images/icons/up-arrow.png);
+background-position: 24px 0px;
+width: 30px;
+height: 30px;
+background-size: 22px 17px;
+margin-right: 8px;
+}
+
+.accordionContent.basemaps div.basemap-pad{
+	padding: 7px;
+}
+
+
+.parcSlideToggle,.addrSlideToggle, .roadSlideToggle,
+.railSlideToggle, .boundSlideToggle, .worldSlideToggle,
+.floodSlideToggle, .zoneSlideToggle{
+	float: left;
+position: relative;
+left: -10px;
+top: -1px;
+font-weight: bold;
+font-size: 16px;
+border-style: solid;
+border-width: thin;
+width: 15px;
+text-align: center;
+}
+
+.addrSlideToggle {
+	float: left;
+position: relative;
+left: -10px;
+top: -1px;
+}
+
+.roadSlideToggle {
+	float: left;
+position: relative;
+left: -10px;
+top: -1px;
+}
+
+.railSlideToggle {
+	float: left;
+position: relative;
+left: -10px;
+top: -1px;
+}
+.boundSlideToggle {
+	float: left;
+position: relative;
+left: -10px;
+top: -1px;
+}
+.worldSlideToggle {
+	float: left;
+position: relative;
+left: -10px;
+top: -1px;
+}
+
+.floodSlideToggle {
+	float: left;
+position: relative;
+left: -10px;
+top: -1px;
+}
+.zoneSlideToggle {
+	float: left;
+position: relative;
+left: -10px;
+top: -1px;
+}
+
+
+div.sliderLabel.parcs + table, div.sliderLabel.parcs {
+	display:none;
+}
+
+div.sliderLabel.addr + table, div.sliderLabel.addr {
+	display:none;
+}
+div.sliderLabel.road + table, div.sliderLabel.road {
+	display:none;
+}
+div.sliderLabel.rail + table, div.sliderLabel.rail {
+	display:none;
+}
+div.sliderLabel.bounds + table, div.sliderLabel.bounds {
+	display:none;
+}
+div.sliderLabel.world + table, div.sliderLabel.world {
+	display:none;
+}
+div.sliderLabel.flood + table, div.sliderLabel.flood {
+	display:none;
+}
+div.sliderLabel.zone + table, div.sliderLabel.zone {
+	display:none;
 }

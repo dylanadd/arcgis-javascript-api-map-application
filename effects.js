@@ -52,52 +52,48 @@
         content: '<div class="accordionContent">' +
                         '<div class="optionFit"><ul class="sortableData">' + 
                        // '<li><label><input type="checkbox"  name="layer" id="toggleParcs"><span>Pueblo County Data</span></label></li>' +
-                        '<li><label><input type="checkbox"  name="layer" id="toggleParcels"><span>Parcels</span></label></li>' +
-                        '<li><label><input type="checkbox"  name="layer" id="togglePoints"><span>Address Points</span></label></li>' +
-                        '<li><label><input type="checkbox"  name="layer" id="toggleRoads"><span>Roads</span></label></li>' +
-                        '<li><label><input type="checkbox"  name="layer" id="toggleRailroads"><span>Railroads</span></label></li>' +
+                        '<div class="parcelUD"><li ><label><input type="checkbox"  name="layer" id="toggleParcels"><span>Parcels</span></label><div class="UDControls" title="Move layer down/up one level"><div class="parcSlideToggle">+</div><span class="parcDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="parcUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel parcs">Opacity:</div><div id="sliderParc"></div></div>' +
+                        '<div class="addrUD"><li ><label><input type="checkbox"  name="layer" id="togglePoints"><span>Address Points</span></label><div class="UDControls" title="Move layer down/up one level"><div class="addrSlideToggle">+</div><span class="addrDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="addrUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel addr">Opacity:</div><div id="sliderAddr"></div></div>' +
+                        '<div class="roadUD"> <li ><label><input type="checkbox"  name="layer" id="toggleRoads"><span>Roads</span></label><div class="UDControls" title="Move layer down/up one level"><div class="roadSlideToggle">+</div><span class="roadDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="roadUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel road">Opacity:</div><div id="sliderRoad"></div></div>' +
+                        '<div  class="railUD"><li><label class="buttonup"><input type="checkbox"  name="layer" id="toggleRailroads"><span>Railroads</span></label><div class="UDControls" title="Move layer down/up one level"><div class="railSlideToggle">+</div><span class="railDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="railUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel rail">Opacity:</div><div id="sliderRail"></div></div>' +
                        // '<li><label><input type="checkbox"  name="layer" id="toggleTowns"><span>Municipalities</span></label></li>' +
-                        '<li><label><input type="checkbox"  name="layer" id="toggleBoundaries"><span>County Boundaries</span></label></li>' +
+                        '<div  class="boundUD"><li><label><input type="checkbox"  name="layer" id="toggleBoundaries"><span>Boundaries</span></label><div class="UDControls" title="Move layer down/up one level"><div class="boundSlideToggle">+</div><span class="boundDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="boundUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel bounds">Opacity:</div><div id="sliderBounds"></div></div>' +
                         
-                        '<li><label><input type="checkbox"  name="layer" id="toggleEsriLabels"><span>World Boundaries & Places</span></label></li>' +
+                        '<div class="esriBoundUD"><li><label><input type="checkbox"  name="layer" id="toggleEsriLabels"><span>World Labels</span></label><div class="UDControls" title="Move layer down/up one level"><div class="worldSlideToggle">+</div><span class="esriBoundDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="esriBoundUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel world">Opacity:</div><div id="sliderWorld"></div></div>' +
+                       
+                       
+                        '<div  class="floodUD"><li><label><input type="checkbox" name="layer" id="toggleFlood"><span>Floodplain</span></label> <div class="UDControls" title="Move layer down/up one level"><div class="floodSlideToggle">+</div><span class="floodDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="floodUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel flood">Opacity:</div><div id="sliderFlood"></div></div>' +
+                        '<div  class="zoneUD"><li><label><input type="checkbox" name="layer" id="toggleZoning"><span>Zoning</span></label><div class="UDControls" title="Move layer down/up one level"><div class="zoneSlideToggle">+</div><span class="zoneDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="zoneUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel zone">Opacity:</div><div id="sliderZone"></div></div>' +
+                                              
                        
                         '</ul></div>' + 
                         '' +
                 '</div>',
         'class':"minwax2"
     }));
-       aContainer.addChild(new ContentPane({
-        title:'<div class="accordionTitle">Thematic Layers</div>',
-        content:'<div class="accordionContent"><ul class="sortableThematic">' +
-        		'<li><label><input type="checkbox" name="layer" id="toggleFlood"><span>Floodplain</span></label> </li>' +
-      			 '<li><label><input type="checkbox" name="layer" id="toggleZoning"><span>Zoning</span></label></li>' +
-      			'</ul>' +
-      			'</div><div id="sliderLabel">Opacity:</div><div id="slider"></div>',
-         'class':"minwax1"
-         
-    }));    
+      
  
     aContainer.addChild(new ContentPane({
         title:'<div class="accordionTitle">Basemaps</div>',
-        content:'<div class="accordionContent">' +
+        content:'<div class="accordionContent basemaps">' +
                 '<div class="optionFit">' +
-        		'<label><input type="radio" checked="checked" name="blayer" id="toggleSat"><span>ESRI Satellite</span></label><br/>' +
-      			'<label><input type="radio" name="blayer" id="toggleStreet"><span>ESRI Street</span></label><br/>' +
-      			'<label><input type="radio" name="blayer" id="toggleTopo"><span>ESRI Topographic</span></label><br/>' +
-      			'<label><input type="radio" name="blayer" id="toggleNat"><span>National Geographic</span></label><br/>'+
-      			'<label><input type="radio" name="blayer" id="toggleOpenStreet"><span>Open Street</span></label><br/>'+
+        		'<div class="basemap-pad"><label><input type="radio" checked="checked" name="blayer" id="toggleSat"><span>ESRI Satellite</span></label><br/></div>' +
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleStreet"><span>ESRI Street</span></label><br/></div>' +
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleTopo"><span>ESRI Topographic</span></label><br/></div>' +
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleNat"><span>National Geographic</span></label><br/></div>'+
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleOpenStreet"><span>Open Street</span></label><br/></div>'+
       			//'<label><input type="radio" name="blayer" id="toggleGSat"><span>Google Satellite*</span></label><br/>'+
       			//'<label><input type="radio" name="blayer" id="toggleGStreet"><span>Google Street*</span></label><br/>'+
-      			'<label><input type="radio" name="blayer" id="toggleSTerrain"><span>Stamen Terrain*</span></label><br/>'+
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleSTerrain"><span>Stamen Terrain*</span></label><br/></div>'+
       			
       			'</div><div class="optionFit">' +
       			
-      			'<label><input type="radio" name="blayer" id="toggleMapbox"><span>MapBox Terrain*</span></label><br/>'+
-      			'<label><input type="radio" name="blayer" id="toggleMapquest"><span>MapQuest Street*</span></label><br/>'+
-      			'<label><input type="radio" name="blayer" id="toggleCPale"><span>Cloudmade Pale*</span></label><br/>'+
-      			'<label><input type="radio" name="blayer" id="toggleCNight"><span>Cloudmade Midnight*</span></label><br/>'+
-      			'<label><input type="radio" name="blayer" id="toggleToner"><span>Toner*</span></label><br/>'+
-      			'<label><input type="radio" name="blayer" id="toggleWColor"><span>Watercolor*</span></label><br/>'+
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleMapbox"><span>MapBox Terrain*</span></label><br/></div>'+
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleMapquest"><span>MapQuest Street*</span></label><br/></div>'+
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleCPale"><span>Cloudmade Pale*</span></label><br/></div>'+
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleCNight"><span>Cloudmade Midnight*</span></label><br/></div>'+
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleToner"><span>Toner*</span></label><br/></div>'+
+      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleWColor"><span>Watercolor*</span></label><br/></div>'+
 				'</div>' +
 				'<div id="caveats">*Not Printable</div>' +
       			'</div>',
@@ -107,6 +103,98 @@
     aContainer.startup();
       console.dir(AccordionContainer);
        console.log(aContainer);
+      
+      
+      
+      $(".parcSlideToggle").click(function(){
+          if($(".parcSlideToggle").get()[0].innerText == "+"){
+              $(".parcSlideToggle").text("-");
+          } else {
+              $(".parcSlideToggle").text("+");
+          }
+             $("div.sliderLabel.parcs").toggle();
+           $("div.sliderLabel.parcs + table").toggle();
+          });
+      
+     $(".addrSlideToggle").click(function(){
+         
+          if($(".addrSlideToggle").get()[0].innerText == "+"){
+              $(".addrSlideToggle").text("-");
+          } else {
+              $(".addrSlideToggle").text("+");
+         }
+         
+             $("div.sliderLabel.addr").toggle();
+           $("div.sliderLabel.addr + table").toggle();
+          });
+          
+          
+    $(".roadSlideToggle").click(function(){
+        
+         if($(".roadSlideToggle").get()[0].innerText == "+"){
+              $(".roadSlideToggle").text("-");
+          } else {
+              $(".roadSlideToggle").text("+");
+          }
+             $("div.sliderLabel.road").toggle();
+           $("div.sliderLabel.road + table").toggle();
+          });
+          
+    $(".railSlideToggle").click(function(){
+        
+         if($(".railSlideToggle").get()[0].innerText == "+"){
+              $(".railSlideToggle").text("-");
+          } else {
+              $(".railSlideToggle").text("+");
+          }
+             $("div.sliderLabel.rail").toggle();
+           $("div.sliderLabel.rail + table").toggle();
+          });
+    $(".boundSlideToggle").click(function(){
+        
+         if($(".boundSlideToggle").get()[0].innerText == "+"){
+              $(".boundSlideToggle").text("-");
+          } else {
+              $(".boundSlideToggle").text("+");
+          }
+             $("div.sliderLabel.bounds").toggle();
+           $("div.sliderLabel.bounds + table").toggle();
+          });
+    $(".worldSlideToggle").click(function(){
+        
+         if($(".worldSlideToggle").get()[0].innerText == "+"){
+              $(".worldSlideToggle").text("-");
+          } else {
+              $(".worldSlideToggle").text("+");
+          }
+             $("div.sliderLabel.world").toggle();
+           $("div.sliderLabel.world + table").toggle();
+          });
+     $(".floodSlideToggle").click(function(){
+         
+          if($(".floodSlideToggle").get()[0].innerText == "+"){
+              $(".floodSlideToggle").text("-");
+          } else {
+              $(".floodSlideToggle").text("+");
+          }
+             $("div.sliderLabel.flood").toggle();
+           $("div.sliderLabel.flood + table").toggle();
+          });
+     $(".zoneSlideToggle").click(function(){
+         
+          if($(".zoneSlideToggle").get()[0].innerText == "+"){
+              $(".zoneSlideToggle").text("-");
+          } else {
+              $(".zoneSlideToggle").text("+");
+          }
+             $("div.sliderLabel.zone").toggle();
+           $("div.sliderLabel.zone + table").toggle();
+          });
+      
+     
+      
+      
+      
        try{aContainer.resize();}catch(e){console.log(e);}
          on(dom.byId(query(".accordionTitle")),"click",function(){
         	

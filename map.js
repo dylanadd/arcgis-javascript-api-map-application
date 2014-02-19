@@ -52,7 +52,7 @@ require([
 
     parser.parse();
    
-   
+   /*
      $('.sortableData').sortable().bind('sortupdate',function(e){
            // console.log($('.sortableData li input').get());
         layerSorter();
@@ -68,7 +68,94 @@ require([
            
         });
    
-   
+   */
+
+$('.parcUp').click(function(){
+        var current = $('.parcelUD');
+        current.prev().before(current);
+        layerSorter();
+  });
+  $('.parcDown').click(function(){
+  var current = $('.parcelUD');
+  current.next().after(current);
+  layerSorter();
+});
+
+$('.addrUp').click(function(){
+        var current = $('.addrUD');
+        current.prev().before(current);
+        layerSorter();
+  });
+  $('.addrDown').click(function(){
+  var current = $('.addrUD');
+  current.next().after(current);
+  layerSorter();
+});
+$('.roadUp').click(function(){
+        var current = $('.roadUD');
+        current.prev().before(current);
+        layerSorter();
+  });
+  $('.roadDown').click(function(){
+  var current = $('.roadUD');
+  current.next().after(current);
+  layerSorter();
+});
+$('.railUp').click(function(){
+        var current = $('.railUD');
+        current.prev().before(current);
+        layerSorter();
+  });
+  $('.railDown').click(function(){
+  var current = $('.railUD');
+  current.next().after(current);
+  layerSorter();
+});
+$('.boundUp').click(function(){
+        var current = $('.boundUD');
+        current.prev().before(current);
+        layerSorter();
+  });
+  $('.boundDown').click(function(){
+  var current = $('.boundUD');
+  current.next().after(current);
+  layerSorter();
+});
+$('.esriBoundUp').click(function(){
+        var current = $('.esriBoundUD');
+        current.prev().before(current);
+        layerSorter();
+  });
+  $('.esriBoundDown').click(function(){
+  var current = $('.esriBoundUD');
+  current.next().after(current);
+  layerSorter();
+});
+
+$('.floodUp').click(function(){
+        var current = $('.floodUD');
+        current.prev().before(current);
+        layerSorter();
+  });
+  $('.floodDown').click(function(){
+  var current = $('.floodUD');
+  current.next().after(current);
+  layerSorter();
+});
+
+
+$('.zoneUp').click(function(){
+        var current = $('.zoneUD');
+        current.prev().before(current);
+        layerSorter();
+  });
+  $('.zoneDown').click(function(){
+  var current = $('.zoneUD');
+  current.next().after(current);
+  layerSorter();
+});
+
+
    function layerSorter(){
             setLayerOrder($('.sortableThematic li input').get());
            setDataLayerOrder($('.sortableData li input').get());
@@ -82,8 +169,9 @@ require([
        try{map.removeLayer(puebloRailroadLayer);}catch(e){}
        try{map.removeLayer(puebloBoundaryLayer);}catch(e){}
        try{map.removeLayer(esriLabelLayer);}catch(e){}
-     //  try{map.removeLayer(zoneLayer);}catch(e){}
-     //  try{map.removeLayer(zoneLayer);}catch(e){}
+       try{map.removeLayer(floodLayer);}catch(e){}
+       try{map.removeLayer(zoneLayer);}catch(e){}
+     
        
        for(i=(order.length - 1);i>=0;i--){
            console.log(order[i].id);
@@ -102,7 +190,7 @@ require([
                     map.addLayer(puebloRailroadLayer);
                     break;
                   case 'toggleTowns':
-                    map.addLayer(zoneLayer);
+                  //  map.addLayer(zoneLayer);
                     break;
                   case 'toggleBoundaries':
                     map.addLayer(puebloBoundaryLayer);
@@ -110,8 +198,11 @@ require([
                   case 'toggleEsriLabels':
                     map.addLayer(esriLabelLayer);
                     break;
-                 case 'toggleZoning':
-                    map.addLayer(esriLabelLayer);
+                  case 'toggleFlood':
+                    map.addLayer(floodLayer);
+                    break;
+                  case 'toggleZoning':
+                    map.addLayer(zoneLayer);
                     break;
                     
               }
@@ -155,32 +246,7 @@ require([
     
 setTimeout(function(){
 //declare google map layers
- /*
-  googleLayer = new agsjs.layers.GoogleMapsLayer({
-                //id: 'google', // optional. esri layer id.
-                // apiOptions: { // load google API should be loaded.
-                // v: '3.6' // API version. use a specific version is recommended for production system. 
-                // client: gme-myclientID // for enterprise accounts;
-                // },
-                mapOptions: {  // options passed to google.maps.Map contrustor
-                // streetViewControl: false // whether to display street view control. Default is true.
-                
-                }
-              });
-           
-           
-  googleLayerStreet = new agsjs.layers.GoogleMapsLayer({
-                //id: 'google', // optional. esri layer id.
-                // apiOptions: { // load google API should be loaded.
-                // v: '3.6' // API version. use a specific version is recommended for production system. 
-                // client: gme-myclientID // for enterprise accounts;
-                // },
-                mapOptions: {  // options passed to google.maps.Map contrustor
-                // streetViewControl: false // whether to display street view control. Default is true.
-                
-                }
-              });   
-        */      
+ 
   //declare Open Street Map Layer
  osmLayer = new OpenStreetMapLayer({displayLevels:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]});
      
@@ -201,19 +267,120 @@ cloudmadePaleLayer = new WebTiledLayer("http://${subDomain}.tile.cloudmade.com/1
  // "url": "http://${subDomain}.tile.stamen.com/watercolor/${level}/${col}/${row}.jpg"
                     
      //for layer opacity
-      var slider = new HorizontalSlider({
-        name: "slider",
+      var sliderParc = new HorizontalSlider({
+        name: "sliderParc",
+        value: 1,
+        minimum: 0,
+        maximum: 1,
+        intermediateChanges: true,
+        style: "width:200px;",
+        onChange: function(value){
+         	  try{ puebloParcelLayer.setOpacity(value);} catch(e){console.log(e);}
+          
+         
+        }
+    }, "sliderParc");
+    
+       var sliderAddr = new HorizontalSlider({
+        name: "sliderAddr",
+        value: 1,
+        minimum: 0,
+        maximum: 1,
+        intermediateChanges: true,
+        style: "width:200px;",
+        onChange: function(value){
+              try{ puebloPointsLayer.setOpacity(value);} catch(e){console.log(e);}
+          
+         
+        }
+    }, "sliderAddr");
+    
+       var sliderRoad = new HorizontalSlider({
+        name: "sliderRoad",
+        value: 1,
+        minimum: 0,
+        maximum: 1,
+        intermediateChanges: true,
+        style: "width:200px;",
+        onChange: function(value){
+              try{ puebloRoadLayer.setOpacity(value);} catch(e){console.log(e);}
+         
+         
+        }
+    }, "sliderRoad");
+
+       var sliderRail = new HorizontalSlider({
+        name: "sliderRail",
+        value: 1,
+        minimum: 0,
+        maximum: 1,
+        intermediateChanges: true,
+        style: "width:200px;",
+        onChange: function(value){
+              try{ puebloRailroadLayer.setOpacity(value);} catch(e){console.log(e);}
+        
+         
+        }
+    }, "sliderRail");
+
+       var sliderBounds = new HorizontalSlider({
+        name: "sliderBounds",
+        value: 1,
+        minimum: 0,
+        maximum: 1,
+        intermediateChanges: true,
+        style: "width:200px;",
+        onChange: function(value){
+              try{ puebloBoundaryLayer.setOpacity(value);} catch(e){console.log(e);}
+        
+         
+        }
+    }, "sliderBounds");
+
+       var sliderWorld = new HorizontalSlider({
+        name: "sliderWorld",
+        value: 1,
+        minimum: 0,
+        maximum: 1,
+        intermediateChanges: true,
+        style: "width:200px;",
+        onChange: function(value){
+              try{ esriLabelLayer.setOpacity(value);} catch(e){console.log(e);}
+         
+         
+        }
+    }, "sliderWorld");
+
+
+       var sliderFlood = new HorizontalSlider({
+        name: "sliderFlood",
         value: 0.65,
         minimum: 0,
         maximum: 1,
         intermediateChanges: true,
         style: "width:200px;",
         onChange: function(value){
-         	  try{ floodLayer.setOpacity(value);} catch(e){console.log(e);}
+              try{ floodLayer.setOpacity(value);} catch(e){console.log(e);}
+     
+         
+        }
+    }, "sliderFlood");
+
+
+       var sliderZone = new HorizontalSlider({
+        name: "sliderZone",
+        value: 0.65,
+        minimum: 0,
+        maximum: 1,
+        intermediateChanges: true,
+        style: "width:200px;",
+        onChange: function(value){
+             
           try{ zoneLayer.setOpacity(value);} catch(e){console.log(e);}
          
         }
-    }, "slider");
+    }, "sliderZone");
+
 
 
     //apply a selection symbol that determines the symbology for selected features 
