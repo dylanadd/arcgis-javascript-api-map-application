@@ -1132,15 +1132,7 @@ font-size: 16px;
 	margin: 5px 10px 0 16px;
 }
 
-#dijit_layout_ContentPane_2 {
-	margin-top: 16px !important;
-	margin-left: 0px !important;
-	position:absolute;
-	z-index: 1000;
-	border-style: solid;
-	height: 222px !important;
-border-color: rgb(16,64,92);
-}
+
 
 
 #close {
