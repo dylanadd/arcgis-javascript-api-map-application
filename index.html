@@ -175,9 +175,9 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
            <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off"></a>
            <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off."></a>
         	<a id="identify" class="idOff" title="Show parcel info popup when selcting parcels"></a>
-        <a id="toggleOutput" class="closed" title="View your selected info panel"></a>
+        <a id="toggleOutput" class="closed" title="View Selected Features Window"></a>
           
-        <a id="toggleLayerMenu">Layers</a>
+        <a id="toggleLayerMenu" title="Open the layer menu">Layers</a>
         <!-- Gallery div not in use, but app breaks without it -->
          <div id="gallery" class="dormant">
           <div data-dojo-type="dijit/TitlePane" 
@@ -259,6 +259,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
         		<div id="exportResults" title="Export CSV of selected features"></div>
         		<div id="dockButton" title="Unlock the window from this position"></div>
         		<div id="close" title="Close this window"></div>
+        		<div id="rWindowTitle">Selected Features</div>
         		 <div id="resultsContent">
         		 	<table cellspacing="0" id="tableContent" class="sWide"></table>
         		 	<table cellspacing="0" id="tableTallContent" class = "sTall"></table>
@@ -350,13 +351,17 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
       	
       	</div>
       </div>
+      
+      <div id="layerModeHelper" class="dockMode">
       <div id="sliderWrapHelper0">
       <div id="sliderWrapHelper" class="layerSnapLeft" >  
      <div id="sliderWrap" class="xslider hide"> 
      	<div id="layerButtonConsole">
-     		<a id="layerDock"></a>
-     		<a id="layerClose" ><span style="visibility:hidden">MM</span></a>
+     		<a id="layerDock" title="Unlock the layer window and move it around"></a>
+     		<a id="layerClose" title="Close the layer window"><span style="visibility:hidden">MM</span></a>
+     		
      	</div>
+     	<div id="layerLabel">Layers</div>
      	<div id="sliderWrap2">
 
       			<div id="accordion">
@@ -368,7 +373,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
      </div>
       </div>
       </div>
-      
+     </div> 
   </body>
 
 </html>

@@ -2304,13 +2304,13 @@ function levyUrl(){
         // Add a link into the InfoWindow Actions panel       
         var emailLink = domConstruct.create("a", {
             "class": "action",
-            "innerHTML": "Add Parcel Info",
+            "innerHTML": "&middot; View in Selected Features Window",
             "href": "javascript:void(0);"
         }, query(".actionList", map.infoWindow.domNode)[0]);
 
         var emailLink2 = domConstruct.create("a", {
             "class": "action2",
-            "innerHTML": "How are taxes on this parcel spent?",
+            "innerHTML": "&middot; How are taxes on this parcel spent?",
             "href": "javascript:void(0);"
         }, query(".actionList", map.infoWindow.domNode)[0]);
 
@@ -2765,6 +2765,7 @@ function levyUrl(){
 
   		
   		 try{
+  		     /*
   		     if(dom.byId("toggleParcs").checked){
   		         map.addLayer(parcelInfoLayer);
   		     }
@@ -2777,6 +2778,8 @@ function levyUrl(){
               if(dom.byId("toggleEsriLabels").checked){
                  map.addLayer(esriLabelLayer);
              }
+             */
+            layerSorter();
   		     } catch(e){console.log(e);}
         try{map.addLayer(gLayer);} catch(e){console.log(e);}
       //  map.addLayer(parcelInfoLayer);
