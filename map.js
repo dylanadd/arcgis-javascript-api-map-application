@@ -174,7 +174,7 @@ $('.zoneUp').click(function(){
      
        
        for(i=(order.length - 1);i>=0;i--){
-           console.log(order[i].id);
+      //     console.log(order[i].id);
            if(dom.byId(order[i].id).checked){
               switch(order[i].id){
                   case 'toggleParcels':
@@ -210,7 +210,7 @@ $('.zoneUp').click(function(){
            
        }
        
-       console.log(order);  
+     //  console.log(order);  
             
    }
    
@@ -2152,6 +2152,22 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
             }, function (error) {
                 alert(error);
             }); //end of defferred variable declaration
+			
+			var centerPoint = new Point(e.mapPoint.x, e.mapPoint.y, map.spatialReference);
+			console.log(centerPoint);
+			 var mapWidth = map.extent.getWidth();
+			 var pixelWidth = mapWidth/map.width;
+			 var tolerance = (10 * pixelWidth) + 3;
+			 console.log(mapWidth);
+			 console.log(pixelWidth);
+			 console.log(tolerance);
+			  var queryExtent = new esri.geometry.Extent
+                (1,1,tolerance,tolerance,e.mapPoint.spatialReference);
+                console.log(queryExtent);
+        query.geometry = queryExtent.centerAt(centerPoint);
+			points.selectFeatures(query, FeatureLayer.SELECTION_NEW,function(p){
+			    console.log(p);
+			});
 			
            // map.infoWindow.setFeatures([deferred]);
             map.infoWindow.show(e.mapPoint);
