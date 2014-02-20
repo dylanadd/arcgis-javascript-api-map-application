@@ -1158,6 +1158,14 @@
 			
 		}
 		
+		
+		//to center print menu
+		  $("#printMenu").position({
+            my: "center",
+            at: "center",
+            of: "#map"
+        });
+		
       }
       	
      on(locateButton, "click", function(){

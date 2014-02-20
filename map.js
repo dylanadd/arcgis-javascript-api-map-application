@@ -1866,9 +1866,10 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
                 "authorText": "Provided by: Pueblo County EDGIS",
                 "copyrightText": "Copyright 2014",
                 "legendLayers": [],
-                "titleText": "Pueblo County",
+                "titleText": "",
                 "scalebarUnit": "Miles"
             };
+            plate.preserveScale = false;
             return plate;
         });
 
@@ -1877,9 +1878,11 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
             "map": map,
             "templates": templates,
             url: printUrl
+           
         }, dom.byId("print_button"));
+       
         printer.startup();
-
+        printer.printoutText = "Click here to download map";
         printer.on("print-start", function () {
             domAttr.set("print_button", "class", "processing");
             domAttr.set("body", "class", "claro buttonMode calculating");
@@ -1889,26 +1892,48 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 
             domAttr.set("print_button", "class", "dormant");
             domAttr.set("body", "class", "claro buttonMode");
+            setTimeout(function(){$(".esriPrintout").text("Click here");},50);
 
         });
-
-        printer2 = new Print({
-            "map": map,
-            "templates": templates,
-            url: printUrl
-        }, dom.byId("textPrint"));
-        printer2.startup();
-
-        printer2.on("print-start", function () {
-            domAttr.set("print_button", "class", "processing");
+        
+        $("#printFormat").change(function(){
+            console.log($("#printFormat").get()[0].value);
+            console.dir(printer);
+            for(i=0;i<printer.templates.length;i++){
+                console.log(printer.templates[i]);
+                printer.templates[i].label = $("#printFormat").get()[0].value;
+                printer.templates[i].layout = $("#printFormat").get()[0].value;
+            }
+     
         });
-
-        printer2.on("print-complete", function () {
-
-            domAttr.set("print_button", "class", "dormant");
-
+         $("#printTitleInput").change(function(){
+           
+            for(i=0;i<printer.templates.length;i++){
+                printer.templates[i].layoutOptions.titleText = $("#printTitleInput").get()[0].value;
+            }
+     
         });
-
+        
+         $("#printScalebar").change(function(){
+           
+            for(i=0;i<printer.templates.length;i++){
+                
+               
+                printer.templates[i].layoutOptions.scalebarUnit = $("#printScalebar").get()[0].value;
+            }
+     
+        });
+        $("#printClose").click(function(){
+            $("#printMenu").toggle();
+        });
+         $("#printWindow").click(function(){
+            $("#printMenu").toggle();
+              $("#printMenu").position({
+            my: "center",
+            at: "center",
+            of: "#map"
+        });
+        });
     }
 
     function handleError(err) {

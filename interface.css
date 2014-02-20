@@ -523,7 +523,7 @@ a.bufferModeOn,a.bufferModeOff {
 }
 
 .dijitArrowNodeInner,td.dijitStretch div[id^='_label'],td[id^='dijit_form_ComboButton_'] div.dijitArrowButtonChar {
-
+display:none;
 }
 
 div.processing td[id^='dijit_form_ComboButton_'],a.processing,div#gallery.processing .dijitTitlePaneTitle {
@@ -1110,20 +1110,20 @@ font-size: 16px;
 }
 
 #print_button {
-	color:white;
-	padding-left: 20px;
-	text-shadow: 2px 1px #171212;
+	color:black;
+	padding-left: 81px;
+	float:left;
+	margin-top:10px;
 	cursor: pointer;
 	
 }
 #print_button:hover, #print_button a:hover {
-	color: #fffd4d;
 	
 }
 
 
 #print_button a {
-	color: white;
+	
 	text-decoration: none;
 }
 
@@ -2109,4 +2109,80 @@ position: relative;
 top: -18px;
 height: 0;
 right: 2px;
+}
+
+
+#printMenu{
+	position: absolute;
+font-family: verdana,helvetica;
+font-size: 14px;
+background: white;
+width: 311px;
+height: 167px;
+border-style: solid;
+border-color: rgb(16,64,92);
+}
+
+#printMenuTitle{
+	background: rgb(16,64,92);
+background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
+text-align: center;
+color: white;
+font-family: verdana,helvetica;
+font-weight: bold;
+height: 22px;
+width: 100%;
+margin-bottom: 10px;
+}
+
+
+.mapTitle{
+	float: left;
+	width: 70px;
+	padding-left: 10px;
+	margin-top: 4px;
+}
+.printFormat{
+	float: left;
+width: 95px;
+padding-left: 10px;
+margin-top: 4px;
+}
+.mapUnits{
+	float: left;
+width: 81px;
+padding-left: 10px;
+margin-top: 4px;
+}
+
+#printFormat{
+	float:right;
+	margin-right: 10px;
+}
+
+#printTitleInput{
+	float:right;
+	width: 176px;
+	margin-right: 10px;
+}
+
+#printScalebar{
+	float:right;
+	margin-right: 10px;
+	width: 180px;
+}
+#printMenu1{
+	height: 33px;
+}
+#printMenu2{
+	height: 33px;
+}
+#printMenu3{
+	height: 33px;
+}
+#printClose{
+	float:right;
+	padding-right: 84px;
+margin-top: 10px;
+cursor:pointer;
 }
