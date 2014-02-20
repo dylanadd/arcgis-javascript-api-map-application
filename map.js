@@ -558,6 +558,15 @@ var gLayer = new GraphicsLayer();
     	rubberBandZoomMode(false);
         navToolbar.activate(Navigation.PAN);
         domAttr.set(tools, "class" ,"panActive");
+        try{
+           
+        selectionTF = false;
+        drawHelper = false;
+        draw = false;
+        drawx.deactivate();
+        mDraw.deactivate();
+            
+        }catch(e){console.log(e);}
     });
 
     var overView = false;

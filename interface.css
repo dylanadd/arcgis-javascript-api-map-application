@@ -2117,7 +2117,7 @@ right: 2px;
 font-family: verdana,helvetica;
 font-size: 14px;
 background: white;
-width: 311px;
+width: 345px;
 height: 167px;
 border-style: solid;
 border-color: rgb(16,64,92);
@@ -2138,19 +2138,19 @@ margin-bottom: 10px;
 
 .mapTitle{
 	float: left;
-	width: 70px;
+	width: 90px;
 	padding-left: 10px;
 	margin-top: 4px;
 }
 .printFormat{
 	float: left;
-width: 95px;
+width:115px;
 padding-left: 10px;
 margin-top: 4px;
 }
 .mapUnits{
 	float: left;
-width: 81px;
+width: 101px;
 padding-left: 10px;
 margin-top: 4px;
 }

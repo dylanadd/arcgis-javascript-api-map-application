@@ -74,7 +74,7 @@
       
  
     aContainer.addChild(new ContentPane({
-        title:'<div class="accordionTitle">Basemaps</div>',
+        title:'<div class="accordionTitle"><span class="basemapsTitle">Basemaps</span></div>',
         content:'<div class="accordionContent basemaps">' +
                 '<div class="optionFit">' +
         		'<div class="basemap-pad"><label><input type="radio" checked="checked" name="blayer" id="toggleSat"><span>ESRI Satellite</span></label><br/></div>' +
@@ -576,7 +576,13 @@
         	//	fx.fadeOut({node: dom.byId("increment"), duration: 225}).play();
         	//	fx.fadeOut({node: dom.byId("decrement"), duration: 225}).play();
         		zoomTF = true;
+        		
         	}
+        	fx.fadeOut({node: dom.byId("selectionTools"), duration: 225}).play();
+                setTimeout(function(){
+                    domAttr.set(dom.byId("selectionTools"), "class", "hide");
+                    
+                }, 250);
         });
         
         var unmovedView = false;
@@ -1165,6 +1171,8 @@
             at: "center",
             of: "#map"
         });
+        
+     
 		
       }
       	
