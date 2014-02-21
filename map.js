@@ -858,7 +858,7 @@ var gLayer = new GraphicsLayer();
 			if(dom.byId("toggleFlood").checked){
 				//map.addLayer(floodLayer);
 				layerSorter();
-			} else{
+			} else {
 				map.removeLayer(floodLayer);
 			}
     });
@@ -1310,33 +1310,6 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 				try{map.removeLayer(waterColorLayer);}catch(e){}
 			}
     });  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -2112,13 +2085,90 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     });
     roads.setSelectionSymbol(sfs);
 
-    //when users click on the map select the parcel using the map point and update the url parameter
+function queryClear(){
+    try{infoArray2.length = 0;} catch(e){}
+    try{map.graphics.clear();}catch(e){};
+    try{gLayer.clear();} catch(e){}
+    try{ infoArray.length = 0;}catch(e){}
+}
+
+    //when users click on the map select the parcel
+    // using the map point and update the url parameter
     map.on("click", function (e) {
-		
-        console.log(e.mapPoint);
+		queryClear();
 
         if (draw == false || draw == null) {
             var query = new Query();
+            
+            clickPoints(e);
+           
+            clickRoads(e);
+            
+          
+          
+          
+          
+          
+            map.infoWindow.show(e.mapPoint);
+          //  console.log(popup);
+            
+            try {
+                infoArray = selection[0];
+            } catch (e) {}
+        }
+
+        //doBuffer3(selectedParcel);
+    });
+
+
+
+function clickPoints(e){
+     
+            //begin clickable points
+           
+            if($("#togglePoints")[0].checked){
+            var centerPoint = new Point(e.mapPoint.x, e.mapPoint.y, map.spatialReference);
+            console.log(centerPoint);
+            var mapWidth = map.extent.getWidth();
+            var pixelWidth = mapWidth/map.width;
+            var tolerance = (10 * pixelWidth) + 6;
+            console.log(mapWidth);
+            console.log(pixelWidth);
+            console.log(tolerance);
+            var queryExtent = new esri.geometry.Extent(1,1,tolerance,tolerance,e.mapPoint.spatialReference);    
+            query.geometry = queryExtent.centerAt(centerPoint);
+            
+            var deferred =  points.selectFeatures(query, FeatureLayer.SELECTION_NEW,function(p){
+               
+                console.log(p);
+               var t = points.getSelectedFeatures();
+               console.log(t);
+             //  var graphic = new Graphic(t[0].geometry, sfs3);
+             
+              // map.graphics.add(graphic);
+              if(p.length > 0){
+                  queryClear();
+              infoArray2.push(p[0]);
+               displayResults(p,"address");
+               zoomToPoint(p[0], false);
+               }
+            });
+            }
+           deferred.then(function(result){
+               console.log(result.length);
+               if(result.length == 0){
+                clickParcels(e);
+            }
+           }); 
+            //end clickable points
+}
+
+function clickParcels(e) {
+    
+            //begin clickable parcels
+            
+              if($("#toggleParcels")[0].checked){
+             
             query.geometry = e.mapPoint;
             // console.log(e);
             // map.centerAndZoom(e.mapPoint, 10);
@@ -2128,15 +2178,16 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
              try{map.graphics.clear();}catch(e){}
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
                 console.debug(selection);
-               
-				try{
-					map.infoWindow.setFeatures(selection);
-					infoArray = selection[0];
-				} catch(e){}
+               queryClear();
+                try{
+                    map.infoWindow.setFeatures(selection);
+                    infoArray = selection[0];
+                } catch(e){}
                 //update the url param if a parcel was located
                 if (selection.length > 0) {
                     var parcelid = selection[0].attributes["PAR_NUM"];
                     infoArray = selection[0];
+                    selectParcel(parcelid);
                     // infoArray2 += selection[0];
                     //Refresh the URL with the currently selected parcel
                     if (typeof history.pushState !== "undefined") {
@@ -2146,40 +2197,50 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
                         infoArray2.push(selection[0]);
                     }
                 }
-				try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
+                try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
               //  map.addLayer(parcels);
-			
+            
             }, function (error) {
                 alert(error);
             }); //end of defferred variable declaration
-			
-			var centerPoint = new Point(e.mapPoint.x, e.mapPoint.y, map.spatialReference);
-			console.log(centerPoint);
-			 var mapWidth = map.extent.getWidth();
-			 var pixelWidth = mapWidth/map.width;
-			 var tolerance = (10 * pixelWidth) + 3;
-			 console.log(mapWidth);
-			 console.log(pixelWidth);
-			 console.log(tolerance);
-			  var queryExtent = new esri.geometry.Extent
-                (1,1,tolerance,tolerance,e.mapPoint.spatialReference);
-                console.log(queryExtent);
-        query.geometry = queryExtent.centerAt(centerPoint);
-			points.selectFeatures(query, FeatureLayer.SELECTION_NEW,function(p){
-			    console.log(p);
-			});
-			
-           // map.infoWindow.setFeatures([deferred]);
-            map.infoWindow.show(e.mapPoint);
-            console.log(popup);
-            //  selectedParcel = selection[0];
-            try {
-                infoArray = selection[0];
-            } catch (e) {}
-        }
+            
+            }
+        //end clickable parcels
+        
+}
 
-        //doBuffer3(selectedParcel);
-    });
+function clickRoads(e){
+    
+          //begin clickable roads
+           if($("#toggleRoads")[0].checked){
+            var centerPoint = new Point(e.mapPoint.x, e.mapPoint.y, map.spatialReference);
+            console.log(centerPoint);
+            var mapWidth = map.extent.getWidth();
+            var pixelWidth = mapWidth/map.width;
+            var tolerance = (10 * pixelWidth) + 6;
+            console.log(mapWidth);
+            console.log(pixelWidth);
+            console.log(tolerance);
+            var queryExtent = new esri.geometry.Extent(1,1,tolerance,tolerance,e.mapPoint.spatialReference);    
+            query.geometry = queryExtent.centerAt(centerPoint);
+            
+            road.selectFeatures(query, FeatureLayer.SELECTION_NEW,function(p){
+                console.log(p);
+  
+             
+              if(p.length > 0){
+                  queryClear();
+              infoArray2.push(p[0]);
+              var temp = Array();
+              temp.push(p[0]); // so that only one feature is displayed in result window
+               displayResults(temp,"road");
+               zoomToRoad(p[0]);
+               }
+            });
+            }
+          
+          //end clickable roads
+}
 
     //   map.on("click", doBuffer3);
 
@@ -3419,7 +3480,7 @@ function zoomToRoad(evt){
 }
 
 
-function zoomToPoint(evt){
+function zoomToPoint(evt, zoomTF){
 	var geom = evt.geometry;
 	map.graphics.clear();
 	try{gLayer.clear();}catch(e){}
@@ -3446,7 +3507,9 @@ function zoomToPoint(evt){
              
                gLayer.add(new Graphic(geom,textSymbol));
                map.addLayer(gLayer);
+               if(zoomTF == true || zoomTF == undefined){
                 map.centerAndZoom(geom, 18);
+                }
 }
 
 
