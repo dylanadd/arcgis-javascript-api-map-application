@@ -31,7 +31,8 @@ require([
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
     "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/toolbars/navigation", "esri/tasks/QueryTask", //"dojo/_base/connect",
     "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "dojo/behavior", "dojo/request", "esri/dijit/PopupMobile", 
-    "esri/layers/OpenStreetMapLayer","esri/layers/WebTiledLayer", "dojo/promise/all",
+    "esri/layers/OpenStreetMapLayer","esri/layers/WebTiledLayer", "dojo/promise/all", 
+    "esri/geometry/Circle", 
 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
 ], function (
@@ -46,7 +47,8 @@ require([
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
      SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
     domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, Navigation, QueryTask,
-    Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile, OpenStreetMapLayer, WebTiledLayer, all
+    Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile, OpenStreetMapLayer, WebTiledLayer, all,
+    Circle
 
 ) {
 
@@ -2116,29 +2118,39 @@ function queryClear(){
             
             var centerPoint = new Point(e.mapPoint.x, e.mapPoint.y, map.spatialReference);
             console.log(centerPoint);
-            var mapWidth = map.extent.getWidth();
+            //var mapWidth = map.extent.getWidth();
+            var mapWidth = map.extent.getWidth() / 10;
+           
             var pixelWidth = mapWidth/map.width;
-            var tolerance = (10 * pixelWidth) + 6;
+            var tolerance = (10 * pixelWidth) + 3;
+             var circ = new Circle({
+                center: e.mapPoint,
+                geodesic: false,
+                radius: tolerance
+            });
+            console.log(circ);
             console.log(mapWidth);
             console.log(pixelWidth);
             console.log(tolerance);
-            var queryExtent = new esri.geometry.Extent(1,1,tolerance,tolerance,e.mapPoint.spatialReference);    
-            query.geometry = queryExtent.centerAt(centerPoint);
+          //  var queryExtent = new esri.geometry.Extent(1,1,tolerance,tolerance,e.mapPoint.spatialReference);    
+           // query.geometry = queryExtent.centerAt(centerPoint);
+           query.geometry = circ;
             var deferredP =  points.selectFeatures(query, FeatureLayer.SELECTION_NEW,function(p){
-               /*
+               
                 console.log(p);
-               var t = points.getSelectedFeatures();
-               console.log(t);
-             //  var graphic = new Graphic(t[0].geometry, sfs3);
-             
-              // map.graphics.add(graphic);
+                
+              
+                 domAttr.set(dojo.byId("body"),"class","claro buttonMode");
+               
+           
               if(p.length > 0){
+                    promise.cancel();
                   queryClear();
               infoArray2.push(p[0]);
                displayResults(p,"address");
                zoomToPoint(p[0], false);
                }
-               */
+               
             });
             
             
@@ -2147,8 +2159,10 @@ function queryClear(){
             var deferredRoad = road.selectFeatures(query, FeatureLayer.SELECTION_NEW,function(p){
                 console.log(p);
   
-                /*
+               
               if(p.length > 0){
+                  promise.cancel();
+                   domAttr.set(dojo.byId("body"),"class","claro buttonMode");
                   queryClear();
               infoArray2.push(p[0]);
               var temp = Array();
@@ -2156,7 +2170,7 @@ function queryClear(){
                displayResults(temp,"road");
                zoomToRoad(p[0]);
                }
-               */
+               
             });
             
              
@@ -3401,14 +3415,17 @@ function levyUrl(){
             domAttr.set("draw", "class", "drawOn");
             domAttr.set(tools, "class" ,"drawActive");
             // domAttr.set("measurementDiv", "style", "visibility: visible !important;;");
-         //   measurement.show();
+           
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
             map.infoWindow.hide();
         } else if (draw) {
             draw = false;
             domAttr.set("draw", "class", "drawOff");
             domAttr.set(tools, "class" ,"clear");
-           // measurement.hide();
+           try{ measurement.setTool("area", false);}catch(e){}
+           try{ measurement.setTool("distance", false);}catch(e){}
+           try{ measurement.setTool("location", false);}catch(e){}
+           map.graphics.clear();
             //  domAttr.set("measurementDiv", "style", "visibility: hidden !important;");
 
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;visibility: hidden;");
