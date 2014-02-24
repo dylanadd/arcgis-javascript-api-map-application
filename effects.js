@@ -101,9 +101,7 @@
     }));
   
     aContainer.startup();
-      console.dir(AccordionContainer);
-       console.log(aContainer);
-      
+   
       
       
       $(".parcSlideToggle").click(function(){
@@ -413,11 +411,11 @@
         	
         	if(!idTF){
         	domAttr.set(dom.byId("identify"),"class","idActive");
-        	domAttr.set(popTemp,"class","esriPopup");
+        	//domAttr.set(popTemp,"class","esriPopup");
         	idTF = true;
         	} else {
         		domAttr.set(dom.byId("identify"),"class","idInactive");
-        		domAttr.set(popTemp,"class","esriPopup hide");
+        		//domAttr.set(popTemp,"class","esriPopup hide");
         		idTF = false;
         	}
         });
@@ -1032,7 +1030,7 @@
 				}
 				
 			}
-		}catch(e){console.log(e);}
+		}catch(e){}
 		}, 50);
 	});  
 	

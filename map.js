@@ -830,7 +830,7 @@ var gLayer = new GraphicsLayer();
 
 	 dojo.connect(dom.byId("identify"), "click", function () {
       popup.hide();
-      	console.log(map.getLayersVisibleAtScale());
+      	
     });
     
     var addrSearchMode = "geo"; //default option is geocode the address
@@ -848,8 +848,14 @@ var gLayer = new GraphicsLayer();
     });
 	
 	
-	
-	
+	var idMode = false;
+	$("#identify").click(function(){
+	    if(!idMode){
+	        idMode = true;
+	    } else {
+	        idMode = false;
+	    }
+	});
 	  
 	
 	//begin layer toggle menu
@@ -2097,9 +2103,9 @@ function queryClear(){
     map.on("click", function (e) {
 		queryClear();
 
-        if (draw == false || draw == null) {
+        if ((draw == false || draw == null) && idMode) {
             var query = new Query();
-            
+            domAttr.set(dojo.byId("body"),"class","claro buttonMode calculating");
           //  clickPoints(e);
            
             //clickRoads(e);
@@ -2191,7 +2197,7 @@ function queryClear(){
           
           var promise = new all([deferredP,deferredParc, deferredRoad]);
           promise.then(function(a){
-              
+              domAttr.set(dojo.byId("body"),"class","claro buttonMode");
               if(a[0].length > 0){
               
                   queryClear();
@@ -3394,13 +3400,14 @@ function levyUrl(){
             domAttr.set("draw", "class", "drawOn");
             domAttr.set(tools, "class" ,"drawActive");
             // domAttr.set("measurementDiv", "style", "visibility: visible !important;;");
-
+         //   measurement.show();
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
             map.infoWindow.hide();
         } else if (draw) {
             draw = false;
             domAttr.set("draw", "class", "drawOff");
             domAttr.set(tools, "class" ,"clear");
+           // measurement.hide();
             //  domAttr.set("measurementDiv", "style", "visibility: hidden !important;");
 
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;visibility: hidden;");

@@ -302,7 +302,7 @@ border:none!important;
 
 .esriPopup {
 z-index:100;
-
+display:none !important;
 }
 
 .rewrite #gallery {
