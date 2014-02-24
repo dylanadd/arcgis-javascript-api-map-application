@@ -2101,9 +2101,10 @@ function queryClear(){
     //when users click on the map select the parcel
     // using the map point and update the url parameter
     map.on("click", function (e) {
-		queryClear();
+		
 
         if ((draw == false || draw == null) && idMode) {
+            queryClear();
             var query = new Query();
             domAttr.set(dojo.byId("body"),"class","claro buttonMode calculating");
           //  clickPoints(e);
