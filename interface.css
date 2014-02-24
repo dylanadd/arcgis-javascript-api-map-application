@@ -1992,7 +1992,7 @@ margin-right: 8px;
 }
 
 
-.parcSlideToggle,.addrSlideToggle, .roadSlideToggle,
+.pcSlideToggle, .parcSlideToggle,.addrSlideToggle, .roadSlideToggle,
 .railSlideToggle, .boundSlideToggle, .worldSlideToggle,
 .floodSlideToggle, .zoneSlideToggle{
 	float: left;
@@ -2053,6 +2053,10 @@ left: -10px;
 top: -1px;
 }
 
+div.sliderLabel.pc + table, div.sliderLabel.pc {
+	display:none;
+	padding-top: 10px;
+}
 
 div.sliderLabel.parcs + table, div.sliderLabel.parcs {
 	display:none;

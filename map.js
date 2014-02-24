@@ -72,6 +72,17 @@ require([
    
    */
 
+$('.pcUp').click(function(){
+        var current = $('.pcUD');
+        current.prev().before(current);
+        layerSorter();
+  });
+  $('.pcDown').click(function(){
+  var current = $('.pcUD');
+  current.next().after(current);
+  layerSorter();
+});
+
 $('.parcUp').click(function(){
         var current = $('.parcelUD');
         current.prev().before(current);
@@ -165,6 +176,7 @@ $('.zoneUp').click(function(){
    
    function setDataLayerOrder(order){
        
+       try{map.removeLayer(parcelInfoLayer);}catch(e){}
        try{map.removeLayer(puebloParcelLayer);}catch(e){}
        try{map.removeLayer(puebloPointsLayer);}catch(e){}
        try{map.removeLayer(puebloRoadLayer);}catch(e){}
@@ -179,8 +191,13 @@ $('.zoneUp').click(function(){
       //     console.log(order[i].id);
            if(dom.byId(order[i].id).checked){
               switch(order[i].id){
+                  case 'togglePuebloCounty':
+         
+                   map.addLayer(parcelInfoLayer);
+                    break;
                   case 'toggleParcels':
                     map.addLayer(puebloParcelLayer);
+                   
                     break;
                   case 'togglePoints':
                     map.addLayer(puebloPointsLayer);
@@ -269,6 +286,21 @@ cloudmadePaleLayer = new WebTiledLayer("http://${subDomain}.tile.cloudmade.com/1
  // "url": "http://${subDomain}.tile.stamen.com/watercolor/${level}/${col}/${row}.jpg"
                     
      //for layer opacity
+      
+      var sliderPC = new HorizontalSlider({
+        name: "sliderPC",
+        value: 1,
+        minimum: 0,
+        maximum: 1,
+        intermediateChanges: true,
+        style: "width:200px;",
+        onChange: function(value){
+              try{ parcelInfoLayer.setOpacity(value);} catch(e){console.log(e);}
+          
+         
+        }
+    }, "sliderPC");
+      
       var sliderParc = new HorizontalSlider({
         name: "sliderParc",
         value: 1,
@@ -832,6 +864,10 @@ var gLayer = new GraphicsLayer();
 
 	 dojo.connect(dom.byId("identify"), "click", function () {
       popup.hide();
+     on.emit(dom.byId("pan"), "click", {
+            bubbles: true,
+            cancelable: true
+        });
       	
     });
     
@@ -857,6 +893,7 @@ var gLayer = new GraphicsLayer();
 	    } else {
 	        idMode = false;
 	    }
+	    
 	});
 	  
 	

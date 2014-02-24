@@ -51,7 +51,9 @@
         title: '<div class="accordionTitle">Labels & Data</div>',
         content: '<div class="accordionContent">' +
                         '<div class="optionFit"><ul class="sortableData">' + 
-                       // '<li><label><input type="checkbox"  name="layer" id="toggleParcs"><span>Pueblo County Data</span></label></li>' +
+                        //'<li><label><input type="checkbox"  name="layer" id="togglePuebloCounty"><span>Pueblo County</span></label></li>' +
+                        '<div class="pcUD"><li ><label><input type="checkbox"  name="layer" id="togglePuebloCounty"><span>Pueblo County</span></label><div class="UDControls" title="Move layer down/up one level"><div class="pcSlideToggle">+</div><span class="pcDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="pcUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel pc">Opacity:</div><div id="sliderPC"></div></div>' +
+                        
                         '<div class="parcelUD"><li ><label><input type="checkbox"  name="layer" id="toggleParcels"><span>Parcels</span></label><div class="UDControls" title="Move layer down/up one level"><div class="parcSlideToggle">+</div><span class="parcDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="parcUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel parcs">Opacity:</div><div id="sliderParc"></div></div>' +
                         '<div class="addrUD"><li ><label><input type="checkbox"  name="layer" id="togglePoints"><span>Address Points</span></label><div class="UDControls" title="Move layer down/up one level"><div class="addrSlideToggle">+</div><span class="addrDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="addrUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel addr">Opacity:</div><div id="sliderAddr"></div></div>' +
                         '<div class="roadUD"> <li ><label><input type="checkbox"  name="layer" id="toggleRoads"><span>Roads</span></label><div class="UDControls" title="Move layer down/up one level"><div class="roadSlideToggle">+</div><span class="roadDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="roadUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel road">Opacity:</div><div id="sliderRoad"></div></div>' +
@@ -102,7 +104,15 @@
   
     aContainer.startup();
    
-      
+       $(".pcSlideToggle").click(function(){
+          if($(".pcSlideToggle").get()[0].innerText == "+"){
+              $(".pcSlideToggle").text("-");
+          } else {
+              $(".pcSlideToggle").text("+");
+          }
+             $("div.sliderLabel.pc").toggle();
+           $("div.sliderLabel.pc + table").toggle();
+          });
       
       $(".parcSlideToggle").click(function(){
           if($(".parcSlideToggle").get()[0].innerText == "+"){
