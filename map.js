@@ -31,7 +31,7 @@ require([
     "dojo/dom-attr", "esri/sniff", "esri/SnappingManager", "esri/renderers/SimpleRenderer",
     "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/toolbars/navigation", "esri/tasks/QueryTask", //"dojo/_base/connect",
     "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "dojo/behavior", "dojo/request", "esri/dijit/PopupMobile", 
-    "esri/layers/OpenStreetMapLayer","esri/layers/WebTiledLayer",
+    "esri/layers/OpenStreetMapLayer","esri/layers/WebTiledLayer", "dojo/promise/all",
 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
 ], function (
@@ -46,7 +46,7 @@ require([
     BasemapGallery, arcgisUtils, BasemapLayer, Basemap, Scalebar, Measurement,
      SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
     domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, Navigation, QueryTask,
-    Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile, OpenStreetMapLayer, WebTiledLayer
+    Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile, OpenStreetMapLayer, WebTiledLayer, all
 
 ) {
 
@@ -2100,13 +2100,142 @@ function queryClear(){
         if (draw == false || draw == null) {
             var query = new Query();
             
-            clickPoints(e);
+          //  clickPoints(e);
            
-            clickRoads(e);
+            //clickRoads(e);
+            
+            
+            
+            
+            var centerPoint = new Point(e.mapPoint.x, e.mapPoint.y, map.spatialReference);
+            console.log(centerPoint);
+            var mapWidth = map.extent.getWidth();
+            var pixelWidth = mapWidth/map.width;
+            var tolerance = (10 * pixelWidth) + 6;
+            console.log(mapWidth);
+            console.log(pixelWidth);
+            console.log(tolerance);
+            var queryExtent = new esri.geometry.Extent(1,1,tolerance,tolerance,e.mapPoint.spatialReference);    
+            query.geometry = queryExtent.centerAt(centerPoint);
+            var deferredP =  points.selectFeatures(query, FeatureLayer.SELECTION_NEW,function(p){
+               /*
+                console.log(p);
+               var t = points.getSelectedFeatures();
+               console.log(t);
+             //  var graphic = new Graphic(t[0].geometry, sfs3);
+             
+              // map.graphics.add(graphic);
+              if(p.length > 0){
+                  queryClear();
+              infoArray2.push(p[0]);
+               displayResults(p,"address");
+               zoomToPoint(p[0], false);
+               }
+               */
+            });
+            
+            
+            
+            
+            var deferredRoad = road.selectFeatures(query, FeatureLayer.SELECTION_NEW,function(p){
+                console.log(p);
+  
+                /*
+              if(p.length > 0){
+                  queryClear();
+              infoArray2.push(p[0]);
+              var temp = Array();
+              temp.push(p[0]); // so that only one feature is displayed in result window
+               displayResults(temp,"road");
+               zoomToRoad(p[0]);
+               }
+               */
+            });
+            
+             
+            query.geometry = e.mapPoint;
+            // console.log(e);
+            // map.centerAndZoom(e.mapPoint, 10);
+            //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
+             try{gLayer.clear();}catch(e){}
+             try{infoArray2.length = 0;}catch(e){}
+             try{map.graphics.clear();}catch(e){}
+            var deferredParc = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
+               /* console.debug(selection);
+               queryClear();
+                try{
+                    map.infoWindow.setFeatures(selection);
+                    infoArray = selection[0];
+                } catch(e){}
+                //update the url param if a parcel was located
+                if (selection.length > 0) {
+                    var parcelid = selection[0].attributes["PAR_NUM"];
+                    infoArray = selection[0];
+                    selectParcel(parcelid);
+                    // infoArray2 += selection[0];
+                    //Refresh the URL with the currently selected parcel
+                    if (typeof history.pushState !== "undefined") {
+                        //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
+                        infoArray = selection[0];
+                        console.log(infoArray);
+                        infoArray2.push(selection[0]);
+                    }
+                }
+                try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
+              //  map.addLayer(parcels);
+            */
+            }, function (error) {
+                alert(error);
+            }); //end of defferred variable declaration
             
           
-          
-          
+          var promise = new all([deferredP,deferredParc, deferredRoad]);
+          promise.then(function(a){
+              
+              if(a[0].length > 0){
+              
+                  queryClear();
+              infoArray2.push(a[0][0]);
+               displayResults(a[0],"address");
+               zoomToPoint(a[0][0], false);
+               
+              } else if(a[1].length > 0){
+                   queryClear();
+                try{
+                    map.infoWindow.setFeatures(a[1]);
+                    infoArray = a[1][0];
+                } catch(e){}
+                //update the url param if a parcel was located
+                if (a[1].length > 0) {
+                    var parcelid = a[1][0].attributes["PAR_NUM"];
+                    infoArray = a[1][0];
+                    selectParcel(parcelid);
+                    // infoArray2 += selection[0];
+                    //Refresh the URL with the currently selected parcel
+                    if (typeof history.pushState !== "undefined") {
+                        //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
+                        infoArray = a[1][0];
+                        console.log(infoArray);
+                        infoArray2.push(a[1][0]);
+                    }
+                }
+                try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
+              //  map.addLayer(parcels);
+              
+              } else if (a[2].length > 0){
+                     queryClear();
+              infoArray2.push(a[2][0]);
+              var temp = Array();
+              temp.push(a[2][0]); // so that only one feature is displayed in result window
+               displayResults(temp,"road");
+               zoomToRoad(a[2][0]);
+              }
+              
+              console.log(a);
+              
+              
+              
+              });
           
           
             map.infoWindow.show(e.mapPoint);
@@ -2558,7 +2687,7 @@ function levyUrl(){
 
     });
 
-    map.addLayers([parcels]);
+    
 
     //extract the parcel id from the url
     function getParcelFromUrl(url) {
@@ -4396,6 +4525,7 @@ function makeGeomArray2(selection) {
     //select parcel from the feature layer by creating a query to look for the input parcel id 
     function selectParcel(parcelid) {
     	var z = new Array();
+    	 var graphic;
     	try{
 		infoArray2.length = 0;
 		
@@ -4415,6 +4545,7 @@ function makeGeomArray2(selection) {
 	 			console.log(z);
                try{ var center = graphicsUtils.graphicsExtent(z).getCenter();} catch(e){console.log(e);}
                 console.log(center);
+                
                 var extHandler = map.on("extent-change", function () {
                     extHandler.remove();
                     //zoom to the center then display the popup 
@@ -4423,20 +4554,27 @@ function makeGeomArray2(selection) {
                     infoArray = selection[0];
                     try{infoArray2.push(selection[0]);}catch(e){console.log(e);}
                     try{displayResults(selection[0],"single");}catch(e){console.log(e);}
+                    
                   // info();
                   searchTimeout = true;
                    
                 });
+              gLayer.add( new Graphic(selection[0].geometry, sfs));
                
                 try{ map.centerAndZoom(center, 18);}catch(e){console.log(e);}
             //  map.setExtent(graphicsUtils.graphicsExtent(z));
              //  map.centerAt(center);
              //  map.setZoom(18);
+             
                  domAttr.set("locate", "class", "dormant");
                 domAttr.set("body", "class", "claro buttonMode");
              });
             });
         }
+        
+    
+    console.log(gLayer);
+    map.addLayers([gLayer]);
     }
 
 });
