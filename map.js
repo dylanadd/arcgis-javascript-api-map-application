@@ -14,7 +14,7 @@ var legendDijit;
 var legendStartup = false;
 var gsvc, p, paramx, sp;
 var selectionTF = false;
-
+var zoomLevel;
 // var gsvc, tb;
 require([
     "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/tasks/locator", "esri/dijit/LocateButton", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
@@ -505,6 +505,7 @@ var gLayer = new GraphicsLayer();
         //  sliderPosition: "bottom-right",
         //   sliderStyle: "large",
         maxZoom: 19,
+        minZoom: 3,
         zoom: 11
        
 
@@ -556,7 +557,7 @@ var gLayer = new GraphicsLayer();
     	finishedLoading = true;
        
         domAttr.set("body", "class", "claro buttonMode");
-
+        zoomLevel = map.getZoom();
 
 
 
@@ -568,6 +569,10 @@ var gLayer = new GraphicsLayer();
             popup.reposition();
         }
     });
+
+
+
+
 
 //control map through keyboard 
 $(document).keydown(function(e){
@@ -594,18 +599,40 @@ $(document).keydown(function(e){
          case 189:
             //zoom out - minus/dash key
             
-            map.setZoom(map.getZoom() - 1);
+             zoomLevel -= 1;
+           map.setZoom(zoomLevel);
             break;
         case 187:
             //zoom in - +/= key
-            map.setZoom(map.getZoom() + 1);
+             zoomLevel += 1;
+           map.setZoom(zoomLevel);
             break;
+        
+        //toggle floodplain layer
+        case 70:
+            if(e.shiftKey){
+              $("#toggleFlood").trigger("click"); 
+           }
+        break;
+        
+        //toggle esri labels
+         case 87:
+            if(e.shiftKey){
+              $("#toggleEsriLabels").trigger("click"); 
+           }
+        break;
+        
         case 90:
-            //rubber band zoom  mode - z key
+            //rubber band zoom  mode or zone layer - z key
+           
+           if(e.shiftKey){
+              $("#toggleZoning").trigger("click"); 
+           }else{
             on.emit(dom.byId("zoom"), "click", {
                     bubbles: true,
                     cancelable: true
                 });
+            }
             break;
         case 80:
            //print - shift + p key
@@ -625,18 +652,53 @@ $(document).keydown(function(e){
             break;
         case 83:
             //selection - s key
+            
+             if(e.shiftKey){
+              $("#toggleRoads").trigger("click"); 
+           }else{
+            
             on.emit(dom.byId("selection"), "click", {
                     bubbles: true,
                     cancelable: true
                 });
+            }
+            break;
+            
+          case 82:
+            //toggle railroad layer - shift + r key
+            
+             if(e.shiftKey){
+              $("#toggleRailroads").trigger("click");     
+            } 
             break;
        case 67:
             //clear - c key
+            
+             if(e.shiftKey){
+              $("#togglePuebloCounty").trigger("click");     
+            } else {
+            
             on.emit(dom.byId("clear"), "click", {
                     bubbles: true,
                     cancelable: true
                 });
+            }
             break;
+     
+     case 65:
+     //toggle addr point layer - a key
+        if(e.shiftKey){
+              $("#togglePoints").trigger("click");     
+            }
+        break;
+     
+     case 89:
+        //toggle parcel layer - y key
+         if(e.shiftKey){
+              $("#toggleParcels").trigger("click");     
+            }
+        break;
+     
       case 77:
             on.emit(dom.byId("draw"), "click", {
                     bubbles: true,
@@ -646,10 +708,15 @@ $(document).keydown(function(e){
             break; 
      case 66:
             //buffer - b key
+            
+             if(e.shiftKey){
+              $("#toggleBoundaries").trigger("click"); 
+           } else {
             on.emit(dom.byId("bufferMode"), "click", {
                     bubbles: true,
                     cancelable: true
                 });
+            }
             break;
             
       case 79:
@@ -698,15 +765,23 @@ $(document).keydown(function(e){
                 });
             break;   
         case 81:
-            //focus on search input - q key
-          /*  on.emit(dom.byId("address"), "click", {
-                    bubbles: true,
-                    cancelable: true
-                });
-                */
-            setTimeout(function(){$("#address").focus();},200);    
+           
+            setTimeout(function(){
+               $("#address").focus();
+               $("#address").val("");
+               },50); 
             break;   
-                        
+       
+       //secondary button for zoom out
+        case 188:
+           zoomLevel -= 1;
+           map.setZoom(zoomLevel);
+            break;  
+            //secondary button for zoom in 
+         case 190:
+           zoomLevel += 1;
+          map.setZoom(zoomLevel);
+            break;                   
      }
     
     }
@@ -769,6 +844,10 @@ $(document).keydown(function(e){
                },50); 
             break;
      }
+     
+     
+     
+     
      
        
  });
