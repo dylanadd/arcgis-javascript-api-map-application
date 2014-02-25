@@ -727,6 +727,11 @@ $(document).keydown(function(e){
                 });
             break;          
             
+     case 32:
+     
+     map.centerAndZoom(new Point([-104.595337, 38.255706]), 11);
+     queryClear();
+        break;
             
      case 73:
             //identify mode - i key
@@ -1853,6 +1858,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
             }, function (error) {
 
             });
+            map.addLayers([gLayer]);
         } else if (selectionMode == "addr") {
         	try{parcels.clearSelection();} catch(e){}
         	try{road.clearSelection();} catch(e){}

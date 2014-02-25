@@ -1733,10 +1733,10 @@ border-left-width: 0px;
 	width:474px !important;
 }
 
-.mobile-mode-portrait #draw, .mobile-mode-portrait #bufferMode, .mobile-mode-portrait #toggleOutput, .mobile-mode-portrait #gallery, .mobile-mode-portrait #print_button, .mobile-mode-portrait #overviewToggle, .mobile-mode-portrait #legendToggle, .mobile-mode-portrait #toggleLayerMenu {
+.mobile-mode-portrait #draw, .mobile-mode-portrait #bufferMode, .mobile-mode-portrait #printWindow, .mobile-mode-portrait #toggleOutput, .mobile-mode-portrait #gallery, .mobile-mode-portrait #print_button, .mobile-mode-portrait #overviewToggle, .mobile-mode-portrait #legendToggle, .mobile-mode-portrait #toggleLayerMenu {
 	display:none;
 }
-.mobile-mode-landscape #draw,   .mobile-mode-landscape #gallery, .mobile-mode-landscape #print_button, .mobile-mode-landscape #overviewToggle, .mobile-mode-landscape #legendToggle {
+.mobile-mode-landscape #draw, .mobile-mode-landscape #printWindow,  .mobile-mode-landscape #gallery, .mobile-mode-landscape #print_button, .mobile-mode-landscape #overviewToggle, .mobile-mode-landscape #legendToggle {
 display:none;
 }
 
