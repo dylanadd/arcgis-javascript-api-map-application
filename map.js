@@ -492,6 +492,8 @@ var gLayer = new GraphicsLayer();
 
     }
 
+
+
     //Map constructor
     map = new Map("map", {
       //  basemap: "hybrid",
@@ -504,6 +506,7 @@ var gLayer = new GraphicsLayer();
         //   sliderStyle: "large",
         maxZoom: 19,
         zoom: 11
+       
 
     });
 
@@ -554,6 +557,10 @@ var gLayer = new GraphicsLayer();
        
         domAttr.set("body", "class", "claro buttonMode");
 
+
+
+
+
     });
 
     map.on("zoom-end", function () {
@@ -561,6 +568,220 @@ var gLayer = new GraphicsLayer();
             popup.reposition();
         }
     });
+
+//control map through keyboard 
+$(document).keydown(function(e){
+     console.log(e);
+    if(keyListen){
+     switch(e.keyCode){
+         
+         case 38:
+         //pan up - up arrow
+            map.panUp();
+            break;
+          case 40:
+          //pan down - down arrow
+            map.panDown();
+            break;
+          case  37:
+          //pan left - left arrow
+          map.panLeft();
+            break;
+          case 39:
+            //pan right - right arrow
+            map.panRight();
+            break;
+         case 189:
+            //zoom out - minus/dash key
+            
+            map.setZoom(map.getZoom() - 1);
+            break;
+        case 187:
+            //zoom in - +/= key
+            map.setZoom(map.getZoom() + 1);
+            break;
+        case 90:
+            //rubber band zoom  mode - z key
+            on.emit(dom.byId("zoom"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;
+        case 80:
+           //print - shift + p key
+            if(e.shiftKey){
+                $("#printMenu").toggle();
+                 $("#printMenu").position({
+                   my: "center",
+                  at: "center",
+                  of: "#map"
+                 });
+            } else {
+                on.emit(dom.byId("pan"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            }
+            break;
+        case 83:
+            //selection - s key
+            on.emit(dom.byId("selection"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;
+       case 67:
+            //clear - c key
+            on.emit(dom.byId("clear"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;
+      case 77:
+            on.emit(dom.byId("draw"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            
+            break; 
+     case 66:
+            //buffer - b key
+            on.emit(dom.byId("bufferMode"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;
+            
+      case 79:
+            //overview window toggle  - o key
+            on.emit(dom.byId("overviewToggle"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;          
+            
+            
+     case 73:
+            //identify mode - i key
+            on.emit(dom.byId("identify"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;
+     case 84:
+            //selected feature window toggle = t key
+            on.emit(dom.byId("toggleOutput"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;
+      case 76:
+            //layer window toggle  - l key
+            on.emit(dom.byId("toggleLayerMenu"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;      
+      
+        case 88:
+            //legend window toggle - x key
+            on.emit(dom.byId("legendToggle"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;   
+        case 72:
+            //help window toggle - h key
+            on.emit(dom.byId("helpButton"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;   
+        case 81:
+            //focus on search input - q key
+          /*  on.emit(dom.byId("address"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+                */
+            setTimeout(function(){$("#address").focus();},200);    
+            break;   
+                        
+     }
+    
+    }
+       switch(e.keyCode){
+         
+         
+        case 27:     
+            $("#address").blur();
+            on.emit(dom.byId("addrCancel"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            break;
+        case 33:    
+            if(ownParSearch || ownParSearch == null){
+                on.emit(dom.byId("addressSwitch"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            } else if(addrSearch){
+                on.emit(dom.byId("roadSwitch"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            } else if(rdSearch){
+                on.emit(dom.byId("ownerParcelSwitch"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            }
+           
+           setTimeout(function(){
+               $("#address").focus();
+               $("#address").val("");
+               },50); 
+               
+            break;
+            
+        case 34:     
+              if(ownParSearch || ownParSearch == null){
+                on.emit(dom.byId("roadSwitch"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            } else if(addrSearch){
+                on.emit(dom.byId("ownerParcelSwitch"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            } else if(rdSearch){
+                on.emit(dom.byId("addressSwitch"), "click", {
+                    bubbles: true,
+                    cancelable: true
+                });
+            }
+             
+            setTimeout(function(){
+               $("#address").focus();
+               $("#address").val("");
+               },50); 
+            break;
+     }
+     
+       
+ });
+var keyListen = true;
+$("#address").focus(function(e){
+   keyListen = false;
+});
+$("#address").focusout(function(e){
+  keyListen = true;
+});
+
+
+
 
     dojo.connect(inputSearchBox, "onkeypress", function (e) {
 
@@ -1848,10 +2069,12 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 
 	 
 	  var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {
-          displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19]
+          displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19,20]
         });
       
-      var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
+      var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",{
+          displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19,20]
+      });
   
     map.addLayer(basemap);
    // map.addLayer(esriLabelLayer);
