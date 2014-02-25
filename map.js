@@ -170,7 +170,7 @@ $('.zoneUp').click(function(){
 
 
    function layerSorter(){
-            setLayerOrder($('.sortableThematic li input').get());
+           // setLayerOrder($('.sortableThematic li input').get());
            setDataLayerOrder($('.sortableData li input').get());
    }
    
@@ -928,7 +928,14 @@ var gLayer = new GraphicsLayer();
     
     */
     
-    
+     dojo.connect(dom.byId("togglePuebloCounty"), "click", function () {
+            if(dom.byId("togglePuebloCounty").checked){
+               layerSorter();
+            } else{
+                map.removeLayer(parcelInfoLayer);
+            }
+    });
+
     
     dojo.connect(dom.byId("toggleEsriLabels"), "click", function () {
             if(dom.byId("toggleEsriLabels").checked){
@@ -1840,7 +1847,9 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
       var puebloRailroadLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_railroads/MapServer", {maxScale: 20});
 
 	 
-	  var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {maxScale: 20});
+	  var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {
+          displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19]
+        });
       
       var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
   
