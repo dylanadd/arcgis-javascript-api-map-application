@@ -428,6 +428,7 @@
         		//domAttr.set(popTemp,"class","esriPopup hide");
         		idTF = false;
         	}
+        	$('#identifyMenu').toggle();
         });
         
         

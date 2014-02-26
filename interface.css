@@ -2191,3 +2191,37 @@ margin-top: 4px;
 margin-top: 10px;
 cursor:pointer;
 }
+
+#identifyMenu{
+position: absolute;
+font-family: verdana,helvetica;
+font-size: 14px;
+background: white;
+width: 318px;
+height: 85px;
+border-style: solid;
+border-color: rgb(16,64,92);
+top: 50px;
+right: 10px;
+display:none;
+}
+
+#identifyMenuTitle{
+	background: rgb(16,64,92);
+background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
+text-align: center;
+color: white;
+font-family: verdana,helvetica;
+font-weight: bold;
+height: 22px;
+width: 100%;
+margin-bottom: 10px;
+}
+.identifyInst{
+	text-align: center;
+padding-bottom: 5px;
+margin-top: -2px;
+}
+#identifyMenuContent{
+	text-align:center;
+}

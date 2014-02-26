@@ -15,6 +15,7 @@ var legendStartup = false;
 var gsvc, p, paramx, sp;
 var selectionTF = false;
 var zoomLevel;
+var idMode = "parc";
 // var gsvc, tb;
 require([
     "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/tasks/locator", "esri/dijit/LocateButton", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
@@ -72,6 +73,16 @@ require([
    
    */
 
+
+$('#idParcel').click(function(){
+    idMode = "parc";
+});
+$('#idAddress').click(function(){
+    idMode = "addr";
+});
+$('#idRoad').click(function(){
+    idMode = "road";
+});
 $('.pcUp').click(function(){
         var current = $('.pcUD');
         current.prev().before(current);
@@ -856,6 +867,8 @@ $(document).keydown(function(e){
      
        
  });
+ 
+//To prevent key events while typing inside input boxes
 var keyListen = true;
 $("#address").focus(function(e){
    keyListen = false;
@@ -863,7 +876,12 @@ $("#address").focus(function(e){
 $("#address").focusout(function(e){
   keyListen = true;
 });
-
+$("#printTitleInput").focus(function(e){
+   keyListen = false;
+});
+$("#printTitleInput").focusout(function(e){
+  keyListen = true;
+});
 
 
 
@@ -2415,26 +2433,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
         }]
     });
 
-    //BEGIN Legend Dijit
 
-
-	
-
-    /*
-         
-         //if (layerInfo.length > 0) {
-           var legendDijit = new Legend({
-             map: map,
-             layerInfos: [{ 
-                 layer: parcelInfoLayer, 
-                 title: ""
-               }]
-           }, "legendDiv");
-          // legendDijit.startup();
-         //}
- 	console.log(legendDijit);
-         */
-    //END Legend Dijit 
 
     //add the road layer in selection mode
     roads = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/3", {
@@ -2468,7 +2467,7 @@ function queryClear(){
             //clickRoads(e);
             
             
-            
+           if(idMode == "addr" || idMode == "road"){ 
             
             var centerPoint = new Point(e.mapPoint.x, e.mapPoint.y, map.spatialReference);
             console.log(centerPoint);
@@ -2498,7 +2497,7 @@ function queryClear(){
                
            
               if(p.length > 0){
-                    promise.cancel();
+                  //  promise.cancel();
                   queryClear();
               infoArray2.push(p[0]);
                displayResults(p,"address");
@@ -2515,7 +2514,7 @@ function queryClear(){
   
                
               if(p.length > 0){
-                  promise.cancel();
+                 // promise.cancel();
                    domAttr.set(dojo.byId("body"),"class","claro buttonMode");
                   queryClear();
               infoArray2.push(p[0]);
@@ -2527,7 +2526,7 @@ function queryClear(){
                
             });
             
-             
+            } else { 
             query.geometry = e.mapPoint;
             // console.log(e);
             // map.centerAndZoom(e.mapPoint, 10);
@@ -2536,7 +2535,7 @@ function queryClear(){
              try{infoArray2.length = 0;}catch(e){}
              try{map.graphics.clear();}catch(e){}
             var deferredParc = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
-               /* console.debug(selection);
+                console.debug(selection);
                queryClear();
                 try{
                     map.infoWindow.setFeatures(selection);
@@ -2558,61 +2557,13 @@ function queryClear(){
                 }
                 try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
               //  map.addLayer(parcels);
-            */
+            
             }, function (error) {
                 alert(error);
             }); //end of defferred variable declaration
             
-          
-          var promise = new all([deferredP,deferredParc, deferredRoad]);
-          promise.then(function(a){
-              domAttr.set(dojo.byId("body"),"class","claro buttonMode");
-              if(a[0].length > 0){
-              
-                  queryClear();
-              infoArray2.push(a[0][0]);
-               displayResults(a[0],"address");
-               zoomToPoint(a[0][0], false);
-               
-              } else if(a[1].length > 0){
-                   queryClear();
-                try{
-                    map.infoWindow.setFeatures(a[1]);
-                    infoArray = a[1][0];
-                } catch(e){}
-                //update the url param if a parcel was located
-                if (a[1].length > 0) {
-                    var parcelid = a[1][0].attributes["PAR_NUM"];
-                    infoArray = a[1][0];
-                    selectParcel(parcelid);
-                    // infoArray2 += selection[0];
-                    //Refresh the URL with the currently selected parcel
-                    if (typeof history.pushState !== "undefined") {
-                        //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
-                        infoArray = a[1][0];
-                        console.log(infoArray);
-                        infoArray2.push(a[1][0]);
-                    }
-                }
-                try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
-              //  map.addLayer(parcels);
-              
-              } else if (a[2].length > 0){
-                     queryClear();
-              infoArray2.push(a[2][0]);
-              var temp = Array();
-              temp.push(a[2][0]); // so that only one feature is displayed in result window
-               displayResults(temp,"road");
-               zoomToRoad(a[2][0]);
-              }
-              
-              console.log(a);
-              
-              
-              
-              });
-          
-          
+          }
+         
             map.infoWindow.show(e.mapPoint);
           //  console.log(popup);
             
@@ -4902,7 +4853,7 @@ function makeGeomArray2(selection) {
 
 
     //select parcel from the feature layer by creating a query to look for the input parcel id 
-    function selectParcel(parcelid) {
+    function selectParcel(parcelid, project) {
     	var z = new Array();
     	 var graphic;
     	try{
