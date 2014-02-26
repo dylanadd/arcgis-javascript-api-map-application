@@ -654,6 +654,7 @@ $(document).keydown(function(e){
                   at: "center",
                   of: "#map"
                  });
+                setTimeout(function(){$("#printTitleInput").focus();},50);
             } else {
                 on.emit(dom.byId("pan"), "click", {
                     bubbles: true,
@@ -806,10 +807,13 @@ $(document).keydown(function(e){
          
         case 27:     
             $("#address").blur();
+            $("#printTitleInput").blur();
             on.emit(dom.byId("addrCancel"), "click", {
                     bubbles: true,
                     cancelable: true
                 });
+            
+            setTimeout(function(){$("#printMenu").hide();},50);
             break;
         case 33:    
             if(ownParSearch || ownParSearch == null){
