@@ -33,7 +33,7 @@ require([
     "esri/tasks/GeometryService", "esri/tasks/BufferParameters", "esri/toolbars/draw", "esri/toolbars/navigation", "esri/tasks/QueryTask", //"dojo/_base/connect",
     "esri/geometry/Point", "esri/SpatialReference", "esri/tasks/ProjectParameters", "dojo/behavior", "dojo/request", "esri/dijit/PopupMobile", 
     "esri/layers/OpenStreetMapLayer","esri/layers/WebTiledLayer", "dojo/promise/all", 
-    "esri/geometry/Circle", 
+    "esri/geometry/Circle", "esri/geometry/Extent",
 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!", "dijit/form/Button"
 ], function (
@@ -49,7 +49,7 @@ require([
      SimpleMarkerSymbol, Font, TextSymbol, number, webMercatorUtils, InfoTemplate,
     domAttr, has, SnappingManager, SimpleRenderer, GeometryService, BufferParameters, Draw, Navigation, QueryTask,
     Point, SpatialReference, ProjectParameters, behavior, request, PopupMobile, OpenStreetMapLayer, WebTiledLayer, all,
-    Circle
+    Circle, Extent
 
 ) {
 
@@ -516,7 +516,8 @@ var gLayer = new GraphicsLayer();
         //  sliderPosition: "bottom-right",
         //   sliderStyle: "large",
         maxZoom: 19,
-        minZoom: 3,
+      // maxScale: 1128.497176,
+        minZoom: 10,
         zoom: 11
        
 
@@ -526,10 +527,10 @@ var gLayer = new GraphicsLayer();
 	var rBZoom = new Draw(map, {
 		showTooltips: false});
     var overviewLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer");
-
+    var mapLimit;
     map.on("load", function () {
         //	map.setZoom(2);
-        map.setZoom(11);
+      //  map.setZoom(11);
         //on.emit(dom.byId("toggleOutput"), "click", {
           //  bubbles: true,
            // cancelable: true
@@ -545,10 +546,15 @@ var gLayer = new GraphicsLayer();
   //console.dir(legendDijit);
   
 //console.log(navigator.geolocation.getCurrentPosition());
-	
+	console.log(map.extent);
+	//mapLimit = map.extent;
     });
-
+    var currentMapExt;
+	//Prevent map from panning beyond original extent
+	map.on("extent-change",function(e){
+	    currentMapExt = e;
 	
+	});
 	
 	var finishedLoading = false;
     //Indicate map loading
@@ -564,15 +570,13 @@ var gLayer = new GraphicsLayer();
     });
 
     map.on("update-end", function () {
-    	console.log(map.getZoom());
+    	//console.log(map.getZoom());
     	finishedLoading = true;
        
         domAttr.set("body", "class", "claro buttonMode");
         zoomLevel = map.getZoom();
-
-
-
-
+         
+        setTimeout(moveBack, 500);
     });
 
     map.on("zoom-end", function () {
@@ -582,7 +586,42 @@ var gLayer = new GraphicsLayer();
     });
 
 
+function moveBack(){
+      var exceed = false;
+    //   console.log(e);
+        var xmax = currentMapExt.extent.xmax;
+        var xmin = currentMapExt.extent.xmin;
+        var ymax = currentMapExt.extent.ymax;
+        var ymin = currentMapExt.extent.ymin;
+        
+        if(xmax > -11515085.446671503){
+            exceed = true;
+            console.log("xmax break");
+            xmax = -11515086.446671503;
+        }
+        if(xmin < -11771913.861709794){
+            exceed = true;
+             console.log("xmin break");
+             xmin = -11771912.861709794;
+        }
+         if(ymax > 4664607.873461212){
+            exceed = true;
+             console.log("ymax break");
+             ymax = 4664606.873461212;
+        }
+        if(ymin < 4513415.431513076){
+            exceed = true;
+             console.log("ymin break");
+             ymin = 4513416.431513076;
+        }
+        
+        if(exceed = true){
+            var extent = new Extent(xmin,ymin,xmax,ymax, new SpatialReference(102100));
+          //  map.setExtent(extent);
+        }
 
+
+}
 
 
 //control map through keyboard 
@@ -2176,7 +2215,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 
 	 
 	  var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {
-          displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19,20]
+          displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19,20,21]
         });
       
       var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",{
@@ -2184,6 +2223,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
       });
   
     map.addLayer(basemap);
+    map.addLayer(parcelInfoLayer);
    // map.addLayer(esriLabelLayer);
    // setTimeout(function(){try{googleLayer.setMapTypeId(agsjs.layers.GoogleMapsLayer.MAP_TYPE_SATELLITE);
    // 	 map.addLayer(googleLayer);}catch(e){console.log(e);}},9000); 
@@ -3017,7 +3057,7 @@ function levyUrl(){
 
     });
 
-    
+    map.addLayers([parcels]);
 
     //extract the parcel id from the url
     function getParcelFromUrl(url) {
