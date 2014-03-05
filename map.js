@@ -726,7 +726,7 @@ $(document).keydown(function(e){
             //clear - c key
             
              if(e.shiftKey){
-              $("#togglePuebloCounty").trigger("click");     
+            //  $("#togglePuebloCounty").trigger("click");     
             } else {
             
             on.emit(dom.byId("clear"), "click", {
@@ -2214,16 +2214,16 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
       var puebloRailroadLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_railroads/MapServer", {maxScale: 20});
 
 	 
-	  var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {
-          displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19,20,21]
-        });
+	//  var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {
+    //      displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19,20,21]
+     //   });
       
       var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",{
           displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19,20]
       });
   
     map.addLayer(basemap);
-    map.addLayer(parcelInfoLayer);
+   // map.addLayer(parcelInfoLayer);
    // map.addLayer(esriLabelLayer);
    // setTimeout(function(){try{googleLayer.setMapTypeId(agsjs.layers.GoogleMapsLayer.MAP_TYPE_SATELLITE);
    // 	 map.addLayer(googleLayer);}catch(e){console.log(e);}},9000); 
