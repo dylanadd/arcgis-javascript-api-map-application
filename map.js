@@ -2232,7 +2232,9 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 
     //BEGIN functions for print dijit
     //var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
-	var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
+   // var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
+     var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/ExportWebMap/GPServer/Export%20Web%20Map";
+
     // get print templates from the export web map task
     var printInfo = esriRequest({
         "url": printUrl,
@@ -2275,7 +2277,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
                 "titleText": "",
                 "scalebarUnit": "Miles"
             };
-            plate.preserveScale = false;
+            plate.preserveScale = true;
             return plate;
         });
 
