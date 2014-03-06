@@ -54,25 +54,6 @@ require([
 ) {
 
     parser.parse();
-   
-   /*
-     $('.sortableData').sortable().bind('sortupdate',function(e){
-           // console.log($('.sortableData li input').get());
-        layerSorter();
-
-        });
-   
-    $('.sortableThematic').sortable().bind('sortupdate',function(e){
-           // console.log($('.sortableThematic li input').get());
-           
-           layerSorter();
-           
-           
-           
-        });
-   
-   */
-
 
 $('#idParcel').click(function(){
     idMode = "parc";
@@ -181,7 +162,7 @@ $('.zoneUp').click(function(){
 
 
    function layerSorter(){
-           // setLayerOrder($('.sortableThematic li input').get());
+          
            setDataLayerOrder($('.sortableData li input').get());
    }
    
@@ -199,7 +180,7 @@ $('.zoneUp').click(function(){
      
        
        for(i=(order.length - 1);i>=0;i--){
-      //     console.log(order[i].id);
+  
            if(dom.byId(order[i].id).checked){
               switch(order[i].id){
                   case 'togglePuebloCounty':
@@ -220,7 +201,7 @@ $('.zoneUp').click(function(){
                     map.addLayer(puebloRailroadLayer);
                     break;
                   case 'toggleTowns':
-                  //  map.addLayer(zoneLayer);
+                
                     break;
                   case 'toggleBoundaries':
                     map.addLayer(puebloBoundaryLayer);
@@ -240,7 +221,7 @@ $('.zoneUp').click(function(){
            
        }
        
-     //  console.log(order);  
+  
             
    }
    
@@ -292,10 +273,7 @@ cloudmadePaleLayer = new WebTiledLayer("http://${subDomain}.tile.cloudmade.com/1
     
   },3000);
     
-     
-  //    "options": { "id": "Stamen Watercolor", "visible": false, "subDomains": mapLayers.abcd, "copyright": "Stamen Watercolor" },
- // "url": "http://${subDomain}.tile.stamen.com/watercolor/${level}/${col}/${row}.jpg"
-                    
+                
      //for layer opacity
       
       var sliderPC = new HorizontalSlider({
@@ -481,12 +459,7 @@ var gLayer = new GraphicsLayer();
 
     var  tb;
 
-    /*  var popup = new Popup({
-        fillSymbol: sfs
-    }, domConstruct.create("div"));
-
-  var  popup2 = new esri.dijit.PopupMobile(null, dojo.create("div"));
-*/
+  
     var popup;
     var mobile;
     if (window.innerWidth > 778) {
@@ -495,7 +468,6 @@ var gLayer = new GraphicsLayer();
         }, domConstruct.create("div"));
         mobile = false;
     } else {
-      //  popup = new esri.dijit.PopupMobile(null, dojo.create("div"));
        popup = new Popup({
             fillSymbol: sfs
         }, domConstruct.create("div"));
@@ -507,16 +479,11 @@ var gLayer = new GraphicsLayer();
 
     //Map constructor
     map = new Map("map", {
-      //  basemap: "hybrid",
         infoWindow: popup,
         isZoomSlider: true,
         center: [-104.595337, 38.255706],
-        //  sliderOrientation: "vertical",
         spatialReference: 102100,
-        //  sliderPosition: "bottom-right",
-        //   sliderStyle: "large",
         maxZoom: 19,
-      // maxScale: 1128.497176,
         minZoom: 10,
         zoom: 11
        
@@ -529,33 +496,19 @@ var gLayer = new GraphicsLayer();
     var overviewLayer = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer");
     var mapLimit;
     map.on("load", function () {
-        //	map.setZoom(2);
-      //  map.setZoom(11);
-        //on.emit(dom.byId("toggleOutput"), "click", {
-          //  bubbles: true,
-           // cancelable: true
-       // });
+      
         domAttr.remove(dom.byId("measurementDiv"), "style");
 		rubberBandZoomMode(true);
-       // navToolbar.activate(Navigation.ZOOM_IN);
-		//console.dir(measurement);
 		legendDijit = new Legend({
     map: map
    
   },"legendDiv");
-  //console.dir(legendDijit);
   
-//console.log(navigator.geolocation.getCurrentPosition());
-	console.log(map.extent);
-	//mapLimit = map.extent;
+  
+
+	
     });
-    var currentMapExt;
-	//Prevent map from panning beyond original extent
-	map.on("extent-change",function(e){
-	    currentMapExt = e;
-	
-	});
-	
+  	
 	var finishedLoading = false;
     //Indicate map loading
     map.on("update-start", function () {
@@ -576,7 +529,7 @@ var gLayer = new GraphicsLayer();
         domAttr.set("body", "class", "claro buttonMode");
         zoomLevel = map.getZoom();
          
-        setTimeout(moveBack, 500);
+       
     });
 
     map.on("zoom-end", function () {
@@ -584,44 +537,6 @@ var gLayer = new GraphicsLayer();
             popup.reposition();
         }
     });
-
-
-function moveBack(){
-      var exceed = false;
-    //   console.log(e);
-        var xmax = currentMapExt.extent.xmax;
-        var xmin = currentMapExt.extent.xmin;
-        var ymax = currentMapExt.extent.ymax;
-        var ymin = currentMapExt.extent.ymin;
-        
-        if(xmax > -11515085.446671503){
-            exceed = true;
-            console.log("xmax break");
-            xmax = -11515086.446671503;
-        }
-        if(xmin < -11771913.861709794){
-            exceed = true;
-             console.log("xmin break");
-             xmin = -11771912.861709794;
-        }
-         if(ymax > 4664607.873461212){
-            exceed = true;
-             console.log("ymax break");
-             ymax = 4664606.873461212;
-        }
-        if(ymin < 4513415.431513076){
-            exceed = true;
-             console.log("ymin break");
-             ymin = 4513416.431513076;
-        }
-        
-        if(exceed = true){
-            var extent = new Extent(xmin,ymin,xmax,ymax, new SpatialReference(102100));
-          //  map.setExtent(extent);
-        }
-
-
-}
 
 
 //control map through keyboard 
@@ -950,9 +865,7 @@ $("#printTitleInput").focusout(function(e){
         domAttr.set(tools, "class", "zoomActive");
     });
 
-    /*  dojo.connect(dom.byId("zoom_out"), "click", function(){
-    	map.setZoom(map.getZoom() - 1);
-    });*/
+  
 
     dojo.connect(dom.byId("pan"), "click", function () {
     	rubberBandZoomMode(false);
@@ -1121,7 +1034,6 @@ $("#printTitleInput").focusout(function(e){
 	var gpsID;
     dojo.connect(dom.byId("gpsButton"), "click", function () {
     	
-        //	on.emit(dom.byId("helpButton"), "click", {bubbles: true, cancelable: true});
         map.graphics.clear();
         
         var geo_options = {
@@ -1132,7 +1044,6 @@ $("#printTitleInput").focusout(function(e){
 
 		if(!gpsIO){
 			domAttr.set(dom.byId("gpsButton"),"class", "gpsOn");
-		//	navigator.geolocation.getCurrentPosition(showPosition, function(err){},geo_options);
 		gpsID = navigator.geolocation.watchPosition(showPosition, function(err){},geo_options);
 			gpsIO = true;
 		} else {
@@ -1267,7 +1178,6 @@ $("#printTitleInput").focusout(function(e){
 	  dojo.connect(dom.byId("toggleFlood"), "click", function () {
 			console.log(dom.byId("toggleFlood").checked);
 			if(dom.byId("toggleFlood").checked){
-				//map.addLayer(floodLayer);
 				layerSorter();
 			} else {
 				map.removeLayer(floodLayer);
@@ -1276,23 +1186,12 @@ $("#printTitleInput").focusout(function(e){
 	
 	dojo.connect(dom.byId("toggleZoning"), "click", function () {
 			if(dom.byId("toggleZoning").checked){
-				
-			//	map.addLayer(zoneLayer);
 				layerSorter();
 			} else{
 				map.removeLayer(zoneLayer);
 			}
     });
-    /*
-	dojo.connect(dom.byId("toggleParcs"), "click", function () {
-			if(dom.byId("toggleParcs").checked){
-				map.addLayer(parcelInfoLayer);
-			} else{
-				map.removeLayer(parcelInfoLayer);
-			}
-    });
-    
-    */
+
     
      dojo.connect(dom.byId("togglePuebloCounty"), "click", function () {
             if(dom.byId("togglePuebloCounty").checked){
@@ -1341,15 +1240,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
                 map.removeLayer(puebloRailroadLayer);
             }
     });
-    /*
-    dojo.connect(dom.byId("toggleTowns"), "click", function () {
-            if(dom.byId("toggleTowns").checked){
-               layerSorter();
-            } else{
-                map.removeLayer(puebloPointsLayer);
-            }
-    });
-    */
+    
     dojo.connect(dom.byId("toggleBoundaries"), "click", function () {
             if(dom.byId("toggleBoundaries").checked){
              layerSorter();
@@ -1485,10 +1376,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 				
 				
 				map.addLayer(osmLayer);
-			
-			
-			//map.addLayer(stamenTerrainLayer);
-			//map.addLayer(stamenTonerLayer);
+
 			
 				map.reorderLayer(osmLayer,0);
 				if(map.getZoom() > 17){
@@ -1525,7 +1413,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 			
 				map.reorderLayer(stamenTerrainLayer,0);
 				if(map.getZoom() > 17){
-				//map.setZoom(17);
+	
 				}
 				
 			} else{
@@ -1558,7 +1446,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 			
 				map.reorderLayer(mapBoxTerrainLayer,0);
 				if(map.getZoom() > 17){
-				//map.setZoom(17);
+
 				}
 				
 			} else{
@@ -1590,7 +1478,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 			
 				map.reorderLayer(mapQuestLayer,0);
 				if(map.getZoom() > 17){
-				//map.setZoom(17);
+
 				}
 				
 			} else{
@@ -1623,7 +1511,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 			
 				map.reorderLayer(cloudmadePaleLayer,0);
 				if(map.getZoom() > 17){
-				//map.setZoom(17);
+
 				}
 				
 			} else{
@@ -1657,7 +1545,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 			
 				map.reorderLayer(cloudmadeNightLayer,0);
 				if(map.getZoom() > 17){
-				//map.setZoom(17);
+
 				}
 				
 			} else{
@@ -1690,7 +1578,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 			
 				map.reorderLayer(stamenTonerLayer,0);
 				if(map.getZoom() > 17){
-				//map.setZoom(17);
+
 				}
 				
 			} else{
@@ -1721,7 +1609,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 			
 				map.reorderLayer(waterColorLayer,0);
 				if(map.getZoom() > 17){
-				//map.setZoom(17);
+
 				}
 				
 			} else{
@@ -1853,21 +1741,17 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
         mDraw = new Draw(map, {showTooltips: false});
 		
         drawx.on("draw-end", addToMap);
-        // draw.activate(Draw.CIRCLE);
+       
         draw = true;
     }
 
     function addToMap(evt) {
 
         var graphic = new Graphic(evt.geometry, sfs);
-        // map.graphics.add(graphic);
+ 
         console.log(evt);
         console.log(graphic);
-       /* var ar = new Array();
-        ar.push(graphic);
-        console.log(graphicsUtils.graphicsExtent(ar));
-        map.setExtent(graphicsUtils.graphicsExtent(ar));
- */       selectByShape(evt.geometry);
+        selectByShape(evt.geometry);
 		mDraw.deactivate();
         drawx.deactivate();
         draw = false;
@@ -1886,11 +1770,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 		} catch(e){}
 		try{gLayer.clear();} catch(e){}
         var zzz = false;
-        // map.graphics.clear();
-
-        //Select features within the buffered polygon. To do so we'll create a query to use the buffer graphic
-        //as the selection geometry.
-
+   
         var query2 = new Query();
         query2.geometry = evt;
 
@@ -1908,10 +1788,8 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 
                 var c = parcels.getSelectedFeatures();
                 console.log(c);
-               // map.addLayer(parcels);
                
                 for (i = 0; i < c.length; i++) {
-                   // map.graphics.add(c[i]);
                    gLayer.add(c[i]);
                     infoArray2.push(results[i]);
                 }
@@ -1941,10 +1819,8 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
                 var c = points.getSelectedFeatures();
                 console.log(c);
                 
-                // map.addLayer(points);
                  
                 for (i = 0; i < c.length; i++) {
-//                    map.graphics.add(c[i]);
 						gLayer.add(c[i]);
                     infoArray2.push(results[i]);
                 }
@@ -1971,26 +1847,20 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
                 }, 1000);
                 var temp = new Array();
                 makeGeomArray3(results);
-              //  map.addLayer(road);
 				
 				for(i=0;i < results.length;i++){
 					infoArray2.push(results[i]);
 				}
-			//	map.addLayer(gLayer);
             }, function (error) {
 
             });
 
-            // map.addLayer(road);
         }
 		domAttr.set(tools, "class", "panActive");
     }
 
     //Buffer Function
-    //	 map.on("load", initToolbar);
-
-  //  gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
-   gsvc = new GeometryService("http://maps.co.pueblo.co.us/outside/rest/services/Utilities/Geometry/GeometryServer");
+     gsvc = new GeometryService("http://maps.co.pueblo.co.us/outside/rest/services/Utilities/Geometry/GeometryServer");
     //add proxy functions for all modules
     esriConfig.defaults.io.proxyUrl = "proxy.php";
     esriConfig.defaults.io.alwaysUseProxy = false;
@@ -2003,11 +1873,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     var parcels1;
 	var road1, points1;
     function doBuffer3(evt) {
-        //console.debug(evt);
-
-       // map.graphics.clear();
-        //   map.removeLayer(parcels1);
-
+ 
         var params = new BufferParameters();
         params.geometries = [evt];
 
@@ -2021,13 +1887,13 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
         params.unit = GeometryService[dom.byId("unit").value];
 
         gsvc.buffer(params);
-        //      gsvc.buffer(params);
+
 
         //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels in buffer area
         parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/13", {
             outFields: ["*"],
             objectIdField: "PAR_NUM",
-            //infoTemplate: popupTemplate,
+     
             mode: FeatureLayer.MODE_SELECTION
         });
 
@@ -2036,7 +1902,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 		points1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/0", {
         outFields: ["*"],
         objectIdField: "FULLADDR",
-        //infoTemplate: popupTemplate,
+
         mode: FeatureLayer.MODE_SELECTION
     });
 
@@ -2045,7 +1911,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
         road1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/3", {
         outFields: ["*"],
         objectIdField: "OBJECTID",
-        //  infoTemplate: popupTemplate,
+
         mode: FeatureLayer.MODE_SELECTION,
         spatialRelationship: FeatureLayer.SPATIAL_REL_CROSSES
     });
@@ -2055,7 +1921,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
         var zzz = false;
         gsvc.on("buffer-complete", function (result) {
 		
-          //  map.graphics.clear();
+
             // draw the buffer geometry on the map as a map graphic
             var symbol = new SimpleFillSymbol(
                 SimpleFillSymbol.STYLE_NULL,
@@ -2088,7 +1954,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
                 }, 1000);
 
                 var c = parcels1.getSelectedFeatures();
-               // console.log(c);
+       
                 
                 for (i = 0; i < c.length; i++) {
                     map.graphics.add(c[i]);
@@ -2121,7 +1987,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
                 console.log(c);
                 for (i = 0; i < c.length; i++) {
                     map.graphics.add(c[i]);
-                    //infoArray2.push(results[i]); 
+  
                 }
 
             }, function (error) {
@@ -2144,13 +2010,13 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
                 var temp = new Array();
                 makeGeomArray(results);
 				for(i=0;i < results.length;i++){
-					//infoArray2.push(results[i]);
+
 				}
             }, function (error) {
 
             });
 
-            // map.addLayer(road);
+
         }
             
 			domAttr.set("body", "class", "claro buttonMode");
@@ -2162,9 +2028,8 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     //end test for parcel buffer
 
     //Buffer Function
-    // map.on("load", initToolbar);
+
 	gsvc = new GeometryService("http://maps.co.pueblo.co.us/outside/rest/services/Utilities/Geometry/GeometryServer");
-   // gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
     //add proxy functions for all modules
     esriConfig.defaults.io.proxyUrl = "proxy.php";
     esriConfig.defaults.io.alwaysUseProxy = false;
@@ -2213,27 +2078,15 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
       var puebloBoundaryLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_counties/MapServer", {maxScale: 20});
       var puebloRailroadLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_railroads/MapServer", {maxScale: 20});
 
-	 
-	//  var parcelInfoLayer = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer", {
-    //      displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19,20,21]
-     //   });
       
       var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",{
           displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19,20]
       });
   
     map.addLayer(basemap);
-   // map.addLayer(parcelInfoLayer);
-   // map.addLayer(esriLabelLayer);
-   // setTimeout(function(){try{googleLayer.setMapTypeId(agsjs.layers.GoogleMapsLayer.MAP_TYPE_SATELLITE);
-   // 	 map.addLayer(googleLayer);}catch(e){console.log(e);}},9000); 
-
-	//map.addLayer(parcelInfoLayer);
-
+  
     //BEGIN functions for print dijit
-    //var printUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
-   // var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
-     var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/ExportWebMap/GPServer/Export%20Web%20Map";
+   var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/ExportWebMap/GPServer/Export%20Web%20Map";
 
     // get print templates from the export web map task
     var printInfo = esriRequest({
@@ -2349,39 +2202,6 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     }
     //END print dijit functions
 
-    //BEGIN Basemap Toggle
-  /*  var basemapGallery = new BasemapGallery({
-        showArcGISBasemaps: false,
-        map: map
-    }, "basemapGallery");
-*/
-   // basemapGallery.startup();
-/*
-    basemapGallery.add(countyBasemap);
-    basemapGallery.add(zoningBasemap);
-    basemapGallery.add(imagery2005Basemap);
-    basemapGallery.add(imagery2004Basemap);
-    
-
-    basemapGallery.on("error", function (msg) {
-        console.log("basemap gallery error:  ", msg);
-    });
-
-    basemapGallery.on("selection-change", function () {
-        //	alert("test");
-        //basemapGallery.startup();
-       // map.removeAllLayers();
-       
-        map.removeLayer(parcelInfoLayer);
-        map.addLayer(parcelInfoLayer);
-        if(legendStartup){
-		legendDijit.refresh();
-		}
-        //    console.dir(basemapGallery.getSelected());
-    });
-*/
-    //End Basemap Toggle
-
     //BEGIN scalebar Dijit
 
     var scalebar = new Scalebar({
@@ -2396,7 +2216,6 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 
     //BEGIN measurement Dijit
 esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo.co.us/outside/rest/services/Utilities/Geometry/GeometryServer");
-   // esriConfig.defaults.geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
 
     var measurement = new esri.dijit.Measurement({
         map: map
@@ -2449,7 +2268,6 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     var points = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/0", {
         outFields: ["*"],
         objectIdField: "FULLADDR",
-        //infoTemplate: popupTemplate,
         mode: FeatureLayer.MODE_SELECTION
     });
 
@@ -2458,7 +2276,6 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     var road = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/3", {
         outFields: ["*"],
         objectIdField: "OBJECTID",
-        //  infoTemplate: popupTemplate,
         mode: FeatureLayer.MODE_SELECTION,
         spatialRelationship: FeatureLayer.SPATIAL_REL_CROSSES
     });
@@ -2485,7 +2302,6 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     roads = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/3", {
         objectIdField: "OBJECTID",
         outFields: ["*"],
-        // infoTemplate: popupRoadTemplate,
         mode: FeatureLayer.MODE_SELECTION
       
 
@@ -2508,16 +2324,15 @@ function queryClear(){
             queryClear();
             var query = new Query();
             domAttr.set(dojo.byId("body"),"class","claro buttonMode calculating");
-          //  clickPoints(e);
+
            
-            //clickRoads(e);
+
             
             
            if(idMode == "addr" || idMode == "road"){ 
             
             var centerPoint = new Point(e.mapPoint.x, e.mapPoint.y, map.spatialReference);
             console.log(centerPoint);
-            //var mapWidth = map.extent.getWidth();
             var mapWidth = map.extent.getWidth() / 10;
            
             var pixelWidth = mapWidth/map.width;
@@ -2531,8 +2346,6 @@ function queryClear(){
             console.log(mapWidth);
             console.log(pixelWidth);
             console.log(tolerance);
-          //  var queryExtent = new esri.geometry.Extent(1,1,tolerance,tolerance,e.mapPoint.spatialReference);    
-           // query.geometry = queryExtent.centerAt(centerPoint);
            query.geometry = circ;
             var deferredP =  points.selectFeatures(query, FeatureLayer.SELECTION_NEW,function(p){
                
@@ -2543,7 +2356,6 @@ function queryClear(){
                
            
               if(p.length > 0){
-                  //  promise.cancel();
                   queryClear();
               infoArray2.push(p[0]);
                displayResults(p,"address");
@@ -2560,7 +2372,6 @@ function queryClear(){
   
                
               if(p.length > 0){
-                 // promise.cancel();
                    domAttr.set(dojo.byId("body"),"class","claro buttonMode");
                   queryClear();
               infoArray2.push(p[0]);
@@ -2574,10 +2385,7 @@ function queryClear(){
             
             } else { 
             query.geometry = e.mapPoint;
-            // console.log(e);
-            // map.centerAndZoom(e.mapPoint, 10);
-            //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
-             try{gLayer.clear();}catch(e){}
+            try{gLayer.clear();}catch(e){}
              try{infoArray2.length = 0;}catch(e){}
              try{map.graphics.clear();}catch(e){}
             var deferredParc = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
@@ -2592,17 +2400,14 @@ function queryClear(){
                     var parcelid = selection[0].attributes["PAR_NUM"];
                     infoArray = selection[0];
                     selectParcel(parcelid);
-                    // infoArray2 += selection[0];
                     //Refresh the URL with the currently selected parcel
                     if (typeof history.pushState !== "undefined") {
-                        //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
                         infoArray = selection[0];
                         console.log(infoArray);
                         infoArray2.push(selection[0]);
                     }
                 }
                 try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
-              //  map.addLayer(parcels);
             
             }, function (error) {
                 alert(error);
@@ -2611,14 +2416,12 @@ function queryClear(){
           }
          
             map.infoWindow.show(e.mapPoint);
-          //  console.log(popup);
             
             try {
                 infoArray = selection[0];
             } catch (e) {}
         }
 
-        //doBuffer3(selectedParcel);
     });
 
 
@@ -2644,9 +2447,7 @@ function clickPoints(e){
                 console.log(p);
                var t = points.getSelectedFeatures();
                console.log(t);
-             //  var graphic = new Graphic(t[0].geometry, sfs3);
              
-              // map.graphics.add(graphic);
               if(p.length > 0){
                   queryClear();
               infoArray2.push(p[0]);
@@ -2671,10 +2472,7 @@ function clickParcels(e) {
               if($("#toggleParcels")[0].checked){
              
             query.geometry = e.mapPoint;
-            // console.log(e);
-            // map.centerAndZoom(e.mapPoint, 10);
-            //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
-             try{gLayer.clear();}catch(e){}
+           try{gLayer.clear();}catch(e){}
              try{infoArray2.length = 0;}catch(e){}
              try{map.graphics.clear();}catch(e){}
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
@@ -2689,17 +2487,14 @@ function clickParcels(e) {
                     var parcelid = selection[0].attributes["PAR_NUM"];
                     infoArray = selection[0];
                     selectParcel(parcelid);
-                    // infoArray2 += selection[0];
-                    //Refresh the URL with the currently selected parcel
+              
                     if (typeof history.pushState !== "undefined") {
-                        //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
                         infoArray = selection[0];
                         console.log(infoArray);
                         infoArray2.push(selection[0]);
                     }
                 }
                 try{gLayer.add(map.infoWindow.getSelectedFeature());}catch(e){console.log(e);}
-              //  map.addLayer(parcels);
             
             }, function (error) {
                 alert(error);
@@ -2743,7 +2538,7 @@ function clickRoads(e){
           //end clickable roads
 }
 
-    //   map.on("click", doBuffer3);
+
 
     //LISTEN FOR BUTTON CLICKS
     on(dom.byId("clear"), "click", clearx);
@@ -2758,11 +2553,7 @@ function clickRoads(e){
         domAttr.set("address", "value", "");
     });
 
-    // on(dom.byId("toggleOutput"), "click", function(){
-    // var panel = dom.byId("output");
-    // fx.fadeOut({node: panel}).play();
-    // console.log(fx);
-    //  });
+   
 
     var ownParSearch = true;
     var addrSearch = false;
@@ -2836,14 +2627,11 @@ function clickRoads(e){
        	
        },15000);
         try {
-           // resultsArray.length = 0; //Testing to see how array behaves not being cleared after search.
 
         } catch (e) {}
         try {
 
-           // dom.byId("resultsContent").innerHTML = ""; //Testing to see how array behaves not being cleared after search.
         } catch (e) {}
-        //	clearx();
         map.graphics.clear();
         if (ownParSearch) {
             findOwnerOrParcel();
@@ -2888,10 +2676,8 @@ function addrTxtSearch(){
                 var c = points.getSelectedFeatures();
                 console.log(c);
                 
-                // map.addLayer(points);
                  
                 for (i = 0; i < c.length; i++) {
-//                    map.graphics.add(c[i]);
 						gLayer.add(c[i]);
                     infoArray2.push(results[i]);
                 }
@@ -2931,12 +2717,7 @@ function levyUrl(){
         on(emailLink, "click", function (evt) {
         	console.log(infoArray);
             info();
-            /* var feature = map.infoWindow.getSelectedFeature();
-             var url = window.location;
-             var emailLink = "mailto:?subject=Parcel Map of :" + 
-               feature.attributes.PAR_NUM + "&body=Check out this map: %0D%0A " + 
-               window.location;
-             window.location.href = emailLink; */
+           
         });
 		
 		on(emailLink2,"click", function(evt){
@@ -2948,7 +2729,6 @@ function levyUrl(){
             var parcelid = getParcelFromUrl(document.location.href);
            
             if (parcelid) {
-               // selectParcel(parcelid);  //bring back-----------------
 				console.log(parcelid);
             } else {
                 parcels.clearSelection();
@@ -3054,8 +2834,7 @@ function levyUrl(){
             }
             
             
-          //  var parcelid = getParcelFromUrl(document.location.href);
-        	//selectParcel(parcelid);
+      
 
     });
 
@@ -3104,28 +2883,22 @@ function levyUrl(){
     //BEGIN Location Dijit
 
     var locator = new Locator("http://maps.co.pueblo.co.us/outside/rest/services/Web_Geocoding/Web_EDGIS_Locator/GeocodeServer");
-    // var  locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
     locator.on("address-to-locations-complete", showResults);
- //locator.on("address-to-locations-complete", function(res){
- //	console.log(res);
- //});
+
     //prepare address query string for Geocoder
     function locate() {
 		
-        //  domAttr.set("locate", "class", "processing");
-        // map.graphics.clear();
-        //clearx();
         var address = {
 
             "Street": dom.byId("address").value
         };
-       // console.log(address);
+       
         locator.outSpatialReference = new SpatialReference(102100);
         var options = {
             address: address,
             outFields: ["Loc_name"]
         };
-        // console.log(locator.addressToLocations(options));
+      
         locator.addressToLocations(options, function(x){console.log(x);},function(e){console.log(e);});
         
     }
@@ -3156,7 +2929,7 @@ function levyUrl(){
                 var graphic = new Graphic(geom, sfs3, attributes, infoTemplate);
                 //add a graphic to the map at the geocoded location
                 
-               // map.graphics.add(graphic);
+
                gLayer.add(graphic);
                
                 //add a text symbol to the map listing the location of the matched address.
@@ -3173,16 +2946,16 @@ function levyUrl(){
                     font,
                     new Color("#ff0000"));
                 textSymbol.setOffset(0, 8);
-                //map.graphics.add(new Graphic(geom, textSymbol));
+      
                 gLayer.add(new Graphic(geom, textSymbol));
                 map.addLayer(gLayer);
                 return false; //break out of loop after one candidate with score greater  than 80 is found.
             }
         });
-        //  geom.spatialReference.wkid = "2233";
+
 
         geom.spatialReference.wkid = 102100;
-		//console.log(geom);
+	
         map.centerAndZoom(geom, 18);
         
         domAttr.set("locate", "class", "dormant");
@@ -3193,9 +2966,6 @@ function levyUrl(){
     function selectByPoint(geoPoint) {
         var query = new Query();
         query.geometry = geoPoint.location;
-        // console.log(e);
-        // map.centerAndZoom(e.mapPoint, 10);
-        //FeatureLayer.SELECTION_ADD for multiple or FeatureLayer.SELECTION_NEW for single parcel
         var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
             console.debug(selection);
 
@@ -3204,21 +2974,19 @@ function levyUrl(){
                 var parcelid = selection[0].attributes["PAR_NUM"];
                 selectParcel(parcelid);
                 infoArray = selection[0];
-                // infoArray2 += selection[0];
+           
                 //Refresh the URL with the currently selected parcel
                 if (typeof history.pushState !== "undefined") {
-                    //  window.history.pushState(null, null, "?parcelid=" + selection[0].attributes.PAR_NUM);
                     infoArray = selection[0];
                     infoArray2.push(selection[0]);
                 }
             }
 
             map.addLayer(parcels);
-            // map.infoWindow.show(selection[0]);
 
         }, function (error) {
             alert(error);
-        }); //end of defferred variable declaration
+        }); 
 
     }
 
@@ -3226,27 +2994,19 @@ function levyUrl(){
 	var bufferTypeMem;
     function bufferIt() {
     	
-    	//if(bufferTypeMem != selectionMode){
+
     		map.graphics.clear();
-    		//bufferTypeMem = selectionMode;
-    	//}
+  
+   
     	
         domAttr.set("bufferMode", "class", "bufferModeOn processing");
         domAttr.set("body", "class", "claro buttonMode calculating");
-    //  map.graphics.clear();
+    
       
         try {
         	infoArray3.length = 0;
-         //   parcels1.clearSelection();
         } catch (e) {}
-		 /* try {
-            points.clearSelection();
-        } catch (e) {}
-
-		 try {
-            road1.clearSelection();
-        } catch (e) {}
-		*/
+		
 
         if (infoArray2.length > 1) {
             for (i = 0; i < infoArray2.length; i++) {
@@ -3255,7 +3015,7 @@ function levyUrl(){
             temp = gsvc.union(infoArray3);
 
             temp.then(function (results) {
-                //console.debug(results);
+                
 			try {
 
             	dom.byId("tableContent").innerHTML = "";
@@ -3282,18 +3042,15 @@ function levyUrl(){
         } else {
             domAttr.set("bufferMode", "class", "bufferModeOn");
             domAttr.set("body", "class", "claro buttonMode");
-           // alert("No parcel selected!");
             ieAlert.set("title","Nothing To Buffer");
        		ieAlert.set("content", "<p>Sorry, no features have been selected for buffering.</p><p>Please select at least one feature before buffering.</p>");
 			ieAlert.show();
         }
         try {
-            	//parcels.clearSelection();
             parcels1.clearSelection();
         } catch (e) {}
        
        try{infoArray3.length = 0;} catch(e){}
-      // try{infoArray2.length = 0;} catch(e){}
     }
 
     function safeClear() {
@@ -3301,7 +3058,6 @@ function levyUrl(){
         map.addLayer(basemap);
         map.addLayer(parcelInfoLayer);
         stripe = null;
-        // empty();
         map.graphics.clear();
         map.infoWindow.hide();
         try {
@@ -3324,16 +3080,7 @@ function levyUrl(){
 		  try{gLayer.clear();}catch(e){}
     	domAttr.set(tools, "class" ,"clear");
         map.removeAllLayers();
-      /*
-      //  map.addLayer(basemap);
-        try{
-         n = basemapGallery.getSelected().id;
-  		console.log(n);
-  		} catch(e){}
-  		var bmap;
-  	
-  		
-  		 */
+     
   		
   		try{
   		    
@@ -3377,24 +3124,11 @@ function levyUrl(){
 
   		
   		 try{
-  		     /*
-  		     if(dom.byId("toggleParcs").checked){
-  		         map.addLayer(parcelInfoLayer);
-  		     }
-             if(dom.byId("toggleZoning").checked){
-                 map.addLayer(zoneLayer);
-             }
-  		      if(dom.byId("toggleFlood").checked){
-                 map.addLayer(floodLayer);
-             }
-              if(dom.byId("toggleEsriLabels").checked){
-                 map.addLayer(esriLabelLayer);
-             }
-             */
+  		    
             layerSorter();
   		     } catch(e){console.log(e);}
         try{map.addLayer(gLayer);} catch(e){console.log(e);}
-      //  map.addLayer(parcelInfoLayer);
+ 
        
         stripe = null;
         empty();
@@ -3556,7 +3290,7 @@ function levyUrl(){
     			exportArray = {
           	         "AltName": resultsArray[i].attributes.ALTNAME1,
           	         "City": resultsArray[i].attributes.CITY
-          	        // "RdLabel": resultsArray[i].attributes.RD_LABEL        	         
+          	       	         
                  };
                  
                  var str = dom.byId("filler").innerHTML;
@@ -3589,126 +3323,17 @@ function levyUrl(){
     function info() { 
 		displayResults(infoArray,"single");
         console.log(infoArray);
-/*
-        console.log(infoArray.attributes.LevyURL);
-        //infoArray.attributes.LevyURL = "x";
-        // exportArray.push(infoArray.attributes);
-        exportArray = {
-            "parcelNum": infoArray.attributes.PAR_NUM.toString(),
-            "Fips": infoArray.attributes.Fips.toString(),
-            "Owner": infoArray.attributes.Owner,
-            "OwnerOverflow": infoArray.attributes.OwnerOverflow,
-            "OwnerStreetAddress": infoArray.attributes.OwnerStreetAddress,
-            "OwnerCity": infoArray.attributes.OwnerCity,
-            "OwnerState": infoArray.attributes.OwnerState,
-            "OwnerZip": infoArray.attributes.OwnerZip.toString()
-        };
 
-        console.log(dojo.toJson(exportArray));
-
-        if (stripe == null || stripe == "odd") {
-            stripe = "even";
-        } else {
-            stripe = "odd";
-        }
-
-     //   domAttr.set("output", "class", "xxhide");
-     //   domAttr.set("output", "style", "opacity: 1;");
-      //  domAttr.set("toggleOutput", "class", "open");
-        var s = "<tr class=\"" + stripe + " centerCell\">" +
-            "<td class=\"parNum\">" + infoArray.attributes.PAR_NUM + "</td>" +
-            "<td class=\"assessorLink\"><a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray.attributes.PAR_TXT + "</a></td>" +
-            "<td class=\"fips\">" + infoArray.attributes.Fips + "</td>" +
-            "<td class=\"ownName\">" + infoArray.attributes.Owner + "</td>" +
-            "<td class=\"ownOverflow\">" + infoArray.attributes.OwnerOverflow + "</td>" +
-            "<td class=\"ownAddress\">" + infoArray.attributes.OwnerStreetAddress + "</td>" +
-            "<td class=\"ownCity\">" + infoArray.attributes.OwnerCity + "</td>" +
-            "<td class=\"ownState\">" + infoArray.attributes.OwnerState + "</td>" +
-            "<td class=\"ownZip\">" + infoArray.attributes.OwnerZip + "</td>" +
-            "</tr>";
-
-        dom.byId("outTable").innerHTML += s;
-
-        var str = dom.byId("filler").innerHTML;
-
-        if (str.search("}") > -1) {
-            tf = true;
-        }
-
-        if (tf) {
-            dom.byId("filler").innerHTML += ',{"' + count + '": ' + dojo.toJson(exportArray) + '}';
-        } else {
-            dom.byId("filler").innerHTML += '{"' + count + '": ' + dojo.toJson(exportArray) + '}';
-        }
-        console.log(dom.byId("filler").innerHTML);
-        console.log(tf);
-        count++;
-        //  console.log(exportArray);
-        //console.log(dojo.toJson(exportArray));
-        //domAttr.set(dom.byId("exportButton"), "href", "test.php?content=" + encodeURIComponent(dojo.toJson(exportArray))); 
-		*/
-        /*
-   var xhrArgs = ({
-        url:"test.php",
-        postData: "this is a test",
-        handleAs: "text",    
-        
-        load: function(data){
-
-            console.log(data);
-
-        },
-        error: function(error) {
-			console.log(error);
-                        }           
-
-    });
-
- 	
- 	var deferred = dojo.rawXhrPost(xhrArgs);
- 	 */
     }
 
     function makeJson(tempArray) {
 
-        //"{\"PAR_NUM\":\"" + infoArray.attributes.PAR_NUM + "\" }";
-
-        /* infoArray.attributes.PAR_NUM 
-        infoArray.attributes.PAR_TXT 
-        infoArray.attributes.PAR_TXT
-        infoArray.attributes.Fips 
-        infoArray.attributes.Owner
-        infoArray.attributes.OwnerOverflow 
-        infoArray.attributes.OwnerStreetAddress 
-        infoArray.attributes.OwnerCity 
-        infoArray.attributes.OwnerState 
-        infoArray.attributes.OwnerZip
-    	*/
 
     }
 
     function ownerResults(infoArray4) {
         console.log(infoArray4);
-        /*
-        	 alert("ownerResults started");
-        	var s;
-        	for(i=0; i<infoArray4.length; i++) {
-                s += "<tr>" +
-                "<td>" + infoArray4[i].attributes.PAR_NUM + "</td>" +
-                "<td><a id=\"highlight\" onclick= >" + infoArray.attributes.PAR_TXT + "</a></td>" +
-                "<td>" + infoArray4[i].attributes.Fips + "</td>" +
-                "<td>" + infoArray4[i].attributes.Owner + "</td>" +
-                "<td>" + infoArray4[i].attributes.OwnerOverflow + "</td>" +
-                "<td>" + infoArray4[i].attributes.OwnerStreetAddress + "</td>" +
-                "<td>" + infoArray4[i].attributes.OwnerCity + "</td>" +
-                "<td>" + infoArray4[i].attributes.OwnerState + "</td>" +
-                "<td>" + infoArray4[i].attributes.OwnerZip + "</td>" +
-                "</tr>";
-                console.log(s);
-        	}
-
-            dom.byId("output").innerHTML = "<table>" + s + "</table>";
-			*/
+        
     }
 
     function empty() {
@@ -3740,12 +3365,10 @@ function levyUrl(){
             buff = false;
             domAttr.set("bufferMode", "class", "bufferModeOff");
             domAttr.set(tools, "class" ,"clear");
-            // domAttr.set("buffer-params", "style", "visibility: hidden");
         } else if (buff == null) {
             buff = true;
             domAttr.set("bufferMode", "class", "bufferModeOn");
             domAttr.set(tools, "class" ,"bufferActive");
-            // domAttr.set("buffer-params", "style", "visibility: visible");
             map.infoWindow.hide();
 
         }
@@ -3755,7 +3378,7 @@ function levyUrl(){
     function drawMode() {
 		rubberBandZoomMode(false);
     	navToolbar.activate(Navigation.PAN);
-        //measurement.show();
+
         if (buff) {
             buff = true;
             bufferMode();
@@ -3765,7 +3388,6 @@ function levyUrl(){
             draw = true;
             domAttr.set("draw", "class", "drawOn");
             domAttr.set(tools, "class" ,"drawActive");
-            // domAttr.set("measurementDiv", "style", "visibility: visible !important;;");
            
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
             map.infoWindow.hide();
@@ -3777,14 +3399,12 @@ function levyUrl(){
            try{ measurement.setTool("distance", false);}catch(e){}
            try{ measurement.setTool("location", false);}catch(e){}
            map.graphics.clear();
-            //  domAttr.set("measurementDiv", "style", "visibility: hidden !important;");
 
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;visibility: hidden;");
         } else if (draw == null) {
             draw = true;
             domAttr.set("draw", "class", "drawOn");
             domAttr.set(tools, "class" ,"drawActive");
-            //  domAttr.set("measurementDiv", "style", "visibility: visible !important;");
 
             domAttr.set("dijit_form_DropDownButton_0", "style", "-webkit-user-select: none;");
             map.infoWindow.hide();
@@ -3829,33 +3449,15 @@ function levyUrl(){
              try{map.graphics.clear();}catch(e){}
             var query = new Query();
             query.outFields = ["*"];
-           // query.text = owner;
-           		//query.where = "(Owner like '%" + owner + "%' or OwnerOverflow like '%" + owner + "%')";
-           	//	query.where = "(Owner like '%dylan %' or OwnerOverflow like '%dylan %') and (Owner like '%addington%' or OwnerOverflow like '%addington%') ";
-           		query.where = makeWordArray(owner, "owner");
+          query.where = makeWordArray(owner, "owner");
            		console.log(query.where);
             var deferred = parcels.selectFeatures(query, FeatureLayer.SELECTION_NEW, function (selection) {
             	z.push(selection[0]);
-                //center = graphicsUtils.graphicsExtent(selection).getCenter();
                  center = graphicsUtils.graphicsExtent(z).getCenter();
                 selectionX = selection;
-             /*   var extHandler = map.on("extent-change", function () {
-                    extHandler.remove();
-                    //zoom to the center then display the popup 
-                    map.infoWindow.setFeatures(selection);
-                    //   map.infoWindow.show(center);
-                    //  ownerResults(selection);
-                    //   alert("ownerResults complete");
-                    console.log(selection);
-                    displayResults(selection,"parcel");
-                     infoArray2.push(selection[0]);
-                });
-                // console.log(center);
-                */
+           
                    map.infoWindow.setFeatures(selection);
-                    //   map.infoWindow.show(center);
-                    //  ownerResults(selection);
-                    //   alert("ownerResults complete");
+                  
                     console.log(selection);
                     displayResults(selection,"parcel");
                      infoArray2.push(selection[0]);
@@ -3875,7 +3477,7 @@ function levyUrl(){
     }	
 
 
-//var searchRefine = new Array("and","&","or",);
+
 
 function makeWordArray(owner, qMode){
 		var q = "";
@@ -3963,21 +3565,18 @@ function zoomToRoad(evt){
 	try{gLayer.clear();}catch(e){}
 	var outSR = new SpatialReference(102100);
 	 gsvc.project([ geom ], outSR, function(result) {
-	//var symbol = new SimpleMarkerSymbol();
+
 	var graphic = new Graphic(result[0], symbolx);
                 //add a graphic to the map at the geocoded location
               console.log(result);  
                 try{
-                //map.graphics.add(graphic);
                 gLayer.add(graphic);
            map.addLayer(gLayer);
-         // map.graphics.add(graphic);
+
                 } catch(e){
                 	console.log(e);
                 }
-               // console.log(graphic);
-                //add a text symbol to the map listing the location of the matched address.
-           //  map.centerAndZoom(geom,2)
+           
 }, function(e){console.log(e);});
 
 
@@ -3989,10 +3588,10 @@ function zoomToPoint(evt, zoomTF){
 	var geom = evt.geometry;
 	map.graphics.clear();
 	try{gLayer.clear();}catch(e){}
-	//var symbol = new SimpleMarkerSymbol();
+
 	var graphic = new Graphic(geom, sfs3);
                 //add a graphic to the map at the geocoded location
-                //map.graphics.add(graphic);
+        
                 gLayer.add(graphic);
                 //add a text symbol to the map listing the location of the matched address.
                 var displayText = evt.attributes.FULLADDR;
@@ -4008,7 +3607,7 @@ function zoomToPoint(evt, zoomTF){
                     font,
                     new Color("#ff0000"));
                 textSymbol.setOffset(0, 8);
-               // map.graphics.add(new Graphic(geom, textSymbol));
+         
              
                gLayer.add(new Graphic(geom,textSymbol));
                map.addLayer(gLayer);
@@ -4022,10 +3621,10 @@ function zoomToGeoPoint(evt){
 	var geom = evt.location;
 	map.graphics.clear();
 	try{gLayer.clear();}catch(e){}
-	//var symbol = new SimpleMarkerSymbol();
+
 	var graphic = new Graphic(geom, sfs3);
                 //add a graphic to the map at the geocoded location
-                //map.graphics.add(graphic);
+             
                 gLayer.add(graphic);
                 //add a text symbol to the map listing the location of the matched address.
                 var displayText = evt.address;
@@ -4041,7 +3640,7 @@ function zoomToGeoPoint(evt){
                     font,
                     new Color("#ff0000"));
                 textSymbol.setOffset(0, 8);
-               // map.graphics.add(new Graphic(geom, textSymbol));
+           
              
                gLayer.add(new Graphic(geom,textSymbol));
                map.addLayer(gLayer);
@@ -4088,20 +3687,11 @@ function setInfoArray2(geom, gCode){
     	console.log(contentType);
     	on.emit(displayHelp, "click", {bubbles: true, cancelable: true});
     	if(contentType == undefined){
-    		//console.log(infoMode);
+    		
     		contentType = infoMode;
     	} 
     	if(contentType != infoMode){
-    	/*	try{resultsArray.length = 0;}catch(e){}
-    		try{
-    		dom.byId("tableContent").innerHTML = "";
-    		dom.byId("tableTallContent").innerHTML = "";
-    		} catch(e){
-    		document.getElementById('tableContent').innerText="";
-    		document.getElementById('tableTallContent').innerText="";
-    		}
-    		dom.byId("filler").innerHTML = "";
-    		*/
+    	
     		contentType = infoMode;
     		
     	}
@@ -4136,13 +3726,13 @@ function setInfoArray2(geom, gCode){
                
                 var temp = domConstruct.create("tr", {
                     "innerHTML": "<td><a class=\"goToParcel\" title=\"View Road Segment\" id=\"test" + (i + l) + "\" >" + "</a></td>" + sWide,
-                    //	"id": "test" + i,
+
                     "class": stripe2
                 }, "tableContent");
                 
                  var temp2 = domConstruct.create("tr", {
                     "innerHTML": "<td><a class=\"goToParcel\" title=\"View Road Segment\" id=\"test" + (i + l + 10000) + "\" >" + "</a></td>" + s,
-                    //	"id": "test" + i,
+  
                     "class": stripe2
                 }, "tableTallContent");
                 
@@ -4152,7 +3742,6 @@ function setInfoArray2(geom, gCode){
                 //event handlers for search results
                 dojo.connect(zz, "onclick", function (node) {
 
-                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
                     var n = node.target.id;
                     n = n.toString();
                     n = n.replace("test", "");
@@ -4163,7 +3752,7 @@ function setInfoArray2(geom, gCode){
                     try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     try {
                       
-						//map.centerAndZoom(resultsArray[n].geometry, 8);
+						
                        zoomToRoad(resultsArray[n]);
                     } catch (error) {
                         console.log(error);
@@ -4177,7 +3766,6 @@ function setInfoArray2(geom, gCode){
                 //event handlers for search results
                 dojo.connect(zz2, "onclick", function (node) {
 
-                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
                     var n = node.target.id;
                     n = n.toString();
                     n = n.replace("test", "");
@@ -4187,7 +3775,7 @@ function setInfoArray2(geom, gCode){
                     console.log(t);
                     try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
                     try {
-                        //  safeClear();
+           
 
                         zoomToRoad(resultsArray[n - 10000]);
                        
@@ -4215,13 +3803,13 @@ function setInfoArray2(geom, gCode){
 				
                 var temp = domConstruct.create("tr", {
                     "innerHTML": "<td><a class=\"goToParcel\" title=\"View Address Point\" id=\"test" + (i + l) + "\" ></a></td>" + sWide,
-                    //	"id": "test" + i,
+                   
                     "class": stripe2
                 }, "tableContent");
                 
                  var temp2 = domConstruct.create("tr", {
                     "innerHTML": "<td><a class=\"goToParcel\" title=\"View Address Point\" id=\"test" + (i + l + 10000) + "\" ></a><td>" +  s,
-                    //	"id": "test" + i,
+                   
                     "class": stripe2
                 }, "tableTallContent");
                 var zz = dom.byId("test" + (i + l));
@@ -4229,7 +3817,6 @@ function setInfoArray2(geom, gCode){
                 //event handlers for search results
                 dojo.connect(zz, "onclick", function (node) {
 
-                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
                     var n = node.target.id;
                     n = n.toString();
                     n = n.replace("test", "");
@@ -4240,10 +3827,7 @@ function setInfoArray2(geom, gCode){
                     
                     try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     try {
-                        //  safeClear();
 						zoomToPoint(resultsArray[n]);
-                        //selectParcel(resultsArray[n].attributes.PAR_NUM);
-                        //map.infoWindow.show(resultsArray[n].geometry.getPoint(0, 0));
                     } catch (error) {
                         console.log(error);
                     }
@@ -4256,7 +3840,6 @@ function setInfoArray2(geom, gCode){
                 //event handlers for search results
                 dojo.connect(zz2, "onclick", function (node) {
 
-                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
                     var n = node.target.id;
                     n = n.toString();
                     n = n.replace("test", "");
@@ -4266,7 +3849,6 @@ function setInfoArray2(geom, gCode){
                     console.log(t);
                     try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
                     try {
-                        //  safeClear();
 
                         zoomToPoint(resultsArray[n - 10000]);
                       
@@ -4289,7 +3871,6 @@ function setInfoArray2(geom, gCode){
         if (infoMode == "parcel" || infoMode == undefined) {
             for (i = 0; i < infoArray5.length; i++) {
                 resultsArray.push(infoArray5[i]);
-              //  console.log(resultsArray);
                var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell tall\">" +
                     "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span><span class=\"resultsText\" >" + infoArray5[i].attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5[i].attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5[i].attributes.PAR_TXT + "</a></span></td>" + "</tr>" +
@@ -4342,14 +3923,14 @@ function setInfoArray2(geom, gCode){
 
                 var temp = domConstruct.create("tr", {
                     "innerHTML":"<td><div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l) + "\" >" + "</a></td>" + sWide  + "</div>",
-                    //	"id": "test" + i,
+
                     "class": stripe2
                 }, "tableContent");
                 
                 
                  var temp2 = domConstruct.create("tr", {
                     "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5[i].attributes.PAR_TXT + "\" id=\"test" + (i + l + 10000) + "\" >" + "</a>" + s + "</div>",
-                    //	"id": "test" + i,
+       
                     "class": stripe2
                 }, "tableTallContent");
                 
@@ -4360,7 +3941,6 @@ function setInfoArray2(geom, gCode){
                 //event handlers for search results
                 dojo.connect(zz2, "onclick", function (node) {
 
-                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
                     var n = node.target.id;
                     n = n.toString();
                     n = n.replace("test", "");
@@ -4371,7 +3951,6 @@ function setInfoArray2(geom, gCode){
                     
                     console.log(t);
                     try {
-                        //  safeClear();
 
                         selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
                         map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
@@ -4387,7 +3966,6 @@ function setInfoArray2(geom, gCode){
                 //event handlers for search results
                 dojo.connect(zz, "onclick", function (node) {
 
-                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
                     var n = node.target.id;
                     n = n.toString();
                     n = n.replace("test", "");
@@ -4397,7 +3975,6 @@ function setInfoArray2(geom, gCode){
                     console.log(t);
                      try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     try {
-                        //  safeClear();
 
                         selectParcel(resultsArray[n].attributes.PAR_NUM);
                         map.infoWindow.show(resultsArray[n].geometry.getPoint(0, 0));
@@ -4419,18 +3996,7 @@ function setInfoArray2(geom, gCode){
         	
         	 resultsArray.push(infoArray5);
                 console.log(resultsArray);
-              /*  var s = "<td class=\"sTall\"><table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
-                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"assessorLink\"><span class=\"resultsLabel\" >Assessor Link:</span><span class=\"resultsText\" > <a href=\"http://www.co.pueblo.co.us/cgi-bin/webatrbroker.wsc/propertyinfo.p?par=" + infoArray5.attributes.PAR_TXT + "\" target=\"_blank\" >" + infoArray5.attributes.PAR_TXT + "</a></span></td>" + "</tr>" +
-                    "<tr class=\"" + " leftCell\">" + "<td class=\"fips\"><span class=\"resultsLabel\" >FIPS:</span><span class=\"resultsText\" > " + infoArray5.attributes.Fips + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownName\"><span class=\"resultsLabel\" >Own. Name:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Owner + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownOverflow\"><span class=\"resultsLabel\" >Own. Overflow:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerOverflow + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownAddress\"><span class=\"resultsLabel\" >Own. Address:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerStreetAddress + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownCity\"><span class=\"resultsLabel\" >Own. City:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerCity + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownState\"><span class=\"resultsLabel\" >Own. State:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerState + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"ownZip\"><span class=\"resultsLabel\" >Own Zip:</span> <span class=\"resultsText\" >" + infoArray5.attributes.OwnerZip + "</span></td>" +
-                    "</tr></table></td>";
-*/
+          
 				
 				var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell tall\">" +
                     "<td class=\"parNum\"><span class=\"resultsLabel\" >Parcel Number:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PAR_NUM + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
@@ -4483,14 +4049,14 @@ function setInfoArray2(geom, gCode){
                 
                   var temp = domConstruct.create("tr", {
                     "innerHTML":"<td><div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l) + "\" >" + "</a></td>" + sWide  + "</div>",
-                    //	"id": "test" + i,
+     
                     "class": stripe2
                 }, "tableContent");
                 
                 
                  var temp2 = domConstruct.create("tr", {
                     "innerHTML":"<div class=\"sTallFix\"><a class=\"goToParcel fit\" title=\"Zoom to parcel # " +  infoArray5.attributes.PAR_TXT + "\" id=\"test" + (l + 10000) + "\" >" + "</a>" + s + "</div>",
-                    //	"id": "test" + i,
+
                     "class": stripe2
                 }, "tableTallContent");
                 
@@ -4501,7 +4067,6 @@ function setInfoArray2(geom, gCode){
                 //event handlers for search results
                 dojo.connect(zz, "onclick", function (node) {
 
-                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
                     var n = node.target.id;
                     n = n.toString();
                     n = n.replace("test", "");
@@ -4511,7 +4076,6 @@ function setInfoArray2(geom, gCode){
                     try{setInfoArray2(resultsArray[n]);} catch(e){console.log(e);}
                     console.log(t);
                     try {
-                        //  safeClear();
 
                         selectParcel(resultsArray[n].attributes.PAR_NUM);
                         map.infoWindow.show(resultsArray[n].geometry.getPoint(0, 0));
@@ -4526,7 +4090,6 @@ function setInfoArray2(geom, gCode){
                 //event handlers for search results
                 dojo.connect(zz2, "onclick", function (node) {
 
-                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
                     var n = node.target.id;
                     n = n.toString();
                     n = n.replace("test", "");
@@ -4536,7 +4099,7 @@ function setInfoArray2(geom, gCode){
                     console.log(t);
                     try{setInfoArray2(resultsArray[n - 10000]);} catch(e){console.log(e);}
                     try {
-                        //  safeClear();
+                    
 
                         selectParcel(resultsArray[n - 10000].attributes.PAR_NUM);
                         map.infoWindow.show(resultsArray[n - 10000].geometry.getPoint(0, 0));
@@ -4555,17 +4118,9 @@ function setInfoArray2(geom, gCode){
         	
         }
         
-        
-        setTimeout(function () {
-			
-         //   on.emit(dom.byId("openClose"), "click", {
-         //       bubbles: true,
-           //     cancelable: true
-          //  });
-            //on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
-        }, 1000);
 
-        //connect.subscribe("")
+
+
 		searchTimeout = true;
     }
 
@@ -4591,7 +4146,7 @@ function setInfoArray2(geom, gCode){
         }
 
         for (i = 0; i < infoArray5.addresses.length; i++) {
-        	//console.log(infoArray5);
+
         	console.log(infoArray5.addresses[0].address);
             infoArray5.addresses[i].location.spatialReference.wkid = 2233;
             resultsArray.push(infoArray5.addresses[i]);
@@ -4631,11 +4186,11 @@ function setInfoArray2(geom, gCode){
                 console.log(t);
                 try{setInfoArray2(resultsArray[n], true);} catch(e){console.log(e);}
                 try {
-                    //  safeClear();
+   
 					console.log(resultsArray[n]);
-                   // selectByPoint(resultsArray[n]);
+                 
                    zoomToGeoPoint(resultsArray[n]);
-                    //map.infoWindow.show(resultsArray[n].location);
+                 
                 } catch (error) {
                     console.log(error);
                 }
@@ -4649,7 +4204,6 @@ function setInfoArray2(geom, gCode){
                 //event handlers for search results
                 dojo.connect(zz2, "onclick", function (node) {
 
-                    //var n = node.target.parentNode.parentNode.parentNode.parentNode.id;
                     var n = node.target.id;
                     n = n.toString();
                     n = n.replace("test", "");
@@ -4659,7 +4213,7 @@ function setInfoArray2(geom, gCode){
                     console.log(t);
                     try{setInfoArray2(resultsArray[n - 10000], true);} catch(e){console.log(e);}
                     try {
-                        //  safeClear();
+     
 
                       zoomToGeoPoint(resultsArray[n - 10000]);
                     } catch (error) {
@@ -4673,15 +4227,9 @@ function setInfoArray2(geom, gCode){
             } else if (stripe2 == "even")
                 stripe2 = "odd";
         }
-        setTimeout(function () {
-        //    on.emit(dom.byId("openClose"), "click", {
-        //        bubbles: true,
-        //        cancelable: true
-        //    });
-            //on.emit(dom.byId("toggleOutput"), "click", {bubbles: true, cancelable: true});
-        }, 1000);
+       
 
-        //connect.subscribe("")
+    
 		searchTimeout = true;
     }
 
@@ -4690,7 +4238,7 @@ function setInfoArray2(geom, gCode){
         if (change) {
             try {
                 map.infoWindow.restore();
-                // console.log(popup.getSelectedFeature());
+      
 
                 infoArray = selectionX[popup.selectedIndex];
 
@@ -4717,14 +4265,14 @@ function setInfoArray2(geom, gCode){
 
             var symbol = new SimpleLineSymbol(
                 SimpleLineSymbol.STYLE_SOLID,
-               // new Color([13, 255, 0]),
+
                 new Color([255, 0, 0]),
                 5);
 
             var bufferGeometry = results;
-            //console.log(bufferGeometry);
+
             var graphic2 = new Graphic(bufferGeometry, symbol);
-            // console.log(graphic2.geometry.getExtent());
+  
 				
             map.graphics.add(graphic2);
             map.setExtent(graphic2.geometry.getExtent());
@@ -4752,9 +4300,9 @@ function makeGeomArray2(selection) {
                 5);
 
             var bufferGeometry = results;
-            //console.log(bufferGeometry);
+   
             var graphic2 = new Graphic(bufferGeometry, symbol);
-            // console.log(graphic2.geometry.getExtent());
+   
 				gLayer.add(graphic2);
             map.graphics.add(graphic2);
             map.setExtent(graphic2.geometry.getExtent());
@@ -4777,12 +4325,9 @@ function makeGeomArray2(selection) {
         }
         
 
-		 
-       //   var symbol = new SimpleMarkerSymbol().setStyle("diamond");
-         // var graphic = new Graphic(point, symbol);
           var outSR = new SpatialReference(102100);
           
-        //  map.graphics.add(graphic);
+     
 
           gsvc.project(tempArray, outSR, function(projectedPoints) {
           	console.log(projectedPoints);
@@ -4791,19 +4336,18 @@ function makeGeomArray2(selection) {
         var tempVar = gsvc.union(projectedPoints);
 
         tempVar.then(function (results) {
-        	//selection[0].geometry = results;
-			//try{infoArray2.push(selection[0]);} catch(e){console.log(e);}
+        
             var symbol = new SimpleLineSymbol(
                 SimpleLineSymbol.STYLE_SOLID,
                 new Color([13, 255, 0]),
                 5);
 
             var bufferGeometry = results;
-            //console.log(bufferGeometry);
+           
             var graphic2 = new Graphic(bufferGeometry, symbol);
-            // console.log(graphic2.geometry.getExtent());
+ 
 				
-           // map.graphics.add(graphic2);
+    
            gLayer.add(graphic2);
             map.setExtent(graphic2.geometry.getExtent());
             map.addLayer(gLayer);
@@ -4834,10 +4378,7 @@ function makeGeomArray2(selection) {
 
             });
             
-            
-        
-            // map.setZoom(3);
-            //  map.setZoom(1);
+     
             change = false;
             makeGeomArray3(selection);
 
@@ -4860,9 +4401,9 @@ function makeGeomArray2(selection) {
 			var p = new Point(x, y);
 			console.log(p);
 			var params = new ProjectParameters();
-			//params.geometries = [p];
+
 			 var outSR = new SpatialReference(102100);
-			//params.transformation = {"wkid": 2233};
+
 			console.log(params);
 			try{
 				gsvc.project([ p ], outSR, function(result){
@@ -4888,7 +4429,7 @@ function makeGeomArray2(selection) {
 					zoomOnce = false;
 					}
 				}
-				//,function(e){console.log(e);}
+
 				);
 				
 			}catch(e){console.log(e);}
@@ -4931,17 +4472,14 @@ function makeGeomArray2(selection) {
                     try{infoArray2.push(selection[0]);}catch(e){console.log(e);}
                     try{displayResults(selection[0],"single");}catch(e){console.log(e);}
                     
-                  // info();
+                  
                   searchTimeout = true;
                    
                 });
               gLayer.add( new Graphic(selection[0].geometry, sfs));
                
                 try{ map.centerAndZoom(center, 18);}catch(e){console.log(e);}
-            //  map.setExtent(graphicsUtils.graphicsExtent(z));
-             //  map.centerAt(center);
-             //  map.setZoom(18);
-             
+           
                  domAttr.set("locate", "class", "dormant");
                 domAttr.set("body", "class", "claro buttonMode");
              });
