@@ -3130,7 +3130,9 @@ function levyUrl(){
   		    
   		    if(dom.byId("toggleSat").checked){
   		       map.addLayer(basemap); 
-  		    } else if(dom.byId("toggleStreet").checked){
+  		    }else if(dom.byId("toggle2013").checked){
+               map.addLayer(aerial2013); 
+            } else if(dom.byId("toggleStreet").checked){
                map.addLayer(streetLayer); 
             }else if(dom.byId("toggleTopo").checked){
                map.addLayer(topoLayer); 
