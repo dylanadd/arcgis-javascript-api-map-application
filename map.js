@@ -1250,15 +1250,46 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     });
 
 
+$("#toggle2013").click(function(){
+    if(dom.byId("toggle2013").checked){
+                try{map.removeLayer(aerial2013);}catch(e){}
+                try{map.removeLayer(natGeoLayer);}catch(e){}
+                try{map.removeLayer(streetLayer);}catch(e){}
+                try{map.removeLayer(topoLayer);}catch(e){}
+                try{map.removeLayer(googleLayer);}catch(e){}
+                try{map.removeLayer(googleLayerStreet);}catch(e){}
+                try{map.removeLayer(osmLayer);}catch(e){}
+                try{map.removeLayer(basemap);}catch(e){}
+                try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+                try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+                try{map.removeLayer(mapQuestLayer);}catch(e){}
+                try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+                try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+                try{map.removeLayer(waterColorLayer);}catch(e){}
+                try{map.removeLayer(stamenTonerLayer);}catch(e){}
+                
+            
+                map.addLayer(aerial2013);
+                map.reorderLayer(aerial2013,0);
+            } else{
+                map.removeLayer(aerial2013);
+            }
+    
+    
+});
+
+
+
 	dojo.connect(dom.byId("toggleSat"), "click", function () {
 			if(dom.byId("toggleSat").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(natGeoLayer);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(googleLayer);}catch(e){}
 				try{map.removeLayer(googleLayerStreet);}catch(e){}
 				try{map.removeLayer(osmLayer);}catch(e){}
-				
+				try{map.removeLayer(basemap);}catch(e){}
 				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
 				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
 				try{map.removeLayer(mapQuestLayer);}catch(e){}
@@ -1276,6 +1307,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     });
 	dojo.connect(dom.byId("toggleStreet"), "click", function () {
 			if(dom.byId("toggleStreet").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(natGeoLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
@@ -1301,6 +1333,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     
     dojo.connect(dom.byId("toggleTopo"), "click", function () {
 			if(dom.byId("toggleTopo").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(natGeoLayer);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
@@ -1328,6 +1361,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     });
     dojo.connect(dom.byId("toggleNat"), "click", function () {
 			if(dom.byId("toggleNat").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
@@ -1357,6 +1391,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     
       dojo.connect(dom.byId("toggleOpenStreet"), "click", function () {
 			if(dom.byId("toggleOpenStreet").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(natGeoLayer);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
@@ -1390,6 +1425,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     
       dojo.connect(dom.byId("toggleSTerrain"), "click", function () {
 			if(dom.byId("toggleSTerrain").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
@@ -1423,6 +1459,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     
      dojo.connect(dom.byId("toggleMapbox"), "click", function () {
 			if(dom.byId("toggleMapbox").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
@@ -1455,6 +1492,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     });  
       dojo.connect(dom.byId("toggleMapquest"), "click", function () {
 			if(dom.byId("toggleMapquest").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
@@ -1488,6 +1526,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     
         dojo.connect(dom.byId("toggleCPale"), "click", function () {
 			if(dom.byId("toggleCPale").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
@@ -1522,6 +1561,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     
       dojo.connect(dom.byId("toggleCNight"), "click", function () {
 			if(dom.byId("toggleCNight").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
@@ -1555,6 +1595,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     
       dojo.connect(dom.byId("toggleToner"), "click", function () {
 			if(dom.byId("toggleToner").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
@@ -1588,6 +1629,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
     
      dojo.connect(dom.byId("toggleWColor"), "click", function () {
 			if(dom.byId("toggleWColor").checked){
+			    try{map.removeLayer(aerial2013);}catch(e){}
 				try{map.removeLayer(streetLayer);}catch(e){}
 				try{map.removeLayer(topoLayer);}catch(e){}
 				try{map.removeLayer(basemap);}catch(e){}
@@ -2077,13 +2119,15 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
       var puebloRoadLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_roads/MapServer", {maxScale: 20});
       var puebloBoundaryLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_counties/MapServer", {maxScale: 20});
       var puebloRailroadLayer = new ArcGISDynamicMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_railroads/MapServer", {maxScale: 20});
-
+      var aerial2013 = new ArcGISTiledMapServiceLayer("http://maps.co.pueblo.co.us/outside/rest/services/aerial_photos/imagery2013/ImageServer", {maxScale: 20});
       
       var basemap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",{
           displayLevels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14,15,16,17,18,19,20]
       });
   
     map.addLayer(basemap);
+    map.addLayer(puebloParcelLayer);
+    map.addLayer(puebloRoadLayer);
   
     //BEGIN functions for print dijit
    var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/ExportWebMap/GPServer/Export%20Web%20Map";
