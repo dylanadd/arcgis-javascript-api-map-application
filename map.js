@@ -225,7 +225,81 @@ $('.zoneUp').click(function(){
             
    }
    
-   
+   function setBasemapLayerOrder(){
+       
+       
+                try{map.removeLayer(aerial2013);}catch(e){}
+                try{map.removeLayer(natGeoLayer);}catch(e){}
+                try{map.removeLayer(streetLayer);}catch(e){}
+                try{map.removeLayer(topoLayer);}catch(e){}
+                try{map.removeLayer(googleLayer);}catch(e){}
+                try{map.removeLayer(googleLayerStreet);}catch(e){}
+                try{map.removeLayer(osmLayer);}catch(e){}
+                try{map.removeLayer(basemap);}catch(e){}
+                try{map.removeLayer(stamenTerrainLayer);}catch(e){}
+                try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
+                try{map.removeLayer(mapQuestLayer);}catch(e){}
+                try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
+                try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
+                try{map.removeLayer(waterColorLayer);}catch(e){}
+                try{map.removeLayer(stamenTonerLayer);}catch(e){}
+       
+        try{
+            
+            if(dom.byId("toggleSat").checked){
+               map.addLayer(basemap); 
+               map.reorderLayer(basemap,0);
+            }else if(dom.byId("toggle2013").checked){
+               map.addLayer(aerial2013); 
+                map.reorderLayer(aerial2013,0);
+            } else if(dom.byId("toggleStreet").checked){
+               map.addLayer(streetLayer); 
+                map.reorderLayer(streetLayer,0);
+            }else if(dom.byId("toggleTopo").checked){
+               map.addLayer(topoLayer); 
+                map.reorderLayer(topoLayer,0);
+            }else if(dom.byId("toggleNat").checked){
+               map.addLayer(natGeoLayer); 
+                map.reorderLayer(natGeoLayer,0);
+            }else if(dom.byId("toggleOpenStreet").checked){
+               map.addLayer(osmLayer); 
+                map.reorderLayer(osmLayer,0);
+            }else if(dom.byId("toggleSTerrain").checked){
+               map.addLayer(stamenTerrainLayer); 
+                map.reorderLayer(stamenTerrainLayer,0);
+            }else if(dom.byId("toggleMapbox").checked){
+               map.addLayer(mapBoxTerrainLayer); 
+                map.reorderLayer(mapBoxTerrainLayer,0);
+            }else if(dom.byId("toggleMapquest").checked){
+               map.addLayer(mapQuestLayer); 
+                map.reorderLayer(mapQuestLayer,0);
+            }else if(dom.byId("toggleCPale").checked){
+               map.addLayer(cloudmadePaleLayer); 
+                map.reorderLayer(cloudmadePaleLayer,0);
+            }else if(dom.byId("toggleCNight").checked){
+               map.addLayer(cloudmadeNightLayer); 
+                map.reorderLayer(cloudmadeNightLayer,0);
+            }else if(dom.byId("toggleToner").checked){
+               map.addLayer(stamenTonerLayer); 
+                map.reorderLayer(stamenTonerLayer,0);
+            }else if(dom.byId("toggleWColor").checked){
+               map.addLayer(waterColorLayer); 
+                map.reorderLayer(waterColorLayer,0);
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        }catch(e){console.log(e);}
+       
+   }
    
    function setLayerOrder(order){
        
@@ -1251,29 +1325,7 @@ dojo.connect(dom.byId("toggleRoads"), "click", function () {
 
 
 $("#toggle2013").click(function(){
-    if(dom.byId("toggle2013").checked){
-                try{map.removeLayer(aerial2013);}catch(e){}
-                try{map.removeLayer(natGeoLayer);}catch(e){}
-                try{map.removeLayer(streetLayer);}catch(e){}
-                try{map.removeLayer(topoLayer);}catch(e){}
-                try{map.removeLayer(googleLayer);}catch(e){}
-                try{map.removeLayer(googleLayerStreet);}catch(e){}
-                try{map.removeLayer(osmLayer);}catch(e){}
-                try{map.removeLayer(basemap);}catch(e){}
-                try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-                try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-                try{map.removeLayer(mapQuestLayer);}catch(e){}
-                try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-                try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-                try{map.removeLayer(waterColorLayer);}catch(e){}
-                try{map.removeLayer(stamenTonerLayer);}catch(e){}
-                
-            
-                map.addLayer(aerial2013);
-                map.reorderLayer(aerial2013,0);
-            } else{
-                map.removeLayer(aerial2013);
-            }
+  setBasemapLayerOrder();
     
     
 });
@@ -1281,382 +1333,49 @@ $("#toggle2013").click(function(){
 
 
 	dojo.connect(dom.byId("toggleSat"), "click", function () {
-			if(dom.byId("toggleSat").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(natGeoLayer);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				try{map.removeLayer(osmLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-				
-			
-				map.addLayer(basemap);
-				map.reorderLayer(basemap,0);
-			} else{
-				map.removeLayer(basemap);
-			}
+			setBasemapLayerOrder();
     });
 	dojo.connect(dom.byId("toggleStreet"), "click", function () {
-			if(dom.byId("toggleStreet").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(natGeoLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				try{map.removeLayer(osmLayer);}catch(e){}
-				
-				
-				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-				
-				map.addLayer(streetLayer);
-				map.reorderLayer(streetLayer,0);
-			} else{
-				map.removeLayer(streetLayer);
-			}
+			setBasemapLayerOrder();
     });
     
     dojo.connect(dom.byId("toggleTopo"), "click", function () {
-			if(dom.byId("toggleTopo").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(natGeoLayer);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				try{map.removeLayer(osmLayer);}catch(e){}
-				
-				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-				
-				
-				dom.byId("toggleStreet").checked = false;
-				dom.byId("toggleNat").checked = false;
-				dom.byId("toggleSat").checked = false;
-				map.addLayer(topoLayer);
-				map.reorderLayer(topoLayer,0);
-			} else{
-				map.removeLayer(topoLayer);
-			}
+			setBasemapLayerOrder();
     });
     dojo.connect(dom.byId("toggleNat"), "click", function () {
-			if(dom.byId("toggleNat").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				try{map.removeLayer(osmLayer);}catch(e){}
-				
-
-				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-				
-				map.addLayer(natGeoLayer);
-				map.reorderLayer(natGeoLayer,0);
-				if(map.getZoom() > 16){
-				map.setZoom(16);
-				}
-				
-			} else{
-				map.removeLayer(natGeoLayer);
-			}
+		setBasemapLayerOrder();
     });
     
       dojo.connect(dom.byId("toggleOpenStreet"), "click", function () {
-			if(dom.byId("toggleOpenStreet").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(natGeoLayer);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-			
-				
-				try{map.removeLayer(osmLayer);}catch(e){}
-				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-				
-				
-				map.addLayer(osmLayer);
-
-			
-				map.reorderLayer(osmLayer,0);
-				if(map.getZoom() > 17){
-				map.setZoom(17);
-				}
-				
-			} else{
-				try{map.removeLayer(osmLayer);}catch(e){}
-			}
+			setBasemapLayerOrder();
     });
     
       dojo.connect(dom.byId("toggleSTerrain"), "click", function () {
-			if(dom.byId("toggleSTerrain").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				dom.byId("toggleTopo").checked = false;
-				dom.byId("toggleStreet").checked = false;
-				dom.byId("toggleSat").checked = false;
-				try{map.removeLayer(osmLayer);}catch(e){}
-		try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-				try{map.removeLayer(natGeoLayer);}catch(e){}
-			
-	
-			map.addLayer(stamenTerrainLayer);
-			
-				map.reorderLayer(stamenTerrainLayer,0);
-				if(map.getZoom() > 17){
-	
-				}
-				
-			} else{
-				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-			}
+			setBasemapLayerOrder();
     });  
     
      dojo.connect(dom.byId("toggleMapbox"), "click", function () {
-			if(dom.byId("toggleMapbox").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				dom.byId("toggleTopo").checked = false;
-				dom.byId("toggleStreet").checked = false;
-				dom.byId("toggleSat").checked = false;
-				try{map.removeLayer(osmLayer);}catch(e){}
-		try{map.removeLayer(natGeoLayer);}catch(e){}
-			try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-			
-	
-			map.addLayer(mapBoxTerrainLayer);
-			
-				map.reorderLayer(mapBoxTerrainLayer,0);
-				if(map.getZoom() > 17){
-
-				}
-				
-			} else{
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-			}
+			setBasemapLayerOrder();
     });  
       dojo.connect(dom.byId("toggleMapquest"), "click", function () {
-			if(dom.byId("toggleMapquest").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				dom.byId("toggleTopo").checked = false;
-				dom.byId("toggleStreet").checked = false;
-				dom.byId("toggleSat").checked = false;
-				try{map.removeLayer(osmLayer);}catch(e){}
-		try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-			try{map.removeLayer(natGeoLayer);}catch(e){}
-			
-	
-			map.addLayer(mapQuestLayer);
-			
-				map.reorderLayer(mapQuestLayer,0);
-				if(map.getZoom() > 17){
-
-				}
-				
-			} else{
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-			}
+			setBasemapLayerOrder();
     });  
     
         dojo.connect(dom.byId("toggleCPale"), "click", function () {
-			if(dom.byId("toggleCPale").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				dom.byId("toggleTopo").checked = false;
-				dom.byId("toggleStreet").checked = false;
-				dom.byId("toggleSat").checked = false;
-				try{map.removeLayer(osmLayer);}catch(e){}
-			try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-			try{map.removeLayer(natGeoLayer);}catch(e){}
-			
-	
-			map.addLayer(cloudmadePaleLayer);
-			
-				map.reorderLayer(cloudmadePaleLayer,0);
-				if(map.getZoom() > 17){
-
-				}
-				
-			} else{
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-			}
+			setBasemapLayerOrder();
     });  
     
     
       dojo.connect(dom.byId("toggleCNight"), "click", function () {
-			if(dom.byId("toggleCNight").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				dom.byId("toggleTopo").checked = false;
-				dom.byId("toggleStreet").checked = false;
-				dom.byId("toggleSat").checked = false;
-				try{map.removeLayer(osmLayer);}catch(e){}
-		try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-			try{map.removeLayer(natGeoLayer);}catch(e){}
-			
-	
-			map.addLayer(cloudmadeNightLayer);
-			
-				map.reorderLayer(cloudmadeNightLayer,0);
-				if(map.getZoom() > 17){
-
-				}
-				
-			} else{
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-			}
+			setBasemapLayerOrder();
     });  
     
       dojo.connect(dom.byId("toggleToner"), "click", function () {
-			if(dom.byId("toggleToner").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				dom.byId("toggleTopo").checked = false;
-				dom.byId("toggleStreet").checked = false;
-				dom.byId("toggleSat").checked = false;
-				try{map.removeLayer(osmLayer);}catch(e){}
-		try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-			try{map.removeLayer(natGeoLayer);}catch(e){}
-			
-	
-			map.addLayer(stamenTonerLayer);
-			
-				map.reorderLayer(stamenTonerLayer,0);
-				if(map.getZoom() > 17){
-
-				}
-				
-			} else{
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-			}
+			setBasemapLayerOrder();
     });  
     
      dojo.connect(dom.byId("toggleWColor"), "click", function () {
-			if(dom.byId("toggleWColor").checked){
-			    try{map.removeLayer(aerial2013);}catch(e){}
-				try{map.removeLayer(streetLayer);}catch(e){}
-				try{map.removeLayer(topoLayer);}catch(e){}
-				try{map.removeLayer(basemap);}catch(e){}
-				try{map.removeLayer(googleLayer);}catch(e){}
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-				try{map.removeLayer(osmLayer);}catch(e){}
-				try{map.removeLayer(natGeoLayer);}catch(e){}
-				
-				try{map.removeLayer(stamenTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapBoxTerrainLayer);}catch(e){}
-				try{map.removeLayer(mapQuestLayer);}catch(e){}
-				try{map.removeLayer(cloudmadePaleLayer);}catch(e){}
-				try{map.removeLayer(cloudmadeNightLayer);}catch(e){}
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-				try{map.removeLayer(stamenTonerLayer);}catch(e){}
-			
-	
-			map.addLayer(waterColorLayer);
-			
-				map.reorderLayer(waterColorLayer,0);
-				if(map.getZoom() > 17){
-
-				}
-				
-			} else{
-				try{map.removeLayer(waterColorLayer);}catch(e){}
-			}
+			setBasemapLayerOrder();
     });  
     
     
@@ -1664,33 +1383,10 @@ $("#toggle2013").click(function(){
     
     
       dojo.connect(dom.byId("toggleGSat"), "click", function () {
-			if(dom.byId("toggleGSat").checked){
-				try{map.removeLayer(googleLayerStreet);}catch(e){}
-
-				googleLayer.setMapTypeId(agsjs.layers.GoogleMapsLayer.MAP_TYPE_SATELLITE);
-				
-				map.addLayer(googleLayer);
-				map.reorderLayer(googleLayer,1);
-			} else{
-				map.removeLayer(googleLayer);
-			}
+			setBasemapLayerOrder();
     });
       dojo.connect(dom.byId("toggleGStreet"), "click", function () {
-			if(dom.byId("toggleGStreet").checked){
-				try{map.removeLayer(googleLayer);}catch(e){}
-				
-				
-
-			
-
-				googleLayerStreet.setMapTypeId(agsjs.layers.GoogleMapsLayer.MAP_TYPE_ROADMAP);
-					map.addLayer(googleLayerStreet);	
-				
-				
-				map.reorderLayer(googleLayerStreet,1);
-			} else{
-				map.removeLayer(googleLayerStreet);
-			}
+			setBasemapLayerOrder();
     });
    
     
@@ -3124,8 +2820,8 @@ function levyUrl(){
 		  try{gLayer.clear();}catch(e){}
     	domAttr.set(tools, "class" ,"clear");
         map.removeAllLayers();
-     
-  		
+     setBasemapLayerOrder();
+  		/*
   		try{
   		    
   		    if(dom.byId("toggleSat").checked){
@@ -3168,7 +2864,7 @@ function levyUrl(){
   		    
   		}catch(e){console.log(e);}
 
-  		
+  		*/
   		 try{
   		    
             layerSorter();
