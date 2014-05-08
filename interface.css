@@ -302,6 +302,7 @@ border:none!important;
 
 .esriPopup {
 z-index:100;
+display:none !important;
 }
 
 .rewrite #gallery {
@@ -1732,10 +1733,10 @@ border-left-width: 0px;
 	width:474px !important;
 }
 
-.mobile-mode-portrait #draw, .mobile-mode-portrait #bufferMode, .mobile-mode-portrait #toggleOutput, .mobile-mode-portrait #gallery, .mobile-mode-portrait #print_button, .mobile-mode-portrait #overviewToggle, .mobile-mode-portrait #legendToggle, .mobile-mode-portrait #toggleLayerMenu {
+.mobile-mode-portrait #draw, .mobile-mode-portrait #bufferMode, .mobile-mode-portrait #printWindow, .mobile-mode-portrait #toggleOutput, .mobile-mode-portrait #gallery, .mobile-mode-portrait #print_button, .mobile-mode-portrait #overviewToggle, .mobile-mode-portrait #legendToggle, .mobile-mode-portrait #toggleLayerMenu {
 	display:none;
 }
-.mobile-mode-landscape #draw,   .mobile-mode-landscape #gallery, .mobile-mode-landscape #print_button, .mobile-mode-landscape #overviewToggle, .mobile-mode-landscape #legendToggle {
+.mobile-mode-landscape #draw, .mobile-mode-landscape #printWindow,  .mobile-mode-landscape #gallery, .mobile-mode-landscape #print_button, .mobile-mode-landscape #overviewToggle, .mobile-mode-landscape #legendToggle {
 display:none;
 }
 
@@ -1991,7 +1992,7 @@ margin-right: 8px;
 }
 
 
-.parcSlideToggle,.addrSlideToggle, .roadSlideToggle,
+.pcSlideToggle, .parcSlideToggle,.addrSlideToggle, .roadSlideToggle,
 .railSlideToggle, .boundSlideToggle, .worldSlideToggle,
 .floodSlideToggle, .zoneSlideToggle{
 	float: left;
@@ -2052,6 +2053,10 @@ left: -10px;
 top: -1px;
 }
 
+div.sliderLabel.pc + table, div.sliderLabel.pc {
+	display:none;
+	padding-top: 10px;
+}
 
 div.sliderLabel.parcs + table, div.sliderLabel.parcs {
 	display:none;
@@ -2185,4 +2190,38 @@ margin-top: 4px;
 	padding-right: 84px;
 margin-top: 10px;
 cursor:pointer;
+}
+
+#identifyMenu{
+position: absolute;
+font-family: verdana,helvetica;
+font-size: 14px;
+background: white;
+width: 318px;
+height: 85px;
+border-style: solid;
+border-color: rgb(16,64,92);
+top: 50px;
+right: 10px;
+display:none;
+}
+
+#identifyMenuTitle{
+	background: rgb(16,64,92);
+background: linear-gradient(to bottom, #fff, rgb(16,64,92),rgb(16,64,92));
+text-align: center;
+color: white;
+font-family: verdana,helvetica;
+font-weight: bold;
+height: 22px;
+width: 100%;
+margin-bottom: 10px;
+}
+.identifyInst{
+	text-align: center;
+padding-bottom: 5px;
+margin-top: -2px;
+}
+#identifyMenuContent{
+	text-align:center;
 }

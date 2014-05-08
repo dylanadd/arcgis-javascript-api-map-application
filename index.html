@@ -67,6 +67,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
      <script src="jquery-1.11.0.min.js"></script>
      <script src="jquery-ui.min.js"></script>
     
+         
     <script>
     setInterval(function(){
     	try{
@@ -167,17 +168,17 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
           
           <div id="tools" class="zoomActive">
           	<a id="gpsButton" title="Find My Location"></a>
-			<a id="zoom" title="Rubber Band Zoom"></a>
-			<a id="pan" title="Pan The Map"></a>
-			<a id="selection" title="Turn On The Selection Tool"></a>
-           <a id="clear" title="Clear all selections on the page."></a> 
+			<a id="zoom" title="Rubber Band Zoom (Z)"></a>
+			<a id="pan" title="Pan The Map (P)"></a>
+			<a id="selection" title="Turn On The Selection Tool (S)"></a>
+           <a id="clear" title="Clear all selections on the page (C)"></a> 
            
-           <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off"></a>
-           <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off."></a>
-        	<a id="identify" class="idOff" title="Show parcel info popup when selcting parcels"></a>
-        <a id="toggleOutput" class="closed" title="View Selected Features Window"></a>
+           <a id="draw" class="drawOff" name="draw" title="Turn draw/measurment tool on/off (M)"></a>
+           <a id="bufferMode" class="bufferModeOff" title="Turn buffer selection tool on/off (B)"></a>
+        	<a id="identify" class="idOff" title="Show parcel info popup when selcting parcels (I)"></a>
+        <a id="toggleOutput" class="closed" title="View Selected Features Window (T)"></a>
           
-        <a id="toggleLayerMenu" title="Open the layer menu">Layers</a>
+        <a id="toggleLayerMenu" title="Open the layer menu (L)">Layers</a>
         <!-- Gallery div not in use, but app breaks without it -->
          <div id="gallery" class="dormant">
           <div data-dojo-type="dijit/TitlePane" 
@@ -186,13 +187,13 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
           </div>
           </div>
         </div>
-        <a id="printWindow" title="open the Print Options window">Print</a>
+        <a id="printWindow" title="Open the Print Options window (Shift + P)">Print</a>
         
         
         
-        <a id="overviewToggle">Overview</a>
-        <a id="legendToggle" title="View Map Legend">Legend</a>
-         <a id="helpButton" title="View instructions on using the map">Help</a>
+        <a id="overviewToggle" title="Turn on/off the overview map (O)">Overview</a>
+        <a id="legendToggle" title="View Map Legend (X)">Legend</a>
+         <a id="helpButton" title="View instructions on using the map (H)">Help</a>
           </div>
           
            <div id="anotherWrapper">
@@ -202,7 +203,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
 	  <a id="locate" title="Begin search" class="dormant"></a>
 	   </div>
 	  
-	   <input type="text" id="address" class="searchbox" value="Search name or parcel #" />
+	   <input type="text" id="address" class="searchbox" value="Search name or parcel #" title="Search for Owners, Parcels, Addresses, or Roads (Q)"/>
        
 		<a id="ownerParcelSwitch" class="selected" title="Parcel & Owner Search Mode"></a>
 		<a id="addressSwitch"  class="deselected" title="Address Search Mode"></a>
@@ -382,14 +383,12 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
      	<div id="printMenu2">
      	<label><span class="printFormat">Print Format: </span> 
      	<select id="printFormat">
-     		<option>A3 Landscape</option>
-     		<option>A3 Portrait</option>
-     		<option>A4 Landscape</option>
-     		<option>A4 Portrait</option>
-     		<option>Letter ANSI A Landscape</option>
-     		<option>Letter ANSI A Portrait</option>
-     		<option>Tabloid ANSI B Landscape</option>
-     		<option>Tabloid ANSI B Portrait</option>
+     		<option>11 x 17 - Landscape</option>
+     		<option>11 x 17 - Portrait</option>
+     		<option>18 x 24 (ARCH C) - Landscape</option>
+     		<option>18 x 24 (ARCH C) - Portrait</option>
+     		<option>8.5 x 11 - Landscape</option>
+     		<option>8.5 x 11 - Portrait</option>
      		<option>MAP_ONLY</option>
      	</select>
      	</label>
@@ -411,6 +410,19 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
       <div id="printClose">Close</div>
      </div> 
   
+  
+  	<div id="identifyMenu">
+  		<div id="identifyMenuTitle">Feature Identify Menu</div>
+  		
+  			<div class="identifyInst">Select the features to identify:</div>
+  			<div id="identifyMenuContent">
+  			<label><input type="radio" name="inputType" id="idParcel" checked="checked">Parcels</label>
+  			<label><input type="radio" name="inputType" id="idAddress" >Address Points</label>
+  			<label><input type="radio" name="inputType" id="idRoad" >Roads</label>
+  		</div>
+  	</div>
+  
+ 
   </body>
 
 </html>

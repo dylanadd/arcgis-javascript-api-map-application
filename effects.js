@@ -51,19 +51,21 @@
         title: '<div class="accordionTitle">Labels & Data</div>',
         content: '<div class="accordionContent">' +
                         '<div class="optionFit"><ul class="sortableData">' + 
-                       // '<li><label><input type="checkbox"  name="layer" id="toggleParcs"><span>Pueblo County Data</span></label></li>' +
-                        '<div class="parcelUD"><li ><label><input type="checkbox"  name="layer" id="toggleParcels"><span>Parcels</span></label><div class="UDControls" title="Move layer down/up one level"><div class="parcSlideToggle">+</div><span class="parcDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="parcUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel parcs">Opacity:</div><div id="sliderParc"></div></div>' +
-                        '<div class="addrUD"><li ><label><input type="checkbox"  name="layer" id="togglePoints"><span>Address Points</span></label><div class="UDControls" title="Move layer down/up one level"><div class="addrSlideToggle">+</div><span class="addrDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="addrUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel addr">Opacity:</div><div id="sliderAddr"></div></div>' +
-                        '<div class="roadUD"> <li ><label><input type="checkbox"  name="layer" id="toggleRoads"><span>Roads</span></label><div class="UDControls" title="Move layer down/up one level"><div class="roadSlideToggle">+</div><span class="roadDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="roadUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel road">Opacity:</div><div id="sliderRoad"></div></div>' +
-                        '<div  class="railUD"><li><label class="buttonup"><input type="checkbox"  name="layer" id="toggleRailroads"><span>Railroads</span></label><div class="UDControls" title="Move layer down/up one level"><div class="railSlideToggle">+</div><span class="railDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="railUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel rail">Opacity:</div><div id="sliderRail"></div></div>' +
-                       // '<li><label><input type="checkbox"  name="layer" id="toggleTowns"><span>Municipalities</span></label></li>' +
-                        '<div  class="boundUD"><li><label><input type="checkbox"  name="layer" id="toggleBoundaries"><span>Boundaries</span></label><div class="UDControls" title="Move layer down/up one level"><div class="boundSlideToggle">+</div><span class="boundDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="boundUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel bounds">Opacity:</div><div id="sliderBounds"></div></div>' +
+                        //'<li><label><input type="checkbox"  name="layer" id="togglePuebloCounty"><span>Pueblo County</span></label></li>' +
+                    //    '<div class="pcUD"><li ><label title="Add/Remove Pueblo County layer (Shift + C)"><input type="checkbox" checked="checked" name="layer" id="togglePuebloCounty"><span>Pueblo County</span></label><div class="UDControls" title="Move layer down/up one level"><div class="pcSlideToggle">+</div><span class="pcDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="pcUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel pc">Opacity:</div><div id="sliderPC"></div></div>' +
+                        '<div class="roadUD"> <li ><label title="Add/Remove Streets layer (Shift + S)"><input type="checkbox" checked="checked"  name="layer" id="toggleRoads"><span>Streets</span></label><div class="UDControls" title="Move layer down/up one level"><div class="roadSlideToggle">+</div><span class="roadDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="roadUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel road">Opacity:</div><div id="sliderRoad"></div></div>' +
                         
-                        '<div class="esriBoundUD"><li><label><input type="checkbox"  name="layer" id="toggleEsriLabels"><span>World Labels</span></label><div class="UDControls" title="Move layer down/up one level"><div class="worldSlideToggle">+</div><span class="esriBoundDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="esriBoundUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel world">Opacity:</div><div id="sliderWorld"></div></div>' +
+                        '<div class="parcelUD"><li ><label title="Add/Remove Parcel layer (Shift + Y)"><input type="checkbox" checked="checked" name="layer" id="toggleParcels"><span>Parcels</span></label><div class="UDControls" title="Move layer down/up one level"><div class="parcSlideToggle">+</div><span class="parcDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="parcUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel parcs">Opacity:</div><div id="sliderParc"></div></div>' +
+                        '<div class="addrUD"><li ><label title="Add/Remove Address Point layer (Shift + A)"><input type="checkbox"  name="layer" id="togglePoints"><span>Address Points</span></label><div class="UDControls" title="Move layer down/up one level"><div class="addrSlideToggle">+</div><span class="addrDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="addrUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel addr">Opacity:</div><div id="sliderAddr"></div></div>' +
+                        '<div  class="railUD"><li><label title="Add/Remove Railroad layer (Shift + R)" class="buttonup"><input type="checkbox"  name="layer" id="toggleRailroads"><span>Railroads</span></label><div class="UDControls" title="Move layer down/up one level"><div class="railSlideToggle">+</div><span class="railDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="railUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel rail">Opacity:</div><div id="sliderRail"></div></div>' +
+                       // '<li><label><input type="checkbox"  name="layer" id="toggleTowns"><span>Municipalities</span></label></li>' +
+                        '<div  class="boundUD"><li><label title="Add/Remove Boundary layer (Shift + B)"><input type="checkbox"  name="layer" id="toggleBoundaries"><span>Boundaries</span></label><div class="UDControls" title="Move layer down/up one level"><div class="boundSlideToggle">+</div><span class="boundDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="boundUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel bounds">Opacity:</div><div id="sliderBounds"></div></div>' +
+                        
+                        '<div class="esriBoundUD"><li><label title="Add/Remove World Labels layer (Shift + W)"><input type="checkbox"  name="layer" id="toggleEsriLabels"><span>World Labels</span></label><div class="UDControls" title="Move layer down/up one level"><div class="worldSlideToggle">+</div><span class="esriBoundDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="esriBoundUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel world">Opacity:</div><div id="sliderWorld"></div></div>' +
                        
                        
-                        '<div  class="floodUD"><li><label><input type="checkbox" name="layer" id="toggleFlood"><span>Floodplain</span></label> <div class="UDControls" title="Move layer down/up one level"><div class="floodSlideToggle">+</div><span class="floodDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="floodUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel flood">Opacity:</div><div id="sliderFlood"></div></div>' +
-                        '<div  class="zoneUD"><li><label><input type="checkbox" name="layer" id="toggleZoning"><span>Zoning</span></label><div class="UDControls" title="Move layer down/up one level"><div class="zoneSlideToggle">+</div><span class="zoneDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="zoneUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel zone">Opacity:</div><div id="sliderZone"></div></div>' +
+                        '<div  class="floodUD"><li><label title="Add/Remove Floodplain layer (Shift + F)"><input type="checkbox" name="layer" id="toggleFlood"><span>Floodplain</span></label> <div class="UDControls" title="Move layer down/up one level"><div class="floodSlideToggle">+</div><span class="floodDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="floodUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel flood">Opacity:</div><div id="sliderFlood"></div></div>' +
+                        '<div  class="zoneUD"><li><label title="Add/Remove Zoning layer (Shift + Z)"><input type="checkbox" name="layer"  id="toggleZoning"><span>Zoning</span></label><div class="UDControls" title="Move layer down/up one level"><div class="zoneSlideToggle">+</div><span class="zoneDown cDown">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;<span class="zoneUp cUp">&nbsp;&nbsp;&nbsp;&nbsp;</span></div></li><div class="sliderLabel zone">Opacity:</div><div id="sliderZone"></div></div>' +
                                               
                        
                         '</ul></div>' + 
@@ -77,7 +79,9 @@
         title:'<div class="accordionTitle"><span class="basemapsTitle">Basemaps</span></div>',
         content:'<div class="accordionContent basemaps">' +
                 '<div class="optionFit">' +
-        		'<div class="basemap-pad"><label><input type="radio" checked="checked" name="blayer" id="toggleSat"><span>ESRI Satellite</span></label><br/></div>' +
+                '<div class="basemap-pad"><label><input type="radio" name="blayer"  id="toggle2013"><span>Aerial 2013</span></label><br/></div>' +
+                
+        		'<div class="basemap-pad"><label><input type="radio" name="blayer" checked="checked" id="toggleSat"><span>ESRI Satellite</span></label><br/></div>' +
       			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleStreet"><span>ESRI Street</span></label><br/></div>' +
       			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleTopo"><span>ESRI Topographic</span></label><br/></div>' +
       			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleNat"><span>National Geographic</span></label><br/></div>'+
@@ -89,7 +93,7 @@
       			'</div><div class="optionFit">' +
       			
       			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleMapbox"><span>MapBox Terrain*</span></label><br/></div>'+
-      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleMapquest"><span>MapQuest Street*</span></label><br/></div>'+
+      			//'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleMapquest"><span>MapQuest Street*</span></label><br/></div>'+
       			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleCPale"><span>Cloudmade Pale*</span></label><br/></div>'+
       			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleCNight"><span>Cloudmade Midnight*</span></label><br/></div>'+
       			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleToner"><span>Toner*</span></label><br/></div>'+
@@ -101,10 +105,16 @@
     }));
   
     aContainer.startup();
-      console.dir(AccordionContainer);
-       console.log(aContainer);
-      
-      
+   
+       $(".pcSlideToggle").click(function(){
+          if($(".pcSlideToggle").get()[0].innerText == "+"){
+              $(".pcSlideToggle").text("-");
+          } else {
+              $(".pcSlideToggle").text("+");
+          }
+             $("div.sliderLabel.pc").toggle();
+           $("div.sliderLabel.pc + table").toggle();
+          });
       
       $(".parcSlideToggle").click(function(){
           if($(".parcSlideToggle").get()[0].innerText == "+"){
@@ -413,13 +423,14 @@
         	
         	if(!idTF){
         	domAttr.set(dom.byId("identify"),"class","idActive");
-        	domAttr.set(popTemp,"class","esriPopup");
+        	//domAttr.set(popTemp,"class","esriPopup");
         	idTF = true;
         	} else {
         		domAttr.set(dom.byId("identify"),"class","idInactive");
-        		domAttr.set(popTemp,"class","esriPopup hide");
+        		//domAttr.set(popTemp,"class","esriPopup hide");
         		idTF = false;
         	}
+        	$('#identifyMenu').toggle();
         });
         
         
@@ -1032,7 +1043,7 @@
 				}
 				
 			}
-		}catch(e){console.log(e);}
+		}catch(e){}
 		}, 50);
 	});  
 	
