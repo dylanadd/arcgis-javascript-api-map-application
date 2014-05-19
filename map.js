@@ -2493,65 +2493,49 @@ function levyUrl(){
             	console.log(layerid);
             	switch(layerid){
             		
-            		case 'satellite':
-            			var qMap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
-
-  						map.removeAllLayers();
-  						map.addLayer(qMap);
-  					    map.addLayer(parcelInfoLayer);
-  						break;
-  						
-  						case 'Satellite':
-            			var qMap = new ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
-
-  						map.removeAllLayers();
-  						map.addLayer(qMap);
-  					    map.addLayer(parcelInfoLayer);
-  						break;
+            		case 'floodplain':
+            		      $('#toggleFlood').click();
+            		      break;
+            	    case 'Floodplain':
+                          $('#toggleFlood').click();
+                          break;
+            		case 'zoning':
+            		     
+            		      $('#toggleZoning').click();
+            		      break;
+            		case 'Zoning':
+                          
+                          $('#toggleZoning').click();
+                          break;      
+            	
+            		
+            		
             		
             		case 'streets':
-            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer");
-  						map.removeAllLayers();
-  						map.addLayer(qMap);
-  					    map.addLayer(parcelInfoLayer);
+            			$('#toggleStreet').click();
   						break;
-            		
             		case 'Streets':
-            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer");
-  						map.removeAllLayers();
-  						map.addLayer(qMap);
-  					    map.addLayer(parcelInfoLayer);
-  						break;
+                        $('#toggleStreet').click();
+                        break;
+            		
   						
   					case 'topo':
-            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
-  						map.removeAllLayers();
-  						map.addLayer(qMap);
-  					    map.addLayer(parcelInfoLayer);
+            			$('#toggleTopo').click();
   						break;
             		
             		
             		case 'Topo':
-            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
-  						map.removeAllLayers();
-  						map.addLayer(qMap);
-  					    map.addLayer(parcelInfoLayer);
+            			$('#toggleTopo').click();
   						break;
             		
             		
             		case 'natgeo':
-            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer");
-  						map.removeAllLayers();
-  						map.addLayer(qMap);
-  					    map.addLayer(parcelInfoLayer);
+            			$('#toggleNat').click();
   						break;
             		
             		
             		case 'NatGeo':
-            			var qMap = new ArcGISDynamicMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer");
-  						map.removeAllLayers();
-  						map.addLayer(qMap);
-  					    map.addLayer(parcelInfoLayer);
+            			$('#toggleNat').click();
   						break;
             		
             	}

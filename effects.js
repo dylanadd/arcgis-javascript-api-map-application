@@ -93,9 +93,9 @@
       			'</div><div class="optionFit">' +
       			
       			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleMapbox"><span>MapBox Terrain*</span></label><br/></div>'+
-      			//'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleMapquest"><span>MapQuest Street*</span></label><br/></div>'+
-      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleCPale"><span>Cloudmade Pale*</span></label><br/></div>'+
-      			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleCNight"><span>Cloudmade Midnight*</span></label><br/></div>'+
+      			'<div style="display:none;"  class="basemap-pad"><label><input type="radio" name="blayer" id="toggleMapquest"><span>MapQuest Street*</span></label><br/></div>'+
+      			'<div style="display:none;"  class="basemap-pad"><label><input type="radio" name="blayer" id="toggleCPale"><span>Cloudmade Pale*</span></label><br/></div>'+
+      			'<div  style="display:none;" class="basemap-pad"><label><input type="radio" name="blayer" id="toggleCNight"><span>Cloudmade Midnight*</span></label><br/></div>'+
       			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleToner"><span>Toner*</span></label><br/></div>'+
       			'<div class="basemap-pad"><label><input type="radio" name="blayer" id="toggleWColor"><span>Watercolor*</span></label><br/></div>'+
 				'</div>' +
