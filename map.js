@@ -1628,7 +1628,7 @@ $("#toggle2013").click(function(){
 
 
         //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels in buffer area
-        parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/13", {
+        parcels1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_parcels_bld_footprints/MapServer/2", {
             outFields: ["*"],
             objectIdField: "PAR_NUM",
      
@@ -1637,7 +1637,7 @@ $("#toggle2013").click(function(){
 
         parcels1.setSelectionSymbol(sfs1);
 		
-		points1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/0", {
+		points1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_address_points/MapServer/0", {
         outFields: ["*"],
         objectIdField: "FULLADDR",
 
@@ -1646,7 +1646,7 @@ $("#toggle2013").click(function(){
 
     points1.setSelectionSymbol(sfs5);
 
-        road1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/3", {
+        road1 = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_roads/MapServer/2", {
         outFields: ["*"],
         objectIdField: "OBJECTID",
 
@@ -1996,7 +1996,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
     });
 
     //add the parcels layer to the map as a feature layer in selection mode we'll use this layer to query and display the selected parcels
-    parcels = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/13", {
+    parcels = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_parcels_bld_footprints/MapServer/2", {
         outFields: ["*"],
 		objectIdField: "PAR_NUM",
         infoTemplate: popupTemplate,
@@ -2005,7 +2005,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 
     parcels.setSelectionSymbol(sfs);
 
-    var points = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/0", {
+    var points = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_address_points/MapServer/0", {
         outFields: ["*"],
         objectIdField: "FULLADDR",
         mode: FeatureLayer.MODE_SELECTION
@@ -2013,7 +2013,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 
     points.setSelectionSymbol(sfs3);
 
-    var road = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/3", {
+    var road = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_roads/MapServer/2", {
         outFields: ["*"],
         objectIdField: "OBJECTID",
         mode: FeatureLayer.MODE_SELECTION,
@@ -2039,7 +2039,7 @@ esriConfig.defaults.geometryService = new GeometryService("http://maps.co.pueblo
 
 
     //add the road layer in selection mode
-    roads = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county/MapServer/3", {
+    roads = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_roads/MapServer/2", {
         objectIdField: "OBJECTID",
         outFields: ["*"],
         mode: FeatureLayer.MODE_SELECTION
