@@ -2903,7 +2903,12 @@ function levyUrl(){
                      "ImprovementsAssessedValue": resultsArray[i].attributes.ImprovementsAssessedValue.toString(),
                      "ImprovementsActualValue": resultsArray[i].attributes.ImprovementsActualValue.toString(),
                      "Fire": resultsArray[i].attributes.Fire,
-                     "PropertyTax": resultsArray[i].attributes.PropertyTax 
+                     "PropertyTax": resultsArray[i].attributes.PropertyTax ,
+                     "TaxExempt": resultsArray[i].attributes.TaxExempt,
+                     "MobileHomePresent":resultsArray[i].attributes.MobileHomePresent ,
+                     "SeniorExemption": resultsArray[i].attributes.SeniorExemption ,
+                     "CSEPP": resultsArray[i].attributes.CSEPP ,
+                    // "LevyURL": encodeURI(resultsArray[i].attributes.LevyURL)
                     
                  };
                  
@@ -3579,7 +3584,10 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"taxDist\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.TaxDistrict+ "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
   					//"<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5[i].attributes.ZoningURL + "\" target=\"blank\">" + infoArray5[i].attributes.Zoning + "</a></span></td>" +                     
                     "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Zoning + "</span></td>" +                     
-                    
+                    "<td class=\"taxexempt\"><span class=\"resultsLabel\" >Tax Exempt:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.TaxExempt + "</span></td>" +                
+                    "<td class=\"mobilehomepresent\"><span class=\"resultsLabel\" >Mobile Home Present:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.MobileHomePresent + "</span></td>" +  
+                    "<td class=\"seniorexemption\"><span class=\"resultsLabel\" >Senior Exemption:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.SeniorExemption + "</span></td>" +     
+                    "<td class=\"csepp\"><span class=\"resultsLabel\" >CSEPP Zone:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.CSEPP + "</span></td>" +                                         
                     "</tr></table></td>";
 		
 					
@@ -3605,6 +3613,10 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5[i].attributes.TaxDistrict+ "</span></td></tr></table></td>" +
   					//"<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5[i].attributes.ZoningURL + "\" target=\"blank\">" + infoArray5[i].attributes.Zoning + "</a></span></td>" +                     
                     "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.Zoning + "</span></td>" +                     
+                    "<td class=\"taxexempt\"><span class=\"resultsLabel\" >Tax Exempt:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.TaxExempt + "</span></td>" +                     
+                    "<td class=\"mobilehomepresent\"><span class=\"resultsLabel\" >Mobile Home Present::</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.MobileHomePresent + "</span></td>" +                     
+                    "<td class=\"seniorexemption\"><span class=\"resultsLabel\" >Senior Exemption:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.SeniorExemption + "</span></td>" +                     
+                    "<td class=\"csepp\"><span class=\"resultsLabel\" >CSEPP Zone:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.CSEPP + "</span></td>" +                     
                     
                     "";
 		
@@ -3706,8 +3718,12 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"propTax\"><span class=\"resultsLabel\" >Property Tax:</span> <span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"subdivision\"><span class=\"resultsLabel\" >Subdivision:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
                     "<td class=\"taxDist\"><span class=\"resultsLabel\" >Tax District:</span> <span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td>" + "</tr>" + "<tr class=\"" + " leftCell\">" +
-                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5.attributes.ZoningURL + "\" target=\"blank\">" + infoArray5.attributes.Zoning + "</a></span></td>" + 
-                    
+                   // "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5.attributes.ZoningURL + "\" target=\"blank\">" + infoArray5.attributes.Zoning + "</a></span></td>" + 
+                        "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Zoning + "</span></td>" + 
+                     "<td class=\"taxexempt\"><span class=\"resultsLabel\" >Tax Exempt:</span> <span class=\"resultsText\" >" + infoArray5.attributes.TaxExempt + "</span></td>" +                
+                    "<td class=\"mobilehomepresent\"><span class=\"resultsLabel\" >Mobile Home Present:</span> <span class=\"resultsText\" >" + infoArray5.attributes.MobileHomePresent + "</span></td>" +  
+                    "<td class=\"seniorexemption\"><span class=\"resultsLabel\" >Senior Exemption:</span> <span class=\"resultsText\" >" + infoArray5.attributes.SeniorExemption + "</span></td>" +     
+                    "<td class=\"csepp\"><span class=\"resultsLabel\" >CSEPP Zone:</span> <span class=\"resultsText\" >" + infoArray5.attributes.CSEPP + "</span></td>" +    
                     "</tr></table></td>";
 		
 					
@@ -3731,7 +3747,13 @@ function setInfoArray2(geom, gCode){
                     "<td class=\"propTax sWide\"><table><tr><td><span class=\"resultsLabel\" >Property Tax:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.PropertyTax + "</span></td></tr></table></td>" +
                     "<td class=\"subdivision sWide\"><table><tr><td><span class=\"resultsLabel\" >Subdivision:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.Subdivision + "</span></td></tr></table></td>" +
                     "<td class=\"taxDist sWide\"><table><tr><td><span class=\"resultsLabel\" >Tax District:</span> </td></tr><tr><td><span class=\"resultsText\" >" + infoArray5.attributes.TaxDistrict+ "</span></td></tr></table></td>" +
-  "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5.attributes.ZoningURL + "\" target=\"blank\">" + infoArray5.attributes.Zoning + "</a></span></td>" +                     
+                   // "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" ><a href=\"" + infoArray5.attributes.ZoningURL + "\" target=\"blank\">" + infoArray5.attributes.Zoning + "</a></span></td>" +                     
+                    "<td class=\"zoning\"><span class=\"resultsLabel\" >Zoning:</span> <span class=\"resultsText\" >" + infoArray5.attributes.Zoning + "</span></td>" +                     
+                    "<td class=\"taxexempt\"><span class=\"resultsLabel\" >Tax Exempt:</span> <span class=\"resultsText\" >" + infoArray5.attributes.TaxExempt + "</span></td>" +                     
+                    "<td class=\"mobilehomepresent\"><span class=\"resultsLabel\" >Mobile Home Present::</span> <span class=\"resultsText\" >" + infoArray5.attributes.MobileHomePresent + "</span></td>" +                     
+                    "<td class=\"seniorexemption\"><span class=\"resultsLabel\" >Senior Exemption:</span> <span class=\"resultsText\" >" + infoArray5.attributes.SeniorExemption + "</span></td>" +                     
+                    "<td class=\"csepp\"><span class=\"resultsLabel\" >CSEPP Zone:</span> <span class=\"resultsText\" >" + infoArray5.attributes.CSEPP + "</span></td>" +                     
+                    
                     "";
 
              
