@@ -2803,52 +2803,8 @@ function levyUrl(){
 		var  n;
 		  try{gLayer.clear();}catch(e){}
     	domAttr.set(tools, "class" ,"clear");
-        map.removeAllLayers();
-     setBasemapLayerOrder();
-  		/*
-  		try{
-  		    
-  		    if(dom.byId("toggleSat").checked){
-  		       map.addLayer(basemap); 
-  		    }else if(dom.byId("toggle2013").checked){
-               map.addLayer(aerial2013); 
-            } else if(dom.byId("toggleStreet").checked){
-               map.addLayer(streetLayer); 
-            }else if(dom.byId("toggleTopo").checked){
-               map.addLayer(topoLayer); 
-            }else if(dom.byId("toggleNat").checked){
-               map.addLayer(natGeoLayer); 
-            }else if(dom.byId("toggleOpenStreet").checked){
-               map.addLayer(osmLayer); 
-            }else if(dom.byId("toggleSTerrain").checked){
-               map.addLayer(stamenTerrainLayer); 
-            }else if(dom.byId("toggleMapbox").checked){
-               map.addLayer(mapBoxTerrainLayer); 
-            }else if(dom.byId("toggleMapquest").checked){
-               map.addLayer(mapQuestLayer); 
-            }else if(dom.byId("toggleCPale").checked){
-               map.addLayer(cloudmadePaleLayer); 
-            }else if(dom.byId("toggleCNight").checked){
-               map.addLayer(cloudmadeNightLayer); 
-            }else if(dom.byId("toggleToner").checked){
-               map.addLayer(stamenTonerLayer); 
-            }else if(dom.byId("toggleWColor").checked){
-               map.addLayer(waterColorLayer); 
-            }
-  		    
-  		    
-  		    
-  		    
-  		    
-  		    
-  		    
-  		    
-  		    
-  		    
-  		    
-  		}catch(e){console.log(e);}
-
-  		*/
+        
+  	
   		 try{
   		    
             layerSorter();
@@ -2910,7 +2866,9 @@ function levyUrl(){
 				document.getElementById('tableTallContent').innerText="";
 				
 			}
-
+        
+        map.removeAllLayers();
+        setBasemapLayerOrder();
     }
     
     
