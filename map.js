@@ -2907,7 +2907,7 @@ function levyUrl(){
                      "TaxExempt": resultsArray[i].attributes.TaxExempt,
                      "MobileHomePresent":resultsArray[i].attributes.MobileHomePresent ,
                      "SeniorExemption": resultsArray[i].attributes.SeniorExemption ,
-                     "CSEPP": resultsArray[i].attributes.CSEPP ,
+                     "CSEPP": resultsArray[i].attributes.CSEPP
                     // "LevyURL": encodeURI(resultsArray[i].attributes.LevyURL)
                     
                  };
