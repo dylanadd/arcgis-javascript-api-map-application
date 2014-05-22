@@ -1824,7 +1824,7 @@ $("#toggle2013").click(function(){
     map.addLayer(basemap);
     map.addLayer(puebloParcelLayer);
     map.addLayer(puebloRoadLayer);
-  
+    map.addLayer(esriLabelLayer);
     //BEGIN functions for print dijit
    var printUrl = "http://maps.co.pueblo.co.us/outside/rest/services/ExportWebMap/GPServer/Export%20Web%20Map";
 
