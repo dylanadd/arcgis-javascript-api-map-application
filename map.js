@@ -2804,8 +2804,7 @@ function levyUrl(){
 		  try{gLayer.clear();}catch(e){}
     	domAttr.set(tools, "class" ,"clear");
         
-  	
-  		
+ 
  
        
         stripe = null;
@@ -2865,12 +2864,14 @@ function levyUrl(){
         
         map.removeAllLayers();
         setBasemapLayerOrder();
-         try{
+        
+          try{
             
             layerSorter();
              } catch(e){console.log(e);}
         try{gLayer.clear();
             map.addLayer(gLayer);} catch(e){console.log(e);}
+
     }
     
     
