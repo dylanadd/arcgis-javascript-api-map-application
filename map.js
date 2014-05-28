@@ -2486,7 +2486,7 @@ function levyUrl(){
             var addressid = getAddressFromUrl(document.location.href);
             var roadid = getRoadFromUrl(document.location.href);
             var parcelid = getParcelFromUrl(document.location.href);
-            var locality = getLocalityFromURL(document.location.href);
+            var locality = getLocalityFromUrl(document.location.href);
         
         
            if(layerid){
@@ -2563,8 +2563,8 @@ function levyUrl(){
             	startSearch();
             }
             
-            if(locality != null){
-             //  zoomToLocality(locality);
+            if(locality){
+               zoomToLocality(locality.toLowerCase());
             }
       
 
@@ -2576,7 +2576,7 @@ function levyUrl(){
     function getParcelFromUrl(url) {
         var urlObject = urlUtils.urlToObject(url);
         if (urlObject.query && urlObject.query.parcelid) {
-           // selectParcel(urlObject.query.parcelid);
+            selectParcel(urlObject.query.parcelid);
             return urlObject.query.parcelid;
         } else {
             return null;
@@ -2613,7 +2613,8 @@ function levyUrl(){
         }
     }
     
-    
+  
+ 
      //extract the locality from the url
     function getLocalityFromUrl(url) {
         var urlObject = urlUtils.urlToObject(url);
@@ -2624,25 +2625,54 @@ function levyUrl(){
         }
     }
 
-/*
     function zoomToLocality(locality){
-        var boundaryService = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_counties/MapServer/0", {
-            outFields: ["*"],
-            objectIdField: "OBJECTID",
-            mode: FeatureLayer.MODE_ONDEMAND
-        });
-        var bQuery = new Query();
+        var p;
+        switch(locality){
+            
+            case 'pueblo reservoir':
+                p = new Point(-104.763479,38.263625);
+                map.centerAndZoom(p,14);
+                break;
+          
+            case 'fort carson':
+                p = new Point(-104.8440805,38.7038392);
+                map.centerAndZoom(p,14);
+                break;
+            case 'st charles mesa':
+                p = new Point(-104.489409,38.230707);
+                map.centerAndZoom(p,14);
+                break;    
+                
+            default:
+                 var boundaryService = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_counties/MapServer/0", {
+                    outFields: ["*"],
+                    objectIdField: "OBJECTID",
+                    mode: FeatureLayer.MODE_ONDEMAND
+                });
+                var bQuery = new Query();
         
-        bQuery.where = "City_Name = '" + locality + "'";
-        boundaryService.queryFeatures(bQuery, function(results){
+                bQuery.where = "City_Name = '" + locality + "'";
+                var bGeom;
+                boundaryService.queryFeatures(bQuery, function(results){
+                    if(results.features.length > 0){
+                        bGeom = results.features[0].geometry.getExtent();
+                        console.log(bGeom);
+                        console.log(map.extent);
+                        map.setExtent(bGeom);
+                    }
             
-            console.log(results);
             
-        }, function(err){console.log(err);});
+                }, function(err){console.log(err);});
+         }
+        
+        
+        
+        
+       
     
     }
 
-*/
+
     //BEGIN Location Dijit
 
     var locator = new Locator("http://maps.co.pueblo.co.us/outside/rest/services/Web_Geocoding/Web_EDGIS_Locator/GeocodeServer");
