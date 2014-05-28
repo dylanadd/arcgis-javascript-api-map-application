@@ -2496,9 +2496,15 @@ function levyUrl(){
             		case 'floodplain':
             		      $('#toggleFlood').click();
             		      break;
+            		case 'floodplains':
+                          $('#toggleFlood').click();
+                          break;      
             	    case 'Floodplain':
                           $('#toggleFlood').click();
                           break;
+                    case 'Floodplains':
+                          $('#toggleFlood').click();
+                          break;      
             		case 'zoning':
             		     
             		      $('#toggleZoning').click();
