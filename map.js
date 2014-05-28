@@ -2485,7 +2485,7 @@ function levyUrl(){
         	var layerid = getLayerFromUrl(document.location.href);
             var addressid = getAddressFromUrl(document.location.href);
             var roadid = getRoadFromUrl(document.location.href);
-        
+            var parcelid = getParcelFromUrl(document.location.href);
         
         
         
@@ -2568,6 +2568,7 @@ function levyUrl(){
     function getParcelFromUrl(url) {
         var urlObject = urlUtils.urlToObject(url);
         if (urlObject.query && urlObject.query.parcelid) {
+            selectParcel(urlObject.query.parcelid);
             return urlObject.query.parcelid;
         } else {
             return null;
