@@ -2486,7 +2486,7 @@ function levyUrl(){
             var addressid = getAddressFromUrl(document.location.href);
             var roadid = getRoadFromUrl(document.location.href);
             var parcelid = getParcelFromUrl(document.location.href);
-        
+            var locality = getLocalityFromURL(document.location.href);
         
         
            if(layerid){
@@ -2563,7 +2563,9 @@ function levyUrl(){
             	startSearch();
             }
             
-            
+            if(locality != null){
+             //  zoomToLocality(locality);
+            }
       
 
     });
@@ -2574,7 +2576,7 @@ function levyUrl(){
     function getParcelFromUrl(url) {
         var urlObject = urlUtils.urlToObject(url);
         if (urlObject.query && urlObject.query.parcelid) {
-            selectParcel(urlObject.query.parcelid);
+           // selectParcel(urlObject.query.parcelid);
             return urlObject.query.parcelid;
         } else {
             return null;
@@ -2610,7 +2612,37 @@ function levyUrl(){
             return null;
         }
     }
+    
+    
+     //extract the locality from the url
+    function getLocalityFromUrl(url) {
+        var urlObject = urlUtils.urlToObject(url);
+        if (urlObject.query && urlObject.query.locality) {
+            return urlObject.query.locality;
+        } else {
+            return null;
+        }
+    }
 
+/*
+    function zoomToLocality(locality){
+        var boundaryService = new FeatureLayer("http://maps.co.pueblo.co.us/outside/rest/services/pueblo_county_counties/MapServer/0", {
+            outFields: ["*"],
+            objectIdField: "OBJECTID",
+            mode: FeatureLayer.MODE_ONDEMAND
+        });
+        var bQuery = new Query();
+        
+        bQuery.where = "City_Name = '" + locality + "'";
+        boundaryService.queryFeatures(bQuery, function(results){
+            
+            console.log(results);
+            
+        }, function(err){console.log(err);});
+    
+    }
+
+*/
     //BEGIN Location Dijit
 
     var locator = new Locator("http://maps.co.pueblo.co.us/outside/rest/services/Web_Geocoding/Web_EDGIS_Locator/GeocodeServer");
