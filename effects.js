@@ -48,7 +48,7 @@
        
          var aContainer = new AccordionContainer({style:"height:inherit"}, "accordion");
           aContainer.addChild(new ContentPane({
-        title: '<div class="accordionTitle">Labels & Data</div>',
+        title: '<div class="accordionTitle labelsT">Labels & Data -</div>',
         content: '<div class="accordionContent">' +
                         '<div class="optionFit"><ul class="sortableData">' + 
                         //'<li><label><input type="checkbox"  name="layer" id="togglePuebloCounty"><span>Pueblo County</span></label></li>' +
@@ -77,7 +77,7 @@
       
  
     aContainer.addChild(new ContentPane({
-        title:'<div class="accordionTitle"><span class="basemapsTitle">Basemaps</span></div>',
+        title:'<div class="accordionTitle basemapsT"><span class="basemapsTitle">Basemaps +</span></div>',
         content:'<div class="accordionContent basemaps">' +
                 '<div class="optionFit">' +
                 '<div class="basemap-pad"><label><input type="radio" name="blayer"  id="toggle2013"><span>Aerial 2013</span></label><br/></div>' +
@@ -106,7 +106,34 @@
     }));
   
     aContainer.startup();
-   
+      
+       $('.basemapsT').click(function(){
+            
+           if($('.basemapsTitle').text() == "Basemaps +"){
+               $('.basemapsTitle').text("Basemaps -");
+               $('.labelsT').text("Labels & Data +");
+           } else if($('.basemapsTitle').text() == "Basemaps -"){
+              
+              setTimeout(function(){ $('.labelsT').click();}, 150); 
+              $('.basemapsTitle').text("Basemaps +");
+             //  $('.labelsT').text("Labels & Data -");
+           }
+       }); 
+       
+        $('.labelsT').click(function(){
+            
+           if($('.labelsT').text() == "Labels & Data +"){
+               $('.labelsT').text("Labels & Data -");
+               $('.basemapsTitle').text("Basemaps +");
+           } else if($('.labelsT').text() == "Labels & Data -"){
+                 $('.labelsT').text("Labels & Data +");
+             // $('.basemapsTitle').text("Basemaps -");
+              
+              setTimeout(function(){ $('.basemapsT').click();}, 150);
+              
+           }
+       }); 
+       
        $(".pcSlideToggle").click(function(){
           if($(".pcSlideToggle").get()[0].innerText == "+"){
               $(".pcSlideToggle").text("-");
