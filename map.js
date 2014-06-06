@@ -578,7 +578,7 @@ var gLayer = new GraphicsLayer();
    
   },"legendDiv");
   
-  
+      getLayerFromUrl(document.location.href);
 
 	
     });
@@ -2465,87 +2465,18 @@ function levyUrl(){
 		});
         //When users navigate through the history using the browser back/forward buttons select appropriate parcel  
         //https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
-        window.onpopstate = function (event) {
-            var parcelid = getParcelFromUrl(document.location.href);
-           
-            if (parcelid) {
-				console.log(parcelid);
-            } else {
-                parcels.clearSelection();
-                map.infoWindow.hide();
-            }
-            
-         
-            
-            
-        };
+       
 
         //if a parcelid is specified in url param select that feature 
         
-        	var layerid = getLayerFromUrl(document.location.href);
+        	//var layerid = getLayerFromUrl(document.location.href);
             var addressid = getAddressFromUrl(document.location.href);
             var roadid = getRoadFromUrl(document.location.href);
             var parcelid = getParcelFromUrl(document.location.href);
             var locality = getLocalityFromUrl(document.location.href);
         
         
-           if(layerid){
-            	console.log(layerid);
-            	switch(layerid){
-            		
-            		case 'floodplain':
-            		      $('#toggleFlood').click();
-            		      break;
-            		case 'floodplains':
-                          $('#toggleFlood').click();
-                          break;      
-            	    case 'Floodplain':
-                          $('#toggleFlood').click();
-                          break;
-                    case 'Floodplains':
-                          $('#toggleFlood').click();
-                          break;      
-            		case 'zoning':
-            		     
-            		      $('#toggleZoning').click();
-            		      break;
-            		case 'Zoning':
-                          
-                          $('#toggleZoning').click();
-                          break;      
-            	
-            		
-            		
-            		
-            		case 'streets':
-            			$('#toggleStreet').click();
-  						break;
-            		case 'Streets':
-                        $('#toggleStreet').click();
-                        break;
-            		
-  						
-  					case 'topo':
-            			$('#toggleTopo').click();
-  						break;
-            		
-            		
-            		case 'Topo':
-            			$('#toggleTopo').click();
-  						break;
-            		
-            		
-            		case 'natgeo':
-            			$('#toggleNat').click();
-  						break;
-            		
-            		
-            		case 'NatGeo':
-            			$('#toggleNat').click();
-  						break;
-            		
-            	}
-            }
+          
             
             if(addressid){
             	addressMode();
@@ -2587,6 +2518,65 @@ function levyUrl(){
     function getLayerFromUrl(url) {
         var urlObject = urlUtils.urlToObject(url);
         if (urlObject.query && urlObject.query.basemap) {
+            
+           var layerid2 = urlObject.query.basemap;
+             if(layerid2){
+                console.log(layerid2);
+                switch(layerid2){
+                    
+                    case 'floodplain':
+                          $('#toggleFlood').click();
+                          break;
+                    case 'floodplains':
+                          $('#toggleFlood').click();
+                          break;      
+                    case 'Floodplain':
+                          $('#toggleFlood').click();
+                          break;
+                    case 'Floodplains':
+                          $('#toggleFlood').click();
+                          break;      
+                    case 'zoning':
+                         
+                          $('#toggleZoning').click();
+                          break;
+                    case 'Zoning':
+                          
+                          $('#toggleZoning').click();
+                          break;      
+                
+                    
+                    
+                    
+                    case 'streets':
+                        $('#toggleStreet').click();
+                        break;
+                    case 'Streets':
+                        $('#toggleStreet').click();
+                        break;
+                    
+                        
+                    case 'topo':
+                        $('#toggleTopo').click();
+                        break;
+                    
+                    
+                    case 'Topo':
+                        $('#toggleTopo').click();
+                        break;
+                    
+                    
+                    case 'natgeo':
+                        $('#toggleNat').click();
+                        break;
+                    
+                    
+                    case 'NatGeo':
+                        $('#toggleNat').click();
+                        break;
+                    
+                }
+            }
             return urlObject.query.basemap;
         } else {
             return null;
