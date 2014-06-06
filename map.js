@@ -579,7 +579,33 @@ var gLayer = new GraphicsLayer();
   },"legendDiv");
   
       getLayerFromUrl(document.location.href);
-
+        var addressid = getAddressFromUrl(document.location.href);
+            var roadid = getRoadFromUrl(document.location.href);
+            var parcelid = getParcelFromUrl(document.location.href);
+            var locality = getLocalityFromUrl(document.location.href);
+        
+        
+          
+            
+            if(addressid){
+                addressMode();
+                dom.byId("address").value = addressid;
+                addrSearchMode ="raw";
+                domAttr.set("addrSearchBox","class","hide");
+                dom.byId("raw").checked = true;
+                startSearch();
+            }
+            
+            if(roadid){
+                console.log(roadid);
+                roadMode();
+                dom.byId("address").value = roadid;
+                startSearch();
+            }
+            
+            if(locality){
+               zoomToLocality(locality.toLowerCase());
+            }
 	
     });
   	
@@ -2470,33 +2496,7 @@ function levyUrl(){
         //if a parcelid is specified in url param select that feature 
         
         	//var layerid = getLayerFromUrl(document.location.href);
-            var addressid = getAddressFromUrl(document.location.href);
-            var roadid = getRoadFromUrl(document.location.href);
-            var parcelid = getParcelFromUrl(document.location.href);
-            var locality = getLocalityFromUrl(document.location.href);
-        
-        
           
-            
-            if(addressid){
-            	addressMode();
-            	dom.byId("address").value = addressid;
-            	addrSearchMode ="raw";
-            	domAttr.set("addrSearchBox","class","hide");
-            	dom.byId("raw").checked = true;
-            	startSearch();
-            }
-            
-            if(roadid){
-            	console.log(roadid);
-            	roadMode();
-            	dom.byId("address").value = roadid;
-            	startSearch();
-            }
-            
-            if(locality){
-               zoomToLocality(locality.toLowerCase());
-            }
       
 
     });
@@ -2864,7 +2864,7 @@ function levyUrl(){
     	domAttr.set(tools, "class" ,"clear");
         
  
- 
+     
        
         stripe = null;
         empty();
