@@ -16,7 +16,11 @@ var gsvc, p, paramx, sp;
 var selectionTF = false;
 var zoomLevel;
 var idMode = "parc";
+
 // var gsvc, tb;
+
+
+
 require([
     "esri/map", "esri/layers/FeatureLayer", "esri/dijit/OverviewMap", "esri/tasks/locator", "esri/dijit/LocateButton", "esri/layers/ArcGISImageServiceLayer", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/Legend",
     "esri/layers/ArcGISTiledMapServiceLayer", "esri/tasks/query","dijit/form/HorizontalSlider",
@@ -578,7 +582,7 @@ var gLayer = new GraphicsLayer();
    
   },"legendDiv");
   
-      getLayerFromUrl(document.location.href);
+      setTimeout(function(){getLayerFromUrl(document.location.href);},1000);
         var addressid = getAddressFromUrl(document.location.href);
             var roadid = getRoadFromUrl(document.location.href);
             var parcelid = getParcelFromUrl(document.location.href);
@@ -2495,7 +2499,7 @@ function levyUrl(){
 
         //if a parcelid is specified in url param select that feature 
         
-        	//var layerid = getLayerFromUrl(document.location.href);
+        	//var layerid = (document.location.href);
           
       
 
@@ -4262,3 +4266,4 @@ function makeGeomArray2(selection) {
     }
 
 });
+
