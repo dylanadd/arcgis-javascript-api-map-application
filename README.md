@@ -22,4 +22,4 @@
 
 ### Who do I talk to for more info? ###
 
-* Dylan Addington, addington_dylan@hotmail.com
+* Dylan Addington, dylan.pcg@gmail.com
