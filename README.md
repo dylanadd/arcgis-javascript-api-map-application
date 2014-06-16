@@ -19,6 +19,9 @@
 
 4. That's it. Open it up in a web browser and enjoy!
 
+### License ###
+
+* This app is released under the terms of the GNU GPL v3 where not limited by ESRI's ArcGIS Javascript API terms of use
 
 ### Who do I talk to for more info? ###
 
