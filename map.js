@@ -3340,7 +3340,9 @@ function zoomToRoad(evt){
 
 
 function zoomToPoint(evt, zoomTF){
+    console.log("zoomtopoint called");
 	var geom = evt.geometry;
+	
 	map.graphics.clear();
 	try{gLayer.clear();}catch(e){}
 
@@ -3373,6 +3375,8 @@ function zoomToPoint(evt, zoomTF){
 
 
 function zoomToGeoPoint(evt){
+    console.log("zoomtogeopoint called");
+    evt.geometry.spatialReference.wkid = 3857;
 	var geom = evt.location;
 	map.graphics.clear();
 	try{gLayer.clear();}catch(e){}
