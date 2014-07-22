@@ -3043,7 +3043,7 @@ function levyUrl(){
     			console.log("polyline " + i);
     			
     			exportArray = {
-          	         "AltName": resultsArray[i].attributes.ALTNAME1,
+          	         "AltName": resultsArray[i].attributes.RD_LABEL,
           	         "City": resultsArray[i].attributes.CITY
           	       	         
                  };
@@ -3285,14 +3285,14 @@ function makeWordArray(owner, qMode){
 			for(i=0;i<=owner.length;i++){
 				if(i + 1 != owner.length){
 					try{
-						owner[i] = owner[i].replace(/\s/g, '');
+						owner[i] = owner[i].replace(/\s/g, ' ');
 					} catch(e){}
-					q += "(ALTNAME1 like '%" + owner[i] + "%') and";
+					q += "(RD_LABEL like '%" + owner[i] + "%') and";
 				} else {
 					try{
 						owner[i] = owner[i].replace(/\s/g, '');
 					} catch(e){}
-					q += " (ALTNAME1 like '%" + owner[i] + "%')";
+					q += " (RD_LABEL like '%" + owner[i] + "%')";
 					console.log(q);
 					return q;
 				}
@@ -3478,10 +3478,10 @@ function setInfoArray2(geom, gCode){
         	for (i = 0; i < infoArray5.length; i++) {
                 resultsArray.push(infoArray5[i]);
                 var s = "<td class=\"sTall\" ><table cellspacing=\"0\"><tr class=\"" + " leftCell\">" +
-                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.ALTNAME1 + "</span></td>" + 
+                    "<td class=\"parNum\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.RD_LABEL + "</span></td>" + 
                     "</tr></table></td>";
 				
-				var sWide =  "<td class=\"parNum sWide\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.ALTNAME1 + "</span></td>"
+				var sWide =  "<td class=\"parNum sWide\"><span class=\"resultsLabel\" >Road:</span> <span class=\"resultsText\" >" + infoArray5[i].attributes.RD_LABEL + "</span></td>"
                
                 var temp = domConstruct.create("tr", {
                     "innerHTML": "<td><a class=\"goToParcel\" title=\"View Road Segment\" id=\"test" + (i + l) + "\" >" + "</a></td>" + sWide,
